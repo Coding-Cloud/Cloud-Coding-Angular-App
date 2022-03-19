@@ -11,8 +11,8 @@
     "lint": "eslint --color -c .eslintrc --ext .ts .",
     "test": "npm run lint && ng test --configuration=test",
     "watch": "ng test --configuration=test --browsers ChromeHeadless --watch --reporters dots",
-    "format:write": "prettier projects/**/*.{ts,json,md,scss} --write",
-    "format:test": "prettier projects/**/*.{ts,json,md,scss} --list-different"
+    "format:write": "prettier src/**/*.{ts,json,md,scss} --write",
+    "format:test": "prettier src/**/*.{ts,json,md,scss} --list-different"
   },
   "husky": {
     "hooks": {
