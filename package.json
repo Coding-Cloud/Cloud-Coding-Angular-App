@@ -10,7 +10,6 @@
     "build:prod": "ng build --configuration production",
     "lint": "eslint --color -c .eslintrc --ext .ts .",
     "test": "npm run lint && ng test --configuration=test",
-    "watch": "ng test --configuration=test --browsers ChromeHeadless --watch --reporters dots",
     "format:write": "prettier src/**/*.{ts,json,md,scss} --write",
     "format:test": "prettier src/**/*.{ts,json,md,scss} --list-different"
   },
