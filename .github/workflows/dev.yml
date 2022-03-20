@@ -6,7 +6,22 @@ on:
       - 'dev'
 
 jobs:
-  docker-build-and-push:
+  sonarqube:
+    name: Sonarqube analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: sonarsource/sonarqube-scan-action@master
+        with:
+          args: >
+            -Dsonar.branch.name=dev
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  docker:
+    name: Build docker image and push
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
