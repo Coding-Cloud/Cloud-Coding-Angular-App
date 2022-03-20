@@ -6,8 +6,8 @@ on:
       - 'main'
 
 jobs:
-  sonarqube-analyze:
-    name: Build
+  sonarqube:
+    name: Sonarqube analyze
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,7 +17,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-  docker-build-and-push:
+  docker:
+    name: Build docker image and push to private registry
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
