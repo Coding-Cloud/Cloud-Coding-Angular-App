@@ -3,7 +3,6 @@ import { Injectable, NgZone } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { select, Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, merge, of } from 'rxjs';
 import {
   tap,
@@ -121,16 +120,6 @@ export class SettingsEffects {
     { dispatch: false }
   );
 
-  setTranslateServiceLanguage = createEffect(
-    () =>
-      this.store.pipe(
-        select(selectSettingsLanguage),
-        distinctUntilChanged(),
-        tap((language) => this.translateService.use(language))
-      ),
-    { dispatch: false }
-  );
-
   setTitle = createEffect(
     () =>
       merge(
@@ -140,10 +129,7 @@ export class SettingsEffects {
         )
       ).pipe(
         tap(() => {
-          this.titleService.setTitle(
-            this.router.routerState.snapshot.root,
-            this.translateService
-          );
+          this.titleService.setTitle(this.router.routerState.snapshot.root);
         })
       ),
     { dispatch: false }
@@ -157,7 +143,6 @@ export class SettingsEffects {
     private localStorageService: LocalStorageService,
     private titleService: TitleService,
     private animationsService: AnimationsService,
-    private translateService: TranslateService,
     private ngZone: NgZone
   ) {}
 }

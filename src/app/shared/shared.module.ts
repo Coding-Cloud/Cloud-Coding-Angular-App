@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
@@ -49,15 +48,11 @@ import { faMediumM, faGithub } from '@fortawesome/free-brands-svg-icons';
 
 import { BigInputComponent } from './big-input/big-input/big-input.component';
 import { BigInputActionComponent } from './big-input/big-input-action/big-input-action.component';
-import { RtlSupportDirective } from './rtl-support/rtl-support.directive';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-
-    TranslateModule,
-
     MatButtonModule,
     MatSelectModule,
     MatTabsModule,
@@ -76,18 +71,11 @@ import { RtlSupportDirective } from './rtl-support/rtl-support.directive';
 
     FontAwesomeModule
   ],
-  declarations: [
-    BigInputComponent,
-    BigInputActionComponent,
-    RtlSupportDirective
-  ],
+  declarations: [BigInputComponent, BigInputActionComponent],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-
-    TranslateModule,
-
     MatButtonModule,
     MatMenuModule,
     MatTabsModule,
@@ -110,8 +98,7 @@ import { RtlSupportDirective } from './rtl-support/rtl-support.directive';
     FontAwesomeModule,
 
     BigInputComponent,
-    BigInputActionComponent,
-    RtlSupportDirective
+    BigInputActionComponent
   ]
 })
 export class SharedModule {

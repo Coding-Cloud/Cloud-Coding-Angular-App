@@ -67,13 +67,6 @@ export const features: Feature[] = [
     documentation: 'https://www.typescriptlang.org/docs/home.html'
   },
   {
-    name: 'I18n',
-    version: env.versions.ngxtranslate,
-    description: 'anms.features.ngxtranslate',
-    github: 'https://github.com/ngx-translate/core',
-    documentation: 'http://www.ngx-translate.com/'
-  },
-  {
     name: 'Font Awesome 5',
     version: env.versions.fontAwesome,
     description: 'anms.features.fontawesome',
