@@ -1,21 +1,21 @@
-<nav mat-tab-nav-bar class='d-none d-sm-flex'>
+<nav class='d-none d-sm-flex' mat-tab-nav-bar>
   <a mat-tab-link
      *ngFor='let e of examples'
-     [routerLink]='e.link'
-     routerLinkActive #rla='routerLinkActive'
+     [routerLink]='e.path'
+     routerLinkActive='active' #rla='routerLinkActive'
      [active]='rla.isActive'
      [disabled]='e.auth && !(isAuthenticated$ | async)'>
-    {{e.label}}
+    {{e.name}}
   </a>
 </nav>
 
 <nav class='nav-responsive d-sm-none d-flex justify-content-center'>
-  <mat-select [placeholder]="'anms.examples.title'" [value]="'todos'">
+  <mat-select [placeholder]='"Exemples"' [value]="'todos'">
     <mat-option *ngFor='let e of examples'
                 [value]='e'
-                [routerLink]='e.link'
+                [routerLink]='e.path'
                 [disabled]='e.auth && !(isAuthenticated$ | async)'>
-      {{e.label}}
+      {{e.name}}
     </mat-option>
   </mat-select>
 </nav>

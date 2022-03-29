@@ -6,14 +6,10 @@
       <div class='branding'><img [src]='logo' [alt]='logo' />
         <span>{{ 'anms.title.short' }}</span></div>
       <mat-nav-list>
-        <mat-list-item *ngFor='let item of navigationSideMenu' (click)='sidenav.close()' [routerLink]='[item.link]'
+        <mat-list-item *ngFor='let link of navigationSideMenu' (click)='sidenav.close()' [routerLink]='[link.path]'
                        routerLinkActive='active'>
-          {{item.label }}
+          {{link.name }}
         </mat-list-item>
-        <a mat-list-item href='https://github.com/tomastrajan/angular-ngrx-material-starter' target='_blank'
-           rel='noopener noreferrer'>
-          Github
-        </a>
       </mat-nav-list>
     </mat-sidenav>
 
@@ -37,9 +33,9 @@
             }}</span>
 
           <span class='d-none d-md-inline'>
-            <button mat-button class='nav-button' *ngFor='let item of navigation' [routerLink]='[item.link]'
+            <button mat-button class='nav-button' *ngFor='let link of navigationMenu' [routerLink]='[link.path]'
                     routerLinkActive='active'>
-              {{item.label }}
+              {{link.name }}
             </button>
           </span>
 
@@ -65,23 +61,6 @@
           <button mat-icon-button routerLink='settings' class='d-none d-sm-inline'>
             <fa-icon icon='cog'></fa-icon>
           </button>
-
-          <a [matTooltip]="'anms.header.github' "
-             matTooltipPosition='before'
-             mat-icon-button
-             class='link d-none d-sm-inline'
-             href='https://github.com/tomastrajan/angular-ngrx-material-starter'
-             target='_blank' rel='noopener noreferrer'>
-            <fa-icon [icon]="['fab','github']"></fa-icon>
-          </a>
-
-          <span *ngIf='language$ | async as language'>
-            <mat-select [ngModel]='language' (selectionChange)='onLanguageSelect($event)'>
-              <mat-option *ngFor='let l of languages' [value]='l'>
-                {{ l.toUpperCase() }}
-              </mat-option>
-            </mat-select>
-          </span>
         </mat-toolbar>
       </div>
 

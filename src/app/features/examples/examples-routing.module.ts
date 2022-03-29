@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuardService } from '../../core/core.module';
 
@@ -13,6 +13,47 @@ import { FormComponent } from './form/components/form.component';
 import { NotificationsComponent } from './notifications/components/notifications.component';
 import { UserComponent } from './simple-state-management/components/user.component';
 import { ElementsComponent } from './elements/elements.component';
+import { NavigationLinks } from '../../app-routing.module';
+
+export const examplesNavigation: NavigationLinks = {
+  todos: {
+    path: 'todos',
+    name: 'Todos'
+  },
+  stockMarket: {
+    path: 'stock-market',
+    name: 'Stock Market'
+  },
+  theming: {
+    path: 'theming',
+    name: 'Theming'
+  },
+  crud: {
+    path: 'crud',
+    name: 'CRUD'
+  },
+  simpleStateManagement: {
+    path: 'simple-state-management',
+    name: 'Simple State Management'
+  },
+  form: {
+    path: 'form',
+    name: 'Form'
+  },
+  notifications: {
+    path: 'notifications',
+    name: 'Notifications'
+  },
+  elements: {
+    path: 'elements',
+    name: 'Elements'
+  },
+  authenticated: {
+    path: 'authenticated',
+    name: 'Authenticated',
+    auth: true
+  }
+};
 
 const routes: Routes = [
   {
