@@ -1,6 +1,5 @@
 import { selectTodosFilter } from '../todos.selectors';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
@@ -32,7 +31,6 @@ export class TodosContainerComponent implements OnInit {
   constructor(
     public store: Store<State>,
     public snackBar: MatSnackBar,
-    public translateService: TranslateService,
     private notificationService: NotificationService
   ) {}
 
@@ -58,24 +56,16 @@ export class TodosContainerComponent implements OnInit {
 
   onAddTodo() {
     this.store.dispatch(todoActions.actionTodosAdd(this.newTodo));
-    const addedMessage = this.translateService.instant(
-      'anms.examples.todos.added.notification',
-      { name: this.newTodo }
-    );
+    const addedMessage = 'Notification : ' + this.newTodo;
     this.notificationService.info(addedMessage);
     this.newTodo = '';
   }
 
   onToggleTodo(todo: Todo) {
     this.store.dispatch(todoActions.actionTodosToggle({ id: todo.id }));
-    const newStatus = this.translateService.instant(
-      `anms.examples.todos.filter.${todo.done ? 'active' : 'done'}`
-    );
-    const undo = this.translateService.instant('anms.examples.todos.undo');
-    const toggledMessage = this.translateService.instant(
-      'anms.examples.todos.toggle.notification',
-      { name: todo.name }
-    );
+    const newStatus = 'New status : ' + todo.done ? 'active' : 'done';
+    const undo = 'Annuler';
+    const toggledMessage = 'Notification : ' + todo.name;
 
     this.snackBar
       .open(`${toggledMessage} ${newStatus}`, undo, {
@@ -89,20 +79,14 @@ export class TodosContainerComponent implements OnInit {
 
   onRemoveDoneTodos() {
     this.store.dispatch(todoActions.actionTodosRemoveDone());
-    const removedMessage = this.translateService.instant(
-      'anms.examples.todos.remove.notification'
-    );
+    const removedMessage = 'Message retiré';
     this.notificationService.info(removedMessage);
   }
 
   onFilterTodos(filter: TodosFilter) {
     this.store.dispatch(todoActions.actionTodosFilter({ filter }));
-    const filterToMessage = this.translateService.instant(
-      'anms.examples.todos.filter.notification'
-    );
-    const filterMessage = this.translateService.instant(
-      `anms.examples.todos.filter.${filter.toLowerCase()}`
-    );
+    const filterToMessage = 'Filter notification';
+    const filterMessage = 'Todo filter : ' + filter;
     this.notificationService.info(`${filterToMessage} ${filterMessage}`);
   }
 }

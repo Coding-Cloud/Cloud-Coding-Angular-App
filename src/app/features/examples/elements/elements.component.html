@@ -1,54 +1,55 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <h1 class="main-heading" rtl>
-        {{ 'anms.examples.elements.title' | translate }}
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-12'>
+      <h1 class='main-heading' rtl>
+        {{ 'anms.examples.elements.title' }}
       </h1>
     </div>
   </div>
-  <div class="row" [ngClass]="routeAnimationsElements" rtl>
-    <div class="col-md-12 col-lg-6">
+  <div class='row' [ngClass]='routeAnimationsElements' rtl>
+    <div class='col-md-12 col-lg-6'>
       <ng-template #error>Loading of element failed...</ng-template>
       <ng-template #loading>Loading...</ng-template>
       <mwc-button raised
                   *axLazyElement="'https://unpkg.com/@material/mwc-button@0.6.0/mwc-button.js?module'; loadingTemplate: loading; errorTemplate: error; module: true"
-                  (click)="increment()">
+                  (click)='increment()'>
         Increment
       </mwc-button>
       <br>
       <br>
-      <p>{{ 'anms.examples.elements.counter' | translate }}: {{counter}}</p>
+      <p>{{ 'anms.examples.elements.counter' }}: {{counter}}</p>
     </div>
-    <div class="col-md-12 col-lg-6" [ngClass]="routeAnimationsElements">
+    <div class='col-md-12 col-lg-6' [ngClass]='routeAnimationsElements'>
       <p>
-        {{ 'anms.examples.elements.text1' | translate }}
+        {{ 'anms.examples.elements.text1' }}
         <code>https://unpkg.com/@material/mwc-button@0.6.0/mwc-button.js?module</code>
-        {{ 'anms.examples.elements.text2' | translate }}
+        {{ 'anms.examples.elements.text2' }}
       </p>
       <p>
-        {{ 'anms.examples.elements.text3' | translate }}
+        {{ 'anms.examples.elements.text3' }}
         <code>*axLazyElement</code>
-        {{ 'anms.examples.elements.text4' | translate }}
+        {{ 'anms.examples.elements.text4' }}
         <code>@angular-extensions/elements</code>
-        {{ 'anms.examples.elements.text5' | translate }}.
+        {{ 'anms.examples.elements.text5' }}.
       </p>
       <p>
-        {{ 'anms.examples.elements.text6' | translate }}
-        <a href="https://github.com/angular-extensions/elements" rel="noopener noreferrer" target="_blank">{{
-          'anms.examples.elements.text5' | translate
+        {{ 'anms.examples.elements.text6' }}
+        <a href='https://github.com/angular-extensions/elements' rel='noopener noreferrer' target='_blank'>{{
+          'anms.examples.elements.text5'
           }}</a>,
-        <a href="https://angular-extensions.github.io/elements/#/docs/use-cases" rel="noopener noreferrer" target="_blank">{{
-          'anms.examples.elements.text7' | translate
+        <a href='https://angular-extensions.github.io/elements/#/docs/use-cases' rel='noopener noreferrer'
+           target='_blank'>{{
+          'anms.examples.elements.text7'
           }}</a>
-        {{ 'anms.examples.elements.text8' | translate }}
-        {{ 'anms.examples.elements.text9' | translate }}
-        <a href="https://angular-extensions.github.io/elements/#/examples" rel="noopener noreferrer" target="_blank">{{
-          'anms.examples.elements.text10' | translate
+        {{ 'anms.examples.elements.text8' }}
+        {{ 'anms.examples.elements.text9' }}
+        <a href='https://angular-extensions.github.io/elements/#/examples' rel='noopener noreferrer' target='_blank'>{{
+          'anms.examples.elements.text10'
           }}</a>
 
-        {{ 'anms.examples.elements.text11' | translate }}
-        <a href="https://angular-extensions.github.io/elements/#/docs" rel="noopener noreferrer" target="_blank">{{
-          'anms.examples.elements.text12' | translate
+        {{ 'anms.examples.elements.text11' }}
+        <a href='https://angular-extensions.github.io/elements/#/docs' rel='noopener noreferrer' target='_blank'>{{
+          'anms.examples.elements.text12'
           }}</a>...
       </p>
     </div>

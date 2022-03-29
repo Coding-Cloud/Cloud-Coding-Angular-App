@@ -1,10 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Optional, SkipSelf, ErrorHandler } from '@angular/core';
-import {
-  HttpClientModule,
-  HttpClient,
-  HTTP_INTERCEPTORS
-} from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {
   StoreRouterConnectingModule,
   RouterStateSerializer
@@ -12,8 +8,6 @@ import {
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {
   FaIconLibrary,
   FontAwesomeModule
@@ -94,14 +88,6 @@ export {
   selectSettingsStickyHeader
 };
 
-export function httpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(
-    http,
-    `${environment.i18nPrefix}/assets/i18n/`,
-    '.json'
-  );
-}
-
 @NgModule({
   imports: [
     // angular
@@ -131,18 +117,11 @@ export function httpLoaderFactory(http: HttpClient) {
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({
-          name: 'Angular NgRx Material Starter'
+          name: 'Cloud Coding App'
         }),
 
     // 3rd party
-    FontAwesomeModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpClient]
-      }
-    })
+    FontAwesomeModule
   ],
   declarations: [],
   providers: [
@@ -166,8 +145,7 @@ export function httpLoaderFactory(http: HttpClient) {
     MatButtonModule,
 
     // 3rd party
-    FontAwesomeModule,
-    TranslateModule
+    FontAwesomeModule
   ]
 })
 export class CoreModule {

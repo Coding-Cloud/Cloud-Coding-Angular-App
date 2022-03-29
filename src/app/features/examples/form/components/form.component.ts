@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { filter, take, tap } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import {
@@ -47,7 +46,6 @@ export class FormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private store: Store<State>,
-    private translate: TranslateService,
     private notificationService: NotificationService
   ) {}
 
@@ -73,11 +71,7 @@ export class FormComponent implements OnInit {
     if (this.form.valid) {
       this.save();
       this.notificationService.info(
-        (this.form.value.requestGift
-          ? this.translate.instant('anms.examples.form.text4')
-          : this.translate.instant('anms.examples.form.text5')) +
-          ' : ' +
-          this.translate.instant('anms.examples.form.text6')
+        this.form.value.requestGift ? 'requestGift' : 'noRequestGift'
       );
     }
   }
