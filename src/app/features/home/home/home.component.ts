@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-
-import { ROUTE_ANIMATIONS_ELEMENTS } from '../../../core/core.module';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { environment as env } from '../../../../environments/environment';
+import { navigation } from 'src/app/app-routing.module';
 
 @Component({
   selector: 'cc-home',
@@ -9,8 +9,9 @@ import { ROUTE_ANIMATIONS_ELEMENTS } from '../../../core/core.module';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
-  routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   releaseButler = 'assets/release-butler.png';
+  appName = env.appName;
+  navigation = navigation;
 
   constructor() {}
 
