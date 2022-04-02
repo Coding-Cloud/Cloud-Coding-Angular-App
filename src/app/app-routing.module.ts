@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 export interface Link {
   path: string;
@@ -39,7 +39,7 @@ const routes: Routes = [
   {
     path: navigation.home.path,
     loadChildren: () =>
-      import('./features/about/about.module').then((m) => m.AboutModule)
+      import('./features/home/home.module').then((m) => m.HomeModule)
   },
   {
     path: navigation.features.path,

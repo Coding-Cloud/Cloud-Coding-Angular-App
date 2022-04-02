@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AboutComponent } from './about/about.component';
 import { NavigationLinks } from '../../app-routing.module';
+import { HomeComponent } from './home/home.component';
 
-export const aboutNavigation: NavigationLinks = {
-  about: {
+export const homeNavigation: NavigationLinks = {
+  home: {
     path: '',
-    name: 'About'
+    name: 'Accueil'
   }
 };
 
 const routes: Routes = [
   {
-    path: aboutNavigation.about.path,
-    component: AboutComponent,
-    data: { title: aboutNavigation.about.name }
+    path: homeNavigation.home.path,
+    component: HomeComponent,
+    data: { title: homeNavigation.home.name }
   }
 ];
 
@@ -23,4 +23,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AboutRoutingModule {}
+export class HomeRoutingModule {}

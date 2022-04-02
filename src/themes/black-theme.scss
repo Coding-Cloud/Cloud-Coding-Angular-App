@@ -1,7 +1,7 @@
 @use '~@angular/material' as mat;
 
-$anms-black-primary: mat.define-palette(mat.$grey-palette, 700, 300, 900);
-$anms-black-accent: mat.define-palette(mat.$blue-grey-palette, 400);
+$anms-black-primary: mat.define-palette(mat.$grey-palette, 800, 500, 900);
+$anms-black-accent: mat.define-palette(mat.$light-blue-palette, 600);
 $anms-black-warn: mat.define-palette(mat.$red-palette, 500);
 
 $anms-black-theme: mat.define-dark-theme(

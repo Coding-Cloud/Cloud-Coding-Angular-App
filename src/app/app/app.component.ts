@@ -23,11 +23,13 @@ import { navigation } from '../app-routing.module';
   animations: [routeAnimations]
 })
 export class AppComponent implements OnInit {
+  appName = env.appName;
   isProd = env.production;
   envName = env.envName;
   version = env.versions.app;
   year = new Date().getFullYear();
   logo = 'assets/logo.png';
+  routerLinks = navigation;
 
   navigationMenu = [navigation.home, navigation.features, navigation.examples];
   navigationSideMenu = [...this.navigationMenu, navigation.settings];
@@ -38,10 +40,7 @@ export class AppComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private storageService: LocalStorageService
-  ) {}
-
-  private static isIEorEdgeOrSafari() {
-    return ['ie', 'edge', 'safari'].includes(browser().name || '');
+  ) {
   }
 
   ngOnInit(): void {
