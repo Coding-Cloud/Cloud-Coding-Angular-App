@@ -21,7 +21,6 @@ import { FormComponent } from './form/components/form.component';
 import { FormEffects } from './form/form.effects';
 import { AuthenticatedComponent } from './authenticated/authenticated.component';
 import { NotificationsComponent } from './notifications/components/notifications.component';
-import { ExamplesEffects } from './examples.effects';
 import { UserComponent } from './simple-state-management/components/user.component';
 import { UserService } from './simple-state-management/user.service';
 import { ElementsComponent } from './elements/elements.component';
@@ -34,7 +33,6 @@ import { ElementsComponent } from './elements/elements.component';
     ExamplesRoutingModule,
     StoreModule.forFeature(FEATURE_NAME, reducers),
     EffectsModule.forFeature([
-      ExamplesEffects,
       TodosEffects,
       StockMarketEffects,
       BooksEffects,

@@ -47,11 +47,7 @@ import { HttpErrorInterceptor } from './http-interceptors/http-error.interceptor
 import { GoogleAnalyticsEffects } from './google-analytics/google-analytics.effects';
 import { NotificationService } from './notifications/notification.service';
 import { SettingsEffects } from './settings/settings.effects';
-import {
-  selectSettingsLanguage,
-  selectEffectiveTheme,
-  selectSettingsStickyHeader
-} from './settings/settings.selectors';
+import { selectEffectiveTheme } from './settings/settings.selectors';
 import { MatButtonModule } from '@angular/material/button';
 import {
   faCog,
@@ -83,9 +79,7 @@ export {
   AuthGuardService,
   selectRouterState,
   NotificationService,
-  selectEffectiveTheme,
-  selectSettingsLanguage,
-  selectSettingsStickyHeader
+  selectEffectiveTheme
 };
 
 @NgModule({

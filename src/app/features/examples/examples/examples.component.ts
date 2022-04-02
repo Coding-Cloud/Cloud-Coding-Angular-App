@@ -8,8 +8,8 @@ import {
 } from '../../../core/core.module';
 
 import { State } from '../examples.state';
-import { examplesNavigation } from '../examples-routing.module';
 import { Link } from '../../../app-routing.module';
+import { examplesNavigation } from '../examples-routing.module';
 
 @Component({
   selector: 'anms-examples',

@@ -5,7 +5,7 @@ import { SettingsContainerComponent } from './settings/settings-container.compon
 import { NavigationLinks } from '../../app-routing.module';
 
 export const settingsNavigation: NavigationLinks = {
-  featureList: {
+  settings: {
     path: '',
     name: 'Paramètres'
   }

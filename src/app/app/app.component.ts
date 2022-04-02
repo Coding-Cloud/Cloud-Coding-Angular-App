@@ -1,6 +1,5 @@
 import browser from 'browser-detect';
 import { Component, OnInit } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -12,19 +11,13 @@ import {
   routeAnimations,
   LocalStorageService,
   selectIsAuthenticated,
-  selectSettingsStickyHeader,
-  selectSettingsLanguage,
   selectEffectiveTheme,
   AppState
 } from '../core/core.module';
-import {
-  actionSettingsChangeAnimationsPageDisabled,
-  actionSettingsChangeLanguage
-} from '../core/settings/settings.actions';
 import { navigation } from '../app-routing.module';
 
 @Component({
-  selector: 'anms-root',
+  selector: 'root-component',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   animations: [routeAnimations]
@@ -40,8 +33,6 @@ export class AppComponent implements OnInit {
   navigationSideMenu = [...this.navigationMenu, navigation.settings];
 
   isAuthenticated$: Observable<boolean> | undefined;
-  stickyHeader$: Observable<boolean> | undefined;
-  language$: Observable<string> | undefined;
   theme$: Observable<string> | undefined;
 
   constructor(
@@ -55,17 +46,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.storageService.testLocalStorage();
-    if (AppComponent.isIEorEdgeOrSafari()) {
-      this.store.dispatch(
-        actionSettingsChangeAnimationsPageDisabled({
-          pageAnimationsDisabled: true
-        })
-      );
-    }
 
     this.isAuthenticated$ = this.store.pipe(select(selectIsAuthenticated));
-    this.stickyHeader$ = this.store.pipe(select(selectSettingsStickyHeader));
-    this.language$ = this.store.pipe(select(selectSettingsLanguage));
     this.theme$ = this.store.pipe(select(selectEffectiveTheme));
   }
 
@@ -75,11 +57,5 @@ export class AppComponent implements OnInit {
 
   onLogoutClick() {
     this.store.dispatch(authLogout());
-  }
-
-  onLanguageSelect(event: MatSelectChange) {
-    this.store.dispatch(
-      actionSettingsChangeLanguage({ language: event.value })
-    );
   }
 }
