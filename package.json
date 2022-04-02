@@ -6,8 +6,10 @@
     "ng": "ng",
     "start": "ng serve --open",
     "start:prod": "npm run build:prod && npm run server",
+    "start:dev": "npm run build:dev && npm run server",
     "build": "ng build",
     "build:prod": "ng build --configuration production",
+    "build:dev": "ng build --configuration development",
     "lint": "eslint --color -c .eslintrc --ext .ts .",
     "format:write": "prettier src/**/*.{ts,json,md,scss} --write",
     "format:test": "prettier src/**/*.{ts,json,md,scss} --list-different"
