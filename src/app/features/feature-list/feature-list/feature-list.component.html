@@ -1,29 +1,18 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <h1 rtl class="main-heading">{{ 'anms.features.title' }}</h1>
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-12'>
+      <h1 rtl class='main-heading'>{{featureLink.name}}</h1>
     </div>
   </div>
-  <div class="row align-items-end">
-    <div *ngFor="let feature of features" class="col-md-6 col-lg-4" [ngClass]="routeAnimationsElements">
+  <div class='row align-items-start'>
+    <div *ngFor='let feature of features' class='col-md-6 col-lg-4'>
       <mat-card>
         <mat-card-title>
-          <code *ngIf="feature.version">{{feature.version}}</code>{{feature.name}}
+          {{feature.name}}
         </mat-card-title>
-        <mat-card-subtitle rtl>
-          {{ feature.description }}
-        </mat-card-subtitle>
-        <mat-card-actions>
-          <a *ngIf="feature.github" mat-icon-button [href]="feature.github" rel="noopener noreferrer" target="_blank">
-            <fa-icon [icon]="['fab','github']"></fa-icon>
-          </a>
-          <a mat-button [href]="feature.documentation" rel="noopener noreferrer" target="_blank">
-            <fa-icon icon="book"></fa-icon>{{ 'anms.features.documentation' }}
-          </a>
-          <a *ngIf="feature.medium" mat-button [href]="feature.medium" rel="noopener noreferrer" target="_blank">
-            <fa-icon [icon]="['fab','medium-m']"></fa-icon>{{ 'anms.features.guide' }}
-          </a>
-        </mat-card-actions>
+        <mat-card-content rel>
+          <div [innerHTML]='feature.description'></div>
+        </mat-card-content>
       </mat-card>
     </div>
   </div>

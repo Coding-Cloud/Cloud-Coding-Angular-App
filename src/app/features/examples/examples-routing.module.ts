@@ -1,18 +1,39 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuardService } from '../../core/core.module';
 
 import { ExamplesComponent } from './examples/examples.component';
-import { ParentComponent } from './theming/parent/parent.component';
 import { AuthenticatedComponent } from './authenticated/authenticated.component';
 import { TodosContainerComponent } from './todos/components/todos-container.component';
-import { StockMarketContainerComponent } from './stock-market/components/stock-market-container.component';
 import { CrudComponent } from './crud/components/crud.component';
 import { FormComponent } from './form/components/form.component';
 import { NotificationsComponent } from './notifications/components/notifications.component';
-import { UserComponent } from './simple-state-management/components/user.component';
-import { ElementsComponent } from './elements/elements.component';
+import { NavigationLinks } from '../../app-routing.module';
+
+export const examplesNavigation: NavigationLinks = {
+  todos: {
+    path: 'todos',
+    name: 'Todos'
+  },
+  crud: {
+    path: 'crud',
+    name: 'CRUD'
+  },
+  form: {
+    path: 'form',
+    name: 'Form'
+  },
+  notifications: {
+    path: 'notifications',
+    name: 'Notifications'
+  },
+  authenticated: {
+    path: 'authenticated',
+    name: 'Authenticated',
+    auth: true
+  }
+};
 
 const routes: Routes = [
   {
@@ -21,59 +42,39 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'todos',
+        redirectTo: examplesNavigation.todos.path,
         pathMatch: 'full'
       },
       {
-        path: 'todos',
+        path: examplesNavigation.todos.path,
         component: TodosContainerComponent,
-        data: { title: 'anms.examples.menu.todos' }
+        data: { title: examplesNavigation.todos.name }
       },
       {
-        path: 'stock-market',
-        component: StockMarketContainerComponent,
-        data: { title: 'anms.examples.menu.stocks' }
-      },
-      {
-        path: 'theming',
-        component: ParentComponent,
-        data: { title: 'anms.examples.menu.theming' }
-      },
-      {
-        path: 'crud',
-        redirectTo: 'crud/',
+        path: examplesNavigation.crud.path,
+        redirectTo: examplesNavigation.crud.path + '/',
         pathMatch: 'full'
       },
       {
-        path: 'crud/:id',
+        path: examplesNavigation.crud.path + '/:id',
         component: CrudComponent,
-        data: { title: 'anms.examples.menu.crud' }
+        data: { title: examplesNavigation.crud.name }
       },
       {
-        path: 'simple-state-management',
-        component: UserComponent,
-        data: { title: 'anms.examples.menu.simple-state-management' }
-      },
-      {
-        path: 'form',
+        path: examplesNavigation.form.path,
         component: FormComponent,
-        data: { title: 'anms.examples.menu.form' }
+        data: { title: examplesNavigation.form.name }
       },
       {
-        path: 'notifications',
+        path: examplesNavigation.notifications.path,
         component: NotificationsComponent,
-        data: { title: 'anms.examples.menu.notifications' }
+        data: { title: examplesNavigation.notifications.name }
       },
       {
-        path: 'elements',
-        component: ElementsComponent,
-        data: { title: 'anms.examples.menu.elements' }
-      },
-      {
-        path: 'authenticated',
+        path: examplesNavigation.authenticated.path,
         component: AuthenticatedComponent,
         canActivate: [AuthGuardService],
-        data: { title: 'anms.examples.menu.auth' }
+        data: { title: examplesNavigation.authenticated.name }
       }
     ]
   }

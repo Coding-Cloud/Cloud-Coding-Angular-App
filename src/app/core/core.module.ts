@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, Optional, SkipSelf, ErrorHandler } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ErrorHandler, NgModule, Optional, SkipSelf } from '@angular/core';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {
-  StoreRouterConnectingModule,
-  RouterStateSerializer
+  RouterStateSerializer,
+  StoreRouterConnectingModule
 } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -26,12 +26,12 @@ import { environment } from '../../environments/environment';
 
 import {
   AppState,
-  reducers,
   metaReducers,
+  reducers,
   selectRouterState
 } from './core.state';
 import { AuthEffects } from './auth/auth.effects';
-import { selectIsAuthenticated, selectAuth } from './auth/auth.selectors';
+import { selectAuth, selectIsAuthenticated } from './auth/auth.selectors';
 import { authLogin, authLogout } from './auth/auth.actions';
 import { AuthGuardService } from './auth/auth-guard.service';
 import { TitleService } from './title/title.service';
@@ -44,28 +44,24 @@ import { AppErrorHandler } from './error-handler/app-error-handler.service';
 import { CustomSerializer } from './router/custom-serializer';
 import { LocalStorageService } from './local-storage/local-storage.service';
 import { HttpErrorInterceptor } from './http-interceptors/http-error.interceptor';
-import { GoogleAnalyticsEffects } from './google-analytics/google-analytics.effects';
 import { NotificationService } from './notifications/notification.service';
 import { SettingsEffects } from './settings/settings.effects';
-import {
-  selectSettingsLanguage,
-  selectEffectiveTheme,
-  selectSettingsStickyHeader
-} from './settings/settings.selectors';
+import { selectEffectiveTheme } from './settings/settings.selectors';
 import { MatButtonModule } from '@angular/material/button';
 import {
-  faCog,
   faBars,
-  faRocket,
+  faCog,
+  faPlayCircle,
   faPowerOff,
-  faUserCircle,
-  faPlayCircle
+  faRocket,
+  faSignInAlt,
+  faUserCircle
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
+  faInstagram,
   faMediumM,
   faTwitter,
-  faInstagram,
   faYoutube
 } from '@fortawesome/free-brands-svg-icons';
 
@@ -83,9 +79,7 @@ export {
   AuthGuardService,
   selectRouterState,
   NotificationService,
-  selectEffectiveTheme,
-  selectSettingsLanguage,
-  selectSettingsStickyHeader
+  selectEffectiveTheme
 };
 
 @NgModule({
@@ -109,11 +103,7 @@ export {
     // ngrx
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([
-      AuthEffects,
-      SettingsEffects,
-      GoogleAnalyticsEffects
-    ]),
+    EffectsModule.forRoot([AuthEffects, SettingsEffects]),
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({
@@ -163,6 +153,7 @@ export class CoreModule {
       faBars,
       faRocket,
       faPowerOff,
+      faSignInAlt,
       faUserCircle,
       faPlayCircle,
       faGithub,
