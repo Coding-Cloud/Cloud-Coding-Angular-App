@@ -46,7 +46,7 @@ jobs:
           context: .
           push: true
           build-args: |
-            enviroment=dev
+            environment=dev
           tags: rg.fr-par.scw.cloud/cloudcoding/cloudcoding-angular-app:dev
   keel:
     name: Deploy new version
