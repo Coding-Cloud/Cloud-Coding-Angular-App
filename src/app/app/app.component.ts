@@ -31,7 +31,9 @@ export class AppComponent implements OnInit {
   logo = 'assets/logo.png';
   routerLinks = navigation;
 
-  navigationMenu = [navigation.home, navigation.features, navigation.examples];
+  navigationMenu = Object.values(navigation).filter(
+    (link) => ['settings'].indexOf(link.path) === -1
+  );
   navigationSideMenu = [...this.navigationMenu, navigation.settings];
 
   isAuthenticated$: Observable<boolean> | undefined;
@@ -40,8 +42,7 @@ export class AppComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private storageService: LocalStorageService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.storageService.testLocalStorage();
