@@ -15,6 +15,7 @@ import {
   AppState
 } from '../core/core.module';
 import { navigation } from '../app-routing.module';
+import { authLoginSuccess } from '../core/auth/auth.actions';
 
 @Component({
   selector: 'root-component',
@@ -52,7 +53,9 @@ export class AppComponent implements OnInit {
   }
 
   onLoginClick() {
-    this.store.dispatch(authLogin());
+    this.store.dispatch(
+      authLogin({ email: 'nou@email.fr', password: '123456' })
+    );
   }
 
   onLogoutClick() {
