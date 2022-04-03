@@ -1,6 +1,6 @@
 @use '~@angular/material' as mat;
 
-@mixin anms-todos-container-component-theme($theme) {
+@mixin cc-todos-container-component-theme($theme) {
   $accent: map-get($theme, accent);
 
   .todos-filter-menu-overlay {

@@ -1,10 +1,11 @@
 const packageJson = require('../../package.json');
 
 export const environment = {
-  appName: 'Angular Ngrx Material Starter',
+  appName: 'Cloud Coding',
   envName: 'PROD',
   production: true,
   test: false,
+  apiUrl: 'https://api.cloudcoding.fr',
   versions: {
     app: packageJson.version,
     angular: packageJson.dependencies['@angular/core'],

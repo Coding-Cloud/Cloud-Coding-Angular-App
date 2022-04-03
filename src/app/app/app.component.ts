@@ -15,6 +15,7 @@ import {
   AppState
 } from '../core/core.module';
 import { navigation } from '../app-routing.module';
+import { authLoginSuccess } from '../core/auth/auth.actions';
 
 @Component({
   selector: 'root-component',
@@ -32,7 +33,7 @@ export class AppComponent implements OnInit {
   routerLinks = navigation;
 
   navigationMenu = Object.values(navigation).filter(
-    (link) => ['settings'].indexOf(link.path) === -1
+    (link) => ['settings', 'auth'].indexOf(link.path) === -1
   );
   navigationSideMenu = [...this.navigationMenu, navigation.settings];
 
@@ -49,10 +50,6 @@ export class AppComponent implements OnInit {
 
     this.isAuthenticated$ = this.store.pipe(select(selectIsAuthenticated));
     this.theme$ = this.store.pipe(select(selectEffectiveTheme));
-  }
-
-  onLoginClick() {
-    this.store.dispatch(authLogin());
   }
 
   onLogoutClick() {

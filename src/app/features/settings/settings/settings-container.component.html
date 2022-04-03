@@ -23,6 +23,23 @@
           </mat-form-field>
         </div>
       </div>
+      <div class='col-md-6 group' *ngIf='(isAuthenticated$ | async)'>
+        <h2>Utilisateur connecté</h2>
+        <mat-list>
+          <mat-list-item>
+            <mat-icon matListIcon>account_circle</mat-icon>
+            <span>{{(user$ | async)?.firstName}} {{(user$ | async)?.lastName}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListIcon>badge</mat-icon>
+            <span>{{(user$ | async)?.pseudo}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListIcon>email</mat-icon>
+            <span>{{(user$ | async)?.email}}</span>
+          </mat-list-item>
+        </mat-list>
+      </div>
     </div>
   </ng-container>
 </div>

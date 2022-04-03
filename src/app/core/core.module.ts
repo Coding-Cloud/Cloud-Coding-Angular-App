@@ -64,6 +64,7 @@ import {
   faTwitter,
   faYoutube
 } from '@fortawesome/free-brands-svg-icons';
+import { TokenInterceptor } from './http-interceptors/http-auth.interceptor';
 
 export {
   TitleService,
@@ -116,6 +117,7 @@ export {
   declarations: [],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: ErrorHandler, useClass: AppErrorHandler },
     { provide: RouterStateSerializer, useClass: CustomSerializer }
   ],

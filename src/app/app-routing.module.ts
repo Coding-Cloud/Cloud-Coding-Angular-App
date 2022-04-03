@@ -27,6 +27,10 @@ export const navigation: NavigationLinks = {
   examples: {
     name: 'Exemples',
     path: 'examples'
+  },
+  auth: {
+    name: 'Authentification',
+    path: 'auth'
   }
 };
 
@@ -61,6 +65,11 @@ const routes: Routes = [
       import('./features/examples/examples.module').then(
         (m) => m.ExamplesModule
       )
+  },
+  {
+    path: navigation.auth.path,
+    loadChildren: () =>
+      import('./features/auth/auth.module').then((m) => m.AuthModule)
   },
   {
     path: '**',
