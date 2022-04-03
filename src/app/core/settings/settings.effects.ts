@@ -15,7 +15,7 @@ import { selectEffectiveTheme } from './settings.selectors';
 
 export const SETTINGS_KEY = 'SETTINGS';
 
-const INIT = of('anms-init-effect-trigger');
+const INIT = of('cc-init-effect-trigger');
 
 @Injectable()
 export class SettingsEffects {

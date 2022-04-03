@@ -24,31 +24,31 @@
 @import 'app/features/examples/examples/examples.component.scss-theme';
 
 @mixin custom-components-theme($theme) {
-  @include anms-styles-reset-theme($theme);
-  @include anms-app-component-theme($theme);
-  @include anms-about-component-theme($theme);
-  @include anms-big-input-component-theme($theme);
-  @include anms-notifications-component-theme($theme);
-  @include anms-todos-container-component-theme($theme);
-  @include anms-examples-component-theme($theme);
+  @include cc-styles-reset-theme($theme);
+  @include cc-app-component-theme($theme);
+  @include cc-home-component-theme($theme);
+  @include cc-big-input-component-theme($theme);
+  @include cc-notifications-component-theme($theme);
+  @include cc-todos-container-component-theme($theme);
+  @include cc-examples-component-theme($theme);
 }
 
 .default-theme {
-  @include mat.all-component-themes($anms-theme);
-  @include custom-components-theme($anms-theme);
+  @include mat.all-component-themes($cc-theme);
+  @include custom-components-theme($cc-theme);
 }
 
 .light-theme {
-  @include mat.all-component-themes($anms-light-theme);
-  @include custom-components-theme($anms-light-theme);
+  @include mat.all-component-themes($cc-light-theme);
+  @include custom-components-theme($cc-light-theme);
 }
 
 .black-theme {
-  @include mat.all-component-themes($anms-black-theme);
-  @include custom-components-theme($anms-black-theme);
+  @include mat.all-component-themes($cc-black-theme);
+  @include custom-components-theme($cc-black-theme);
 }
 
 .nature-theme {
-  @include mat.all-component-themes($anms-nature-theme);
-  @include custom-components-theme($anms-nature-theme);
+  @include mat.all-component-themes($cc-nature-theme);
+  @include custom-components-theme($cc-nature-theme);
 }

@@ -4,7 +4,7 @@ import { Feature, features } from '../feature-list.data';
 import { navigation } from '../../../app-routing.module';
 
 @Component({
-  selector: 'anms-feature-list',
+  selector: 'cc-feature-list',
   templateUrl: './feature-list.component.html',
   styleUrls: ['./feature-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

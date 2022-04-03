@@ -12,7 +12,7 @@ import { Link } from '../../../app-routing.module';
 import { examplesNavigation } from '../examples-routing.module';
 
 @Component({
-  selector: 'anms-examples',
+  selector: 'cc-examples',
   templateUrl: './examples.component.html',
   styleUrls: ['./examples.component.scss'],
   animations: [routeAnimations],

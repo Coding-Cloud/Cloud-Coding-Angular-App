@@ -15,7 +15,7 @@ import { User } from '../../../shared/models/user.models';
 import { selectUser } from '../../../core/auth/auth.selectors';
 
 @Component({
-  selector: 'anms-settings',
+  selector: 'cc-settings',
   templateUrl: './settings-container.component.html',
   styleUrls: ['./settings-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
