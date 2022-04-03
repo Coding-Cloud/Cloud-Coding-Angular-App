@@ -49,9 +49,15 @@
           <mat-menu #toolbarUserMenu='matMenu'>
             <button mat-menu-item [routerLink]='routerLinks.auth.path' *ngIf='!(isAuthenticated$ | async)'>
               <mat-icon>
-                <fa-icon icon='sign-in-alt'></fa-icon>
+                login
               </mat-icon>
-              <span> S'inscrire / Se connecter</span>
+              <span>Se connecter</span>
+            </button>
+            <button mat-menu-item [routerLink]='routerLinks.auth.path+"/register"' *ngIf='!(isAuthenticated$ | async)'>
+              <mat-icon>
+                person_add
+              </mat-icon>
+              <span>S'inscrire</span>
             </button>
             <button mat-menu-item (click)='onLogoutClick()' *ngIf='(isAuthenticated$ | async)'>
               <mat-icon>
