@@ -15,7 +15,10 @@ import {
   authLogin,
   authLoginError,
   authLoginSuccess,
-  authLogout
+  authLogout,
+  authRegister,
+  authRegisterError,
+  authRegisterSuccess
 } from './auth.actions';
 import { select, Store } from '@ngrx/store';
 import { State } from '../../features/examples/examples.state';
@@ -32,7 +35,7 @@ export class AuthEffects {
   persistAuthState = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(authLoginSuccess, authLogout),
+        ofType(authLoginSuccess, authRegisterSuccess, authLogout),
         withLatestFrom(this.store.pipe(select(selectAuth))),
         tap(([action, authState]) =>
           this.localStorageService.setItem(AUTH_KEY, { ...authState })
@@ -70,9 +73,51 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(authLoginSuccess),
-        tap(() => {
+        tap((action) => {
           this.router.navigate([navigation.home.path]).then(() => {
-            this.notificationService.default('Login successful');
+            this.notificationService.success(`Bonjour ${action.user.pseudo}!`);
+          });
+        })
+      ),
+    { dispatch: false }
+  );
+
+  register = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authRegister),
+      exhaustMap((action) =>
+        this.authService.register(action.userForm).pipe(
+          map((response) =>
+            authRegisterSuccess({ user: response.user, token: response.token })
+          ),
+          catchError((error) =>
+            of(authRegisterError({ message: error.message }))
+          )
+        )
+      )
+    )
+  );
+
+  registerError = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authRegisterError),
+        tap((action) => {
+          this.notificationService.error(action.message);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  registerSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authRegisterSuccess),
+        tap((action) => {
+          this.router.navigate([navigation.home.path]).then(() => {
+            this.notificationService.success(
+              `Bienvenue ${action.user.pseudo}!`
+            );
           });
         })
       ),
@@ -85,7 +130,7 @@ export class AuthEffects {
         ofType(authLogout),
         tap(() => {
           this.router.navigate([navigation.home.path]).then(() => {
-            this.notificationService.default('Logout successful');
+            this.notificationService.warn('Déconnecté');
           });
         })
       ),

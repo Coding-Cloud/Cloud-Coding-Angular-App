@@ -47,7 +47,7 @@
             <fa-icon icon='user-circle'></fa-icon>
           </button>
           <mat-menu #toolbarUserMenu='matMenu'>
-            <button mat-menu-item (click)='onLoginClick()' *ngIf='!(isAuthenticated$ | async)'>
+            <button mat-menu-item [routerLink]='routerLinks.auth.path' *ngIf='!(isAuthenticated$ | async)'>
               <mat-icon>
                 <fa-icon icon='sign-in-alt'></fa-icon>
               </mat-icon>

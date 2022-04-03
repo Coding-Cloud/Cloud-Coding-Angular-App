@@ -1,0 +1,35 @@
+<div class='container mt-4'>
+  <div class='row'>
+    <div class='col-12 d-flex justify-content-center'>
+      <h1>{{ authLinks.login.name }}</h1>
+    </div>
+  </div>
+  <form [formGroup]='form'>
+    <div class='row justify-content-center mt-2'>
+      <div class='col-12 col-md-6'>
+        <mat-card>
+          <mat-card-content>
+            <div class='row'>
+              <mat-form-field class='col-12' appearance='fill'>
+                <mat-label>Email</mat-label>
+                <input matInput placeholder='Email' formControlName='email'>
+              </mat-form-field>
+              <mat-form-field class='col-12' appearance='fill'>
+                <mat-label>Mot de passe</mat-label>
+                <input matInput type='password' placeholder='Mot de passe' formControlName='password'>
+              </mat-form-field>
+            </div>
+          </mat-card-content>
+          <mat-card-actions [align]='"end"'>
+            <button mat-raised-button color='accent' [disabled]='!form.valid' (click)='onLoginClick()'>Se connecter
+            </button>
+            <button mat-raised-button type='button' color='warn'>Mot de passe oublié</button>
+            <button mat-raised-button type='button' color='primary' [routerLink]='"../" + authLinks.register.path'>
+              S'inscrire
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </form>
+</div>

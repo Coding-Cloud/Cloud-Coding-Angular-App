@@ -9,6 +9,14 @@ export interface User {
   createdAt: string;
 }
 
+export interface UserForm {
+  firstName: string;
+  lastName: string;
+  email: string;
+  pseudo: string;
+  password: string;
+}
+
 export type Role = 'admin' | 'user';
 
 export const emptyUser: User = {
