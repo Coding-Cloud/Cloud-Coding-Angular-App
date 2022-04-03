@@ -5,6 +5,7 @@ export const environment = {
   envName: 'PROD',
   production: true,
   test: false,
+  apiUrl: 'https://api.cloudcoding.fr',
   versions: {
     app: packageJson.version,
     angular: packageJson.dependencies['@angular/core'],
