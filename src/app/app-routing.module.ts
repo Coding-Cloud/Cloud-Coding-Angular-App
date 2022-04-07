@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { codeEditorRoutes } from './features/code-editor/code-editor-routing.module';
 
 export interface Link {
   path: string;
@@ -31,6 +32,10 @@ export const navigation: NavigationLinks = {
   auth: {
     name: 'Authentification',
     path: 'auth'
+  },
+  codeEditor: {
+    name: 'CodeEditor',
+    path: 'code-editor'
   }
 };
 
@@ -70,6 +75,10 @@ const routes: Routes = [
     path: navigation.auth.path,
     loadChildren: () =>
       import('./features/auth/auth.module').then((m) => m.AuthModule)
+  },
+  {
+    path: navigation.codeEditor.path,
+    children: codeEditorRoutes
   },
   {
     path: '**',

@@ -6,6 +6,23 @@ import { CoreModule } from './core/core.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app/app.component';
+import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor';
+import { NgxMonacoTreeModule } from 'ngx-monaco-tree';
+import { CodeEdtorComponent } from './features/code-editor/components/code-edtor/code-edtor.component';
+
+const monacoConfig: NgxMonacoEditorConfig = {
+  /* defaultOptions: { scrollBeyondLastLine: false }, // pass default options to be used*/
+  onMonacoLoad: () => {
+    (
+      window as any
+    ).monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+      noSemanticValidation: true,
+      noSyntaxValidation: true
+    });
+
+    (window as any).monaco.quickSuggestions = false;
+  } // here monaco object will be available as window.monaco use this function to extend monaco editor functionalities.
+};
 
 @NgModule({
   imports: [
@@ -17,9 +34,11 @@ import { AppComponent } from './app/app.component';
     CoreModule,
 
     // app
-    AppRoutingModule
+    AppRoutingModule,
+    MonacoEditorModule.forRoot(monacoConfig),
+    NgxMonacoTreeModule
   ],
-  declarations: [AppComponent],
+  declarations: [AppComponent, CodeEdtorComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
