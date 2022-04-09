@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app/app.component';
 import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor';
 import { NgxMonacoTreeModule } from 'ngx-monaco-tree';
-import { CodeEdtorComponent } from './features/code-editor/components/code-edtor/code-edtor.component';
+import { CodeEditorComponent } from './features/code-editor/components/code-editor/code-editor.component';
 
 const monacoConfig: NgxMonacoEditorConfig = {
   /* defaultOptions: { scrollBeyondLastLine: false }, // pass default options to be used*/
@@ -38,7 +38,7 @@ const monacoConfig: NgxMonacoEditorConfig = {
     MonacoEditorModule.forRoot(monacoConfig),
     NgxMonacoTreeModule
   ],
-  declarations: [AppComponent, CodeEdtorComponent],
+  declarations: [AppComponent, CodeEditorComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

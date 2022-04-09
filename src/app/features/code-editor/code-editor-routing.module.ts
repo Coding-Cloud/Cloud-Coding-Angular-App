@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { NavigationLinks } from '../../app-routing.module';
-import { CodeEdtorComponent } from './components/code-edtor/code-edtor.component';
+import { CodeEditorComponent } from './components/code-editor/code-editor.component';
 
 export const codeEditorNavigation: NavigationLinks = {
   codeEditor: {
@@ -14,7 +14,7 @@ export const codeEditorNavigation: NavigationLinks = {
 export const codeEditorRoutes: Routes = [
   {
     path: codeEditorNavigation.codeEditor.path,
-    component: CodeEdtorComponent,
+    component: CodeEditorComponent,
     data: { title: codeEditorNavigation.codeEditor.name }
   }
 ];

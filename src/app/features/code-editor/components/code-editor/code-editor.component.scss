@@ -1,0 +1,33 @@
+.code-editor-page {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.editor-content {
+  width: 70%;
+  box-sizing: border-box;
+}
+
+.iframe-view {
+  border: 2px solid black;
+  width: 30%;
+  box-sizing: border-box;
+}
+
+.editor {
+  display: flex;
+  height: 1vh;
+}
+
+.editor__text {
+  width: 100%;
+  height: 510px;
+}
+.editor__tree {
+  height: 100%;
+}
+
+.button__tree {
+  margin-top: 600px;
+}

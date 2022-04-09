@@ -7,6 +7,7 @@ export interface Folder {
   folderStatus?: FolderStatus;
 }
 
+// eslint-disable-next-line no-shadow
 export enum FolderStatus {
   CREATED = 'created',
   DELETED = 'deleted',
