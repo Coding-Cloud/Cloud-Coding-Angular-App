@@ -1,5 +1,15 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { sourceProject } from '../../data/source-project';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  ElementRef,
+  ChangeDetectorRef
+} from '@angular/core';
+import { fromEvent, Observable, Subject } from 'rxjs';
+import { debounceTime, map, takeUntil } from 'rxjs/operators';
+import { CodeSocketService } from '../../services/code-socket.service';
+import { EditProjectDTO } from '../../services/dto/edit-project-dto';
+import { GetProjectService } from '../../services/get-project.service';
 import { UpdateProjectService } from '../../services/update-project.service';
 import { Folder, FolderStatus } from '../../types/folder.interface';
 
@@ -24,17 +34,46 @@ export class CodeEdtorComponent implements OnInit {
     appFiles: {}
   };
 
-  constructor(private updateProjectService: UpdateProjectService) {}
+  currentProject: { appFiles: { [key: string]: Folder } } = {
+    appFiles: {}
+  };
+
+  socketProject: { appFiles: { [key: string]: Folder } } = {
+    appFiles: {}
+  };
+
+  monacoTreeInput: any;
+
+  keyup$: Observable<any> | undefined;
+
+  destroyKey = new Subject<void>();
+
+  constructor(
+    private updateProjectService: UpdateProjectService,
+    private elementRef: ElementRef,
+    private getProjectService: GetProjectService,
+    private cd: ChangeDetectorRef,
+    private codeSocketService: CodeSocketService
+  ) {}
 
   ngOnInit(): void {
-    this.initializeTreeFiles();
+    this.getProjectService
+      .getProject(
+        '/Users/remy/Documents/ESGI/Annee_4/projet_annee_4/angular-copy-file'
+      )
+      .subscribe((project) => {
+        this.currentProject = project;
+        this.initializeTreeFiles();
+      });
+    this.codeSocketService.connect();
   }
 
   initializeTreeFiles(): void {
-    const folders = Object.entries(sourceProject.appFiles)
+    console.log(this.currentProject.appFiles);
+    const folders = Object.entries(this.currentProject.appFiles)
       .filter((folder) => folder[1].type === 'folder')
       .sort();
-    const files = Object.entries(sourceProject.appFiles)
+    const files = Object.entries(this.currentProject.appFiles)
       .filter((folder) => folder[1].type === 'file')
       .sort();
     const content: { name: string; content?: any[] } = {
@@ -70,20 +109,25 @@ export class CodeEdtorComponent implements OnInit {
         element.content?.push(treeApp);
       }
     });
+
     this.tree = tree;
+    this.cd.markForCheck();
   }
 
   handleClickOnFolder(event: string): void {
     console.log(`${this.BASE_PROJECT_PATH}${event}`);
     if (
-      sourceProject.appFiles[`${this.BASE_PROJECT_PATH}${event}`] !==
+      this.currentProject.appFiles[`${this.BASE_PROJECT_PATH}${event}`] !==
         undefined &&
-      sourceProject.appFiles[`${this.BASE_PROJECT_PATH}${event}`].contents !==
-        ''
+      this.currentProject.appFiles[`${this.BASE_PROJECT_PATH}${event}`]
+        .contents !== ''
     )
       this.code =
-        sourceProject.appFiles[`${this.BASE_PROJECT_PATH}${event}`].contents;
+        this.currentProject.appFiles[
+          `${this.BASE_PROJECT_PATH}${event}`
+        ].contents;
     this.currentFile = `${this.BASE_PROJECT_PATH}${event}`;
+    this.initialiseInputListening();
   }
 
   handleChange($event: any): void {
@@ -101,7 +145,67 @@ export class CodeEdtorComponent implements OnInit {
     this.updateProjectService
       .updateProject(this.projectModification)
       .subscribe(() => {
+        this.projectModification = {
+          appFiles: {}
+        };
         console.log('project update');
       });
+  }
+
+  private initialiseInputListening(): void {
+    console.log("on passe dans l'initialise");
+    this.monacoTreeInput = (<HTMLElement>(
+      this.elementRef.nativeElement
+    )).querySelector('.inputarea');
+    console.log(this.monacoTreeInput);
+    this.keyup$ = fromEvent(this.monacoTreeInput, 'keyup');
+    this.destroyKey.next();
+    this.keyup$
+      .pipe(
+        takeUntil(this.destroyKey),
+        map((i: any) => i.currentTarget.value),
+        debounceTime(3000)
+      )
+      .subscribe(() => {
+        const editsProjectDTO = this.generateEditProjectDTO();
+        this.socketProject = this.currentProject;
+        this.codeSocketService.sendProjectModification(
+          'editProject',
+          editsProjectDTO
+        );
+      });
+  }
+
+  private generateEditProjectDTO(): EditProjectDTO[] {
+    const editProjectsDTO: EditProjectDTO[] = [];
+    Object.entries(this.projectModification.appFiles).forEach((value) => {
+      if (value[1].folderStatus === FolderStatus.MODIFIED) {
+        const contentProjectModification = value[1].contents.split('\n');
+        const contentProjectInitial =
+          this.currentProject.appFiles[value[0]].contents.split('\n');
+        const biggerLength =
+          contentProjectModification.length > contentProjectInitial.length
+            ? contentProjectModification.length
+            : contentProjectInitial.length;
+        const editProjectDTO: EditProjectDTO = {
+          name: value[0].split(this.BASE_PROJECT_PATH)[1],
+          type: 'file',
+          fullPath: this.currentFile,
+          folderStatus: FolderStatus.MODIFIED,
+          modifications: []
+        };
+        for (let i = 0; i < biggerLength; i++) {
+          if (contentProjectModification[i] !== contentProjectInitial[i]) {
+            editProjectDTO.modifications?.push({
+              contents: contentProjectModification[i],
+              folderLine: i + 1
+            });
+          }
+        }
+        editProjectsDTO.push(editProjectDTO);
+      }
+    });
+
+    return editProjectsDTO;
   }
 }

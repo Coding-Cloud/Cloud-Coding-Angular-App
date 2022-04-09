@@ -12,7 +12,6 @@ export class UpdateProjectService {
   constructor(private http: HttpClient) {}
 
   updateProject(projectCode: any): Observable<void> {
-    console.log(projectCode);
     const jsonClient = { jsonClient: projectCode };
     return this.http
       .post<any>(`${this.baseUrl}`, jsonClient)
