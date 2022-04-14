@@ -1,7 +1,7 @@
 import {
   ActionReducerMap,
-  MetaReducer,
-  createFeatureSelector
+  createFeatureSelector,
+  MetaReducer
 } from '@ngrx/store';
 import { routerReducer, RouterReducerState } from '@ngrx/router-store';
 
@@ -14,10 +14,13 @@ import { authReducer } from './auth/auth.reducer';
 import { RouterStateUrl } from './router/router.state';
 import { settingsReducer } from './settings/settings.reducer';
 import { SettingsState } from './settings/settings.model';
+import { ProjectState } from '../features/project-list/project.model';
+import { projectListReducer } from '../features/project-list/project-list.reducer';
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
   settings: settingsReducer,
+  projects: projectListReducer,
   router: routerReducer
 };
 
@@ -40,6 +43,11 @@ export const selectSettingsState = createFeatureSelector<
   SettingsState
 >('settings');
 
+export const selectProjectsState = createFeatureSelector<
+  AppState,
+  ProjectState
+>('projects');
+
 export const selectRouterState = createFeatureSelector<
   AppState,
   RouterReducerState<RouterStateUrl>
@@ -48,5 +56,6 @@ export const selectRouterState = createFeatureSelector<
 export interface AppState {
   auth: AuthState;
   settings: SettingsState;
+  projects: ProjectState;
   router: RouterReducerState<RouterStateUrl>;
 }
