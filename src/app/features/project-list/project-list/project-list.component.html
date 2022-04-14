@@ -1,0 +1,26 @@
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-12'>
+      <h1 rtl class='main-heading'>{{projectsListLink.name}}</h1>
+    </div>
+  </div>
+  <div class='row align-items-start'>
+    <div *ngFor='let project of projectList$ | async' class='col-md-6 col-lg-4'>
+      <mat-card>
+        <mat-card-title>
+          {{project.title}}
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{project.description}}
+        </mat-card-subtitle>
+        <mat-card-content rel>
+          <ul>
+            <li><strong>Techno</strong> : {{project.techno}}</li>
+            <li><strong>Propriétaire</strong> : {{project.owner}}</li>
+            <li><strong>Créé le</strong> : {{project.createdAt | date : 'dd-MM-yyyy'}}</li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
