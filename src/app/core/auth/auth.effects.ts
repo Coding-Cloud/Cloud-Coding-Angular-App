@@ -21,12 +21,12 @@ import {
   authRegisterSuccess
 } from './auth.actions';
 import { select, Store } from '@ngrx/store';
-import { State } from '../../features/examples/examples.state';
 import { selectAuth } from './auth.selectors';
 import { navigation } from '../../app-routing.module';
 import { NotificationService } from '../notifications/notification.service';
 import { AuthService } from './auth.service';
 import { of } from 'rxjs';
+import { AppState } from '../core.state';
 
 export const AUTH_KEY = 'AUTH';
 
@@ -139,7 +139,7 @@ export class AuthEffects {
 
   constructor(
     private actions$: Actions,
-    private store: Store<State>,
+    private store: Store<AppState>,
     private localStorageService: LocalStorageService,
     private notificationService: NotificationService,
     private authService: AuthService,
