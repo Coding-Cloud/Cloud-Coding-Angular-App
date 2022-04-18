@@ -1,20 +1,26 @@
+import { ThrowStmt } from '@angular/compiler';
 import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
   ElementRef,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ViewChild
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
+import { ContextMenuAction } from 'src/app/features/monaco-tree/monaco-tree-file/monaco-tree-file.type';
+import { MonacoTreeElement } from 'src/app/features/monaco-tree/ngx-monaco-tree.type';
 import { CodeSocketService } from '../../services/code-socket.service';
 import { EditProjectDTO } from '../../services/dto/edit-project-dto';
 import { GetProjectService } from '../../services/get-project.service';
 import { UpdateProjectService } from '../../services/update-project.service';
 import { Folder, FolderStatus } from '../../types/folder.interface';
 import { Project } from '../../types/project.interface';
-import { CodeEditorUtils } from './code-editor.utils';
+import { copyObject } from './utils/copy-object.utils';
+import { EditProjectUtils } from './utils/edit-project.utils';
+import { TreeUtils } from './utils/tree.utils';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -27,13 +33,13 @@ export class CodeEditorComponent implements OnInit {
   editorOptions = { theme: 'vs-dark', language: 'typescript' };
   code = '';
   readonly BASE_PROJECT_PATH =
-    '/Users/remy/Documents/ESGI/Annee_4/projet_annee_4/angular-copy-file/';
+    '/Users/remy/Documents/ESGI/annee_4/projet_annuel/angular-copy-file/';
   //have to be get from back
   baseUrlPath = 'http://localhost:8000';
   baseUrlPathTrust: SafeResourceUrl;
   currentFile = '';
 
-  tree: any[] = [];
+  tree: MonacoTreeElement[] = [];
 
   title = 'test-npx';
   hardProjectModification: Project = {
@@ -74,77 +80,38 @@ export class CodeEditorComponent implements OnInit {
   ngOnInit(): void {
     this.getProjectService
       .getProject(
-        '/Users/remy/Documents/ESGI/Annee_4/projet_annee_4/angular-copy-file'
+        '/Users/remy/Documents/ESGI/annee_4/projet_annuel/angular-copy-file'
       )
-      .subscribe((project) => {
-        this.currentProject = JSON.parse(JSON.stringify(project));
-        this.socketProject = JSON.parse(JSON.stringify(project));
+      .subscribe((project: Project) => {
+        this.currentProject = copyObject<Project>(project);
+        this.socketProject = copyObject<Project>(project);
+        console.log(this.currentProject);
+
         this.initializeTreeFiles();
       });
     this.codeSocketService.connect();
     this.codeSocketService
       .listenProjectModification('projectModificationFromContributor')
-      .subscribe((editProjectDTO: EditProjectDTO[]) => {
-        this.currentProject = CodeEditorUtils.editProject(
+      .subscribe((editsProjectDTO: EditProjectDTO[]) => {
+        this.currentProject = EditProjectUtils.editProject(
           { ...this.currentProject },
-          editProjectDTO
+          editsProjectDTO
         );
 
         if (this.currentProject.appFiles[`${this.currentFile}`]) {
           this.code =
             this.currentProject.appFiles[`${this.currentFile}`].contents;
         }
+        TreeUtils.editTree(this.tree, this.BASE_PROJECT_PATH, editsProjectDTO);
         this.cd.markForCheck();
       });
   }
 
   initializeTreeFiles(): void {
-    const folders = Object.entries(this.currentProject.appFiles)
-      .filter((folder) => folder[1].type === 'folder')
-      .sort();
-    const files = Object.entries(this.currentProject.appFiles)
-      .filter((folder) => folder[1].type === 'file')
-      .sort();
-    const content: { name: string; content?: any[] } = {
-      name: 'src',
-      content: []
-    };
-    let tree = [content];
-    for (const folder of folders) {
-      folder[0] = folder[0].replace(this.BASE_PROJECT_PATH, '');
-      const folderSplit = folder[0].split('/');
-      // eslint-disable-next-line no-shadow
-      const content: { name: string; content?: any[] } = {
-        name: folderSplit[folderSplit.length - 1],
-        content: []
-      };
-      const directory = folderSplit[0];
-      const directoryFind = tree.find((element) => element.name === directory);
-      if (folderSplit.length === 1) tree.push(content);
-      else {
-        const dirToAdd =
-          CodeEditorUtils.getReferenceDirectoryFromActiveDirectory(
-            folderSplit.slice(1),
-            directoryFind
-          );
-        dirToAdd?.content?.push(content);
-      }
-    }
-
-    for (const file of files) {
-      file[0] = file[0].replace(this.BASE_PROJECT_PATH, '');
-      const fileSplit = file[0].split('/');
-      const directory = fileSplit[0];
-      const directoryFind = tree.find((element) => element.name === directory);
-      const dirToAdd = CodeEditorUtils.getReferenceDirectoryFromActiveDirectory(
-        fileSplit.slice(1),
-        directoryFind
-      );
-      dirToAdd?.content?.push({ name: fileSplit[fileSplit.length - 1] });
-    }
-
-    this.tree = tree;
-
+    this.tree = TreeUtils.intiateTreeFromProject(
+      this.BASE_PROJECT_PATH,
+      this.currentProject
+    );
     this.cd.markForCheck();
   }
 
@@ -191,7 +158,6 @@ export class CodeEditorComponent implements OnInit {
       folderStatus: FolderStatus.MODIFIED
     };
     this.hardProjectModification.appFiles[this.currentFile] = newValue;
-
     this.socketProjectModification.appFiles[this.currentFile] = {
       ...this.hardProjectModification.appFiles[this.currentFile]
     };
@@ -210,7 +176,7 @@ export class CodeEditorComponent implements OnInit {
         this.socketProjectModification = {
           appFiles: {}
         };
-        this.socketProject = JSON.parse(JSON.stringify(this.currentProject));
+        this.socketProject = copyObject<Project>(this.currentProject);
       });
   }
 
@@ -232,7 +198,7 @@ export class CodeEditorComponent implements OnInit {
           'editProject',
           editsProjectDTO
         );
-        this.socketProject = JSON.parse(JSON.stringify(this.currentProject));
+        this.socketProject = copyObject<Project>(this.currentProject);
       });
   }
 
@@ -260,8 +226,6 @@ export class CodeEditorComponent implements OnInit {
               contents: contentProjectModification[i],
               folderLine: i + 1
             });
-            this.socketProject.appFiles[value[0]].contents =
-              contentProjectModification[i];
           }
         }
         editProjectsDTO.push(editProjectDTO);
@@ -269,5 +233,101 @@ export class CodeEditorComponent implements OnInit {
     });
 
     return editProjectsDTO;
+  }
+
+  handleClickContextMenu(event: ContextMenuAction): void {
+    const element = this.tree.find((element) => element.name === 'src');
+    const dir = EditProjectUtils.getReferenceDirectoryFromActiveDirectory(
+      event.name.split('/'),
+      { name: '', content: [element] }
+    );
+    const pathSplit = event.name.split('/');
+    const lastName = pathSplit[pathSplit.length - 1];
+    dir.content?.forEach((element) => {
+      if (element.name === lastName) {
+        if (event.action === 'new_directory' || event.action === 'new_file') {
+          element.edited = true;
+          this.makeInputFocusedAfterOneFocused('inputCreate');
+        } else if (event.action === 'rename_file') {
+          element.rename = true;
+          this.makeInputFocusedAfterOneFocused('inputRename');
+        }
+      }
+    });
+  }
+
+  private makeInputFocusedAfterOneFocused(elementId: string): void {
+    setTimeout(() => {
+      const inputAppear = document.getElementById(elementId);
+      inputAppear?.focus();
+    }, 500);
+  }
+
+  handleCreateFile(event: { path: string; nameFile: string }) {
+    const nameComplete = event.path + '/' + event.nameFile;
+    const editsProjectDTO: EditProjectDTO[] = [
+      {
+        name: nameComplete.split(this.BASE_PROJECT_PATH)[1],
+        type: 'file',
+        fullPath: nameComplete,
+        folderStatus: FolderStatus.CREATED,
+        modifications: []
+      }
+    ];
+    this.currentProject.appFiles[nameComplete] = {
+      name: nameComplete.split(this.BASE_PROJECT_PATH)[1],
+      type: 'file',
+      fullPath: nameComplete,
+      contents: '',
+      lastModified: Date.now()
+    };
+    TreeUtils.addFolderInTree(
+      this.tree,
+      this.BASE_PROJECT_PATH,
+      event.path,
+      event.nameFile
+    );
+    console.log(editsProjectDTO);
+    this.codeSocketService.sendProjectModification(
+      'editProject',
+      editsProjectDTO
+    );
+    this.socketProject = copyObject<Project>(this.currentProject);
+  }
+
+  handleCreateDir(event: { path: string; nameDir: string }) {
+    const nameComplete = event.path + '/' + event.nameDir;
+    const editsProjectDTO: EditProjectDTO[] = [
+      {
+        name: nameComplete.split(this.BASE_PROJECT_PATH)[1],
+        type: 'folder',
+        fullPath: nameComplete,
+        folderStatus: FolderStatus.CREATED,
+        modifications: []
+      }
+    ];
+    this.currentProject.appFiles[event.path] = {
+      name: nameComplete.split(this.BASE_PROJECT_PATH)[1],
+      type: 'folder',
+      fullPath: nameComplete,
+      contents: '',
+      lastModified: Date.now()
+    };
+    TreeUtils.addFolderInTree(
+      this.tree,
+      this.BASE_PROJECT_PATH,
+      event.path,
+      event.nameDir
+    );
+    console.log(editsProjectDTO);
+    this.codeSocketService.sendProjectModification(
+      'editProject',
+      editsProjectDTO
+    );
+    this.socketProject = copyObject<Project>(this.currentProject);
+  }
+
+  handleRenameFolder(event: { path: string; newName: string }) {
+    console.log('rename folder du dessus');
   }
 }

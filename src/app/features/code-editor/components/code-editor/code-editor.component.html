@@ -1,10 +1,13 @@
 <div class="code-editor-page">
     <div class="editor-content">
         <div class="editor">
-            <monaco-tree class="editor__tree" [tree]="tree" (clickFile)="handleClickOnFolder($event)"></monaco-tree>
-            <ngx-monaco-editor class="editor__text" (ngModelChange)="handleChange($event)" [options]="editorOptions" [(ngModel)]="code" ></ngx-monaco-editor>
+            <monaco-tree class="editor__tree" [tree]="tree" (clickContextMenu)="handleClickContextMenu($event)"
+                (clickFile)="handleClickOnFolder($event)" (createFile)="handleCreateFile($event)"
+                (createDir)="handleCreateDir($event)" (renameFolder)="handleRenameFolder($event)"></monaco-tree>
+            <ngx-monaco-editor class="editor__text" (ngModelChange)="handleChange($event)" [options]="editorOptions"
+                [(ngModel)]="code"></ngx-monaco-editor>
         </div>
-        <button class="button__tree" (click)="handleSave()" >GOOOO</button>
+        <button class="button__tree" (click)="handleSave()">GOOOO</button>
     </div>
     <iframe class="iframe-view" [src]="this.baseUrlPathTrust" title="description"></iframe>
 </div>
