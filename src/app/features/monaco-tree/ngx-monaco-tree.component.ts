@@ -41,6 +41,7 @@ export class NgxMonacoTreeComponent {
     path: string;
     newName: string;
   }>();
+
   // @Output() contextMenuClick = new EventEmitter<ContextMenuAction>();
 
   // contextMenu: Array<ContextMenuElementSeparator|ContextMenuElementText> = [

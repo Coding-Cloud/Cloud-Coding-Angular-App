@@ -227,7 +227,10 @@ export class MonacoTreeFileComponent implements OnInit {
 
   handleRenameKeyUp(event: any) {
     if (event.key === 'Enter') {
-      alert(event.target.value);
+      this.renameFolder.emit({
+        path: this.row.fullPath,
+        newName: event.target.value
+      });
     }
     console.log(event);
   }

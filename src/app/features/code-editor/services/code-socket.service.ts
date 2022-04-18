@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { EditProjectDTO } from './dto/edit-project-dto';
+import { RenameProjectFolderDTO } from './dto/rename-project-folder-dto';
+import { RenameProjectFolderResource } from './dto/rename-project-folder-resource';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +42,17 @@ export class CodeSocketService {
         subscriber.next(data);
       });
     });
+  }
+
+  listenRenameProjectFolderName(): Observable<RenameProjectFolderResource> {
+    return new Observable((subscriber) => {
+      this.socket?.on('renameProjectFolder', (data) => {
+        subscriber.next(data);
+      });
+    });
+  }
+
+  renameProjectFolder(renameProjectFolderDTO: RenameProjectFolderDTO): void {
+    this.socket?.emit('renameFolder', renameProjectFolderDTO);
   }
 }

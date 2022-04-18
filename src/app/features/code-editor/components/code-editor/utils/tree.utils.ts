@@ -34,11 +34,10 @@ export class TreeUtils {
       const directoryFind = tree.find((element) => element.name === directory);
       if (folderSplit.length === 1) tree.push(content);
       else {
-        const dirToAdd =
-          EditProjectUtils.getReferenceDirectoryFromActiveDirectory(
-            folderSplit.slice(1),
-            directoryFind
-          );
+        const dirToAdd = this.getReferenceDirectoryFromActiveDirectory(
+          folderSplit.slice(1),
+          directoryFind
+        );
         dirToAdd?.content?.push(content);
       }
     }
@@ -48,11 +47,10 @@ export class TreeUtils {
       const fileSplit = fileReplace.split('/');
       const directory = fileSplit[0];
       const directoryFind = tree.find((element) => element.name === directory);
-      const dirToAdd =
-        EditProjectUtils.getReferenceDirectoryFromActiveDirectory(
-          fileSplit.slice(1),
-          directoryFind
-        );
+      const dirToAdd = this.getReferenceDirectoryFromActiveDirectory(
+        fileSplit.slice(1),
+        directoryFind
+      );
       dirToAdd?.content?.push({
         fullPath: file[0],
         name: fileSplit[fileSplit.length - 1]
@@ -69,7 +67,7 @@ export class TreeUtils {
   ): void {
     const pathSplit = path.split(baseProjectPath)[1].split('/');
     const dirReference = tree.find((element) => element.name === pathSplit[0]);
-    const dirToAdd = EditProjectUtils.getReferenceDirectory(
+    const dirToAdd = this.getReferenceDirectory(
       pathSplit.slice(1),
       dirReference
     );
@@ -107,5 +105,107 @@ export class TreeUtils {
         );
       }
     });
+  }
+
+  static renameTreeFolder(
+    baseProjectPath: string,
+    oldPath: string,
+    newPath: string,
+    tree: MonacoTreeElement[]
+  ): void {
+    const oldPathSplit = oldPath.split(baseProjectPath)[1].split('/');
+    const dirReference = tree.find(
+      (element) => element.name === oldPathSplit[0]
+    );
+    console.log(oldPathSplit);
+    console.log(dirReference);
+    const folderToRename: MonacoTreeElement = this.getReferenceDirectory(
+      oldPathSplit.slice(1),
+      dirReference
+    );
+    const lengthContent = folderToRename.content?.length ?? 0;
+    folderToRename.fullPath = newPath;
+    if (lengthContent > 0) {
+      TreeUtils.recursivelyRenameFullPath(oldPath, newPath, folderToRename);
+    }
+    folderToRename.name = newPath
+      .split(baseProjectPath)[1]
+      .split('/')
+      .pop() as string;
+  }
+
+  static getReferenceDirectoryFromActiveDirectory(
+    path: string[],
+    activeDirectory: { name: string; content?: any[] } | undefined
+  ): { name: string; content?: any[] } {
+    if (path.length === 1 && activeDirectory !== undefined) {
+      return activeDirectory;
+    }
+
+    const directoryfind = activeDirectory?.content?.find(
+      (element) => element.name === path[0]
+    );
+    if (directoryfind === undefined) {
+      throw new Error('directory not found: ' + path[0]);
+    }
+
+    return this.getReferenceDirectoryFromActiveDirectory(
+      path.slice(1),
+      directoryfind
+    );
+  }
+
+  static getReferenceDirectory(
+    path: string[],
+    activeDirectory:
+      | { name: string; fullPath: string; content?: any[] }
+      | undefined
+  ): { name: string; fullPath: string; content?: any[]; edited?: boolean } {
+    if (path.length === 0 && activeDirectory !== undefined) {
+      return activeDirectory;
+    }
+
+    const directoryfind = activeDirectory?.content?.find(
+      (element) => element.name === path[0]
+    );
+    if (directoryfind === undefined) {
+      throw new Error('directory not found: ' + path[0]);
+    }
+
+    return this.getReferenceDirectory(path.slice(1), directoryfind);
+  }
+
+  static recursivelyRenameFullPath(
+    oldPath: string,
+    newPath: string,
+    monacoTreeElement: MonacoTreeElement | undefined
+  ) {
+    monacoTreeElement?.content?.forEach((oneContent) => {
+      if (oneContent.fullPath.startsWith(oldPath)) {
+        oneContent.fullPath = oneContent.fullPath.replace(oldPath, newPath);
+        const lengthContent = oneContent.content?.length ?? 0;
+        if (lengthContent > 0) {
+          this.recursivelyRenameFullPath(oldPath, newPath, oneContent);
+        }
+      }
+    });
+  }
+
+  static deleteFolder(
+    path: string,
+    baseProjectPath: string,
+    monacoTreeElement: MonacoTreeElement[] | undefined
+  ) {
+    const pathSplit = path.split(baseProjectPath)[1].split('/');
+    const dirReference = monacoTreeElement?.find(
+      (element) => element.name === pathSplit[0]
+    );
+    let folder: {
+      name: string;
+      fullPath: string;
+      content?: any[] | undefined;
+      edited?: boolean | undefined;
+    } | null = this.getReferenceDirectory(pathSplit.slice(1), dirReference);
+    folder = null;
   }
 }

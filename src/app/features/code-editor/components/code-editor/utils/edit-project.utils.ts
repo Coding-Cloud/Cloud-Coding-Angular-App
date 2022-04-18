@@ -1,6 +1,7 @@
 import { EditProject } from '../../../types/edit-project';
-import { FolderStatus } from '../../../types/folder.interface';
+import { Folder, FolderStatus } from '../../../types/folder.interface';
 import { Project } from '../../../types/project.interface';
+import { copyObject } from './copy-object.utils';
 
 export class EditProjectUtils {
   static editProject(
@@ -49,42 +50,41 @@ export class EditProjectUtils {
     return project;
   }
 
-  static getReferenceDirectoryFromActiveDirectory(
-    path: string[],
-    activeDirectory: { name: string; content?: any[] } | undefined
-  ): { name: string; content?: any[] } {
-    if (path.length === 1 && activeDirectory !== undefined) {
-      return activeDirectory;
-    }
-
-    const directoryfind = activeDirectory?.content?.find(
-      (element) => element.name === path[0]
+  static modifyPathInAllProject(
+    baseProjectPath: string,
+    oldPath: string,
+    newPath: string,
+    project: Project
+  ): Project {
+    const initialValue = {};
+    const folders = Object.entries(project.appFiles).reduce(
+      (obj, folder: [string, Folder]) => {
+        let entry: { [x: string]: Folder };
+        if (folder[0].startsWith(oldPath)) {
+          folder[0].replace(oldPath, newPath);
+          entry = {
+            [folder[0].replace(oldPath, newPath)]: {
+              ...folder[1],
+              fullPath: folder[0].replace(oldPath, newPath),
+              name: folder[0]
+                .replace(oldPath, newPath)
+                .split(baseProjectPath)
+                .pop()
+                ?.split('/')
+                .pop() as string
+            }
+          };
+        } else {
+          entry = { [folder[0]]: folder[1] };
+        }
+        return {
+          ...obj,
+          ...entry
+        };
+      },
+      initialValue
     );
-    if (directoryfind === undefined) {
-      throw new Error('directory not found: ' + path[0]);
-    }
 
-    return this.getReferenceDirectoryFromActiveDirectory(
-      path.slice(1),
-      directoryfind
-    );
-  }
-
-  static getReferenceDirectory(
-    path: string[],
-    activeDirectory: { name: string; content?: any[] } | undefined
-  ): { name: string; content?: any[]; edited?: boolean } {
-    if (path.length === 0 && activeDirectory !== undefined) {
-      return activeDirectory;
-    }
-
-    const directoryfind = activeDirectory?.content?.find(
-      (element) => element.name === path[0]
-    );
-    if (directoryfind === undefined) {
-      throw new Error('directory not found: ' + path[0]);
-    }
-
-    return this.getReferenceDirectory(path.slice(1), directoryfind);
+    return { appFiles: folders };
   }
 }

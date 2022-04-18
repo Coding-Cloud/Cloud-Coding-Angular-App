@@ -14,8 +14,10 @@ import { ContextMenuAction } from 'src/app/features/monaco-tree/monaco-tree-file
 import { MonacoTreeElement } from 'src/app/features/monaco-tree/ngx-monaco-tree.type';
 import { CodeSocketService } from '../../services/code-socket.service';
 import { EditProjectDTO } from '../../services/dto/edit-project-dto';
+import { RenameProjectFolderResource } from '../../services/dto/rename-project-folder-resource';
 import { GetProjectService } from '../../services/get-project.service';
 import { UpdateProjectService } from '../../services/update-project.service';
+import { ExtensionToLanguage } from '../../types/extension-to-language';
 import { Folder, FolderStatus } from '../../types/folder.interface';
 import { Project } from '../../types/project.interface';
 import { copyObject } from './utils/copy-object.utils';
@@ -97,12 +99,34 @@ export class CodeEditorComponent implements OnInit {
           { ...this.currentProject },
           editsProjectDTO
         );
+        this.socketProject = copyObject<Project>(this.currentProject);
 
         if (this.currentProject.appFiles[`${this.currentFile}`]) {
           this.code =
             this.currentProject.appFiles[`${this.currentFile}`].contents;
         }
         TreeUtils.editTree(this.tree, this.BASE_PROJECT_PATH, editsProjectDTO);
+        this.cd.markForCheck();
+      });
+
+    this.codeSocketService
+      .listenRenameProjectFolderName()
+      .subscribe((renameProjectFolderResource: RenameProjectFolderResource) => {
+        this.currentProject = EditProjectUtils.modifyPathInAllProject(
+          this.BASE_PROJECT_PATH,
+          renameProjectFolderResource.oldName,
+          renameProjectFolderResource.newName,
+          this.currentProject
+        );
+        this.socketProject = copyObject<Project>(this.currentProject);
+        console.log('current project');
+        console.log(this.currentProject);
+        TreeUtils.renameTreeFolder(
+          this.BASE_PROJECT_PATH,
+          renameProjectFolderResource.oldName,
+          renameProjectFolderResource.newName,
+          this.tree
+        );
         this.cd.markForCheck();
       });
   }
@@ -131,15 +155,18 @@ export class CodeEditorComponent implements OnInit {
       this.code = '';
     }
     this.currentFile = `${this.BASE_PROJECT_PATH}${event}`;
-    if (this.currentFile.endsWith('.html')) {
-      this.editorOptions = { theme: 'vs-dark', language: 'html' };
-    } else if (
-      this.currentFile.endsWith('.css') ||
-      this.currentFile.endsWith('.scss')
-    ) {
-      this.editorOptions = { theme: 'vs-dark', language: 'css' };
-    } else {
-      this.editorOptions = { theme: 'vs-dark', language: 'typescript' };
+    const isFile = this.currentFile.split('/').pop()?.includes('.');
+    if (isFile) {
+      const endFile = this.currentFile.split('/').pop()?.split('.').pop();
+      const valueInMap = ExtensionToLanguage.get(endFile as string);
+      if (valueInMap !== undefined) {
+        this.editorOptions = { theme: 'vs-dark', language: valueInMap };
+      } else {
+        this.editorOptions = {
+          theme: 'vs-dark',
+          language: ExtensionToLanguage.get('default')!
+        };
+      }
     }
     // editOrOptionsIsModified, we have to wait the rerender of the component
     setTimeout(() => {
@@ -236,8 +263,10 @@ export class CodeEditorComponent implements OnInit {
   }
 
   handleClickContextMenu(event: ContextMenuAction): void {
+    console.log(event);
+
     const element = this.tree.find((element) => element.name === 'src');
-    const dir = EditProjectUtils.getReferenceDirectoryFromActiveDirectory(
+    const dir = TreeUtils.getReferenceDirectoryFromActiveDirectory(
       event.name.split('/'),
       { name: '', content: [element] }
     );
@@ -328,6 +357,33 @@ export class CodeEditorComponent implements OnInit {
   }
 
   handleRenameFolder(event: { path: string; newName: string }) {
-    console.log('rename folder du dessus');
+    const pathSplit = event.path.split('/');
+    pathSplit.pop();
+    const newPath = `${pathSplit.join('/')}/${event.newName}`;
+    this.currentProject = EditProjectUtils.modifyPathInAllProject(
+      this.BASE_PROJECT_PATH,
+      event.path,
+      newPath,
+      this.currentProject
+    );
+    this.socketProject = copyObject<Project>(this.currentProject);
+    console.log('current project');
+    console.log(this.currentProject);
+
+    TreeUtils.renameTreeFolder(
+      this.BASE_PROJECT_PATH,
+      event.path,
+      newPath,
+      this.tree
+    );
+    this.codeSocketService.renameProjectFolder({
+      oldName: event.path,
+      newName: newPath
+    });
+  }
+
+  handleDeleteFolder(event: { path: string }) {
+    console.log('delete folder');
+    console.log(event);
   }
 }
