@@ -13,6 +13,7 @@ import {
   selectIsAuthenticated
 } from '../core/core.module';
 import { Link, navigation } from '../app-routing.module';
+import { authGetMe } from '../core/auth/auth.actions';
 
 @Component({
   selector: 'cc-root-component',
@@ -44,8 +45,13 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.storageService.testLocalStorage();
-
     this.isAuthenticated$ = this.store.pipe(select(selectIsAuthenticated));
+
+    this.isAuthenticated$.subscribe((isAuthenticated) => {
+      if (isAuthenticated) {
+        this.store.dispatch(authGetMe());
+      }
+    });
 
     this.theme$ = this.store.pipe(select(selectEffectiveTheme));
   }
