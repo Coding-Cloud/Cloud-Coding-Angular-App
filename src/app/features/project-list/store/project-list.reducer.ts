@@ -8,7 +8,7 @@ import {
 import { Action, createReducer, on } from '@ngrx/store';
 
 export function sortByTitle(a: Project, b: Project): number {
-  return a.title.localeCompare(b.title);
+  return a.name.localeCompare(b.name);
 }
 
 export const projectAdapter: EntityAdapter<Project> =
