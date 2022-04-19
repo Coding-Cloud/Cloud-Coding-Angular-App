@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { API_RESOURCE_URI } from '../../shared/api-resource-uri/api-resource-uri';
 import { User, UserForm } from '../../shared/models/user.models';
 import { Observable, of } from 'rxjs';
@@ -17,14 +17,13 @@ export class AuthService {
     return of({
       token: 'fake-jwt-token',
       user: {
-        id: 1,
-        firstName: 'John',
-        lastName: 'Doe',
-        email: email,
-        isActive: true,
-        role: 'admin',
-        pseudo: 'JohnDoe',
-        createdAt: '2020-01-01'
+        id: '1',
+        username: 'test',
+        firstname: 'test',
+        lastname: 'test',
+        birthdate: new Date(1997, 1, 1),
+        email: 'test@example.com',
+        createdAt: new Date()
       }
     });
 
@@ -45,10 +44,8 @@ export class AuthService {
     return of({
       token: 'fake-jwt-token',
       user: {
-        id: 1,
-        isActive: true,
-        role: 'admin',
-        createdAt: '2020-01-01',
+        id: '1',
+        createdAt: new Date(),
         ...userForm
       }
     });

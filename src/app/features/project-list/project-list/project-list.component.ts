@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Project } from '../project.model';
+import { Project } from '../../../shared/models/project.model';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../core/core.state';
-import { selectAllProjects } from '../project-list.selectors';
+import { selectAllProjects } from '../store/project-list.selectors';
 import { projectListNavigation } from '../project-list-routing.module';
 
 @Component({

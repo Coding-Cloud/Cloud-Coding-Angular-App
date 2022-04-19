@@ -1,4 +1,4 @@
-import { AuthState } from './auth.models';
+import { AuthState } from '../../shared/models/auth.models';
 import {
   authLoginSuccess,
   authLogout,

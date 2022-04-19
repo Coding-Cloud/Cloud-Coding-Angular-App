@@ -75,7 +75,9 @@ export class AuthEffects {
         ofType(authLoginSuccess),
         tap((action) => {
           this.router.navigate([navigation.home.path]).then(() => {
-            this.notificationService.success(`Bonjour ${action.user.pseudo}!`);
+            this.notificationService.success(
+              `Bonjour ${action.user.username}!`
+            );
           });
         })
       ),
@@ -116,7 +118,7 @@ export class AuthEffects {
         tap((action) => {
           this.router.navigate([navigation.home.path]).then(() => {
             this.notificationService.success(
-              `Bienvenue ${action.user.pseudo}!`
+              `Bienvenue ${action.user.username}!`
             );
           });
         })

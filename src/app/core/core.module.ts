@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ErrorHandler, NgModule, Optional, SkipSelf } from '@angular/core';
+import {
+  ErrorHandler,
+  LOCALE_ID,
+  NgModule,
+  Optional,
+  SkipSelf
+} from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {
   RouterStateSerializer,
@@ -119,7 +125,8 @@ export {
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: ErrorHandler, useClass: AppErrorHandler },
-    { provide: RouterStateSerializer, useClass: CustomSerializer }
+    { provide: RouterStateSerializer, useClass: CustomSerializer },
+    { provide: LOCALE_ID, useValue: 'fr-FR' }
   ],
   exports: [
     // angular

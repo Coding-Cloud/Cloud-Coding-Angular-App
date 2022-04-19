@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
-import { AppState } from '../../core/core.state';
+import { AppState } from '../../../core/core.state';
 
 @Injectable()
 export class ProjectListEffects {

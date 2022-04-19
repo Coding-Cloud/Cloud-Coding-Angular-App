@@ -1,6 +1,6 @@
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
-import { Project, ProjectState } from './project.model';
+import { Project, ProjectState } from '../../../shared/models/project.model';
 import {
   actionProjectsDeleteOne,
   actionProjectsUpsertOne

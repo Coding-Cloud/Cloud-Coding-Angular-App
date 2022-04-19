@@ -28,11 +28,11 @@
         <mat-list>
           <mat-list-item>
             <mat-icon matListIcon>account_circle</mat-icon>
-            <span>{{(user$ | async)?.firstName}} {{(user$ | async)?.lastName}}</span>
+            <span>{{(user$ | async)?.firstname}} {{(user$ | async)?.lastname}}</span>
           </mat-list-item>
           <mat-list-item>
             <mat-icon matListIcon>badge</mat-icon>
-            <span>{{(user$ | async)?.pseudo}}</span>
+            <span>{{(user$ | async)?.username}}</span>
           </mat-list-item>
           <mat-list-item>
             <mat-icon matListIcon>email</mat-icon>
