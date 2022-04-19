@@ -1,14 +1,10 @@
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
-import {
-  Project,
-  ProjectLanguage,
-  ProjectState,
-  ProjectStatus,
-  ProjectVisibility
-} from '../../../shared/models/project.model';
+import { Project, ProjectState } from '../../../shared/models/project.model';
 import {
   actionProjectsDeleteOne,
+  actionProjectsRetrieveAll,
+  actionProjectsRetrieveAllSuccess,
   actionProjectsUpsertOne
 } from './project-list.actions';
 import { Action, createReducer, on } from '@ngrx/store';
@@ -23,20 +19,8 @@ export const projectAdapter: EntityAdapter<Project> =
   });
 
 export const initialState: ProjectState = projectAdapter.getInitialState({
-  ids: ['123'],
-  entities: {
-    '123': {
-      id: '123',
-      name: 'Mon premier projet',
-      lastVersion: 1,
-      language: ProjectLanguage.ANGULAR,
-      status: ProjectStatus.RUNNING,
-      globalVisibility: ProjectVisibility.PRIVATE,
-      creatorId: '1223',
-      groupId: '1885',
-      createdAt: new Date()
-    }
-  }
+  ids: [],
+  entities: {}
 });
 
 const reducer = createReducer(
@@ -46,6 +30,10 @@ const reducer = createReducer(
   ),
   on(actionProjectsDeleteOne, (state, { id }) =>
     projectAdapter.removeOne(id, state)
+  ),
+  on(actionProjectsRetrieveAll, (state) => projectAdapter.removeAll(state)),
+  on(actionProjectsRetrieveAllSuccess, (state, { projects }) =>
+    projectAdapter.addMany(projects, state)
   )
 );
 

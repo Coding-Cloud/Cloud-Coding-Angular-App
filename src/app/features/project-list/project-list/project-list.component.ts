@@ -5,6 +5,7 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../core/core.state';
 import { selectAllProjects } from '../store/project-list.selectors';
 import { projectListNavigation } from '../project-list-routing.module';
+import { actionProjectsRetrieveAll } from '../store/project-list.actions';
 
 @Component({
   selector: 'cc-project-list',
@@ -20,6 +21,7 @@ export class ProjectListComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
+    this.store.dispatch(actionProjectsRetrieveAll());
     this.projectList$ = this.store.pipe(select(selectAllProjects));
   }
 }
