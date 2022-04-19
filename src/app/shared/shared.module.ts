@@ -22,32 +22,34 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
 import {
-  FontAwesomeModule,
-  FaIconLibrary
+  FaIconLibrary,
+  FontAwesomeModule
 } from '@fortawesome/angular-fontawesome';
 import {
-  faPlus,
-  faEdit,
-  faTrash,
-  faTimes,
-  faCaretUp,
+  faBook,
   faCaretDown,
+  faCaretUp,
+  faCheck,
+  faEdit,
   faExclamationTriangle,
   faFilter,
-  faTasks,
-  faCheck,
-  faSquare,
   faLanguage,
-  faPaintBrush,
   faLightbulb,
-  faWindowMaximize,
+  faPaintBrush,
+  faPlus,
+  faSquare,
   faStream,
-  faBook
+  faTasks,
+  faTimes,
+  faTrash,
+  faWindowMaximize
 } from '@fortawesome/free-solid-svg-icons';
-import { faMediumM, faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faGithub, faMediumM } from '@fortawesome/free-brands-svg-icons';
 
 import { BigInputComponent } from './big-input/big-input/big-input.component';
 import { BigInputActionComponent } from './big-input/big-input-action/big-input-action.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -69,9 +71,14 @@ import { BigInputActionComponent } from './big-input/big-input-action/big-input-
     MatSlideToggleModule,
     MatDividerModule,
 
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatDialogModule
   ],
-  declarations: [BigInputComponent, BigInputActionComponent],
+  declarations: [
+    BigInputComponent,
+    BigInputActionComponent,
+    ConfirmDialogComponent
+  ],
   exports: [
     CommonModule,
     FormsModule,
@@ -98,7 +105,8 @@ import { BigInputActionComponent } from './big-input/big-input-action/big-input-
     FontAwesomeModule,
 
     BigInputComponent,
-    BigInputActionComponent
+    BigInputActionComponent,
+    ConfirmDialogComponent
   ]
 })
 export class SharedModule {

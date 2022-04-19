@@ -6,8 +6,10 @@
       <div class='branding'><img [src]='logo' [alt]='logo' />
         <span>{{ appName }}</span></div>
       <mat-nav-list>
-        <mat-list-item *ngFor='let link of navigationSideMenu' (click)='sidenav.close()' [routerLink]='[link.path]'
-                       routerLinkActive='active'>
+        <mat-list-item
+          *ngFor='let link of(isAuthenticated$ | async) ? navigationSideMenu : noAuthLinks(navigationSideMenu)'
+          (click)='sidenav.close()' [routerLink]='[link.path]'
+          routerLinkActive='active'>
           {{link.name }}
         </mat-list-item>
       </mat-nav-list>
@@ -36,7 +38,9 @@
           </span>
 
           <span class='d-none d-md-inline'>
-            <button mat-button class='nav-button' *ngFor='let link of navigationMenu' [routerLink]='[link.path]'
+            <button mat-button class='nav-button'
+                    *ngFor='let link of (isAuthenticated$ | async) ? navigationMenu : noAuthLinks(navigationMenu)'
+                    [routerLink]='[link.path]'
                     routerLinkActive='active'>
               {{link.name }}
             </button>
