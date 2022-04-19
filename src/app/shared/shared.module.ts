@@ -50,6 +50,9 @@ import { BigInputComponent } from './big-input/big-input/big-input.component';
 import { BigInputActionComponent } from './big-input/big-input-action/big-input-action.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ProjectLanguagePipe } from './pipes/project-language-pipe.pipe';
+import { ProjectStatusPipe } from './pipes/project-status.pipe';
+import { ProjectVisibilityPipe } from './pipes/project-visibility.pipe';
 
 @NgModule({
   imports: [
@@ -77,7 +80,10 @@ import { MatDialogModule } from '@angular/material/dialog';
   declarations: [
     BigInputComponent,
     BigInputActionComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    ProjectLanguagePipe,
+    ProjectStatusPipe,
+    ProjectVisibilityPipe
   ],
   exports: [
     CommonModule,
