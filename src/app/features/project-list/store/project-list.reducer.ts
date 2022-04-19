@@ -1,6 +1,12 @@
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
-import { Project, ProjectState } from '../../../shared/models/project.model';
+import {
+  Project,
+  ProjectLanguage,
+  ProjectState,
+  ProjectStatus,
+  ProjectVisibility
+} from '../../../shared/models/project.model';
 import {
   actionProjectsDeleteOne,
   actionProjectsUpsertOne
@@ -21,12 +27,14 @@ export const initialState: ProjectState = projectAdapter.getInitialState({
   entities: {
     '123': {
       id: '123',
-      title: 'Angular app',
-      owner: 'Nospy',
-      description:
-        'My beautiful Angular app. It is so beautiful that I am going to share it with you all.',
-      createdAt: new Date(),
-      techno: 'Angular'
+      name: 'Mon premier projet',
+      lastVersion: 1,
+      language: ProjectLanguage.ANGULAR,
+      status: ProjectStatus.RUNNING,
+      globalVisibility: ProjectVisibility.PRIVATE,
+      creatorId: '1223',
+      groupId: '1885',
+      createdAt: new Date()
     }
   }
 });

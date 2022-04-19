@@ -53,6 +53,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ProjectLanguagePipe } from './pipes/project-language-pipe.pipe';
 import { ProjectStatusPipe } from './pipes/project-status.pipe';
 import { ProjectVisibilityPipe } from './pipes/project-visibility.pipe';
+import { DateFormatPipe } from './pipes/date-format.pipe';
 
 @NgModule({
   imports: [
@@ -83,7 +84,8 @@ import { ProjectVisibilityPipe } from './pipes/project-visibility.pipe';
     ConfirmDialogComponent,
     ProjectLanguagePipe,
     ProjectStatusPipe,
-    ProjectVisibilityPipe
+    ProjectVisibilityPipe,
+    DateFormatPipe
   ],
   exports: [
     CommonModule,
@@ -112,7 +114,10 @@ import { ProjectVisibilityPipe } from './pipes/project-visibility.pipe';
 
     BigInputComponent,
     BigInputActionComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    ProjectLanguagePipe,
+    ProjectStatusPipe,
+    ProjectVisibilityPipe
   ]
 })
 export class SharedModule {
