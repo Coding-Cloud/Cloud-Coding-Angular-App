@@ -14,8 +14,9 @@ import { ContextMenuAction } from 'src/app/features/monaco-tree/monaco-tree-file
 import { MonacoTreeElement } from 'src/app/features/monaco-tree/ngx-monaco-tree.type';
 import { CodeSocketService } from '../../services/code-socket.service';
 import { EditProjectDTO } from '../../services/dto/edit-project-dto';
-import { RenameProjectFolderResource } from '../../services/dto/rename-project-folder-resource';
+import { RenameProjectFolderResource } from '../../services/resource/rename-project-folder-resource';
 import { GetProjectService } from '../../services/get-project.service';
+import { DeleteProjectFolderResource } from '../../services/resource/delete-project-folder-resource';
 import { UpdateProjectService } from '../../services/update-project.service';
 import { ExtensionToLanguage } from '../../types/extension-to-language';
 import { Folder, FolderStatus } from '../../types/folder.interface';
@@ -127,6 +128,22 @@ export class CodeEditorComponent implements OnInit {
           renameProjectFolderResource.newName,
           this.tree
         );
+        this.cd.markForCheck();
+      });
+
+    this.codeSocketService
+      .listenDeleteProjectFolderName()
+      .subscribe((deleteprojectFolderResource: DeleteProjectFolderResource) => {
+        TreeUtils.deleteFolder(
+          deleteprojectFolderResource.path,
+          this.BASE_PROJECT_PATH,
+          this.tree
+        );
+        EditProjectUtils.deleteFolder(
+          deleteprojectFolderResource.path,
+          this.currentProject
+        );
+        this.socketProject = copyObject<Project>(this.currentProject);
         this.cd.markForCheck();
       });
   }
@@ -263,7 +280,9 @@ export class CodeEditorComponent implements OnInit {
   }
 
   handleClickContextMenu(event: ContextMenuAction): void {
-    console.log(event);
+    if (event.action === 'delete_file') {
+      this.deleteFolder({ path: event.name });
+    }
 
     const element = this.tree.find((element) => element.name === 'src');
     const dir = TreeUtils.getReferenceDirectoryFromActiveDirectory(
@@ -382,8 +401,19 @@ export class CodeEditorComponent implements OnInit {
     });
   }
 
-  handleDeleteFolder(event: { path: string }) {
-    console.log('delete folder');
-    console.log(event);
+  deleteFolder(event: { path: string }) {
+    TreeUtils.deleteFolder(
+      this.BASE_PROJECT_PATH + event.path,
+      this.BASE_PROJECT_PATH,
+      this.tree
+    );
+    EditProjectUtils.deleteFolder(
+      this.BASE_PROJECT_PATH + event.path,
+      this.currentProject
+    );
+    this.socketProject = copyObject<Project>(this.currentProject);
+    this.codeSocketService.deleteProjectFolder(
+      this.BASE_PROJECT_PATH + event.path
+    );
   }
 }

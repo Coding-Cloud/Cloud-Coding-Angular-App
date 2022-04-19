@@ -3,7 +3,9 @@ import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { EditProjectDTO } from './dto/edit-project-dto';
 import { RenameProjectFolderDTO } from './dto/rename-project-folder-dto';
-import { RenameProjectFolderResource } from './dto/rename-project-folder-resource';
+import { RenameProjectFolderResource } from './resource/rename-project-folder-resource';
+import { DeleteProjectFolderResource } from './resource/delete-project-folder-resource';
+import { DeleteProjectFolderDTO } from './dto/delete-project-folder-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +54,23 @@ export class CodeSocketService {
     });
   }
 
+  listenDeleteProjectFolderName(): Observable<DeleteProjectFolderResource> {
+    return new Observable((subscriber) => {
+      this.socket?.on('deleteProjectFolder', (data) => {
+        subscriber.next(data);
+      });
+    });
+  }
+
   renameProjectFolder(renameProjectFolderDTO: RenameProjectFolderDTO): void {
     this.socket?.emit('renameFolder', renameProjectFolderDTO);
+  }
+
+  deleteProjectFolder(path: string): void {
+    const lastElement = path.split('/').pop() as string;
+    const type =
+      lastElement[0] !== '.' && lastElement?.includes('.') ? 'file' : 'dir';
+    const deleteProjectFolderDTO: DeleteProjectFolderDTO = { path, type };
+    this.socket?.emit('deleteFolder', deleteProjectFolderDTO);
   }
 }

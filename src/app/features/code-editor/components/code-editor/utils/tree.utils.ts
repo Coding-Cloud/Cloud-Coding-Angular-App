@@ -136,8 +136,10 @@ export class TreeUtils {
 
   static getReferenceDirectoryFromActiveDirectory(
     path: string[],
-    activeDirectory: { name: string; content?: any[] } | undefined
-  ): { name: string; content?: any[] } {
+    activeDirectory:
+      | { name: string; fullPath?: string; content?: any[] }
+      | undefined
+  ): { name: string; content?: any[]; fullPath?: string } {
     if (path.length === 1 && activeDirectory !== undefined) {
       return activeDirectory;
     }
@@ -200,12 +202,17 @@ export class TreeUtils {
     const dirReference = monacoTreeElement?.find(
       (element) => element.name === pathSplit[0]
     );
+
     let folder: {
       name: string;
-      fullPath: string;
+      fullPath?: string;
       content?: any[] | undefined;
       edited?: boolean | undefined;
-    } | null = this.getReferenceDirectory(pathSplit.slice(1), dirReference);
-    folder = null;
+    } | null = this.getReferenceDirectoryFromActiveDirectory(
+      pathSplit.slice(1),
+      dirReference
+    );
+
+    folder.content = folder.content?.filter((value) => value.fullPath !== path);
   }
 }

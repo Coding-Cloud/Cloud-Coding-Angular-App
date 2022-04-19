@@ -87,4 +87,12 @@ export class EditProjectUtils {
 
     return { appFiles: folders };
   }
+
+  static deleteFolder(path: string, project: Project) {
+    Object.keys(project.appFiles).forEach((value: string) => {
+      if (value.startsWith(path)) {
+        delete project.appFiles[value];
+      }
+    });
+  }
 }
