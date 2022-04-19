@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { API_RESOURCE_URI } from '../../shared/api-resource-uri/api-resource-uri';
 import { User, UserForm } from '../../shared/models/user.models';
 import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,50 +12,66 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(
-    email: string,
+    username: string,
     password: string
-  ): Observable<{ token: string; user: User }> {
-    return of({
-      token: 'fake-jwt-token',
-      user: {
-        id: '1',
-        username: 'test',
-        firstname: 'test',
-        lastname: 'test',
-        birthdate: new Date(1997, 1, 1),
-        email: 'test@example.com',
-        createdAt: new Date()
-      }
-    });
+  ): Observable<{ accessToken: string }> {
+    /*     return of({
+          token: 'fake-jwt-token',
+          user: {
+            id: '1',
+            username: 'test',
+            firstname: 'test',
+            lastname: 'test',
+            birthdate: new Date(1997, 1, 1),
+            email: 'test@example.com',
+            createdAt: new Date()
+          }
+        }); */
 
-    return this.http.post<{ token: string; user: User }>(
-      API_RESOURCE_URI.LOGIN,
+    return this.http.post<{ accessToken: string }>(
+      API_RESOURCE_URI.AUTH_SIGNIN,
       {
-        email,
+        username,
         password
       }
     );
   }
 
   logout(id: number) {
-    return this.http.post<any>(`${API_RESOURCE_URI.LOGOUT}/${id}`, {});
+    return this.http.post<any>(`${API_RESOURCE_URI.AUTH_SIGNOUT}/${id}`, {});
   }
 
-  register(userForm: UserForm): Observable<{ token: string; user: User }> {
+  getMe(): Observable<User> {
     return of({
-      token: 'fake-jwt-token',
-      user: {
-        id: '1',
-        createdAt: new Date(),
-        ...userForm
-      }
+      id: '1',
+      username: 'test',
+      firstname: 'test',
+      lastname: 'test',
+      birthdate: new Date(1997, 1, 1),
+      email: 'test@example.com',
+      createdAt: new Date()
     });
 
-    return this.http.post<{ token: string; user: User }>(
-      API_RESOURCE_URI.REGISTER,
-      {
+    return this.http.get<User>(API_RESOURCE_URI.AUTH_ME);
+  }
+
+  register(userForm: UserForm): Observable<{ user: UserForm }> {
+    /*     return of({
+          user: {
+            ...userForm
+          }
+        }); */
+
+    return this.http
+      .post<void>(API_RESOURCE_URI.AUTH_SIGNUP, {
         ...userForm
-      }
-    );
+      })
+      .pipe(
+        map(() => ({
+          user: {
+            ...userForm
+          }
+        }))
+      );
   }
 }

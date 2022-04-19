@@ -12,6 +12,9 @@ import {
 import { LocalStorageService } from '../local-storage/local-storage.service';
 
 import {
+  authGetMe,
+  authGetMeError,
+  authGetMeSuccess,
   authLogin,
   authLoginError,
   authLoginSuccess,
@@ -35,7 +38,7 @@ export class AuthEffects {
   persistAuthState = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(authLoginSuccess, authRegisterSuccess, authLogout),
+        ofType(authLoginSuccess, authLogout),
         withLatestFrom(this.store.pipe(select(selectAuth))),
         tap(([action, authState]) =>
           this.localStorageService.setItem(AUTH_KEY, { ...authState })
@@ -48,10 +51,8 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(authLogin),
       exhaustMap((action) =>
-        this.authService.login(action.email, action.password).pipe(
-          map((response) =>
-            authLoginSuccess({ user: response.user, token: response.token })
-          ),
+        this.authService.login(action.username, action.password).pipe(
+          map((response) => authLoginSuccess({ token: response.accessToken })),
           catchError((error) => of(authLoginError({ message: error.message })))
         )
       )
@@ -69,16 +70,36 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-  loginSuccess = createEffect(
+  loginSuccess = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authLoginSuccess),
+      map(() => {
+        this.router.navigate([navigation.home.path]).then(() => {
+          this.notificationService.success('Bonjour !');
+        });
+        return authGetMe();
+      })
+    )
+  );
+
+  getMe = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authGetMe),
+      exhaustMap((action) =>
+        this.authService.getMe().pipe(
+          map((response) => authGetMeSuccess({ user: response })),
+          catchError((error) => of(authGetMeError({ message: error.message })))
+        )
+      )
+    )
+  );
+
+  getMeError = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(authLoginSuccess),
+        ofType(authGetMeError),
         tap((action) => {
-          this.router.navigate([navigation.home.path]).then(() => {
-            this.notificationService.success(
-              `Bonjour ${action.user.username}!`
-            );
-          });
+          this.notificationService.error(action.message);
         })
       ),
     { dispatch: false }
@@ -89,9 +110,7 @@ export class AuthEffects {
       ofType(authRegister),
       exhaustMap((action) =>
         this.authService.register(action.userForm).pipe(
-          map((response) =>
-            authRegisterSuccess({ user: response.user, token: response.token })
-          ),
+          map((response) => authRegisterSuccess({ user: response.user })),
           catchError((error) =>
             of(authRegisterError({ message: error.message }))
           )
@@ -111,19 +130,16 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-  registerSuccess = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(authRegisterSuccess),
-        tap((action) => {
-          this.router.navigate([navigation.home.path]).then(() => {
-            this.notificationService.success(
-              `Bienvenue ${action.user.username}!`
-            );
-          });
+  registerSuccess = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authRegisterSuccess),
+      map((action) =>
+        authLogin({
+          username: action.user.username,
+          password: action.user.password
         })
-      ),
-    { dispatch: false }
+      )
+    )
   );
 
   logout = createEffect(

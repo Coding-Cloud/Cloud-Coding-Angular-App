@@ -5,7 +5,6 @@ export interface User {
   lastname: string;
   birthdate: Date;
   email: string;
-  createdAt: Date;
 }
 
 export interface UserForm {
@@ -13,8 +12,8 @@ export interface UserForm {
   lastname: string;
   email: string;
   username: string;
-  password: string;
   birthdate: Date;
+  password: string;
 }
 
 export type Role = 'admin' | 'user';
@@ -25,6 +24,5 @@ export const emptyUser: User = {
   firstname: '',
   lastname: '',
   birthdate: new Date(),
-  email: '',
-  createdAt: new Date()
+  email: ''
 };
