@@ -5,9 +5,14 @@ import { SharedModule } from '../../shared/shared.module';
 import { ProjectListRoutingModule } from './project-list-routing.module';
 import { ProjectAddComponent } from './project-add/project-add.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { ProjectViewComponent } from './project-view/project-view.component';
 
 @NgModule({
-  declarations: [ProjectListComponent, ProjectAddComponent],
+  declarations: [
+    ProjectListComponent,
+    ProjectAddComponent,
+    ProjectViewComponent
+  ],
   imports: [
     CommonModule,
     SharedModule,
