@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Project } from '../../../shared/models/project.model';
+import { Project, ProjectForm } from '../../../shared/models/project.model';
 
 export const actionProjectsUpsertOne = createAction(
   '[Project List] Upsert One',
@@ -22,5 +22,18 @@ export const actionProjectsRetrieveAllSuccess = createAction(
 
 export const actionProjectsRetrieveAllError = createAction(
   '[Project List] Retrieve All Error',
+  props<{ message: string }>()
+);
+
+export const actionProjectsAddOne = createAction(
+  '[Project List] Add One',
+  props<{ project: ProjectForm }>()
+);
+export const actionProjectsAddOneSuccess = createAction(
+  '[Project List] Add One Success'
+);
+
+export const actionProjectsAddOneError = createAction(
+  '[Project List] Add One',
   props<{ message: string }>()
 );

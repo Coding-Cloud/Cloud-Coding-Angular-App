@@ -133,12 +133,13 @@ export class AuthEffects {
   registerSuccess = createEffect(() =>
     this.actions$.pipe(
       ofType(authRegisterSuccess),
-      map((action) =>
-        authLogin({
+      map((action) => {
+        this.notificationService.success('Votre compte a bien été créé !');
+        return authLogin({
           username: action.user.username,
           password: action.user.password
-        })
-      )
+        });
+      })
     )
   );
 

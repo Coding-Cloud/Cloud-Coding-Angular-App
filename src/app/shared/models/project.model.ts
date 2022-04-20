@@ -12,6 +12,12 @@ export interface Project {
   createdAt: Date;
 }
 
+export interface ProjectForm {
+  name: string;
+  language: ProjectLanguage;
+  globalVisibility: ProjectVisibility;
+}
+
 export enum ProjectLanguage {
   ANGULAR = 'ANGULAR',
   REACT = 'REACT'

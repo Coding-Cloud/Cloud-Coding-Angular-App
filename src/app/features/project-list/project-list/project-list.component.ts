@@ -14,7 +14,7 @@ import { actionProjectsRetrieveAll } from '../store/project-list.actions';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectListComponent implements OnInit {
-  projectsListLink = projectListNavigation.projectList;
+  projectsLinks = projectListNavigation;
 
   projectList$: Observable<Project[]> | undefined;
 

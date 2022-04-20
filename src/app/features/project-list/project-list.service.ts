@@ -5,6 +5,7 @@ import { User, UserForm } from '../../shared/models/user.models';
 import { Observable, of } from 'rxjs';
 import {
   Project,
+  ProjectForm,
   ProjectLanguage,
   ProjectStatus,
   ProjectVisibility
@@ -32,5 +33,19 @@ export class ProjectListService {
     ]);
 
     return this.http.get<Project[]>(API_RESOURCE_URI.PROJECTS);
+  }
+
+  addProject(project: ProjectForm): Observable<Project> {
+    return of({
+      id: '123',
+      name: 'Mon premier projet',
+      lastVersion: 1,
+      language: ProjectLanguage.ANGULAR,
+      status: ProjectStatus.RUNNING,
+      globalVisibility: ProjectVisibility.PRIVATE,
+      creatorId: '1223',
+      groupId: '1885',
+      createdAt: new Date()
+    });
   }
 }

@@ -1,0 +1,43 @@
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { projectListNavigation } from '../project-list-routing.module';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../core/core.state';
+import { FormBuilder, Validators } from '@angular/forms';
+import {
+  ProjectLanguage,
+  ProjectVisibility
+} from '../../../shared/models/project.model';
+import { actionProjectsAddOne } from '../store/project-list.actions';
+
+@Component({
+  selector: 'cc-project-add',
+  templateUrl: './project-add.component.html',
+  styleUrls: ['./project-add.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class ProjectAddComponent implements OnInit {
+  projectsLinks = projectListNavigation;
+  projectLanguage = ProjectLanguage;
+  projectVisibility = ProjectVisibility;
+
+  form = this.fb.group({
+    name: ['', Validators.required],
+    language: [this.projectLanguage.ANGULAR, Validators.required],
+    visibility: [this.projectVisibility.PRIVATE, Validators.required]
+  });
+
+  constructor(private store: Store<AppState>, private fb: FormBuilder) {}
+
+  ngOnInit(): void {}
+
+  onSubmit() {
+    console.group(this.form.value);
+    this.store.dispatch(
+      actionProjectsAddOne({
+        project: {
+          ...this.form.value
+        }
+      })
+    );
+  }
+}
