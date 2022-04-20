@@ -1,6 +1,6 @@
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
-import { Project, ProjectState } from '../../../shared/models/project.model';
+import { Project, ProjectsState } from '../../../shared/models/project.model';
 import {
   actionProjectsDeleteOne,
   actionProjectsRetrieveAll,
@@ -18,7 +18,7 @@ export const projectAdapter: EntityAdapter<Project> =
     sortComparer: sortByTitle
   });
 
-export const initialState: ProjectState = projectAdapter.getInitialState({
+export const initialState: ProjectsState = projectAdapter.getInitialState({
   ids: [],
   entities: {}
 });
@@ -38,7 +38,7 @@ const reducer = createReducer(
 );
 
 export function projectListReducer(
-  state: ProjectState | undefined,
+  state: ProjectsState | undefined,
   action: Action
 ) {
   return reducer(state, action);

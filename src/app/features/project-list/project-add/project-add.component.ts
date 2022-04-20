@@ -35,7 +35,9 @@ export class ProjectAddComponent implements OnInit {
     this.store.dispatch(
       actionProjectsAddOne({
         project: {
-          ...this.form.value
+          name: this.form.value.name,
+          language: this.form.value.language,
+          globalVisibility: this.form.value.visibility
         }
       })
     );

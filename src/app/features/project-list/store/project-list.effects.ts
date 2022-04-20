@@ -26,7 +26,11 @@ export class ProjectListEffects {
         this.projectListService.getProjects().pipe(
           map((projects) => actionProjectsRetrieveAllSuccess({ projects })),
           catchError((error) =>
-            of(actionProjectsRetrieveAllError({ message: error.message }))
+            of(
+              actionProjectsRetrieveAllError({
+                message: error.message.toString()
+              })
+            )
           )
         )
       )

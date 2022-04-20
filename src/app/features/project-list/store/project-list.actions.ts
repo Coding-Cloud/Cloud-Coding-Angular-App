@@ -34,6 +34,6 @@ export const actionProjectsAddOneSuccess = createAction(
 );
 
 export const actionProjectsAddOneError = createAction(
-  '[Project List] Add One',
+  '[Project List] Add One Error',
   props<{ message: string }>()
 );

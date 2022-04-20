@@ -35,7 +35,24 @@ export class ProjectListService {
     return this.http.get<Project[]>(API_RESOURCE_URI.PROJECTS);
   }
 
-  addProject(project: ProjectForm): Observable<Project> {
+  addProject(project: ProjectForm): Observable<string> {
+    /* return of({
+      id: '123',
+      name: 'Mon premier projet',
+      lastVersion: 1,
+      language: ProjectLanguage.ANGULAR,
+      status: ProjectStatus.RUNNING,
+      globalVisibility: ProjectVisibility.PRIVATE,
+      creatorId: '1223',
+      groupId: '1885',
+      createdAt: new Date()
+    }); */
+    return this.http.post(
+      API_RESOURCE_URI.PROJECTS,
+      { ...project },
+      { responseType: 'text' }
+    );
+  }
     return of({
       id: '123',
       name: 'Mon premier projet',
