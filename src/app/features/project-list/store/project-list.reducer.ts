@@ -28,9 +28,10 @@ const reducer = createReducer(
   on(actionProjectsUpsertOne, (state, { project }) =>
     projectAdapter.upsertOne(project, state)
   ),
-  on(actionProjectsDeleteOne, (state, { id }) =>
-    projectAdapter.removeOne(id, state)
-  ),
+  on(actionProjectsDeleteOne, (state, action) => {
+    projectAdapter.removeOne(id, state);
+    return projectAdapter.removeOne(action.id, state);
+  }),
   on(actionProjectsRetrieveAll, (state) => projectAdapter.removeAll(state)),
   on(actionProjectsRetrieveAllSuccess, (state, { projects }) =>
     projectAdapter.addMany(projects, state)

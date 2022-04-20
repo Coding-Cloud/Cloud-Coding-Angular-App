@@ -7,6 +7,9 @@ import {
   actionProjectsAddOne,
   actionProjectsAddOneError,
   actionProjectsAddOneSuccess,
+  actionProjectsDeleteOne,
+  actionProjectsDeleteOneError,
+  actionProjectsDeleteOneSuccess,
   actionProjectsGetOne,
   actionProjectsGetOneError,
   actionProjectsGetOneSuccess,
@@ -111,6 +114,44 @@ export class ProjectListEffects {
     () =>
       this.actions$.pipe(
         ofType(actionProjectsAddOneError),
+        tap((action) => {
+          this.notificationService.error(action.message);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  deleteOne = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionProjectsDeleteOne),
+      exhaustMap((action) =>
+        this.projectListService.deleteProject(action.id).pipe(
+          map(() => actionProjectsDeleteOneSuccess()),
+          catchError((error) =>
+            of(actionProjectsDeleteOneError({ message: error.message }))
+          )
+        )
+      )
+    )
+  );
+
+  deleteOneSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionProjectsDeleteOneSuccess),
+        tap(() => {
+          this.router.navigate([navigation.projets.path]).then(() => {
+            this.notificationService.success('Projet supprimé');
+          });
+        })
+      ),
+    { dispatch: false }
+  );
+
+  deleteOneError = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionProjectsDeleteOneError),
         tap((action) => {
           this.notificationService.error(action.message);
         })

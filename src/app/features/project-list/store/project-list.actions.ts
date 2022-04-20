@@ -6,11 +6,6 @@ export const actionProjectsUpsertOne = createAction(
   props<{ project: Project }>()
 );
 
-export const actionProjectsDeleteOne = createAction(
-  '[Project List] Delete One',
-  props<{ id: string }>()
-);
-
 export const actionProjectsRetrieveAll = createAction(
   '[Project List] Retrieve All'
 );
@@ -49,5 +44,18 @@ export const actionProjectsAddOneSuccess = createAction(
 
 export const actionProjectsAddOneError = createAction(
   '[Project List] Add One Error',
+  props<{ message: string }>()
+);
+
+export const actionProjectsDeleteOne = createAction(
+  '[Project List] Delete One',
+  props<{ id: string }>()
+);
+export const actionProjectsDeleteOneSuccess = createAction(
+  '[Project List] Delete One Success'
+);
+
+export const actionProjectsDeleteOneError = createAction(
+  '[Project List] Delete One Error',
   props<{ message: string }>()
 );

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_RESOURCE_URI } from '../../shared/api-resource-uri/api-resource-uri';
-import { User, UserForm } from '../../shared/models/user.models';
 import { Observable, of } from 'rxjs';
 import {
   Project,
@@ -68,5 +67,10 @@ export class ProjectListService {
     });
 
     // return this.http.get<Project>(API_RESOURCE_URI.PROJECTS + '/' + projectId);
+  }
+  deleteProject(projectId: string): Observable<any> {
+    return of({ projectId });
+
+    // return this.http.delete<any>(API_RESOURCE_URI.PROJECTS + '/' + projectId);
   }
 }
