@@ -4,14 +4,17 @@
       <h1 rtl class='main-heading'>{{projectsLinks.projectList.name}}</h1>
     </div>
     <div class='col-sm-6 col-12 d-flex align-items-sm-start justify-content-sm-end mb-2'>
-      <button mat-raised-button color='accent' [routerLink]='[projectsLinks.newProject.path]'><mat-icon>add</mat-icon> Nouveau projet</button>
+      <button mat-raised-button color='accent' [routerLink]='[projectsLinks.newProject.path]'>
+        <mat-icon>add</mat-icon>
+        Nouveau projet
+      </button>
     </div>
   </div>
   <div class='row align-items-start'>
     <div *ngFor='let project of projectList$ | async' class='col-md-6 col-lg-4'>
       <mat-card>
         <mat-card-title>
-          {{project.name}}
+          <a [routerLink]=[projectsLinks.viewProject.path,project.id]>{{project.name}}</a>
         </mat-card-title>
         <mat-card-subtitle>
           {{project.language | projectLanguage}}
