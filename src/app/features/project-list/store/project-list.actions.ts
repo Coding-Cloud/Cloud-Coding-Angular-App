@@ -24,6 +24,20 @@ export const actionProjectsRetrieveAllError = createAction(
   '[Project List] Retrieve All Error',
   props<{ message: string }>()
 );
+export const actionProjectsGetOne = createAction(
+  '[Project List] Get One',
+  props<{ id: string }>()
+);
+
+export const actionProjectsGetOneSuccess = createAction(
+  '[Project List] Get One Success',
+  props<{ project: Project }>()
+);
+
+export const actionProjectsGetOneError = createAction(
+  '[Project List] Get One Error',
+  props<{ message: string }>()
+);
 
 export const actionProjectsAddOne = createAction(
   '[Project List] Add One',

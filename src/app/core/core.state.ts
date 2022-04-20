@@ -14,13 +14,15 @@ import { authReducer } from './auth/auth.reducer';
 import { RouterStateUrl } from './router/router.state';
 import { settingsReducer } from './settings/settings.reducer';
 import { SettingsState } from './settings/settings.model';
-import { ProjectState } from '../shared/models/project.model';
+import { ProjectsState, ProjectState } from '../shared/models/project.model';
 import { projectListReducer } from '../features/project-list/store/project-list.reducer';
+import { projectReducer } from '../features/project-list/store/current-project.reducer';
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
   settings: settingsReducer,
   projects: projectListReducer,
+  currentProject: projectReducer,
   router: routerReducer
 };
 
@@ -45,8 +47,13 @@ export const selectSettingsState = createFeatureSelector<
 
 export const selectProjectsState = createFeatureSelector<
   AppState,
-  ProjectState
+  ProjectsState
 >('projects');
+
+export const selectCurrentProjectState = createFeatureSelector<
+  AppState,
+  ProjectState
+>('currentProject');
 
 export const selectRouterState = createFeatureSelector<
   AppState,
@@ -56,6 +63,7 @@ export const selectRouterState = createFeatureSelector<
 export interface AppState {
   auth: AuthState;
   settings: SettingsState;
-  projects: ProjectState;
+  projects: ProjectsState;
+  currentProject: ProjectState;
   router: RouterReducerState<RouterStateUrl>;
 }

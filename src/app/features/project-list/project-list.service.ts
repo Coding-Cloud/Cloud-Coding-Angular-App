@@ -53,8 +53,10 @@ export class ProjectListService {
       { responseType: 'text' }
     );
   }
+
+  getProject(projectId: string): Observable<Project> {
     return of({
-      id: '123',
+      id: projectId,
       name: 'Mon premier projet',
       lastVersion: 1,
       language: ProjectLanguage.ANGULAR,
@@ -64,5 +66,7 @@ export class ProjectListService {
       groupId: '1885',
       createdAt: new Date()
     });
+
+    // return this.http.get<Project>(API_RESOURCE_URI.PROJECTS + '/' + projectId);
   }
 }

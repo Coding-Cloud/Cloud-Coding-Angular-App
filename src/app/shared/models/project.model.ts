@@ -35,4 +35,19 @@ export enum ProjectVisibility {
   GUEST
 }
 
-export type ProjectState = EntityState<Project>;
+export const emptyProject: Project = {
+  id: '',
+  name: '',
+  lastVersion: 0,
+  language: ProjectLanguage.ANGULAR,
+  status: ProjectStatus.INACTIVE,
+  globalVisibility: ProjectVisibility.PRIVATE,
+  creatorId: '',
+  groupId: '',
+  createdAt: new Date()
+};
+
+export type ProjectsState = EntityState<Project>;
+export type ProjectState = {
+  project: Project;
+};

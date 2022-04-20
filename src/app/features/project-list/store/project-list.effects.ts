@@ -7,6 +7,9 @@ import {
   actionProjectsAddOne,
   actionProjectsAddOneError,
   actionProjectsAddOneSuccess,
+  actionProjectsGetOne,
+  actionProjectsGetOneError,
+  actionProjectsGetOneSuccess,
   actionProjectsRetrieveAll,
   actionProjectsRetrieveAllError,
   actionProjectsRetrieveAllSuccess
@@ -41,6 +44,35 @@ export class ProjectListEffects {
     () =>
       this.actions$.pipe(
         ofType(actionProjectsRetrieveAllError),
+        tap((action) => {
+          this.notificationService.error(action.message);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  getOne = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionProjectsGetOne),
+      exhaustMap((action) =>
+        this.projectListService.getProject(action.id).pipe(
+          map((project) => actionProjectsGetOneSuccess({ project })),
+          catchError((error) =>
+            of(
+              actionProjectsGetOneError({
+                message: error.message.toString()
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  getOneError = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionProjectsGetOneError),
         tap((action) => {
           this.notificationService.error(action.message);
         })
