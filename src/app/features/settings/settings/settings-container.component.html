@@ -38,6 +38,10 @@
             <mat-icon matListIcon>email</mat-icon>
             <span>{{(user$ | async)?.email}}</span>
           </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListIcon>child_friendly</mat-icon>
+            <span>{{(user$ | async)?.birthdate | date: 'longDate'}}</span>
+          </mat-list-item>
         </mat-list>
       </div>
     </div>

@@ -42,7 +42,7 @@ export class AuthService {
   }
 
   getMe(): Observable<User> {
-    return of({
+    /*     return of({
       id: '1',
       username: 'test',
       firstname: 'test',
@@ -50,7 +50,7 @@ export class AuthService {
       birthdate: new Date(1997, 1, 1),
       email: 'test@example.com',
       createdAt: new Date()
-    });
+    }); */
 
     return this.http.get<User>(API_RESOURCE_URI.AUTH_ME);
   }
