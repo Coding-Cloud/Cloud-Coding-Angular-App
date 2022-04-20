@@ -5,7 +5,7 @@ import { ProjectVisibility } from '../models/project.model';
   name: 'projectVisibility'
 })
 export class ProjectVisibilityPipe implements PipeTransform {
-  transform(value: ProjectVisibility, ..._args: unknown[]): string {
+  transform(value?: ProjectVisibility, ..._args: unknown[]): string {
     switch (value) {
       case ProjectVisibility.GUEST:
         return 'Invité';

@@ -5,7 +5,7 @@ import { ProjectLanguage } from '../models/project.model';
   name: 'projectLanguage'
 })
 export class ProjectLanguagePipe implements PipeTransform {
-  transform(value: ProjectLanguage, ..._args: unknown[]): string {
+  transform(value?: ProjectLanguage, ..._args: unknown[]): string {
     switch (value) {
       case ProjectLanguage.ANGULAR:
         return 'Angular';

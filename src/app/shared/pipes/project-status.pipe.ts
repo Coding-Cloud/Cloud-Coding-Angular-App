@@ -5,7 +5,7 @@ import { ProjectStatus } from '../models/project.model';
   name: 'projectStatus'
 })
 export class ProjectStatusPipe implements PipeTransform {
-  transform(value: ProjectStatus, ..._args: unknown[]): string {
+  transform(value?: ProjectStatus, ..._args: unknown[]): string {
     switch (value) {
       case ProjectStatus.RUNNING:
         return 'En cours';
