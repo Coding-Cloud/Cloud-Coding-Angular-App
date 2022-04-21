@@ -6,7 +6,8 @@
   </div>
   <div class='row align-items-start'>
     <div class='col-md-6 col-lg-4'>
-      <mat-card>
+      <cc-project-edit [project]='project$ | async' *ngIf='editMode$ | async'></cc-project-edit>
+      <mat-card *ngIf='!(editMode$ | async)'>
         <mat-card-content>
           <ul>
             <li><strong>Modèle</strong> : {{(project$ | async)?.language}}</li>
@@ -19,7 +20,7 @@
           </ul>
         </mat-card-content>
         <mat-card-actions align='end'>
-          <button mat-raised-button color='primary'>
+          <button mat-raised-button color='primary' (click)='onEditSwitch()'>
             <mat-icon>edit</mat-icon>
             Modifier
           </button>
