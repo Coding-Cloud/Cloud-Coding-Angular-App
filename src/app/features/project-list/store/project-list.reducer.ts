@@ -5,6 +5,7 @@ import {
   actionProjectsDeleteOne,
   actionProjectsRetrieveAll,
   actionProjectsRetrieveAllSuccess,
+  actionProjectsUpdateOneSuccess,
   actionProjectsUpsertOne
 } from './project-list.actions';
 import { Action, createReducer, on } from '@ngrx/store';
@@ -35,6 +36,15 @@ const reducer = createReducer(
   on(actionProjectsRetrieveAll, (state) => projectAdapter.removeAll(state)),
   on(actionProjectsRetrieveAllSuccess, (state, { projects }) =>
     projectAdapter.addMany(projects, state)
+  ),
+  on(actionProjectsUpdateOneSuccess, (state, action) =>
+    projectAdapter.updateOne(
+      {
+        id: action.id,
+        changes: { ...action.project }
+      },
+      state
+    )
   )
 );
 

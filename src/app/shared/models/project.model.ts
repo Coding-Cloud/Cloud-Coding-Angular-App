@@ -50,4 +50,5 @@ export const emptyProject: Project = {
 export type ProjectsState = EntityState<Project>;
 export type ProjectState = {
   project: Project;
+  editMode: boolean;
 };

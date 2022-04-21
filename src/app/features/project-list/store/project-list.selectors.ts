@@ -23,6 +23,11 @@ export const selectCurrentProject = createSelector(
   (state: ProjectState) => state.project
 );
 
+export const selectCurrentProjectIsEditMode = createSelector(
+  selectCurrentProjectState,
+  (state: ProjectState) => state.editMode
+);
+
 export const selectAllProjects = createSelector(selectProjects, selectAll);
 export const selectProjectsEntities = createSelector(
   selectProjects,
