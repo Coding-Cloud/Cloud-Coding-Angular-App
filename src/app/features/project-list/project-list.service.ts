@@ -55,6 +55,12 @@ export class ProjectListService {
     );
   }
 
+  updateProject(projectId: string, project: ProjectForm): Observable<any> {
+    return this.http.patch<any>(API_RESOURCE_URI.PROJECTS + '/' + projectId, {
+      ...project
+    });
+  }
+
   getProject(projectId: string): Observable<Project> {
     /* return of({
       id: projectId,

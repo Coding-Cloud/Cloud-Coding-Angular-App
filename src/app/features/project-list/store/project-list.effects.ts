@@ -15,7 +15,10 @@ import {
   actionProjectsGetOneSuccess,
   actionProjectsRetrieveAll,
   actionProjectsRetrieveAllError,
-  actionProjectsRetrieveAllSuccess
+  actionProjectsRetrieveAllSuccess,
+  actionProjectsUpdateOne,
+  actionProjectsUpdateOneError,
+  actionProjectsUpdateOneSuccess
 } from './project-list.actions';
 import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -152,6 +155,47 @@ export class ProjectListEffects {
     () =>
       this.actions$.pipe(
         ofType(actionProjectsDeleteOneError),
+        tap((action) => {
+          this.notificationService.error(action.message);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  updateOne = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionProjectsUpdateOne),
+      exhaustMap((action) =>
+        this.projectListService.updateProject(action.id, action.project).pipe(
+          map(() =>
+            actionProjectsUpdateOneSuccess({
+              id: action.id,
+              project: action.project
+            })
+          ),
+          catchError((error) =>
+            of(actionProjectsUpdateOneError({ message: error.message }))
+          )
+        )
+      )
+    )
+  );
+
+  updateOneSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionProjectsUpdateOneSuccess),
+        tap(() => {
+          this.notificationService.success('Projet modifié');
+        })
+      ),
+    { dispatch: false }
+  );
+
+  updateOneError = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionProjectsUpdateOneError),
         tap((action) => {
           this.notificationService.error(action.message);
         })
