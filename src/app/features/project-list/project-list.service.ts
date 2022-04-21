@@ -17,6 +17,7 @@ export class ProjectListService {
   constructor(private http: HttpClient) {}
 
   getProjects(): Observable<Project[]> {
+    /*
     return of([
       {
         id: '123',
@@ -30,8 +31,9 @@ export class ProjectListService {
         createdAt: new Date()
       }
     ]);
+*/
 
-    return this.http.get<Project[]>(API_RESOURCE_URI.PROJECTS);
+    return this.http.get<Project[]>(API_RESOURCE_URI.PROJECTS_OWNED);
   }
 
   addProject(project: ProjectForm): Observable<string> {
@@ -54,7 +56,7 @@ export class ProjectListService {
   }
 
   getProject(projectId: string): Observable<Project> {
-    return of({
+    /* return of({
       id: projectId,
       name: 'Mon premier projet',
       lastVersion: 1,
@@ -64,13 +66,12 @@ export class ProjectListService {
       creatorId: '1223',
       groupId: '1885',
       createdAt: new Date()
-    });
+    }); */
 
-    // return this.http.get<Project>(API_RESOURCE_URI.PROJECTS + '/' + projectId);
+    return this.http.get<Project>(API_RESOURCE_URI.PROJECTS + '/' + projectId);
   }
-  deleteProject(projectId: string): Observable<any> {
-    return of({ projectId });
 
-    // return this.http.delete<any>(API_RESOURCE_URI.PROJECTS + '/' + projectId);
+  deleteProject(projectId: string): Observable<any> {
+    return this.http.delete<any>(API_RESOURCE_URI.PROJECTS + '/' + projectId);
   }
 }
