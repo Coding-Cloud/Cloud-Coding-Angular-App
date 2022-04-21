@@ -59,3 +59,22 @@ export const actionProjectsDeleteOneError = createAction(
   '[Project List] Delete One Error',
   props<{ message: string }>()
 );
+
+export const actionProjectSwitchEditMode = createAction(
+  '[Project List] Switch Edit Mode'
+);
+
+export const actionProjectsUpdateOne = createAction(
+  '[Project List] Update One',
+  props<{ id: string; project: ProjectForm }>()
+);
+
+export const actionProjectsUpdateOneSuccess = createAction(
+  '[Project List] Update One Success',
+  props<{ id: string; project: ProjectForm }>()
+);
+
+export const actionProjectsUpdateOneError = createAction(
+  '[Project List] Update One Error',
+  props<{ message: string }>()
+);
