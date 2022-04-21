@@ -9,18 +9,20 @@ import { environment } from '../../environments/environment';
 
 import { initStateFromLocalStorage } from './meta-reducers/init-state-from-local-storage.reducer';
 import { debug } from './meta-reducers/debug.reducer';
-import { AuthState } from './auth/auth.models';
+import { AuthState } from '../shared/models/auth.models';
 import { authReducer } from './auth/auth.reducer';
 import { RouterStateUrl } from './router/router.state';
 import { settingsReducer } from './settings/settings.reducer';
 import { SettingsState } from './settings/settings.model';
-import { ProjectState } from '../features/project-list/project.model';
-import { projectListReducer } from '../features/project-list/project-list.reducer';
+import { ProjectsState, ProjectState } from '../shared/models/project.model';
+import { projectListReducer } from '../features/project-list/store/project-list.reducer';
+import { projectReducer } from '../features/project-list/store/current-project.reducer';
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
   settings: settingsReducer,
   projects: projectListReducer,
+  currentProject: projectReducer,
   router: routerReducer
 };
 
@@ -45,8 +47,13 @@ export const selectSettingsState = createFeatureSelector<
 
 export const selectProjectsState = createFeatureSelector<
   AppState,
-  ProjectState
+  ProjectsState
 >('projects');
+
+export const selectCurrentProjectState = createFeatureSelector<
+  AppState,
+  ProjectState
+>('currentProject');
 
 export const selectRouterState = createFeatureSelector<
   AppState,
@@ -56,6 +63,7 @@ export const selectRouterState = createFeatureSelector<
 export interface AppState {
   auth: AuthState;
   settings: SettingsState;
-  projects: ProjectState;
+  projects: ProjectsState;
+  currentProject: ProjectState;
   router: RouterReducerState<RouterStateUrl>;
 }

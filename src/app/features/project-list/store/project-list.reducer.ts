@@ -1,14 +1,16 @@
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
-import { Project, ProjectState } from './project.model';
+import { Project, ProjectsState } from '../../../shared/models/project.model';
 import {
   actionProjectsDeleteOne,
+  actionProjectsRetrieveAll,
+  actionProjectsRetrieveAllSuccess,
   actionProjectsUpsertOne
 } from './project-list.actions';
 import { Action, createReducer, on } from '@ngrx/store';
 
 export function sortByTitle(a: Project, b: Project): number {
-  return a.title.localeCompare(b.title);
+  return a.name.localeCompare(b.name);
 }
 
 export const projectAdapter: EntityAdapter<Project> =
@@ -16,19 +18,9 @@ export const projectAdapter: EntityAdapter<Project> =
     sortComparer: sortByTitle
   });
 
-export const initialState: ProjectState = projectAdapter.getInitialState({
-  ids: ['123'],
-  entities: {
-    '123': {
-      id: '123',
-      title: 'Angular app',
-      owner: 'Nospy',
-      description:
-        'My beautiful Angular app. It is so beautiful that I am going to share it with you all.',
-      createdAt: new Date(),
-      techno: 'Angular'
-    }
-  }
+export const initialState: ProjectsState = projectAdapter.getInitialState({
+  ids: [],
+  entities: {}
 });
 
 const reducer = createReducer(
@@ -36,13 +28,18 @@ const reducer = createReducer(
   on(actionProjectsUpsertOne, (state, { project }) =>
     projectAdapter.upsertOne(project, state)
   ),
-  on(actionProjectsDeleteOne, (state, { id }) =>
-    projectAdapter.removeOne(id, state)
+  on(actionProjectsDeleteOne, (state, action) => {
+    projectAdapter.removeOne(action.id, state);
+    return projectAdapter.removeOne(action.id, state);
+  }),
+  on(actionProjectsRetrieveAll, (state) => projectAdapter.removeAll(state)),
+  on(actionProjectsRetrieveAllSuccess, (state, { projects }) =>
+    projectAdapter.addMany(projects, state)
   )
 );
 
 export function projectListReducer(
-  state: ProjectState | undefined,
+  state: ProjectsState | undefined,
   action: Action
 ) {
   return reducer(state, action);

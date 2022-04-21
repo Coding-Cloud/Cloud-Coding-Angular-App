@@ -1,15 +1,26 @@
 import { createSelector } from '@ngrx/store';
 
 import { projectAdapter } from './project-list.reducer';
-import { selectProjectsState } from '../../core/core.state';
-import { ProjectState } from './project.model';
+import {
+  selectCurrentProjectState,
+  selectProjectsState
+} from '../../../core/core.state';
+import {
+  ProjectsState,
+  ProjectState
+} from '../../../shared/models/project.model';
 
 const { selectEntities, selectAll, selectTotal } =
   projectAdapter.getSelectors();
 
 export const selectProjects = createSelector(
   selectProjectsState,
-  (state: ProjectState) => state
+  (state: ProjectsState) => state
+);
+
+export const selectCurrentProject = createSelector(
+  selectCurrentProjectState,
+  (state: ProjectState) => state.project
 );
 
 export const selectAllProjects = createSelector(selectProjects, selectAll);
