@@ -6,12 +6,14 @@ import { ProjectListRoutingModule } from './project-list-routing.module';
 import { ProjectAddComponent } from './project-add/project-add.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ProjectViewComponent } from './project-view/project-view.component';
+import { ProjectEditComponent } from './project-edit/project-edit.component';
 
 @NgModule({
   declarations: [
     ProjectListComponent,
     ProjectAddComponent,
-    ProjectViewComponent
+    ProjectViewComponent,
+    ProjectEditComponent
   ],
   imports: [
     CommonModule,
