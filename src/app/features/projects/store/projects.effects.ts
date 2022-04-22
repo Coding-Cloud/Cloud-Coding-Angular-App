@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AppState } from '../../../core/core.state';
-import { ProjectListService } from '../project-list.service';
+import { ProjectsService } from '../projects.service';
 import {
   actionProjectsAddOne,
   actionProjectsAddOneError,
@@ -19,7 +19,7 @@ import {
   actionProjectsUpdateOne,
   actionProjectsUpdateOneError,
   actionProjectsUpdateOneSuccess
-} from './project-list.actions';
+} from './projects.actions';
 import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { NotificationService } from '../../../core/notifications/notification.service';
@@ -27,7 +27,7 @@ import { Router } from '@angular/router';
 import { navigation } from '../../../app-routing.module';
 
 @Injectable()
-export class ProjectListEffects {
+export class ProjectsEffects {
   retrieveAll = createEffect(() =>
     this.actions$.pipe(
       ofType(actionProjectsRetrieveAll),
@@ -206,7 +206,7 @@ export class ProjectListEffects {
   constructor(
     private actions$: Actions,
     private store: Store<AppState>,
-    private projectListService: ProjectListService,
+    private projectListService: ProjectsService,
     private notificationService: NotificationService,
     private router: Router
   ) {}

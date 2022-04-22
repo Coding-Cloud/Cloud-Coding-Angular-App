@@ -13,7 +13,7 @@ import {
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectListService {
+export class ProjectsService {
   constructor(private http: HttpClient) {}
 
   getProjects(): Observable<Project[]> {

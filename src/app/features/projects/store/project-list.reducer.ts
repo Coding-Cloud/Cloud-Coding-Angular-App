@@ -7,7 +7,7 @@ import {
   actionProjectsRetrieveAllSuccess,
   actionProjectsUpdateOneSuccess,
   actionProjectsUpsertOne
-} from './project-list.actions';
+} from './projects.actions';
 import { Action, createReducer, on } from '@ngrx/store';
 
 export function sortByTitle(a: Project, b: Project): number {

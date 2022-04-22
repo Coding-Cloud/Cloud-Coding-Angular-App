@@ -6,14 +6,14 @@ import {
   actionProjectsDeleteOne,
   actionProjectsGetOne,
   actionProjectSwitchEditMode
-} from '../store/project-list.actions';
+} from '../store/projects.actions';
 import { Observable } from 'rxjs';
 import { Project } from '../../../shared/models/project.model';
 import {
   selectCurrentProject,
   selectCurrentProjectIsEditMode
-} from '../store/project-list.selectors';
-import { projectListNavigation } from '../project-list-routing.module';
+} from '../store/projects.selectors';
+import { projectsNavigation } from '../projects-routing.module';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 
@@ -25,7 +25,7 @@ import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-d
 })
 export class ProjectViewComponent implements OnInit {
   projectId = '';
-  projectsLinks = projectListNavigation;
+  projectsLinks = projectsNavigation;
 
   project$: Observable<Project>;
   editMode$: Observable<boolean>;

@@ -4,7 +4,7 @@ import {
   actionProjectsGetOneSuccess,
   actionProjectsUpdateOneSuccess,
   actionProjectSwitchEditMode
-} from './project-list.actions';
+} from './projects.actions';
 import {
   emptyProject,
   ProjectState

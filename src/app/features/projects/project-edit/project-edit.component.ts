@@ -12,7 +12,7 @@ import {
 import {
   actionProjectsUpdateOne,
   actionProjectSwitchEditMode
-} from '../store/project-list.actions';
+} from '../store/projects.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../core/core.state';
 import { FormBuilder, Validators } from '@angular/forms';

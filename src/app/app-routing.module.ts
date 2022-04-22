@@ -74,8 +74,8 @@ const routes: Routes = [
   {
     path: navigation.projets.path,
     loadChildren: () =>
-      import('./features/project-list/project-list.module').then(
-        (m) => m.ProjectListModule
+      import('./features/projects/projects.module').then(
+        (m) => m.ProjectsModule
       )
   },
   {

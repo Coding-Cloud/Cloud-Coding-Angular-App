@@ -15,8 +15,8 @@ import { RouterStateUrl } from './router/router.state';
 import { settingsReducer } from './settings/settings.reducer';
 import { SettingsState } from './settings/settings.model';
 import { ProjectsState, ProjectState } from '../shared/models/project.model';
-import { projectListReducer } from '../features/project-list/store/project-list.reducer';
-import { projectReducer } from '../features/project-list/store/current-project.reducer';
+import { projectListReducer } from '../features/projects/store/project-list.reducer';
+import { projectReducer } from '../features/projects/store/current-project.reducer';
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,

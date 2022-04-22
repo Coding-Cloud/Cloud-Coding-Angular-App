@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { SharedModule } from '../../shared/shared.module';
-import { ProjectListRoutingModule } from './project-list-routing.module';
+import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectAddComponent } from './project-add/project-add.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ProjectViewComponent } from './project-view/project-view.component';
@@ -18,8 +18,8 @@ import { ProjectEditComponent } from './project-edit/project-edit.component';
   imports: [
     CommonModule,
     SharedModule,
-    ProjectListRoutingModule,
+    ProjectsRoutingModule,
     MatButtonToggleModule
   ]
 })
-export class ProjectListModule {}
+export class ProjectsModule {}

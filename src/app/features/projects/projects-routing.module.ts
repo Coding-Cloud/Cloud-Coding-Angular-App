@@ -6,7 +6,7 @@ import { AuthGuardService } from '../../core/core.module';
 import { ProjectAddComponent } from './project-add/project-add.component';
 import { ProjectViewComponent } from './project-view/project-view.component';
 
-export const projectListNavigation: NavigationLinks = {
+export const projectsNavigation: NavigationLinks = {
   projectList: {
     path: '',
     name: 'Projets'
@@ -23,22 +23,22 @@ export const projectListNavigation: NavigationLinks = {
 
 const routes: Routes = [
   {
-    path: projectListNavigation.projectList.path,
+    path: projectsNavigation.projectList.path,
     canActivate: [AuthGuardService],
     component: ProjectListComponent,
-    data: { title: projectListNavigation.projectList.name }
+    data: { title: projectsNavigation.projectList.name }
   },
   {
-    path: projectListNavigation.newProject.path,
+    path: projectsNavigation.newProject.path,
     canActivate: [AuthGuardService],
     component: ProjectAddComponent,
-    data: { title: projectListNavigation.newProject.name }
+    data: { title: projectsNavigation.newProject.name }
   },
   {
-    path: projectListNavigation.viewProject.path + '/:id',
+    path: projectsNavigation.viewProject.path + '/:id',
     canActivate: [AuthGuardService],
     component: ProjectViewComponent,
-    data: { title: projectListNavigation.viewProject.name }
+    data: { title: projectsNavigation.viewProject.name }
   }
 ];
 
@@ -46,4 +46,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ProjectListRoutingModule {}
+export class ProjectsRoutingModule {}

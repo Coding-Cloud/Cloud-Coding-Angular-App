@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { projectListNavigation } from '../project-list-routing.module';
+import { projectsNavigation } from '../projects-routing.module';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../core/core.state';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -7,7 +7,7 @@ import {
   ProjectLanguage,
   ProjectVisibility
 } from '../../../shared/models/project.model';
-import { actionProjectsAddOne } from '../store/project-list.actions';
+import { actionProjectsAddOne } from '../store/projects.actions';
 
 @Component({
   selector: 'cc-project-add',
@@ -16,7 +16,7 @@ import { actionProjectsAddOne } from '../store/project-list.actions';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectAddComponent implements OnInit {
-  projectsLinks = projectListNavigation;
+  projectsLinks = projectsNavigation;
   projectLanguage = ProjectLanguage;
   projectVisibility = ProjectVisibility;
 
