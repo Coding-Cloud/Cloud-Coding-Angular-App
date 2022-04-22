@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
 import { selectAuthState } from '../core.state';
-import { AuthState } from '../../shared/models/auth.models';
+import { AuthState } from '../../shared/models/auth.model';
 
 export const selectAuth = createSelector(
   selectAuthState,

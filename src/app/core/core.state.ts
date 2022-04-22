@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 
 import { initStateFromLocalStorage } from './meta-reducers/init-state-from-local-storage.reducer';
 import { debug } from './meta-reducers/debug.reducer';
-import { AuthState } from '../shared/models/auth.models';
+import { AuthState } from '../shared/models/auth.model';
 import { authReducer } from './auth/auth.reducer';
 import { RouterStateUrl } from './router/router.state';
 import { settingsReducer } from './settings/settings.reducer';
@@ -17,11 +17,14 @@ import { SettingsState } from './settings/settings.model';
 import { ProjectsState, ProjectState } from '../shared/models/project.model';
 import { projectListReducer } from '../features/projects/store/project-list.reducer';
 import { projectReducer } from '../features/projects/store/current-project.reducer';
+import { GroupsState } from '../shared/models/group.model';
+import { groupListReducer } from '../features/groups/store/group-list.reducer';
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
   settings: settingsReducer,
   projects: projectListReducer,
+  groups: groupListReducer,
   currentProject: projectReducer,
   router: routerReducer
 };
@@ -50,10 +53,21 @@ export const selectProjectsState = createFeatureSelector<
   ProjectsState
 >('projects');
 
+export const selectGroupsState = createFeatureSelector<AppState, GroupsState>(
+  'groups'
+);
+
 export const selectCurrentProjectState = createFeatureSelector<
   AppState,
   ProjectState
 >('currentProject');
+
+/*
+export const selectCurrentGroupState = createFeatureSelector<
+  AppState,
+  GroupState
+>('currentGroup');
+*/
 
 export const selectRouterState = createFeatureSelector<
   AppState,
@@ -64,6 +78,7 @@ export interface AppState {
   auth: AuthState;
   settings: SettingsState;
   projects: ProjectsState;
+  groups: GroupsState;
   currentProject: ProjectState;
   router: RouterReducerState<RouterStateUrl>;
 }

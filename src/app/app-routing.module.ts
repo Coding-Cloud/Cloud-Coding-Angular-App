@@ -33,6 +33,11 @@ export const navigation: NavigationLinks = {
     path: 'projects',
     auth: true
   },
+  groups: {
+    name: 'Groupes',
+    path: 'groups',
+    auth: true
+  },
   auth: {
     name: 'Authentification',
     path: 'auth'
@@ -77,6 +82,11 @@ const routes: Routes = [
       import('./features/projects/projects.module').then(
         (m) => m.ProjectsModule
       )
+  },
+  {
+    path: navigation.groups.path,
+    loadChildren: () =>
+      import('./features/groups/groups.module').then((m) => m.GroupsModule)
   },
   {
     path: navigation.auth.path,
