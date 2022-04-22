@@ -1,4 +1,4 @@
-import { User } from '../../shared/models/user.models';
+import { User } from './user.models';
 
 export interface AuthState {
   isAuthenticated: boolean;

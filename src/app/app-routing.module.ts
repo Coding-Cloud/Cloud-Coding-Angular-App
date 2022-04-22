@@ -28,6 +28,11 @@ export const navigation: NavigationLinks = {
     name: 'Exemples',
     path: 'examples'
   },
+  projets: {
+    name: 'Projets',
+    path: 'projects',
+    auth: true
+  },
   auth: {
     name: 'Authentification',
     path: 'auth'
@@ -64,6 +69,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./features/examples/examples.module').then(
         (m) => m.ExamplesModule
+      )
+  },
+  {
+    path: navigation.projets.path,
+    loadChildren: () =>
+      import('./features/projects/projects.module').then(
+        (m) => m.ProjectsModule
       )
   },
   {

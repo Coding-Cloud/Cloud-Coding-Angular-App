@@ -1,31 +1,28 @@
 export interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
+  id: string;
+  username: string;
+  firstname: string;
+  lastname: string;
+  birthdate: Date;
   email: string;
-  pseudo: string;
-  role: Role;
-  isActive: boolean;
-  createdAt: string;
 }
 
 export interface UserForm {
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   email: string;
-  pseudo: string;
+  username: string;
+  birthdate: Date;
   password: string;
 }
 
 export type Role = 'admin' | 'user';
 
 export const emptyUser: User = {
-  id: 0,
-  firstName: '',
-  lastName: '',
-  email: '',
-  pseudo: '',
-  role: 'user',
-  isActive: false,
-  createdAt: ''
+  id: '0',
+  username: '',
+  firstname: '',
+  lastname: '',
+  birthdate: new Date(),
+  email: ''
 };

@@ -65,6 +65,7 @@ import {
   faYoutube
 } from '@fortawesome/free-brands-svg-icons';
 import { TokenInterceptor } from './http-interceptors/http-auth.interceptor';
+import { ProjectsEffects } from '../features/projects/store/projects.effects';
 
 export {
   TitleService,
@@ -104,7 +105,7 @@ export {
     // ngrx
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([AuthEffects, SettingsEffects]),
+    EffectsModule.forRoot([AuthEffects, SettingsEffects, ProjectsEffects]),
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({

@@ -5,6 +5,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { authNavigation } from '../auth-routing.module';
 import { matchPassword } from 'src/app/shared/validator/password';
 import { authRegister } from '../../../core/auth/auth.actions';
+import { subYears } from 'date-fns';
 
 @Component({
   selector: 'cc-register',
@@ -14,14 +15,16 @@ import { authRegister } from '../../../core/auth/auth.actions';
 })
 export class RegisterComponent implements OnInit {
   authLinks = authNavigation;
+  maxDate = subYears(new Date(), 12);
 
   form = this.fb.group(
     {
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      pseudo: ['', Validators.required],
+      username: ['', Validators.required],
       password: ['', [Validators.required]],
+      birthdate: [this.maxDate, Validators.required],
       confirmPassword: ['', [Validators.required]]
     },
     {
@@ -37,11 +40,12 @@ export class RegisterComponent implements OnInit {
     this.store.dispatch(
       authRegister({
         userForm: {
-          firstName: this.form.value.firstName,
-          lastName: this.form.value.lastName,
+          firstname: this.form.value.firstname,
+          lastname: this.form.value.lastname,
           email: this.form.value.email,
-          pseudo: this.form.value.pseudo,
-          password: this.form.value.password
+          username: this.form.value.username,
+          password: this.form.value.password,
+          birthdate: this.form.value.birthdate
         }
       })
     );

@@ -6,7 +6,7 @@ import { FeatureListComponent } from './feature-list/feature-list.component';
 export const featureListNavigation: NavigationLinks = {
   featureList: {
     path: '',
-    name: 'Feature List'
+    name: 'Fonctionnalités'
   }
 };
 
