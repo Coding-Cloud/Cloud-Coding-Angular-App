@@ -66,6 +66,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { TokenInterceptor } from './http-interceptors/http-auth.interceptor';
 import { ProjectsEffects } from '../features/projects/store/projects.effects';
+import { GroupsEffects } from '../features/groups/store/groups.effects';
 
 export {
   TitleService,
@@ -105,7 +106,12 @@ export {
     // ngrx
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([AuthEffects, SettingsEffects, ProjectsEffects]),
+    EffectsModule.forRoot([
+      AuthEffects,
+      SettingsEffects,
+      ProjectsEffects,
+      GroupsEffects
+    ]),
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({
