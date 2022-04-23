@@ -1,14 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_RESOURCE_URI } from '../../shared/api-resource-uri/api-resource-uri';
-import { Observable, of } from 'rxjs';
-import {
-  Project,
-  ProjectForm,
-  ProjectLanguage,
-  ProjectStatus,
-  ProjectVisibility
-} from '../../shared/models/project.model';
+import { Observable } from 'rxjs';
+import { Project, ProjectForm } from '../../shared/models/project.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +30,12 @@ export class ProjectsService {
 
   getProject(projectId: string): Observable<Project> {
     return this.http.get<Project>(API_RESOURCE_URI.PROJECTS + '/' + projectId);
+  }
+
+  getProjectsByGroupId(groupId: string): Observable<Project[]> {
+    return this.http.get<Project[]>(
+      API_RESOURCE_URI.PROJECTS + '/group/' + groupId
+    );
   }
 
   deleteProject(projectId: string): Observable<any> {

@@ -4,15 +4,15 @@
       <h1>Bienvenue sur {{ appName }}</h1>
       <div class='actions'>
         <a mat-raised-button class='actions-main' color='primary'
-           [routerLink]='"../" + navigation.features.path'>
+           [routerLink]='"/" + navigation.features.path'>
           {{ navigation.features.name }}
         </a>
         <a mat-raised-button class='actions-main' color='accent'
-           [routerLink]='"../" + navigation.examples.path'>
+           [routerLink]='"/" + navigation.examples.path'>
           {{ navigation.examples.name }}
         </a>
         <a mat-raised-button class='actions-main' color='warn'
-           [routerLink]='"../" + navigation.settings.path'>
+           [routerLink]='"/" + navigation.settings.path'>
           {{ navigation.settings.name }}
         </a>
       </div>

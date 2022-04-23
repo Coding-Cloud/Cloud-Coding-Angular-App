@@ -13,9 +13,10 @@ import {
   selectCurrentProject,
   selectCurrentProjectIsEditMode
 } from '../store/projects.selectors';
-import { projectsNavigation } from '../projects-routing.module';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
+import { groupsNavigation } from '../../groups/groups-routing.module';
+import { navigation } from '../../../app-routing.module';
 
 @Component({
   selector: 'cc-project-view',
@@ -25,7 +26,8 @@ import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-d
 })
 export class ProjectViewComponent implements OnInit {
   projectId = '';
-  projectsLinks = projectsNavigation;
+  groupsLinks = groupsNavigation;
+  rootLinks = navigation;
 
   project$: Observable<Project>;
   editMode$: Observable<boolean>;
