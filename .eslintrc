@@ -8,7 +8,8 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "tsconfig.json",
-    "sourceType": "module"
+    "sourceType": "module",
+    "extraFileExtensions": [".html"]
   },
   "plugins": [
     "eslint-plugin-import",
@@ -19,11 +20,19 @@
   "rules": {
     "@angular-eslint/directive-selector": [
       "error",
-      { "type": "attribute", "prefix": "cc", "style": "camelCase" }
+      {
+        "type": "attribute",
+        "prefix": "cc",
+        "style": "camelCase"
+      }
     ],
     "@angular-eslint/component-selector": [
       "error",
-      { "type": "element", "prefix": "cc", "style": "kebab-case" }
+      {
+        "type": "element",
+        "prefix": "cc",
+        "style": "kebab-case"
+      }
     ],
     "@angular-eslint/component-class-suffix": "error",
     "@angular-eslint/directive-class-suffix": "error",
