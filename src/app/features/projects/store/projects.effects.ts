@@ -12,6 +12,8 @@ import {
   actionProjectsDeleteOneSuccess,
   actionProjectsGetOne,
   actionProjectsGetOneError,
+  actionProjectsGetOneGroupError,
+  actionProjectsGetOneGroupSuccess,
   actionProjectsGetOneSuccess,
   actionProjectsRetrieveAll,
   actionProjectsRetrieveAllError,
@@ -25,6 +27,7 @@ import { of } from 'rxjs';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { Router } from '@angular/router';
 import { navigation } from '../../../app-routing.module';
+import { GroupsService } from '../../groups/groups.service';
 
 @Injectable()
 export class ProjectsEffects {
@@ -32,7 +35,7 @@ export class ProjectsEffects {
     this.actions$.pipe(
       ofType(actionProjectsRetrieveAll),
       exhaustMap(() =>
-        this.projectListService.getProjects().pipe(
+        this.projectsService.getProjects().pipe(
           map((projects) => actionProjectsRetrieveAllSuccess({ projects })),
           catchError((error) =>
             of(
@@ -61,11 +64,29 @@ export class ProjectsEffects {
     this.actions$.pipe(
       ofType(actionProjectsGetOne),
       exhaustMap((action) =>
-        this.projectListService.getProject(action.id).pipe(
+        this.projectsService.getProject(action.id).pipe(
           map((project) => actionProjectsGetOneSuccess({ project })),
           catchError((error) =>
             of(
               actionProjectsGetOneError({
+                message: error.message.toString()
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  getOneSuccess = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionProjectsGetOneSuccess),
+      exhaustMap((action) =>
+        this.groupsService.getGroup(action.project.groupId).pipe(
+          map((group) => actionProjectsGetOneGroupSuccess({ group })),
+          catchError((error) =>
+            of(
+              actionProjectsGetOneGroupError({
                 message: error.message.toString()
               })
             )
@@ -86,11 +107,22 @@ export class ProjectsEffects {
     { dispatch: false }
   );
 
+  getOneGroupError = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionProjectsGetOneGroupError),
+        tap((action) => {
+          this.notificationService.error(action.message);
+        })
+      ),
+    { dispatch: false }
+  );
+
   addOne = createEffect(() =>
     this.actions$.pipe(
       ofType(actionProjectsAddOne),
       exhaustMap((action) =>
-        this.projectListService.addProject(action.project).pipe(
+        this.projectsService.addProject(action.project).pipe(
           map(() => actionProjectsAddOneSuccess()),
           catchError((error) =>
             of(actionProjectsAddOneError({ message: error.message }))
@@ -128,7 +160,7 @@ export class ProjectsEffects {
     this.actions$.pipe(
       ofType(actionProjectsDeleteOne),
       exhaustMap((action) =>
-        this.projectListService.deleteProject(action.id).pipe(
+        this.projectsService.deleteProject(action.id).pipe(
           map(() => actionProjectsDeleteOneSuccess()),
           catchError((error) =>
             of(actionProjectsDeleteOneError({ message: error.message }))
@@ -166,7 +198,7 @@ export class ProjectsEffects {
     this.actions$.pipe(
       ofType(actionProjectsUpdateOne),
       exhaustMap((action) =>
-        this.projectListService.updateProject(action.id, action.project).pipe(
+        this.projectsService.updateProject(action.id, action.project).pipe(
           map(() =>
             actionProjectsUpdateOneSuccess({
               id: action.id,
@@ -206,7 +238,8 @@ export class ProjectsEffects {
   constructor(
     private actions$: Actions,
     private store: Store<AppState>,
-    private projectListService: ProjectsService,
+    private projectsService: ProjectsService,
+    private groupsService: GroupsService,
     private notificationService: NotificationService,
     private router: Router
   ) {}

@@ -1,4 +1,5 @@
 import { EntityState } from '@ngrx/entity';
+import { Group } from './group.model';
 
 export interface Project {
   id: string;
@@ -53,5 +54,6 @@ export const emptyProject: Project = {
 export type ProjectsState = EntityState<Project>;
 export type ProjectState = {
   project: Project;
+  group: Group;
   editMode: boolean;
 };

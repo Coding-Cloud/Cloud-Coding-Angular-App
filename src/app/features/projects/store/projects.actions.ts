@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Project, ProjectForm } from '../../../shared/models/project.model';
+import { Group } from '../../../shared/models/group.model';
 
 export const actionProjectsUpsertOne = createAction(
   '[Projects] Upsert One',
@@ -31,6 +32,16 @@ export const actionProjectsGetOneSuccess = createAction(
 
 export const actionProjectsGetOneError = createAction(
   '[Projects] Get One Error',
+  props<{ message: string }>()
+);
+
+export const actionProjectsGetOneGroupSuccess = createAction(
+  '[Projects] Get One Group Success',
+  props<{ group: Group }>()
+);
+
+export const actionProjectsGetOneGroupError = createAction(
+  '[Projects] Get One Group Error',
   props<{ message: string }>()
 );
 
