@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_RESOURCE_URI } from '../../shared/api-resource-uri/api-resource-uri';
-import { User, UserForm } from '../../shared/models/user.models';
+import { User, UserForm } from '../../shared/models/user.model';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 

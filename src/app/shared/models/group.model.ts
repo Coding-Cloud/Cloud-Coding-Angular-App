@@ -1,5 +1,6 @@
 import { EntityState } from '@ngrx/entity';
 import { Project } from './project.model';
+import { Message } from './message.model';
 
 export interface Group {
   id: string;
@@ -30,5 +31,6 @@ export const emptyGroup: Group = {
 export type GroupsState = EntityState<Group>;
 export type GroupState = {
   group: Group;
+  messages: Message[];
   editMode: boolean;
 };

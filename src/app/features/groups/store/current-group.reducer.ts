@@ -10,6 +10,7 @@ import { emptyGroup, GroupState } from '../../../shared/models/group.model';
 
 export const initialState: GroupState = {
   group: emptyGroup,
+  messages: [],
   editMode: false
 };
 
