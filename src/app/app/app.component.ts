@@ -1,24 +1,22 @@
-import browser from 'browser-detect';
 import { Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { environment as env } from '../../environments/environment';
 
 import {
-  authLogin,
+  AppState,
   authLogout,
-  routeAnimations,
   LocalStorageService,
-  selectIsAuthenticated,
+  routeAnimations,
   selectEffectiveTheme,
-  AppState
+  selectIsAuthenticated
 } from '../core/core.module';
-import { navigation } from '../app-routing.module';
-import { authLoginSuccess } from '../core/auth/auth.actions';
+import { Link, navigation } from '../app-routing.module';
+import { authGetMe } from '../core/auth/auth.actions';
 
 @Component({
-  selector: 'root-component',
+  selector: 'cc-root-component',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   animations: [routeAnimations]
@@ -47,12 +45,22 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.storageService.testLocalStorage();
-
     this.isAuthenticated$ = this.store.pipe(select(selectIsAuthenticated));
+
+    this.isAuthenticated$.subscribe((isAuthenticated) => {
+      if (isAuthenticated) {
+        this.store.dispatch(authGetMe());
+      }
+    });
+
     this.theme$ = this.store.pipe(select(selectEffectiveTheme));
   }
 
   onLogoutClick() {
     this.store.dispatch(authLogout());
+  }
+
+  noAuthLinks(links: Link[]) {
+    return links.filter((link) => !link.auth);
   }
 }

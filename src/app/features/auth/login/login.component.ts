@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   authLinks = authNavigation;
 
   form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required, Validators.minLength(3)]],
     password: ['', [Validators.required]]
   });
 
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   onLoginClick() {
     this.store.dispatch(
       authLogin({
-        email: this.form.value.email,
+        username: this.form.value.username,
         password: this.form.value.password
       })
     );

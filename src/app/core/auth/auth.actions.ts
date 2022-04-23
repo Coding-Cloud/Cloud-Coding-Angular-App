@@ -1,16 +1,25 @@
 import { createAction, props } from '@ngrx/store';
-import { User, UserForm } from 'src/app/shared/models/user.models';
+import { User, UserForm } from 'src/app/shared/models/user.model';
 
 export const authLogin = createAction(
   '[Auth] Login',
-  props<{ email: string; password: string }>()
+  props<{ username: string; password: string }>()
 );
 export const authLoginSuccess = createAction(
   '[Auth] Login Success',
-  props<{ user: User; token: string }>()
+  props<{ token: string }>()
 );
 export const authLoginError = createAction(
   '[Auth] Login Error',
+  props<{ message: string }>()
+);
+export const authGetMe = createAction('[Auth] Get me');
+export const authGetMeSuccess = createAction(
+  '[Auth] Get me Success',
+  props<{ user: User }>()
+);
+export const authGetMeError = createAction(
+  '[Auth] Get me Error',
   props<{ message: string }>()
 );
 export const authLogout = createAction('[Auth] Logout');
@@ -22,7 +31,7 @@ export const authRegister = createAction(
 
 export const authRegisterSuccess = createAction(
   '[Auth] Register Success',
-  props<{ user: User; token: string }>()
+  props<{ user: UserForm }>()
 );
 
 export const authRegisterError = createAction(

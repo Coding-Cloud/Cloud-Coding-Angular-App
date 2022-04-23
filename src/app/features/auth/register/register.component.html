@@ -12,11 +12,11 @@
             <div class='row'>
               <mat-form-field class='col-12' appearance='fill'>
                 <mat-label>Prénom</mat-label>
-                <input matInput placeholder='Prénom' formControlName='firstName'>
+                <input matInput placeholder='Prénom' formControlName='firstname'>
               </mat-form-field>
               <mat-form-field class='col-12' appearance='fill'>
                 <mat-label>Nom</mat-label>
-                <input matInput placeholder='Nom' formControlName='lastName'>
+                <input matInput placeholder='Nom' formControlName='lastname'>
               </mat-form-field>
               <mat-form-field class='col-12' appearance='fill'>
                 <mat-label>Email</mat-label>
@@ -24,7 +24,16 @@
               </mat-form-field>
               <mat-form-field class='col-12' appearance='fill'>
                 <mat-label>Pseudo</mat-label>
-                <input matInput placeholder='Pseudo' formControlName='pseudo'>
+                <input matInput placeholder='Pseudo' formControlName='username'>
+              </mat-form-field>
+              <mat-form-field class='col-12' appearance='fill'>
+                <input matInput
+                       formControlName='birthdate'
+                       [matDatepicker]='picker'
+                       [max]=' maxDate'
+                       placeholder='Date de naissance'>
+                <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
+                <mat-datepicker #picker startView='year'></mat-datepicker>
               </mat-form-field>
               <mat-form-field class='col-12' appearance='fill'>
                 <mat-label>Mot de passe</mat-label>
@@ -32,13 +41,14 @@
               </mat-form-field>
               <mat-form-field class='col-12' appearance='fill'>
                 <mat-label>Confirmation du mot de passe</mat-label>
-                <input matInput type='password' placeholder='Confirmation du mot de passe' formControlName='confirmPassword'>
+                <input matInput type='password' placeholder='Confirmation du mot de passe'
+                       formControlName='confirmPassword'>
               </mat-form-field>
               <mat-error *ngIf='form.hasError("mismatch")'>Les mots de passe ne correspondent pas</mat-error>
             </div>
           </mat-card-content>
           <mat-card-actions [align]='"end"'>
-            <button mat-raised-button color='accent' [disabled]='form.invalid'  (click)='onRegisterClick()'>S'inscrire
+            <button mat-raised-button color='accent' [disabled]='form.invalid' (click)='onRegisterClick()'>S'inscrire
             </button>
           </mat-card-actions>
         </mat-card>

@@ -2,7 +2,12 @@ import { environment as env } from '../../../environments/environment';
 
 export const API_RESOURCE_URI = {
   // Auth
-  LOGIN: `${env.apiUrl}/auth/login`,
-  REGISTER: `${env.apiUrl}/auth/register`,
-  LOGOUT: `${env.apiUrl}/auth/logout`
+  AUTH_SIGNIN: `${env.apiUrl}/auth/signin`,
+  AUTH_SIGNUP: `${env.apiUrl}/auth/signup`,
+  AUTH_SIGNOUT: `${env.apiUrl}/auth/signout`,
+  AUTH_ME: `${env.apiUrl}/auth/me`,
+  GROUPS: `${env.apiUrl}/groups`,
+  PROJECTS: `${env.apiUrl}/projects`,
+  PROJECTS_OWNED: `${env.apiUrl}/projects/owned`,
+  MESSAGES: `${env.apiUrl}/messages`
 };
