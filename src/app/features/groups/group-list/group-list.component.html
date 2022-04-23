@@ -1,1 +1,30 @@
-<p>group-list works!</p>
+<div class='container'>
+  <div class='row'>
+    <div class='col-sm-6 col-12'>
+      <h1 rtl class='main-heading'>{{groupsLinks.groupList.name}}</h1>
+    </div>
+    <div class='col-sm-6 col-12 d-flex align-items-sm-start justify-content-sm-end mb-2'>
+      <button mat-raised-button color='accent' [routerLink]='[groupsLinks.newGroup.path]'>
+        <mat-icon>add</mat-icon>
+        Nouveau groupe
+      </button>
+    </div>
+  </div>
+  <div class='row align-items-start'>
+    <div *ngFor='let group of groupList$ | async' class='col-md-6 col-lg-4'>
+      <mat-card>
+        <mat-card-title>
+          <a [routerLink]=[groupsLinks.viewGroup.path,group.id]>{{group.name}}</a>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <strong>Créé le</strong> : {{group.createdAt | date : 'longDate'}}
+        </mat-card-subtitle>
+        <mat-card-content>
+          <ul>
+            <li><strong>Propriétaire</strong> : {{group.ownerId}}</li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
