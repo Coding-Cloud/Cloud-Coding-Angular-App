@@ -1,10 +1,10 @@
 import { EntityState } from '@ngrx/entity';
-import { ProjectLanguage, ProjectVisibility } from './project.model';
 
 export interface Group {
   id: string;
   name: string;
   ownerId: string;
+  ownerUsername: string;
   conversationId: string;
   createdWithProject: boolean;
   createdAt: Date;
