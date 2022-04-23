@@ -17,6 +17,12 @@ export interface GroupForm {
   name: string;
 }
 
+export interface GroupMembership {
+  userId: string;
+  groupId: string;
+  canEdit: boolean;
+}
+
 export const emptyGroup: Group = {
   id: '',
   name: '',
@@ -32,5 +38,6 @@ export type GroupsState = EntityState<Group>;
 export type GroupState = {
   group: Group;
   messages: Message[];
+  members: GroupMembership[];
   editMode: boolean;
 };

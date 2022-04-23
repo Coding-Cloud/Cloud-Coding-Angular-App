@@ -19,6 +19,8 @@ import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-d
 import { groupsNavigation } from '../../groups/groups-routing.module';
 import { navigation } from '../../../app-routing.module';
 import { Group } from '../../../shared/models/group.model';
+import { User } from '../../../shared/models/user.model';
+import { selectUser } from '../../../core/auth/auth.selectors';
 
 @Component({
   selector: 'cc-project-view',
@@ -36,6 +38,7 @@ export class ProjectViewComponent implements OnInit {
   project$: Observable<Project>;
   group$: Observable<Group>;
   editMode$: Observable<boolean>;
+  currentUser$: Observable<User> | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +49,7 @@ export class ProjectViewComponent implements OnInit {
     this.group$ = this.store.pipe(select(selectCurrentProjectGroup));
     this.project$.subscribe((project) => (this.groupId = project.groupId));
     this.editMode$ = this.store.pipe(select(selectCurrentProjectIsEditMode));
+    this.currentUser$ = this.store.pipe(select(selectUser));
   }
 
   ngOnInit(): void {

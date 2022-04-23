@@ -7,6 +7,9 @@ import {
   actionGroupsDeleteOne,
   actionGroupsDeleteOneError,
   actionGroupsDeleteOneSuccess,
+  actionGroupsGetMember,
+  actionGroupsGetMemberError,
+  actionGroupsGetMemberSuccess,
   actionGroupsGetOne,
   actionGroupsGetOneError,
   actionGroupsGetOneProjectsError,
@@ -20,7 +23,7 @@ import {
   actionGroupsUpdateOneSuccess
 } from './groups.actions';
 import { Store } from '@ngrx/store';
-import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
+import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
 import { navigation } from '../../../app-routing.module';
 import { of } from 'rxjs';
 import { AppState } from '../../../core/core.state';
@@ -28,6 +31,7 @@ import { GroupsService } from '../groups.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { ProjectsService } from '../../projects/projects.service';
+import { UsersService } from '../../users/users.service';
 
 @Injectable()
 export class GroupsEffects {
@@ -103,6 +107,49 @@ export class GroupsEffects {
             )
           )
         )
+      )
+    )
+  );
+
+  getOneMembers = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionGroupsGetOne),
+      exhaustMap((action) =>
+        this.groupsService.getGroupMemberships(action.id).pipe(
+          switchMap((memberships) =>
+            memberships.map((membership) =>
+              actionGroupsGetMemberSuccess({
+                member: {
+                  userId: membership.userId,
+                  canEdit: membership.canEdit,
+                  groupId: membership.groupId
+                }
+              })
+            )
+          ),
+          catchError((error) =>
+            of(
+              actionGroupsGetOneProjectsError({
+                message: error.message.toString()
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  getOneSuccess = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionGroupsGetOneSuccess),
+      map((action) =>
+        actionGroupsGetMemberSuccess({
+          member: {
+            userId: action.group.ownerId,
+            canEdit: true,
+            groupId: action.group.id
+          }
+        })
       )
     )
   );
@@ -240,6 +287,7 @@ export class GroupsEffects {
     private store: Store<AppState>,
     private groupsService: GroupsService,
     private projectsService: ProjectsService,
+    private usersService: UsersService,
     private notificationService: NotificationService,
     private router: Router
   ) {}

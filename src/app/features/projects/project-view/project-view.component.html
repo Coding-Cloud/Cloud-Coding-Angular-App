@@ -21,7 +21,7 @@
             <li><strong>Créé le</strong> : {{(project$ | async)?.createdAt | date : 'longDate'}}</li>
           </ul>
         </mat-card-content>
-        <mat-card-actions align='end'>
+        <mat-card-actions align='end' *ngIf='(project$ | async)?.creatorId === (currentUser$ | async)?.id'>
           <button mat-raised-button color='primary' (click)='onEditSwitch()'>
             <mat-icon>edit</mat-icon>
             Modifier

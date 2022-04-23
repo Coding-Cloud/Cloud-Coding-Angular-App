@@ -12,12 +12,12 @@
           <mat-card *ngIf='!(editMode$ | async)'>
             <mat-card-content>
               <ul>
-                <li><strong>Propriétaire</strong> : {{(group$ | async)?.ownerId}}</li>
+                <li><strong>Propriétaire</strong> : {{((group$ | async)?.ownerId | username) | async}}</li>
                 <li><strong>Projets associés</strong> : {{(group$ | async)?.projects?.length ?? 0}}</li>
                 <li><strong>Créé le</strong> : {{(group$ | async)?.createdAt | date : 'longDate'}}</li>
               </ul>
             </mat-card-content>
-            <mat-card-actions align='end'>
+            <mat-card-actions align='end' *ngIf='(group$ | async)?.ownerId === (currentUser$ | async)?.id'>
               <button mat-raised-button color='primary' (click)='onEditSwitch()'>
                 <mat-icon>edit</mat-icon>
                 Modifier
@@ -50,6 +50,22 @@
         </div>
       </div>
     </div>
-    <div class='col-md-12 col-lg-6'></div>
+    <div class='col-md-12 col-lg-6'>
+      <div class='row'>
+        <div class='col-12'>
+          <h3 class='main-heading'>Membres</h3>
+        </div>
+        <div class='col-sm-6 col-md-4 col-12' *ngFor='let member of (members$ | async)'>
+          <mat-card>
+            <mat-card-title>
+              <a href='#'>{{member.userId | username | async}}</a>
+            </mat-card-title>
+            <mat-card-subtitle>
+              <strong>Peut modifier</strong> : {{member.canEdit | booleanYesNo}}
+            </mat-card-subtitle>
+          </mat-card>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
