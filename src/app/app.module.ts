@@ -9,6 +9,7 @@ import { AppComponent } from './app/app.component';
 import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor';
 import { CodeEditorComponent } from './features/code-editor/components/code-editor/code-editor.component';
 import { NgxMonacoTreeModule } from './features/monaco-tree/ngx-monaco-tree.module';
+import { TerminalComponent } from './features/code-editor/components/terminal/terminal.component';
 
 const monacoConfig: NgxMonacoEditorConfig = {
   /* defaultOptions: { scrollBeyondLastLine: false }, // pass default options to be used*/
@@ -38,7 +39,7 @@ const monacoConfig: NgxMonacoEditorConfig = {
     MonacoEditorModule.forRoot(monacoConfig),
     NgxMonacoTreeModule
   ],
-  declarations: [AppComponent, CodeEditorComponent],
+  declarations: [AppComponent, CodeEditorComponent, TerminalComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

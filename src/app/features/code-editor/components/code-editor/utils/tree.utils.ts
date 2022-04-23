@@ -15,12 +15,8 @@ export class TreeUtils {
     const files = Object.entries(project.appFiles)
       .filter((folder) => folder[1].type === 'file')
       .sort();
-    const content: MonacoTreeElement = {
-      fullPath: baseProjectPath + 'src',
-      name: 'src',
-      content: []
-    };
-    let tree: MonacoTreeElement[] = [content];
+
+    const tree: MonacoTreeElement[] = [];
     for (const folder of folders) {
       const fileReplace = folder[0].replace(baseProjectPath, '');
       const folderSplit = fileReplace.split('/');
@@ -47,14 +43,19 @@ export class TreeUtils {
       const fileSplit = fileReplace.split('/');
       const directory = fileSplit[0];
       const directoryFind = tree.find((element) => element.name === directory);
-      const dirToAdd = this.getReferenceDirectoryFromActiveDirectory(
-        fileSplit.slice(1),
-        directoryFind
-      );
-      dirToAdd?.content?.push({
+      const elementToAdd = {
         fullPath: file[0],
         name: fileSplit[fileSplit.length - 1]
-      });
+      };
+      if (fileSplit.length === 1) {
+        tree.push(elementToAdd);
+      } else {
+        const dirToAdd = this.getReferenceDirectoryFromActiveDirectory(
+          fileSplit.slice(1),
+          directoryFind
+        );
+        dirToAdd?.content?.push(elementToAdd);
+      }
     }
     return tree;
   }
@@ -203,7 +204,7 @@ export class TreeUtils {
       (element) => element.name === pathSplit[0]
     );
 
-    let folder: {
+    const folder: {
       name: string;
       fullPath?: string;
       content?: any[] | undefined;

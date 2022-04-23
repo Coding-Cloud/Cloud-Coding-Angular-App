@@ -62,6 +62,14 @@ export class CodeSocketService {
     });
   }
 
+  listenLogsChanged(): Observable<string> {
+    return new Observable((subscriber) => {
+      this.socket?.on('logChanged', (data) => {
+        subscriber.next(data);
+      });
+    });
+  }
+
   renameProjectFolder(renameProjectFolderDTO: RenameProjectFolderDTO): void {
     this.socket?.emit('renameFolder', renameProjectFolderDTO);
   }

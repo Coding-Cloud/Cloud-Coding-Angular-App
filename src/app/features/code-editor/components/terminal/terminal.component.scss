@@ -1,0 +1,20 @@
+#terminal-container {
+  background-color: black;
+  color: white;
+  padding-bottom: 10px;
+  padding-left: 2px;
+  min-height: 35%;
+  max-height: 35%;
+  overflow: scroll;
+}
+
+#terminal-name {
+  width: 100%;
+  padding-bottom: 2px;
+  background-color: gray;
+  font-size: 0.7rem;
+}
+
+#terminal-text {
+  margin-top: 14px;
+}

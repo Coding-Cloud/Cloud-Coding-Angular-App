@@ -41,6 +41,7 @@ export class CodeEditorComponent implements OnInit {
   baseUrlPath = 'http://localhost:8000';
   baseUrlPathTrust: SafeResourceUrl;
   currentFile = '';
+  codeRunnerSysOut = '';
 
   tree: MonacoTreeElement[] = [];
 
@@ -82,9 +83,7 @@ export class CodeEditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProjectService
-      .getProject(
-        '/Users/remy/Documents/ESGI/annee_4/projet_annuel/angular-copy-file'
-      )
+      .getProject(this.BASE_PROJECT_PATH)
       .subscribe((project: Project) => {
         this.currentProject = copyObject<Project>(project);
         this.socketProject = copyObject<Project>(project);
@@ -146,13 +145,22 @@ export class CodeEditorComponent implements OnInit {
         this.socketProject = copyObject<Project>(this.currentProject);
         this.cd.markForCheck();
       });
+
+    this.codeSocketService.listenLogsChanged().subscribe((message: string) => {
+      console.log(message);
+      this.codeRunnerSysOut = message;
+      this.cd.markForCheck();
+    });
   }
 
   initializeTreeFiles(): void {
+    console.log('tout se passse bien avant le tree files');
+
     this.tree = TreeUtils.intiateTreeFromProject(
       this.BASE_PROJECT_PATH,
       this.currentProject
     );
+    console.log('tout se passe plus bien après  ');
     this.cd.markForCheck();
   }
 
@@ -181,6 +189,7 @@ export class CodeEditorComponent implements OnInit {
       } else {
         this.editorOptions = {
           theme: 'vs-dark',
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           language: ExtensionToLanguage.get('default')!
         };
       }
@@ -279,6 +288,7 @@ export class CodeEditorComponent implements OnInit {
     return editProjectsDTO;
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   handleClickContextMenu(event: ContextMenuAction): void {
     if (event.action === 'delete_file') {
       this.deleteFolder({ path: event.name });
@@ -311,6 +321,7 @@ export class CodeEditorComponent implements OnInit {
     }, 500);
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   handleCreateFile(event: { path: string; nameFile: string }) {
     const nameComplete = event.path + '/' + event.nameFile;
     const editsProjectDTO: EditProjectDTO[] = [
@@ -343,6 +354,7 @@ export class CodeEditorComponent implements OnInit {
     this.socketProject = copyObject<Project>(this.currentProject);
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   handleCreateDir(event: { path: string; nameDir: string }) {
     const nameComplete = event.path + '/' + event.nameDir;
     const editsProjectDTO: EditProjectDTO[] = [
@@ -375,6 +387,7 @@ export class CodeEditorComponent implements OnInit {
     this.socketProject = copyObject<Project>(this.currentProject);
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   handleRenameFolder(event: { path: string; newName: string }) {
     const pathSplit = event.path.split('/');
     pathSplit.pop();
@@ -401,6 +414,7 @@ export class CodeEditorComponent implements OnInit {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   deleteFolder(event: { path: string }) {
     TreeUtils.deleteFolder(
       this.BASE_PROJECT_PATH + event.path,

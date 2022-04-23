@@ -13,6 +13,7 @@
   border: 2px solid black;
   width: 30%;
   box-sizing: border-box;
+  height: 500px;
 }
 
 .editor {
@@ -30,4 +31,9 @@
 
 .button__tree {
   margin-top: 600px;
+}
+
+#terminal {
+  width: 50%;
+  height: 30%;
 }
