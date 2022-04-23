@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RenameProjectFolderDTO } from './dto/rename-project-folder-dto';
+import { environment as env } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UpdateProjectService {
-  private baseUrl = 'http://localhost:3000/api/diff';
+  private baseUrl = `${env.apiUrlBase}/api/diff`;
 
   constructor(private http: HttpClient) {}
 

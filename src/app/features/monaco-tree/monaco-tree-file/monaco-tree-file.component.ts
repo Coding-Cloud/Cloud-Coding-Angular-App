@@ -66,12 +66,15 @@ export class MonacoTreeFileComponent implements OnInit {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   contextMenuDir: Array<ContextMenuElementSeparator | ContextMenuElementText> =
     [
       {
         type: 'element',
         name: 'New File',
         action: () => {
+          console.log('on clique sur le contexte menu new file');
+
           this.contextMenuClick.emit({
             action: 'new_file',
             name: this.name,
@@ -119,6 +122,7 @@ export class MonacoTreeFileComponent implements OnInit {
       }
     ];
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   contextMenuFile: Array<ContextMenuElementSeparator | ContextMenuElementText> =
     [
       {
@@ -208,8 +212,8 @@ export class MonacoTreeFileComponent implements OnInit {
   handleCreateKeyUp(event: any, row: any) {
     if (event.key === 'Enter') {
       const isFile = event.target.value.includes('.');
+      this.edited = false;
       if (isFile === true) {
-        console.log("j'emit");
         this.createFile.emit({
           path: this.row.fullPath,
           nameFile: event.target.value
@@ -227,6 +231,7 @@ export class MonacoTreeFileComponent implements OnInit {
 
   handleRenameKeyUp(event: any) {
     if (event.key === 'Enter') {
+      this.rename = false;
       this.renameFolder.emit({
         path: this.row.fullPath,
         newName: event.target.value

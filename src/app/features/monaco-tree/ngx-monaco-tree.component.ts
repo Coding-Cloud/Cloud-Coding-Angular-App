@@ -1,36 +1,20 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MonacoTreeElement } from './ngx-monaco-tree.type';
 import { ContextMenuAction } from './monaco-tree-file/monaco-tree-file.type';
+import {
+  ContextMenuElementSeparator,
+  ContextMenuElementText
+} from './monaco-tree-context-menu/monaco-tree-context-menu.type';
 
 @Component({
   selector: 'monaco-tree',
-  template: `
-    <div
-      [style]="'width:' + width + ';height:' + height"
-      [class]="'monaco-tree ' + theme"
-    >
-      <monaco-tree-file
-        (contextMenuClick)="handleClickContextMenu($event)"
-        (clickFile)="handleClickFile($event)"
-        (createFile)="handleCreateFile($event)"
-        (createDir)="handleCreateDir($event)"
-        (renameFolder)="handleRenameFolder($event)"
-        [theme]="theme"
-        *ngFor="let row of tree"
-        [name]="row.name"
-        [content]="row.content"
-        [depth]="0"
-        [hide]="false"
-      ></monaco-tree-file>
-    </div>
-  `,
+  templateUrl: './ngx-monaco-tree.component.html',
   styleUrls: ['./ngx-monaco-tree.component.scss']
 })
 export class NgxMonacoTreeComponent {
   @Input() theme: 'vs-dark' | 'vs-light' = 'vs-dark';
   @Input() tree: MonacoTreeElement[] = [];
   @Input() currentFile: string = '';
-
   @Input() width = '300px';
   @Input() height = '500px';
 
@@ -63,6 +47,8 @@ export class NgxMonacoTreeComponent {
   }
 
   handleClickContextMenu(event: ContextMenuAction) {
+    console.log('je devrais passer là si on passe dans le handle');
+
     this.clickContextMenu.emit(event);
   }
 

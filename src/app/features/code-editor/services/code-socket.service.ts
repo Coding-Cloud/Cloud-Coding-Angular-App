@@ -6,6 +6,7 @@ import { RenameProjectFolderDTO } from './dto/rename-project-folder-dto';
 import { RenameProjectFolderResource } from './resource/rename-project-folder-resource';
 import { DeleteProjectFolderResource } from './resource/delete-project-folder-resource';
 import { DeleteProjectFolderDTO } from './dto/delete-project-folder-dto';
+import { environment as env } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ import { DeleteProjectFolderDTO } from './dto/delete-project-folder-dto';
 export class CodeSocketService {
   socket: Socket | undefined;
 
-  readonly uri: string = 'http://localhost:3000';
+  readonly uri: string = env.socketUrl;
 
   constructor() {}
 

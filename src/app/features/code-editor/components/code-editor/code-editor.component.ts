@@ -36,7 +36,7 @@ export class CodeEditorComponent implements OnInit {
   editorOptions = { theme: 'vs-dark', language: 'typescript' };
   code = '';
   readonly BASE_PROJECT_PATH =
-    '/Users/remy/Documents/ESGI/annee_4/projet_annuel/angular-copy-file/';
+    '/Users/remy/Documents/ESGI/annee_4/projet_annuel/project_test/app-jean/';
   //have to be get from back
   baseUrlPath = 'http://localhost:8000';
   baseUrlPathTrust: SafeResourceUrl;
@@ -87,7 +87,6 @@ export class CodeEditorComponent implements OnInit {
       .subscribe((project: Project) => {
         this.currentProject = copyObject<Project>(project);
         this.socketProject = copyObject<Project>(project);
-        console.log(this.currentProject);
 
         this.initializeTreeFiles();
       });
@@ -147,20 +146,16 @@ export class CodeEditorComponent implements OnInit {
       });
 
     this.codeSocketService.listenLogsChanged().subscribe((message: string) => {
-      console.log(message);
       this.codeRunnerSysOut = message;
       this.cd.markForCheck();
     });
   }
 
   initializeTreeFiles(): void {
-    console.log('tout se passse bien avant le tree files');
-
     this.tree = TreeUtils.intiateTreeFromProject(
       this.BASE_PROJECT_PATH,
       this.currentProject
     );
-    console.log('tout se passe plus bien après  ');
     this.cd.markForCheck();
   }
 
@@ -211,9 +206,7 @@ export class CodeEditorComponent implements OnInit {
       folderStatus: FolderStatus.MODIFIED
     };
     this.hardProjectModification.appFiles[this.currentFile] = newValue;
-    this.socketProjectModification.appFiles[this.currentFile] = {
-      ...this.hardProjectModification.appFiles[this.currentFile]
-    };
+    this.socketProjectModification.appFiles[this.currentFile] = newValue;
 
     this.currentProject.appFiles[this.currentFile] = newValue;
   }
@@ -252,6 +245,7 @@ export class CodeEditorComponent implements OnInit {
           editsProjectDTO
         );
         this.socketProject = copyObject<Project>(this.currentProject);
+        this.socketProjectModification.appFiles = {};
       });
   }
 
@@ -290,6 +284,8 @@ export class CodeEditorComponent implements OnInit {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   handleClickContextMenu(event: ContextMenuAction): void {
+    console.log("je suis l'event");
+
     if (event.action === 'delete_file') {
       this.deleteFolder({ path: event.name });
     }
@@ -304,6 +300,8 @@ export class CodeEditorComponent implements OnInit {
     dir.content?.forEach((element) => {
       if (element.name === lastName) {
         if (event.action === 'new_directory' || event.action === 'new_file') {
+          console.log('on met element à edited');
+          console.log(element);
           element.edited = true;
           this.makeInputFocusedAfterOneFocused('inputCreate');
         } else if (event.action === 'rename_file') {
@@ -379,7 +377,6 @@ export class CodeEditorComponent implements OnInit {
       event.path,
       event.nameDir
     );
-    console.log(editsProjectDTO);
     this.codeSocketService.sendProjectModification(
       'editProject',
       editsProjectDTO
@@ -399,8 +396,11 @@ export class CodeEditorComponent implements OnInit {
       this.currentProject
     );
     this.socketProject = copyObject<Project>(this.currentProject);
-    console.log('current project');
+    console.log('dans le rename');
     console.log(this.currentProject);
+    console.log(this.socketProject);
+    console.log(this.socketProjectModification);
+    console.log(this.hardProjectModification);
 
     TreeUtils.renameTreeFolder(
       this.BASE_PROJECT_PATH,
