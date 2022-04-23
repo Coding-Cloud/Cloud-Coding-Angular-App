@@ -8,6 +8,14 @@ export const groupsNavigation: NavigationLinks = {
   groupList: {
     path: '',
     name: 'Groupes'
+  },
+  newGroup: {
+    path: 'new',
+    name: 'Nouveau groupe'
+  },
+  viewGroup: {
+    path: 'view',
+    name: 'Group'
   }
 };
 
