@@ -8,7 +8,9 @@ export interface Project {
   status: ProjectStatus;
   globalVisibility: ProjectVisibility;
   creatorId: string;
+  creatorUsername?: string;
   groupId: string;
+  groupName?: string;
   createdAt: Date;
 }
 
@@ -16,6 +18,7 @@ export interface ProjectForm {
   name: string;
   language: ProjectLanguage;
   globalVisibility: ProjectVisibility;
+  groupId?: string;
 }
 
 export enum ProjectLanguage {

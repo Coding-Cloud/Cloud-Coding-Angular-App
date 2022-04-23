@@ -31,7 +31,6 @@ export class ProjectAddComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit() {
-    console.group(this.form.value);
     this.store.dispatch(
       actionProjectsAddOne({
         project: {
