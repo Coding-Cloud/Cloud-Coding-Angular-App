@@ -6,6 +6,7 @@ import { AppState } from '../../../core/core.state';
 import { selectAllProjects } from '../store/projects.selectors';
 import { projectsNavigation } from '../projects-routing.module';
 import { actionProjectsRetrieveAll } from '../store/projects.actions';
+import { navigation } from 'src/app/app-routing.module';
 
 @Component({
   selector: 'cc-projects',
@@ -17,6 +18,8 @@ export class ProjectListComponent implements OnInit {
   projectsLinks = projectsNavigation;
 
   projectList$: Observable<Project[]> | undefined;
+
+  navigation = navigation;
 
   constructor(private store: Store<AppState>) {}
 

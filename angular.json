@@ -24,8 +24,25 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles-app-loading.scss", "src/styles.scss"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/monaco-editor",
+                "output": "assets/monaco-editor"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/ngx-monaco-tree/assets",
+                "output": "/assets/"
+              }
+            ],
+            "styles": [
+              "src/styles-app-loading.scss",
+              "src/styles.scss",
+              "node_modules/@vscode/codicons/dist/codicon.css"
+            ],
             "scripts": []
           },
           "configurations": {

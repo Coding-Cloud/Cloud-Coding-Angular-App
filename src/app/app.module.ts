@@ -23,8 +23,8 @@ registerLocaleData(localeFr);
     // app
     AppRoutingModule
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'fr-FR' }],
   declarations: [AppComponent],
+  providers: [{ provide: LOCALE_ID, useValue: 'fr-FR' }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
