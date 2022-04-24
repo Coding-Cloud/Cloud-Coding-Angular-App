@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ReducerObservable, select, Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../core/core.state';
 import { MatDialog } from '@angular/material/dialog';
 import {
@@ -13,13 +13,15 @@ import { Group, GroupMembership } from '../../../shared/models/group.model';
 import {
   selectCurrentGroup,
   selectCurrentGroupIsEditMode,
-  selectCurrentGroupMembers
+  selectCurrentGroupMembers,
+  selectCurrentGroupMessages
 } from '../store/groups.selectors';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 import { navigation } from '../../../app-routing.module';
 import { projectsNavigation } from '../../projects/projects-routing.module';
 import { User } from '../../../shared/models/user.model';
 import { selectUser } from '../../../core/auth/auth.selectors';
+import { Message } from '../../../shared/models/message.model';
 
 @Component({
   selector: 'cc-group-view',
@@ -32,7 +34,8 @@ export class GroupViewComponent implements OnInit {
   group$: Observable<Group>;
   members$: Observable<GroupMembership[]>;
   editMode$: Observable<boolean>;
-  currentUser$: Observable<User> | undefined;
+  currentUser$: Observable<User>;
+  messages$: Observable<Message[]>;
 
   projectsLinks = projectsNavigation;
   rootLinks = navigation;
@@ -46,6 +49,7 @@ export class GroupViewComponent implements OnInit {
     this.group$ = this.store.pipe(select(selectCurrentGroup));
     this.members$ = this.store.pipe(select(selectCurrentGroupMembers));
     this.editMode$ = this.store.pipe(select(selectCurrentGroupIsEditMode));
+    this.messages$ = this.store.pipe(select(selectCurrentGroupMessages));
     this.currentUser$ = this.store.pipe(select(selectUser));
   }
 

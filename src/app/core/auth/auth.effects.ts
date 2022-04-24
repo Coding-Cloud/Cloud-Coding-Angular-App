@@ -19,6 +19,8 @@ import {
   authLoginError,
   authLoginSuccess,
   authLogout,
+  authLogoutError,
+  authLogoutSuccess,
   authRegister,
   authRegisterError,
   authRegisterSuccess
@@ -147,6 +149,22 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(authLogout),
+        exhaustMap(() =>
+          this.authService.logout().pipe(
+            map(() => authLogoutSuccess()),
+            catchError((error) =>
+              of(authLogoutError({ message: error.message }))
+            )
+          )
+        )
+      ),
+    { dispatch: false }
+  );
+
+  logoutSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authLogoutSuccess),
         tap(() => {
           this.router.navigate([navigation.home.path]).then(() => {
             this.notificationService.warn('Déconnecté');

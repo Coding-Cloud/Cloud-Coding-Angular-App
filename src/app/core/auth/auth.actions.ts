@@ -23,6 +23,11 @@ export const authGetMeError = createAction(
   props<{ message: string }>()
 );
 export const authLogout = createAction('[Auth] Logout');
+export const authLogoutSuccess = createAction('[Auth] Logout success');
+export const authLogoutError = createAction(
+  '[Auth] Logout error',
+  props<{ message: string }>()
+);
 
 export const authRegister = createAction(
   '[Auth] Register',
