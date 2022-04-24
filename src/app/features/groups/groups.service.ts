@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_RESOURCE_URI } from '../../shared/api-resource-uri/api-resource-uri';
 import { Observable } from 'rxjs';
-import { Group, GroupForm } from '../../shared/models/group.model';
+import {
+  Group,
+  GroupForm,
+  GroupMembership
+} from '../../shared/models/group.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +38,11 @@ export class GroupsService {
 
   deleteGroup(groupId: string): Observable<any> {
     return this.http.delete<any>(API_RESOURCE_URI.GROUPS + '/' + groupId);
+  }
+
+  getGroupMemberships(groupId: string): Observable<GroupMembership[]> {
+    return this.http.get<GroupMembership[]>(
+      API_RESOURCE_URI.GROUP_MEMBERSHIP_GROUP_ID + '/' + groupId
+    );
   }
 }

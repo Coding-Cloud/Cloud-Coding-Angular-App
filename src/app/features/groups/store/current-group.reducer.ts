@@ -1,5 +1,6 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import {
+  actionGroupsGetMemberSuccess,
   actionGroupsGetOne,
   actionGroupsGetOneProjectsSuccess,
   actionGroupsGetOneSuccess,
@@ -11,6 +12,7 @@ import { emptyGroup, GroupState } from '../../../shared/models/group.model';
 export const initialState: GroupState = {
   group: emptyGroup,
   messages: [],
+  members: [],
   editMode: false
 };
 
@@ -41,6 +43,10 @@ const reducer = createReducer(
       ...state.group,
       projects: payload.projects
     }
+  })),
+  on(actionGroupsGetMemberSuccess, (state, payload) => ({
+    ...state,
+    members: [...state.members, payload.member]
   }))
 );
 

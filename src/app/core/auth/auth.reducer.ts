@@ -1,5 +1,10 @@
 import { AuthState } from '../../shared/models/auth.model';
-import { authGetMeSuccess, authLoginSuccess, authLogout } from './auth.actions';
+import {
+  authGetMeSuccess,
+  authLoginSuccess,
+  authLogout,
+  authLogoutSuccess
+} from './auth.actions';
 import { Action, createReducer, on } from '@ngrx/store';
 import { emptyUser } from '../../shared/models/user.model';
 
@@ -16,7 +21,7 @@ const reducer = createReducer(
     isAuthenticated: true,
     token: payload.token
   })),
-  on(authLogout, () => ({ ...initialState })),
+  on(authLogoutSuccess, () => ({ ...initialState })),
   on(authGetMeSuccess, (state, payload) => ({
     ...state,
     user: payload.user

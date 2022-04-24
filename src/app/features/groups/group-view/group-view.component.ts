@@ -9,14 +9,19 @@ import {
   actionGroupSwitchEditMode
 } from '../store/groups.actions';
 import { Observable } from 'rxjs';
-import { Group } from '../../../shared/models/group.model';
+import { Group, GroupMembership } from '../../../shared/models/group.model';
 import {
   selectCurrentGroup,
-  selectCurrentGroupIsEditMode
+  selectCurrentGroupIsEditMode,
+  selectCurrentGroupMembers,
+  selectCurrentGroupMessages
 } from '../store/groups.selectors';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 import { navigation } from '../../../app-routing.module';
 import { projectsNavigation } from '../../projects/projects-routing.module';
+import { User } from '../../../shared/models/user.model';
+import { selectUser } from '../../../core/auth/auth.selectors';
+import { Message } from '../../../shared/models/message.model';
 
 @Component({
   selector: 'cc-group-view',
@@ -27,7 +32,10 @@ import { projectsNavigation } from '../../projects/projects-routing.module';
 export class GroupViewComponent implements OnInit {
   groupId = '';
   group$: Observable<Group>;
+  members$: Observable<GroupMembership[]>;
   editMode$: Observable<boolean>;
+  currentUser$: Observable<User>;
+  messages$: Observable<Message[]>;
 
   projectsLinks = projectsNavigation;
   rootLinks = navigation;
@@ -39,7 +47,10 @@ export class GroupViewComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this.group$ = this.store.pipe(select(selectCurrentGroup));
+    this.members$ = this.store.pipe(select(selectCurrentGroupMembers));
     this.editMode$ = this.store.pipe(select(selectCurrentGroupIsEditMode));
+    this.messages$ = this.store.pipe(select(selectCurrentGroupMessages));
+    this.currentUser$ = this.store.pipe(select(selectUser));
   }
 
   ngOnInit(): void {

@@ -22,6 +22,14 @@ export const selectCurrentGroupIsEditMode = createSelector(
   selectCurrentGroupState,
   (state: GroupState) => state.editMode
 );
+export const selectCurrentGroupMembers = createSelector(
+  selectCurrentGroupState,
+  (state: GroupState) => state.members
+);
+export const selectCurrentGroupMessages = createSelector(
+  selectCurrentGroupState,
+  (state: GroupState) => state.messages
+);
 
 export const selectAllGroups = createSelector(selectGroups, selectAll);
 export const selectGroupsEntities = createSelector(
