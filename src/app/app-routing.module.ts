@@ -44,7 +44,7 @@ export const navigation: NavigationLinks = {
     path: 'auth'
   },
   codeEditor: {
-    name: 'CodeEditor',
+    name: 'Code Editor',
     path: 'code-editor'
   }
 };
@@ -100,7 +100,10 @@ const routes: Routes = [
   },
   {
     path: navigation.codeEditor.path,
-    children: codeEditorRoutes
+    loadChildren: () =>
+      import('./features/code-editor/code-editor.module').then(
+        (m) => m.CodeEditorModule
+      )
   },
   {
     path: '**',

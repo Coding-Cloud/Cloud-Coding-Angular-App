@@ -10,7 +10,7 @@ export const environment = {
   envName: 'LOCAL',
   production: false,
   test: false,
-  apiUrl: 'http://localhost:8080/api',
+  apiUrl: 'http://localhost:3000',
   socketUrl: 'http://localhost:3000',
   apiUrlBase: 'http://localhost:3000',
   versions: {

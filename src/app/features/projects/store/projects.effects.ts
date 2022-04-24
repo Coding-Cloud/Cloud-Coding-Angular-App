@@ -123,7 +123,9 @@ export class ProjectsEffects {
       ofType(actionProjectsAddOne),
       exhaustMap((action) =>
         this.projectsService.addProject(action.project).pipe(
-          map(() => actionProjectsAddOneSuccess()),
+          map((projectId: string) =>
+            actionProjectsAddOneSuccess({ projectId })
+          ),
           catchError((error) =>
             of(actionProjectsAddOneError({ message: error.message }))
           )
@@ -136,10 +138,14 @@ export class ProjectsEffects {
     () =>
       this.actions$.pipe(
         ofType(actionProjectsAddOneSuccess),
-        tap(() => {
-          this.router.navigate([navigation.projets.path]).then(() => {
-            this.notificationService.success('Projet ajouté');
-          });
+        tap((action: { projectId: string }) => {
+          this.router
+            .navigate([
+              navigation.codeEditor.path + '/project/' + action.projectId
+            ])
+            .then(() => {
+              this.notificationService.success('Projet ajouté');
+            });
         })
       ),
     { dispatch: false }

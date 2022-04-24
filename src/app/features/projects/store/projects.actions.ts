@@ -50,7 +50,8 @@ export const actionProjectsAddOne = createAction(
   props<{ project: ProjectForm }>()
 );
 export const actionProjectsAddOneSuccess = createAction(
-  '[Projects] Add One Success'
+  '[Projects] Add One Success',
+  props<{ projectId: string }>()
 );
 
 export const actionProjectsAddOneError = createAction(

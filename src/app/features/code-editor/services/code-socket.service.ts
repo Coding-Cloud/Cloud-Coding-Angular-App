@@ -22,11 +22,11 @@ export class CodeSocketService {
     this.socket?.emit('disconnectCustom');
   }
 
-  connect(roomId?: number, sessionToken?: string): void {
+  connect(projectId: string): void {
     this.socket = io(this.uri, {
       transports: ['websocket', 'polling', 'flashsocket'],
       query: {
-        projectId: 1
+        projectId
       }
     });
   }

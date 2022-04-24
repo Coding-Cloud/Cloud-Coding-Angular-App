@@ -24,6 +24,7 @@ import { Project } from '../../types/project.interface';
 import { copyObject } from './utils/copy-object.utils';
 import { EditProjectUtils } from './utils/edit-project.utils';
 import { TreeUtils } from './utils/tree.utils';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -36,7 +37,7 @@ export class CodeEditorComponent implements OnInit {
   editorOptions = { theme: 'vs-dark', language: 'typescript' };
   code = '';
   readonly BASE_PROJECT_PATH =
-    '/Users/remy/Documents/ESGI/annee_4/projet_annuel/project_test/app-jean/';
+    '/Users/remy/Documents/ESGI/annee_4/projet_annuel/project_test/';
   //have to be get from back
   baseUrlPath = 'http://localhost:8000';
   baseUrlPathTrust: SafeResourceUrl;
@@ -68,17 +69,22 @@ export class CodeEditorComponent implements OnInit {
 
   destroyKey = new Subject<void>();
 
+  projectId: string;
+
   constructor(
     private updateProjectService: UpdateProjectService,
     private elementRef: ElementRef,
     private getProjectService: GetProjectService,
     private cd: ChangeDetectorRef,
     private codeSocketService: CodeSocketService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private activatedRoute: ActivatedRoute
   ) {
     this.baseUrlPathTrust = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.baseUrlPath
     );
+    this.projectId = this.activatedRoute.snapshot.params.id;
+    this.BASE_PROJECT_PATH += `${this.projectId}/`;
   }
 
   ngOnInit(): void {
@@ -90,7 +96,7 @@ export class CodeEditorComponent implements OnInit {
 
         this.initializeTreeFiles();
       });
-    this.codeSocketService.connect();
+    this.codeSocketService.connect(this.projectId);
     this.codeSocketService
       .listenProjectModification('projectModificationFromContributor')
       .subscribe((editsProjectDTO: EditProjectDTO[]) => {
