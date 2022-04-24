@@ -21,7 +21,7 @@
         </mat-card-subtitle>
         <mat-card-content>
           <ul>
-            <li><strong>Propriétaire</strong> : {{group.ownerId}}</li>
+            <li><strong>Propriétaire</strong> : {{group.ownerId | username | async}}</li>
           </ul>
         </mat-card-content>
       </mat-card>
