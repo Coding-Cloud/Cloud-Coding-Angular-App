@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../core/core.state';
 import { MatDialog } from '@angular/material/dialog';
 import {
-  actionGroupsDeleteOne,
+  actionGroupsDeleteOneOwned,
   actionGroupsGetOne,
   actionGroupSwitchEditMode
 } from '../store/groups.actions';
@@ -67,7 +67,7 @@ export class GroupViewComponent implements OnInit {
     });
     confirmDialog.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.store.dispatch(actionGroupsDeleteOne({ id: this.groupId }));
+        this.store.dispatch(actionGroupsDeleteOneOwned({ id: this.groupId }));
       }
     });
   }

@@ -6,22 +6,44 @@ import {
 } from '../../../shared/models/group.model';
 import { Project } from '../../../shared/models/project.model';
 
-export const actionGroupsUpsertOne = createAction(
-  '[Groups] Upsert One',
+export const actionGroupsUpsertOneOwned = createAction(
+  '[Groups] Upsert One Owned',
   props<{ group: Group }>()
 );
 
-export const actionGroupsRetrieveAll = createAction('[Groups] Retrieve All');
+export const actionGroupsRetrieveAllOwned = createAction(
+  '[Groups] Retrieve All Owned'
+);
 
-export const actionGroupsRetrieveAllSuccess = createAction(
-  '[Groups] Retrieve All Success',
+export const actionGroupsRetrieveAllOwnedSuccess = createAction(
+  '[Groups] Retrieve All Owned Success',
   props<{ groups: Group[] }>()
 );
 
-export const actionGroupsRetrieveAllError = createAction(
-  '[Groups] Retrieve All Error',
+export const actionGroupsRetrieveAllOwnedError = createAction(
+  '[Groups] Retrieve All Owned Error',
   props<{ message: string }>()
 );
+
+export const actionGroupsUpsertOneJoined = createAction(
+  '[Groups] Upsert One Joined',
+  props<{ group: Group }>()
+);
+
+export const actionGroupsRetrieveAllJoined = createAction(
+  '[Groups] Retrieve All Joined'
+);
+
+export const actionGroupsRetrieveAllJoinedSuccess = createAction(
+  '[Groups] Retrieve All Joined Success',
+  props<{ groups: Group[] }>()
+);
+
+export const actionGroupsRetrieveAllJoinedError = createAction(
+  '[Groups] Retrieve All Joined Error',
+  props<{ message: string }>()
+);
+
 export const actionGroupsGetOne = createAction(
   '[Groups] Get One',
   props<{ id: string }>()
@@ -75,7 +97,11 @@ export const actionGroupsAddOneError = createAction(
   props<{ message: string }>()
 );
 
-export const actionGroupsDeleteOne = createAction(
+export const actionGroupsDeleteOneOwned = createAction(
+  '[Groups] Delete One',
+  props<{ id: string }>()
+);
+export const actionGroupsDeleteOneJoined = createAction(
   '[Groups] Delete One',
   props<{ id: string }>()
 );
@@ -88,16 +114,16 @@ export const actionGroupsDeleteOneError = createAction(
   props<{ message: string }>()
 );
 
-export const actionGroupSwitchEditMode = createAction(
-  '[Groups] Switch Edit Mode'
-);
-
-export const actionGroupsUpdateOne = createAction(
+export const actionGroupsUpdateOneOwned = createAction(
   '[Groups] Update One',
   props<{ id: string; group: GroupForm }>()
 );
 
-export const actionGroupsUpdateOneSuccess = createAction(
+export const actionGroupsUpdateOneOwnedSuccess = createAction(
+  '[Groups] Update One Success',
+  props<{ id: string; group: GroupForm }>()
+);
+export const actionGroupsUpdateOneJoinedSuccess = createAction(
   '[Groups] Update One Success',
   props<{ id: string; group: GroupForm }>()
 );
@@ -105,4 +131,8 @@ export const actionGroupsUpdateOneSuccess = createAction(
 export const actionGroupsUpdateOneError = createAction(
   '[Groups] Update One Error',
   props<{ message: string }>()
+);
+
+export const actionGroupSwitchEditMode = createAction(
+  '[Groups] Switch Edit Mode'
 );

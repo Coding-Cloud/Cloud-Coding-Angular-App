@@ -40,7 +40,7 @@ export class AuthEffects {
   persistAuthState = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(authLoginSuccess, authLogout),
+        ofType(authLoginSuccess, authLogoutSuccess, authGetMeError),
         withLatestFrom(this.store.pipe(select(selectAuth))),
         tap(([action, authState]) =>
           this.localStorageService.setItem(AUTH_KEY, { ...authState })
@@ -59,17 +59,6 @@ export class AuthEffects {
         )
       )
     )
-  );
-
-  loginError = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(authLoginError),
-        tap((action) => {
-          this.notificationService.error(action.message);
-        })
-      ),
-    { dispatch: false }
   );
 
   loginSuccess = createEffect(() =>
@@ -96,17 +85,6 @@ export class AuthEffects {
     )
   );
 
-  getMeError = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(authGetMeError),
-        tap((action) => {
-          this.notificationService.error(action.message);
-        })
-      ),
-    { dispatch: false }
-  );
-
   register = createEffect(() =>
     this.actions$.pipe(
       ofType(authRegister),
@@ -119,17 +97,6 @@ export class AuthEffects {
         )
       )
     )
-  );
-
-  registerError = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(authRegisterError),
-        tap((action) => {
-          this.notificationService.error(action.message);
-        })
-      ),
-    { dispatch: false }
   );
 
   registerSuccess = createEffect(() =>
@@ -145,20 +112,19 @@ export class AuthEffects {
     )
   );
 
-  logout = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(authLogout),
-        exhaustMap(() =>
-          this.authService.logout().pipe(
-            map(() => authLogoutSuccess()),
-            catchError((error) =>
-              of(authLogoutError({ message: error.message }))
-            )
-          )
+  logout = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authLogout),
+      exhaustMap(() =>
+        this.authService.logout().pipe(
+          map(() => {
+            console.log('logout');
+            return authLogoutSuccess();
+          }),
+          catchError((error) => of(authLogoutError({ message: error.message })))
         )
-      ),
-    { dispatch: false }
+      )
+    )
   );
 
   logoutSuccess = createEffect(
@@ -169,6 +135,17 @@ export class AuthEffects {
           this.router.navigate([navigation.home.path]).then(() => {
             this.notificationService.warn('Déconnecté');
           });
+        })
+      ),
+    { dispatch: false }
+  );
+
+  errors = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authLoginError, authGetMeError, authRegisterError),
+        tap((action) => {
+          this.notificationService.error(action.message);
         })
       ),
     { dispatch: false }

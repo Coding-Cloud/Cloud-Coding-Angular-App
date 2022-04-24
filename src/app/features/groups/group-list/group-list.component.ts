@@ -4,8 +4,14 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../core/core.state';
 import { Observable } from 'rxjs';
 import { Group } from '../../../shared/models/group.model';
-import { actionGroupsRetrieveAll } from '../store/groups.actions';
-import { selectAllGroups } from '../store/groups.selectors';
+import {
+  actionGroupsRetrieveAllJoined,
+  actionGroupsRetrieveAllOwned
+} from '../store/groups.actions';
+import {
+  selectAllJoinedGroups,
+  selectAllOwnedGroups
+} from '../store/groups.selectors';
 
 @Component({
   selector: 'cc-group-list',
@@ -16,12 +22,16 @@ import { selectAllGroups } from '../store/groups.selectors';
 export class GroupListComponent implements OnInit {
   groupsLinks = groupsNavigation;
 
-  groupList$: Observable<Group[]> | undefined;
+  ownedGroupList$: Observable<Group[]>;
+  joinedGroupList$: Observable<Group[]>;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>) {
+    this.ownedGroupList$ = this.store.pipe(select(selectAllOwnedGroups));
+    this.joinedGroupList$ = this.store.pipe(select(selectAllJoinedGroups));
+  }
 
   ngOnInit(): void {
-    this.store.dispatch(actionGroupsRetrieveAll());
-    this.groupList$ = this.store.pipe(select(selectAllGroups));
+    this.store.dispatch(actionGroupsRetrieveAllOwned());
+    this.store.dispatch(actionGroupsRetrieveAllJoined());
   }
 }

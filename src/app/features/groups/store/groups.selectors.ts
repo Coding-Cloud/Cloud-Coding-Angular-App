@@ -8,9 +8,13 @@ import { GroupsState, GroupState } from '../../../shared/models/group.model';
 
 const { selectEntities, selectAll, selectTotal } = groupAdapter.getSelectors();
 
-export const selectGroups = createSelector(
+export const selectOwnedGroups = createSelector(
   selectGroupsState,
-  (state: GroupsState) => state
+  (state: GroupsState) => state.ownedGroups
+);
+export const selectJoinedGroups = createSelector(
+  selectGroupsState,
+  (state: GroupsState) => state.joinedGroups
 );
 
 export const selectCurrentGroup = createSelector(
@@ -31,9 +35,16 @@ export const selectCurrentGroupMessages = createSelector(
   (state: GroupState) => state.messages
 );
 
-export const selectAllGroups = createSelector(selectGroups, selectAll);
+export const selectAllOwnedGroups = createSelector(
+  selectOwnedGroups,
+  selectAll
+);
+export const selectAllJoinedGroups = createSelector(
+  selectJoinedGroups,
+  selectAll
+);
 export const selectGroupsEntities = createSelector(
-  selectGroups,
+  selectOwnedGroups,
   selectEntities
 );
-export const selectGroupsCount = createSelector(selectGroups, selectTotal);
+export const selectGroupsCount = createSelector(selectOwnedGroups, selectTotal);

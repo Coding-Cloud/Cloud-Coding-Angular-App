@@ -4,23 +4,24 @@ import {
   actionGroupsAddOne,
   actionGroupsAddOneError,
   actionGroupsAddOneSuccess,
-  actionGroupsDeleteOne,
   actionGroupsDeleteOneError,
+  actionGroupsDeleteOneOwned,
   actionGroupsDeleteOneSuccess,
-  actionGroupsGetMember,
-  actionGroupsGetMemberError,
   actionGroupsGetMemberSuccess,
   actionGroupsGetOne,
   actionGroupsGetOneError,
   actionGroupsGetOneProjectsError,
   actionGroupsGetOneProjectsSuccess,
   actionGroupsGetOneSuccess,
-  actionGroupsRetrieveAll,
-  actionGroupsRetrieveAllError,
-  actionGroupsRetrieveAllSuccess,
-  actionGroupsUpdateOne,
+  actionGroupsRetrieveAllJoined,
+  actionGroupsRetrieveAllJoinedError,
+  actionGroupsRetrieveAllJoinedSuccess,
+  actionGroupsRetrieveAllOwned,
+  actionGroupsRetrieveAllOwnedError,
+  actionGroupsRetrieveAllOwnedSuccess,
   actionGroupsUpdateOneError,
-  actionGroupsUpdateOneSuccess
+  actionGroupsUpdateOneOwned,
+  actionGroupsUpdateOneOwnedSuccess
 } from './groups.actions';
 import { Store } from '@ngrx/store';
 import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
@@ -35,15 +36,15 @@ import { UsersService } from '../../users/users.service';
 
 @Injectable()
 export class GroupsEffects {
-  retrieveAll = createEffect(() =>
+  retrieveAllOwned = createEffect(() =>
     this.actions$.pipe(
-      ofType(actionGroupsRetrieveAll),
+      ofType(actionGroupsRetrieveAllOwned),
       exhaustMap(() =>
-        this.groupsService.getGroups().pipe(
-          map((groups) => actionGroupsRetrieveAllSuccess({ groups })),
+        this.groupsService.getOwnedGroups().pipe(
+          map((groups) => actionGroupsRetrieveAllOwnedSuccess({ groups })),
           catchError((error) =>
             of(
-              actionGroupsRetrieveAllError({
+              actionGroupsRetrieveAllOwnedError({
                 message: error.message.toString()
               })
             )
@@ -53,15 +54,22 @@ export class GroupsEffects {
     )
   );
 
-  retrieveAllError = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(actionGroupsRetrieveAllError),
-        tap((action) => {
-          this.notificationService.error(action.message);
-        })
-      ),
-    { dispatch: false }
+  retrieveAllJoined = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionGroupsRetrieveAllJoined),
+      exhaustMap(() =>
+        this.groupsService.getJoinedGroups().pipe(
+          map((groups) => actionGroupsRetrieveAllJoinedSuccess({ groups })),
+          catchError((error) =>
+            of(
+              actionGroupsRetrieveAllJoinedError({
+                message: error.message.toString()
+              })
+            )
+          )
+        )
+      )
+    )
   );
 
   getOne = createEffect(() =>
@@ -80,17 +88,6 @@ export class GroupsEffects {
         )
       )
     )
-  );
-
-  getOneError = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(actionGroupsGetOneError),
-        tap((action) => {
-          this.notificationService.error(action.message);
-        })
-      ),
-    { dispatch: false }
   );
 
   getOneProjects = createEffect(() =>
@@ -154,17 +151,6 @@ export class GroupsEffects {
     )
   );
 
-  getOneProjectsError = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(actionGroupsGetOneProjectsError),
-        tap((action) => {
-          this.notificationService.error(action.message);
-        })
-      ),
-    { dispatch: false }
-  );
-
   addOne = createEffect(() =>
     this.actions$.pipe(
       ofType(actionGroupsAddOne),
@@ -192,20 +178,9 @@ export class GroupsEffects {
     { dispatch: false }
   );
 
-  addOneError = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(actionGroupsAddOneError),
-        tap((action) => {
-          this.notificationService.error(action.message);
-        })
-      ),
-    { dispatch: false }
-  );
-
   deleteOne = createEffect(() =>
     this.actions$.pipe(
-      ofType(actionGroupsDeleteOne),
+      ofType(actionGroupsDeleteOneOwned),
       exhaustMap((action) =>
         this.groupsService.deleteGroup(action.id).pipe(
           map(() => actionGroupsDeleteOneSuccess()),
@@ -230,24 +205,13 @@ export class GroupsEffects {
     { dispatch: false }
   );
 
-  deleteOneError = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(actionGroupsDeleteOneError),
-        tap((action) => {
-          this.notificationService.error(action.message);
-        })
-      ),
-    { dispatch: false }
-  );
-
   updateOne = createEffect(() =>
     this.actions$.pipe(
-      ofType(actionGroupsUpdateOne),
+      ofType(actionGroupsUpdateOneOwned),
       exhaustMap((action) =>
         this.groupsService.updateGroup(action.id, action.group).pipe(
           map(() =>
-            actionGroupsUpdateOneSuccess({
+            actionGroupsUpdateOneOwnedSuccess({
               id: action.id,
               group: action.group
             })
@@ -263,7 +227,7 @@ export class GroupsEffects {
   updateOneSuccess = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(actionGroupsUpdateOneSuccess),
+        ofType(actionGroupsUpdateOneOwnedSuccess),
         tap(() => {
           this.notificationService.success('Groupe modifié');
         })
@@ -271,10 +235,18 @@ export class GroupsEffects {
     { dispatch: false }
   );
 
-  updateOneError = createEffect(
+  errors = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(actionGroupsUpdateOneError),
+        ofType(
+          actionGroupsUpdateOneError,
+          actionGroupsRetrieveAllOwnedError,
+          actionGroupsGetOneError,
+          actionGroupsGetOneProjectsError,
+          actionGroupsRetrieveAllJoinedError,
+          actionGroupsAddOneError,
+          actionGroupsDeleteOneError
+        ),
         tap((action) => {
           this.notificationService.error(action.message);
         })

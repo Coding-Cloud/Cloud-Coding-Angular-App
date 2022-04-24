@@ -9,7 +9,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../core/core.state';
 import {
-  actionGroupsUpdateOne,
+  actionGroupsUpdateOneOwned,
   actionGroupSwitchEditMode
 } from '../store/groups.actions';
 
@@ -40,7 +40,7 @@ export class GroupEditComponent implements OnInit {
 
   onSubmit() {
     this.store.dispatch(
-      actionGroupsUpdateOne({
+      actionGroupsUpdateOneOwned({
         id: this.group?.id ?? '',
         group: {
           ...this.form.value

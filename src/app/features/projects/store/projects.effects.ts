@@ -49,17 +49,6 @@ export class ProjectsEffects {
     )
   );
 
-  retrieveAllError = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(actionProjectsRetrieveAllError),
-        tap((action) => {
-          this.notificationService.error(action.message);
-        })
-      ),
-    { dispatch: false }
-  );
-
   getOne = createEffect(() =>
     this.actions$.pipe(
       ofType(actionProjectsGetOne),
@@ -96,28 +85,6 @@ export class ProjectsEffects {
     )
   );
 
-  getOneError = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(actionProjectsGetOneError),
-        tap((action) => {
-          this.notificationService.error(action.message);
-        })
-      ),
-    { dispatch: false }
-  );
-
-  getOneGroupError = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(actionProjectsGetOneGroupError),
-        tap((action) => {
-          this.notificationService.error(action.message);
-        })
-      ),
-    { dispatch: false }
-  );
-
   addOne = createEffect(() =>
     this.actions$.pipe(
       ofType(actionProjectsAddOne),
@@ -151,17 +118,6 @@ export class ProjectsEffects {
     { dispatch: false }
   );
 
-  addOneError = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(actionProjectsAddOneError),
-        tap((action) => {
-          this.notificationService.error(action.message);
-        })
-      ),
-    { dispatch: false }
-  );
-
   deleteOne = createEffect(() =>
     this.actions$.pipe(
       ofType(actionProjectsDeleteOne),
@@ -184,17 +140,6 @@ export class ProjectsEffects {
           this.router.navigate([navigation.projets.path]).then(() => {
             this.notificationService.success('Projet supprimé');
           });
-        })
-      ),
-    { dispatch: false }
-  );
-
-  deleteOneError = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(actionProjectsDeleteOneError),
-        tap((action) => {
-          this.notificationService.error(action.message);
         })
       ),
     { dispatch: false }
@@ -230,10 +175,17 @@ export class ProjectsEffects {
     { dispatch: false }
   );
 
-  updateOneError = createEffect(
+  errors = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(actionProjectsUpdateOneError),
+        ofType(
+          actionProjectsDeleteOneError,
+          actionProjectsRetrieveAllError,
+          actionProjectsGetOneError,
+          actionProjectsGetOneGroupError,
+          actionProjectsAddOneError,
+          actionProjectsUpdateOneError
+        ),
         tap((action) => {
           this.notificationService.error(action.message);
         })

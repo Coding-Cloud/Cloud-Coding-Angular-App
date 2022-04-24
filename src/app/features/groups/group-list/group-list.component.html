@@ -11,7 +11,24 @@
     </div>
   </div>
   <div class='row align-items-start'>
-    <div *ngFor='let group of groupList$ | async' class='col-md-6 col-lg-4'>
+    <h3 class='col-12 main-heading'>Mes groupes</h3>
+    <div *ngFor='let group of ownedGroupList$ | async' class='col-md-6 col-lg-4'>
+      <mat-card>
+        <mat-card-title>
+          <a [routerLink]=[groupsLinks.viewGroup.path,group.id]>{{group.name}}</a>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <strong>Créé le</strong> : {{group.createdAt | date : 'longDate'}}
+        </mat-card-subtitle>
+        <mat-card-content>
+          <ul>
+            <li><strong>Propriétaire</strong> : {{group.ownerId | username | async}}</li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <h3 class='col-12 main-heading'>Groupes rejoints</h3>
+    <div *ngFor='let group of joinedGroupList$ | async' class='col-md-6 col-lg-4'>
       <mat-card>
         <mat-card-title>
           <a [routerLink]=[groupsLinks.viewGroup.path,group.id]>{{group.name}}</a>

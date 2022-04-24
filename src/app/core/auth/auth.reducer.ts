@@ -1,8 +1,8 @@
 import { AuthState } from '../../shared/models/auth.model';
 import {
+  authGetMeError,
   authGetMeSuccess,
   authLoginSuccess,
-  authLogout,
   authLogoutSuccess
 } from './auth.actions';
 import { Action, createReducer, on } from '@ngrx/store';
@@ -21,11 +21,11 @@ const reducer = createReducer(
     isAuthenticated: true,
     token: payload.token
   })),
-  on(authLogoutSuccess, () => ({ ...initialState })),
   on(authGetMeSuccess, (state, payload) => ({
     ...state,
     user: payload.user
-  }))
+  })),
+  on(authGetMeError, authLogoutSuccess, () => ({ ...initialState }))
 );
 
 export function authReducer(
