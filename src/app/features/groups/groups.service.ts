@@ -14,8 +14,12 @@ import {
 export class GroupsService {
   constructor(private http: HttpClient) {}
 
-  getGroups(): Observable<Group[]> {
-    return this.http.get<Group[]>(API_RESOURCE_URI.GROUPS);
+  getOwnedGroups(): Observable<Group[]> {
+    return this.http.get<Group[]>(API_RESOURCE_URI.GROUPS_OWNED);
+  }
+
+  getJoinedGroups(): Observable<Group[]> {
+    return this.http.get<Group[]>(API_RESOURCE_URI.GROUPS_MEMBER);
   }
 
   addGroup(group: GroupForm): Observable<string> {

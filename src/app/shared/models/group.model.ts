@@ -34,7 +34,11 @@ export const emptyGroup: Group = {
   projects: []
 };
 
-export type GroupsState = EntityState<Group>;
+export type GroupsState = {
+  ownedGroups: EntityState<Group>;
+  joinedGroups: EntityState<Group>;
+};
+
 export type GroupState = {
   group: Group;
   messages: Message[];

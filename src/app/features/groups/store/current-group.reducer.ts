@@ -4,7 +4,7 @@ import {
   actionGroupsGetOne,
   actionGroupsGetOneProjectsSuccess,
   actionGroupsGetOneSuccess,
-  actionGroupsUpdateOneSuccess,
+  actionGroupsUpdateOneOwnedSuccess,
   actionGroupSwitchEditMode
 } from './groups.actions';
 import { emptyGroup, GroupState } from '../../../shared/models/group.model';
@@ -25,7 +25,7 @@ const reducer = createReducer(
     ...state,
     editMode: !state.editMode
   })),
-  on(actionGroupsUpdateOneSuccess, (state, { group }) => ({
+  on(actionGroupsUpdateOneOwnedSuccess, (state, { group }) => ({
     ...state,
     group: {
       ...state.group,

@@ -7,6 +7,8 @@ export const API_RESOURCE_URI = {
   AUTH_SIGNOUT: `${env.apiUrl}/auth/logout`,
   AUTH_ME: `${env.apiUrl}/auth/me`,
   GROUPS: `${env.apiUrl}/groups`,
+  GROUPS_OWNED: `${env.apiUrl}/groups/owned`,
+  GROUPS_MEMBER: `${env.apiUrl}/groups/member`,
   PROJECTS: `${env.apiUrl}/projects`,
   PROJECTS_OWNED: `${env.apiUrl}/projects/owned`,
   MESSAGES: `${env.apiUrl}/messages`,

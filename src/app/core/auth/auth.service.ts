@@ -25,7 +25,7 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.delete(API_RESOURCE_URI.AUTH_SIGNOUT, {});
+    return this.http.delete(API_RESOURCE_URI.AUTH_SIGNOUT);
   }
 
   getMe(): Observable<User> {
