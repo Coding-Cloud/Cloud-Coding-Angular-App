@@ -55,6 +55,7 @@ import { ProjectStatusPipe } from './pipes/project-status.pipe';
 import { ProjectVisibilityPipe } from './pipes/project-visibility.pipe';
 import { DateFormatPipe } from './pipes/date-format.pipe';
 import { EmptyStringPipe } from './pipes/empty-string.pipe';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   imports: [
@@ -87,7 +88,8 @@ import { EmptyStringPipe } from './pipes/empty-string.pipe';
     ProjectStatusPipe,
     ProjectVisibilityPipe,
     DateFormatPipe,
-    EmptyStringPipe
+    EmptyStringPipe,
+    SpinnerComponent
   ],
   exports: [
     CommonModule,
@@ -120,7 +122,8 @@ import { EmptyStringPipe } from './pipes/empty-string.pipe';
     ProjectLanguagePipe,
     ProjectStatusPipe,
     ProjectVisibilityPipe,
-    EmptyStringPipe
+    EmptyStringPipe,
+    SpinnerComponent
   ]
 })
 export class SharedModule {
