@@ -17,15 +17,17 @@ import { SettingsState } from './settings/settings.model';
 import { ProjectsState, ProjectState } from '../shared/models/project.model';
 import { projectListReducer } from '../features/projects/store/project-list.reducer';
 import { projectReducer } from '../features/projects/store/current-project.reducer';
-import { GroupsState } from '../shared/models/group.model';
+import { GroupsState, GroupState } from '../shared/models/group.model';
 import { groupListReducer } from '../features/groups/store/group-list.reducer';
+import { groupReducer } from '../features/groups/store/current-group.reducer';
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
   settings: settingsReducer,
   projects: projectListReducer,
-  groups: groupListReducer,
   currentProject: projectReducer,
+  groups: groupListReducer,
+  currentGroup: groupReducer,
   router: routerReducer
 };
 
@@ -62,12 +64,10 @@ export const selectCurrentProjectState = createFeatureSelector<
   ProjectState
 >('currentProject');
 
-/*
 export const selectCurrentGroupState = createFeatureSelector<
   AppState,
   GroupState
 >('currentGroup');
-*/
 
 export const selectRouterState = createFeatureSelector<
   AppState,
@@ -78,7 +78,8 @@ export interface AppState {
   auth: AuthState;
   settings: SettingsState;
   projects: ProjectsState;
-  groups: GroupsState;
   currentProject: ProjectState;
+  groups: GroupsState;
+  currentGroup: GroupState;
   router: RouterReducerState<RouterStateUrl>;
 }

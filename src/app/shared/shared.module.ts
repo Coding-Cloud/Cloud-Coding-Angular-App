@@ -54,6 +54,9 @@ import { ProjectLanguagePipe } from './pipes/project-language-pipe.pipe';
 import { ProjectStatusPipe } from './pipes/project-status.pipe';
 import { ProjectVisibilityPipe } from './pipes/project-visibility.pipe';
 import { DateFormatPipe } from './pipes/date-format.pipe';
+import { EmptyStringPipe } from './pipes/empty-string.pipe';
+import { BooleanYesNoPipe } from './pipes/boolean-yes-no.pipe';
+import { UsernamePipe } from './pipes/username.pipe';
 
 @NgModule({
   imports: [
@@ -85,7 +88,10 @@ import { DateFormatPipe } from './pipes/date-format.pipe';
     ProjectLanguagePipe,
     ProjectStatusPipe,
     ProjectVisibilityPipe,
-    DateFormatPipe
+    DateFormatPipe,
+    EmptyStringPipe,
+    BooleanYesNoPipe,
+    UsernamePipe
   ],
   exports: [
     CommonModule,
@@ -117,7 +123,10 @@ import { DateFormatPipe } from './pipes/date-format.pipe';
     ConfirmDialogComponent,
     ProjectLanguagePipe,
     ProjectStatusPipe,
-    ProjectVisibilityPipe
+    ProjectVisibilityPipe,
+    EmptyStringPipe,
+    BooleanYesNoPipe,
+    UsernamePipe
   ]
 })
 export class SharedModule {

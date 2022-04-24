@@ -11,11 +11,16 @@ import { Observable } from 'rxjs';
 import { Project } from '../../../shared/models/project.model';
 import {
   selectCurrentProject,
+  selectCurrentProjectGroup,
   selectCurrentProjectIsEditMode
 } from '../store/projects.selectors';
-import { projectsNavigation } from '../projects-routing.module';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
+import { groupsNavigation } from '../../groups/groups-routing.module';
+import { navigation } from '../../../app-routing.module';
+import { Group } from '../../../shared/models/group.model';
+import { User } from '../../../shared/models/user.model';
+import { selectUser } from '../../../core/auth/auth.selectors';
 
 @Component({
   selector: 'cc-project-view',
@@ -25,10 +30,15 @@ import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-d
 })
 export class ProjectViewComponent implements OnInit {
   projectId = '';
-  projectsLinks = projectsNavigation;
+  groupId = '';
+  groupsLinks = groupsNavigation;
+  rootLinks = navigation;
+  groupViewLink = `/${this.rootLinks.groups.path}/${this.groupsLinks.viewGroup.path}`;
 
   project$: Observable<Project>;
+  group$: Observable<Group>;
   editMode$: Observable<boolean>;
+  currentUser$: Observable<User> | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,7 +46,10 @@ export class ProjectViewComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this.project$ = this.store.pipe(select(selectCurrentProject));
+    this.group$ = this.store.pipe(select(selectCurrentProjectGroup));
+    this.project$.subscribe((project) => (this.groupId = project.groupId));
     this.editMode$ = this.store.pipe(select(selectCurrentProjectIsEditMode));
+    this.currentUser$ = this.store.pipe(select(selectUser));
   }
 
   ngOnInit(): void {

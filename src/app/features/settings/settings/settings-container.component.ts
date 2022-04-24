@@ -11,7 +11,7 @@ import {
 import { actionSettingsChangeTheme } from '../../../core/settings/settings.actions';
 import { SettingsState, State } from '../../../core/settings/settings.model';
 import { selectSettings } from '../../../core/settings/settings.selectors';
-import { User } from '../../../shared/models/user.models';
+import { User } from '../../../shared/models/user.model';
 import { selectUser } from '../../../core/auth/auth.selectors';
 
 @Component({

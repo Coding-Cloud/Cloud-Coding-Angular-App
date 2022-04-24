@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { User, UserForm } from 'src/app/shared/models/user.models';
+import { User, UserForm } from 'src/app/shared/models/user.model';
 
 export const authLogin = createAction(
   '[Auth] Login',
@@ -23,6 +23,11 @@ export const authGetMeError = createAction(
   props<{ message: string }>()
 );
 export const authLogout = createAction('[Auth] Logout');
+export const authLogoutSuccess = createAction('[Auth] Logout success');
+export const authLogoutError = createAction(
+  '[Auth] Logout error',
+  props<{ message: string }>()
+);
 
 export const authRegister = createAction(
   '[Auth] Register',

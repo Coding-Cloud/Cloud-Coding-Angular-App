@@ -14,12 +14,14 @@
             <li><strong>Dernière version</strong> : {{(project$ | async)?.lastVersion}}</li>
             <li><strong>Statut</strong> : {{(project$ | async)?.status | projectStatus}}</li>
             <li><strong>Visibilité</strong> : {{(project$ | async)?.globalVisibility | projectVisibility}}</li>
-            <li><strong>Propriétaire</strong> : {{(project$ | async)?.creatorId}}</li>
-            <li><strong>Groupe</strong> : {{(project$ | async)?.groupId}}</li>
+            <li><strong>Propriétaire</strong> : {{((project$ | async)?.creatorId) | username | async}}</li>
+            <li *ngIf='!(group$ | async)?.createdWithProject'><strong>Groupe</strong> : <a
+              [routerLink]=[groupViewLink,groupId]>{{(group$ | async)?.name | emptyString}}</a>
+            </li>
             <li><strong>Créé le</strong> : {{(project$ | async)?.createdAt | date : 'longDate'}}</li>
           </ul>
         </mat-card-content>
-        <mat-card-actions align='end'>
+        <mat-card-actions align='end' *ngIf='(project$ | async)?.creatorId === (currentUser$ | async)?.id'>
           <button mat-raised-button color='primary' (click)='onEditSwitch()'>
             <mat-icon>edit</mat-icon>
             Modifier

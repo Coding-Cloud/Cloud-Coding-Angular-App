@@ -1,0 +1,24 @@
+#terminal-container {
+  background-color: black;
+  color: white;
+  padding-bottom: 10px;
+  padding-left: 2px;
+  overflow: scroll;
+  min-height: 25vh;
+  max-height: 25vh;
+  font-size: 0.7rem;
+}
+
+#terminal-name {
+  width: 100%;
+  padding-bottom: 2px;
+  background-color: gray;
+  font-size: 0.7rem;
+  position: sticky;
+  top: 0;
+  left: 0;
+}
+
+#terminal-text {
+  margin-top: 14px;
+}
