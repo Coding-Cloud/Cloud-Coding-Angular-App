@@ -38,7 +38,7 @@ export class ProjectViewComponent implements OnInit {
   project$: Observable<Project>;
   group$: Observable<Group>;
   editMode$: Observable<boolean>;
-  currentUser$: Observable<User> | undefined;
+  currentUser$: Observable<User>;
 
   constructor(
     private route: ActivatedRoute,

@@ -17,14 +17,14 @@ import { navigation } from 'src/app/app-routing.module';
 export class ProjectListComponent implements OnInit {
   projectsLinks = projectsNavigation;
 
-  projectList$: Observable<Project[]> | undefined;
-
+  projectList$: Observable<Project[]>;
   navigation = navigation;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>) {
+    this.projectList$ = this.store.pipe(select(selectAllProjects));
+  }
 
   ngOnInit(): void {
     this.store.dispatch(actionProjectsRetrieveAll());
-    this.projectList$ = this.store.pipe(select(selectAllProjects));
   }
 }
