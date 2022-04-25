@@ -25,24 +25,35 @@
       </div>
       <div class='col-md-6 group' *ngIf='(isAuthenticated$ | async)'>
         <h2>Utilisateur connecté</h2>
-        <mat-list>
-          <mat-list-item>
-            <mat-icon matListIcon>account_circle</mat-icon>
-            <span>{{(user$ | async)?.firstname}} {{(user$ | async)?.lastname}}</span>
-          </mat-list-item>
-          <mat-list-item>
-            <mat-icon matListIcon>badge</mat-icon>
-            <span>{{(user$ | async)?.username}}</span>
-          </mat-list-item>
-          <mat-list-item>
-            <mat-icon matListIcon>email</mat-icon>
-            <span>{{(user$ | async)?.email}}</span>
-          </mat-list-item>
-          <mat-list-item>
-            <mat-icon matListIcon>child_friendly</mat-icon>
-            <span>{{(user$ | async)?.birthdate | date: 'longDate'}}</span>
-          </mat-list-item>
-        </mat-list>
+        <cc-user-update *ngIf='(isUserEditMode$ | async)' [user]='user$ | async'></cc-user-update>
+        <mat-card *ngIf='!(isUserEditMode$ | async)'>
+          <mat-card-content>
+            <mat-list>
+              <mat-list-item>
+                <mat-icon matListIcon>account_circle</mat-icon>
+                <span>{{(user$ | async)?.firstname}} {{(user$ | async)?.lastname}}</span>
+              </mat-list-item>
+              <mat-list-item>
+                <mat-icon matListIcon>badge</mat-icon>
+                <span>{{(user$ | async)?.username}}</span>
+              </mat-list-item>
+              <mat-list-item>
+                <mat-icon matListIcon>email</mat-icon>
+                <span>{{(user$ | async)?.email}}</span>
+              </mat-list-item>
+              <mat-list-item>
+                <mat-icon matListIcon>child_friendly</mat-icon>
+                <span>{{(user$ | async)?.birthdate | date: 'longDate'}}</span>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+          <mat-card-actions align='end'>
+            <button mat-raised-button color='primary' (click)='onUpdateUserSwitch()'>
+              <mat-icon>edit</mat-icon>
+              Modifier
+            </button>
+          </mat-card-actions>
+        </mat-card>
       </div>
     </div>
   </ng-container>
