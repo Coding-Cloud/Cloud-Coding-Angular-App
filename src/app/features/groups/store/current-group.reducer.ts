@@ -4,6 +4,7 @@ import {
   actionGroupsGetOne,
   actionGroupsGetOneProjectsSuccess,
   actionGroupsGetOneSuccess,
+  actionGroupsUpdateMembershipSuccess,
   actionGroupsUpdateOneOwnedSuccess,
   actionGroupSwitchEditMode
 } from './groups.actions';
@@ -47,6 +48,18 @@ const reducer = createReducer(
   on(actionGroupsGetMemberSuccess, (state, payload) => ({
     ...state,
     members: [...state.members, payload.member]
+  })),
+  on(actionGroupsUpdateMembershipSuccess, (state, payload) => ({
+    ...state,
+    members: state.members.map((membership) => {
+      if (membership.userId === payload.groupMembership.userId) {
+        return {
+          ...membership,
+          canEdit: payload.groupMembership.canEdit
+        };
+      }
+      return membership;
+    })
   }))
 );
 

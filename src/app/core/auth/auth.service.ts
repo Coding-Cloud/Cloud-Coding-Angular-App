@@ -52,13 +52,12 @@ export class AuthService {
   }
 
   update(userForm: UpdateUserForm): Observable<any> {
-    return of({});
-    return this.http.patch<any>(API_RESOURCE_URI.AUTH_UPDATE, {
+    return this.http.patch<any>(API_RESOURCE_URI.AUTH, {
       ...userForm
     });
   }
+
   updatePassword(userPasswordForm: UpdateUserPasswordForm): Observable<any> {
-    return of({});
     return this.http.patch<any>(API_RESOURCE_URI.AUTH_PASSWORD, {
       ...userPasswordForm
     });

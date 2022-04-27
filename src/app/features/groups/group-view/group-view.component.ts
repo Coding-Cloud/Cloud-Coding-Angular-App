@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import {
   actionGroupsDeleteOneOwned,
   actionGroupsGetOne,
+  actionGroupsUpdateMembership,
   actionGroupSwitchEditMode
 } from '../store/groups.actions';
 import { Observable } from 'rxjs';
@@ -74,5 +75,13 @@ export class GroupViewComponent implements OnInit {
 
   onEditSwitch() {
     this.store.dispatch(actionGroupSwitchEditMode());
+  }
+
+  onUpdateMembership(userId: string, canEdit: boolean) {
+    this.store.dispatch(
+      actionGroupsUpdateMembership({
+        groupMembership: { groupId: this.groupId, userId, canEdit }
+      })
+    );
   }
 }
