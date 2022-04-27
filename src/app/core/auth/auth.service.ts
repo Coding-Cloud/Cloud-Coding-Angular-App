@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_RESOURCE_URI } from '../../shared/api-resource-uri/api-resource-uri';
-import { User, UserForm } from '../../shared/models/user.model';
-import { Observable } from 'rxjs';
+import {
+  UpdateUserForm,
+  UpdateUserPasswordForm,
+  User,
+  UserForm
+} from '../../shared/models/user.model';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -44,5 +49,18 @@ export class AuthService {
           }
         }))
       );
+  }
+
+  update(userForm: UpdateUserForm): Observable<any> {
+    return of({});
+    return this.http.patch<any>(API_RESOURCE_URI.AUTH_UPDATE, {
+      ...userForm
+    });
+  }
+  updatePassword(userPasswordForm: UpdateUserPasswordForm): Observable<any> {
+    return of({});
+    return this.http.patch<any>(API_RESOURCE_URI.AUTH_PASSWORD, {
+      ...userPasswordForm
+    });
   }
 }
