@@ -9,7 +9,7 @@ import { environment as env } from '../../../../environments/environment';
   providedIn: 'root'
 })
 export class UpdateProjectService {
-  private baseUrl = `${env.apiUrlBase}/api/diff`;
+  private baseUrl = `${env.apiUrl}/api/diff`;
 
   constructor(private http: HttpClient) {}
 

@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Folder } from '../types/folder.interface';
 import { environment as env } from '../../../../environments/environment';
 
@@ -9,7 +8,7 @@ import { environment as env } from '../../../../environments/environment';
   providedIn: 'root'
 })
 export class GetProjectService {
-  private baseUrl = `${env.apiUrlBase}/projects`;
+  private baseUrl = `${env.apiUrl}/projects`;
 
   constructor(private http: HttpClient) {}
 
