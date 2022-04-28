@@ -41,7 +41,7 @@ export class GroupsService {
   }
 
   updateGroupMembership(groupMembership: GroupMembership): Observable<any> {
-    return this.http.post(
+    return this.http.patch(
       API_RESOURCE_URI.GROUP_MEMBERSHIPS(
         groupMembership.groupId,
         groupMembership.userId
