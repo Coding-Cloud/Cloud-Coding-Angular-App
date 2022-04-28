@@ -23,6 +23,7 @@ import { projectsNavigation } from '../../projects/projects-routing.module';
 import { User } from '../../../shared/models/user.model';
 import { selectUser } from '../../../core/auth/auth.selectors';
 import { Message } from '../../../shared/models/message.model';
+import { ProjectSearchDialogComponent } from '../../projects/project-search-dialog/project-search-dialog.component';
 
 @Component({
   selector: 'cc-group-view',
@@ -83,5 +84,12 @@ export class GroupViewComponent implements OnInit {
         groupMembership: { groupId: this.groupId, userId, canEdit }
       })
     );
+  }
+
+  onSearchProject() {
+    const dialogRef = this.dialog.open(ProjectSearchDialogComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      console.group('Closed dialog', result);
+    });
   }
 }

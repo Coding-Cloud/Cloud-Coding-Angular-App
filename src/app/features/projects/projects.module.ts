@@ -7,19 +7,23 @@ import { ProjectAddComponent } from './project-add/project-add.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ProjectViewComponent } from './project-view/project-view.component';
 import { ProjectEditComponent } from './project-edit/project-edit.component';
+import { ProjectSearchDialogComponent } from './project-search-dialog/project-search-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
     ProjectListComponent,
     ProjectAddComponent,
     ProjectViewComponent,
-    ProjectEditComponent
+    ProjectEditComponent,
+    ProjectSearchDialogComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     ProjectsRoutingModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatDialogModule
   ]
 })
 export class ProjectsModule {}

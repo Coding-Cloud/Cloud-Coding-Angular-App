@@ -20,11 +20,13 @@ import { projectReducer } from '../features/projects/store/current-project.reduc
 import { GroupsState, GroupState } from '../shared/models/group.model';
 import { groupListReducer } from '../features/groups/store/group-list.reducer';
 import { groupReducer } from '../features/groups/store/current-group.reducer';
+import { projectsSearchReducer } from '../features/projects/store/project-search.reducer';
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
   settings: settingsReducer,
   projects: projectListReducer,
+  projectSearch: projectsSearchReducer,
   currentProject: projectReducer,
   groups: groupListReducer,
   currentGroup: groupReducer,
@@ -55,6 +57,11 @@ export const selectProjectsState = createFeatureSelector<
   ProjectsState
 >('projects');
 
+export const selectProjectsSearchState = createFeatureSelector<
+  AppState,
+  ProjectsState
+>('projectSearch');
+
 export const selectGroupsState = createFeatureSelector<AppState, GroupsState>(
   'groups'
 );
@@ -78,6 +85,7 @@ export interface AppState {
   auth: AuthState;
   settings: SettingsState;
   projects: ProjectsState;
+  projectSearch: ProjectsState;
   currentProject: ProjectState;
   groups: GroupsState;
   currentGroup: GroupState;

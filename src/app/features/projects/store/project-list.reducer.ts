@@ -14,12 +14,12 @@ export function sortByTitle(a: Project, b: Project): number {
   return a.name.localeCompare(b.name);
 }
 
-export const projectAdapter: EntityAdapter<Project> =
+export const projectListAdapter: EntityAdapter<Project> =
   createEntityAdapter<Project>({
     sortComparer: sortByTitle
   });
 
-export const initialState: ProjectsState = projectAdapter.getInitialState({
+export const initialState: ProjectsState = projectListAdapter.getInitialState({
   ids: [],
   entities: {}
 });
@@ -27,18 +27,18 @@ export const initialState: ProjectsState = projectAdapter.getInitialState({
 const reducer = createReducer(
   initialState,
   on(actionProjectsUpsertOne, (state, { project }) =>
-    projectAdapter.upsertOne(project, state)
+    projectListAdapter.upsertOne(project, state)
   ),
   on(actionProjectsDeleteOne, (state, action) => {
-    projectAdapter.removeOne(action.id, state);
-    return projectAdapter.removeOne(action.id, state);
+    projectListAdapter.removeOne(action.id, state);
+    return projectListAdapter.removeOne(action.id, state);
   }),
-  on(actionProjectsRetrieveAll, (state) => projectAdapter.removeAll(state)),
+  on(actionProjectsRetrieveAll, (state) => projectListAdapter.removeAll(state)),
   on(actionProjectsRetrieveAllSuccess, (state, { projects }) =>
-    projectAdapter.addMany(projects, state)
+    projectListAdapter.addMany(projects, state)
   ),
   on(actionProjectsUpdateOneSuccess, (state, action) =>
-    projectAdapter.updateOne(
+    projectListAdapter.updateOne(
       {
         id: action.id,
         changes: { ...action.project }
