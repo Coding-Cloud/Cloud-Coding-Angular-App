@@ -1,11 +1,9 @@
-import { ThrowStmt } from '@angular/compiler';
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
-  ElementRef,
   ChangeDetectorRef,
-  ViewChild
+  Component,
+  ElementRef,
+  OnInit
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { fromEvent, Observable, Subject } from 'rxjs';
@@ -38,7 +36,7 @@ export class CodeEditorComponent implements OnInit {
   code = '';
   readonly BASE_PROJECT_PATH =
     '/Users/remy/Documents/ESGI/annee_4/projet_annuel/project_test/';
-  //have to be get from back
+  // have to be get from back
   baseUrlPath = 'http://localhost:8000';
   baseUrlPathTrust: SafeResourceUrl;
   currentFile = '';

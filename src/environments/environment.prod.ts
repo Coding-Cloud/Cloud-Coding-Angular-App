@@ -6,8 +6,7 @@ export const environment = {
   production: true,
   test: false,
   apiUrl: 'https://api.cloudcoding.fr',
-  socketUrl: 'http://localhost:3000',
-  apiUrlBase: 'http://localhost:3000',
+  socketUrl: 'https://api.cloudcoding.fr',
   versions: {
     app: packageJson.version,
     angular: packageJson.dependencies['@angular/core'],
