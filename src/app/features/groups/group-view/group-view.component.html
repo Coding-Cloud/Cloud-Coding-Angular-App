@@ -61,7 +61,11 @@
               <a href='#'>{{member.userId | username | async}}</a>
             </mat-card-title>
             <mat-card-subtitle>
-              <strong>Peut modifier</strong> : {{member.canEdit | booleanYesNo}}
+              <mat-slide-toggle [checked]='member.canEdit'
+                                [disabled]='(group$ | async)?.ownerId !== (currentUser$ | async)?.id || member.userId === (currentUser$ | async)?.id'
+                                (change)='onUpdateMembership(member.userId,!member.canEdit)'>
+                Peut modifier
+              </mat-slide-toggle>
             </mat-card-subtitle>
           </mat-card>
         </div>

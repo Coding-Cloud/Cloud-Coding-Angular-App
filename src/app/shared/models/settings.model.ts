@@ -1,6 +1,7 @@
-import { AppState } from '../core.module';
+import { AppState } from '../../core/core.module';
 
 export interface SettingsState {
+  isEditUserMode: boolean;
   theme: string;
 }
 

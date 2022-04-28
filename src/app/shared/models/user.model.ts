@@ -16,6 +16,20 @@ export interface UserForm {
   password: string;
 }
 
+export interface UpdateUserForm {
+  id?: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  username: string;
+  birthdate: Date;
+}
+
+export interface UpdateUserPasswordForm {
+  id?: string;
+  password: string;
+}
+
 export type Role = 'admin' | 'user';
 
 export const emptyUser: User = {
