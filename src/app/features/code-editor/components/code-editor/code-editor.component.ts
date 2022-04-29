@@ -34,8 +34,7 @@ import { ActivatedRoute } from '@angular/router';
 export class CodeEditorComponent implements OnInit {
   editorOptions = { theme: 'vs-dark', language: 'typescript' };
   code = '';
-  readonly BASE_PROJECT_PATH =
-    '/Users/remy/Documents/ESGI/annee_4/projet_annuel/project_test/';
+  readonly BASE_PROJECT_PATH = '/data/';
   // have to be get from back
   baseUrlPath = 'http://localhost:8000';
   baseUrlPathTrust: SafeResourceUrl;
