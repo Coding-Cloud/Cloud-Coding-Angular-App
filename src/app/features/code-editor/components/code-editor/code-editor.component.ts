@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { fromEvent, Observable, Subject } from 'rxjs';
-import { debounceTime, map, takeUntil } from 'rxjs/operators';
+import { debounceTime, finalize, map, takeUntil } from 'rxjs/operators';
 import { ContextMenuAction } from 'src/app/features/monaco-tree/monaco-tree-file/monaco-tree-file.type';
 import { MonacoTreeElement } from 'src/app/features/monaco-tree/ngx-monaco-tree.type';
 import { CodeSocketService } from '../../services/code-socket.service';
@@ -41,6 +41,7 @@ export class CodeEditorComponent implements OnInit {
   baseUrlPathTrust: SafeResourceUrl;
   currentFile = '';
   codeRunnerSysOut = '';
+  isLoading = false;
 
   tree: MonacoTreeElement[] = [];
 
@@ -86,8 +87,15 @@ export class CodeEditorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.getProjectService
       .getProject(this.BASE_PROJECT_PATH)
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+          this.cd.markForCheck();
+        })
+      )
       .subscribe((project: Project) => {
         this.currentProject = copyObject<Project>(project);
         this.socketProject = copyObject<Project>(project);

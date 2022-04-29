@@ -57,6 +57,7 @@ import { DateFormatPipe } from './pipes/date-format.pipe';
 import { EmptyStringPipe } from './pipes/empty-string.pipe';
 import { BooleanYesNoPipe } from './pipes/boolean-yes-no.pipe';
 import { UsernamePipe } from './pipes/username.pipe';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   imports: [
@@ -91,7 +92,8 @@ import { UsernamePipe } from './pipes/username.pipe';
     DateFormatPipe,
     EmptyStringPipe,
     BooleanYesNoPipe,
-    UsernamePipe
+    UsernamePipe,
+    SpinnerComponent
   ],
   exports: [
     CommonModule,
@@ -126,7 +128,8 @@ import { UsernamePipe } from './pipes/username.pipe';
     ProjectVisibilityPipe,
     EmptyStringPipe,
     BooleanYesNoPipe,
-    UsernamePipe
+    UsernamePipe,
+    SpinnerComponent
   ]
 })
 export class SharedModule {
