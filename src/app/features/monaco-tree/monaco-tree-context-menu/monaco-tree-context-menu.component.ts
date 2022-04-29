@@ -1,10 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  Input,
-  OnInit
-} from '@angular/core';
+import { Component, ElementRef, HostListener, Input } from '@angular/core';
 import {
   ContextMenuElementSeparator,
   ContextMenuElementText

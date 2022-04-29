@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
+  ActivatedRouteSnapshot,
   CanActivate,
   Router,
-  UrlTree,
-  ActivatedRouteSnapshot,
-  ActivatedRoute
+  UrlTree
 } from '@angular/router';
-import { Observable, of, Subscriber } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { catchError, map } from 'rxjs/operators';
 import { NotificationService } from '../notifications/notification.service';

@@ -1,4 +1,4 @@
-import { FormState, Form } from './form.model';
+import { Form, FormState } from './form.model';
 import { actionFormReset, actionFormUpdate } from './form.actions';
 import { Action, createReducer, on } from '@ngrx/store';
 

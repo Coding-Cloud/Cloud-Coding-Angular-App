@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
 import { selectRouterState } from '../../../core/core.module';
-import { selectExamples, ExamplesState } from '../examples.state';
+import { ExamplesState, selectExamples } from '../examples.state';
 
 import { bookAdapter } from './books.reducer';
 

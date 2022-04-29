@@ -1,8 +1,8 @@
 import { v4 as uuid } from 'uuid';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { ROUTE_ANIMATIONS_ELEMENTS } from '../../../../core/core.module';
@@ -10,7 +10,7 @@ import { ROUTE_ANIMATIONS_ELEMENTS } from '../../../../core/core.module';
 import { State } from '../../examples.state';
 import { Book } from '../books.model';
 import { actionBooksDeleteOne, actionBooksUpsertOne } from '../books.actions';
-import { selectSelectedBook, selectAllBooks } from '../books.selectors';
+import { selectAllBooks, selectSelectedBook } from '../books.selectors';
 
 @Component({
   selector: 'anms-crud',

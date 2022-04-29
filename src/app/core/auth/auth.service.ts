@@ -7,7 +7,7 @@ import {
   User,
   UserForm
 } from '../../shared/models/user.model';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({

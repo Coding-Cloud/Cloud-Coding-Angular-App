@@ -1,5 +1,5 @@
-import { Store, select } from '@ngrx/store';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import {

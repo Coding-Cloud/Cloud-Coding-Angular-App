@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { NavigationLinks } from '../../app-routing.module';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { examplesNavigation } from '../examples/examples-routing.module';
 
 export const authNavigation: NavigationLinks = {
   login: {

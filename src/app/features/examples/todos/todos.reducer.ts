@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { createReducer, on, Action } from '@ngrx/store';
+import { Action, createReducer, on } from '@ngrx/store';
 import * as todoAction from './todos.actions';
 import { Todo, TodosState } from './todos.model';
 

@@ -1,9 +1,9 @@
 import {
+  ChangeDetectionStrategy,
   Component,
-  Input,
-  Output,
   EventEmitter,
-  ChangeDetectionStrategy
+  Input,
+  Output
 } from '@angular/core';
 
 import { IconProp } from '@fortawesome/fontawesome-svg-core';

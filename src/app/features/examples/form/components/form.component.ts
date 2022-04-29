@@ -1,12 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Validators, FormBuilder } from '@angular/forms';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { select, Store } from '@ngrx/store';
 import { filter, take, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 import {
-  ROUTE_ANIMATIONS_ELEMENTS,
-  NotificationService
+  NotificationService,
+  ROUTE_ANIMATIONS_ELEMENTS
 } from '../../../../core/core.module';
 
 import { actionFormReset, actionFormUpdate } from '../form.actions';

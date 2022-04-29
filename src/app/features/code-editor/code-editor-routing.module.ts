@@ -1,9 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { AuthGuardService } from 'src/app/core/auth/auth-guard.service';
+import { RouterModule, Routes } from '@angular/router';
 import { ProjectGuardService } from 'src/app/core/core.module';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { NavigationLinks } from '../../app-routing.module';
 import { CodeEditorComponent } from './components/code-editor/code-editor.component';
 

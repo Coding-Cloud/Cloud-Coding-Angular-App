@@ -1,11 +1,11 @@
 import {
   animate,
   query,
+  sequence,
+  stagger,
   style,
   transition,
-  trigger,
-  stagger,
-  sequence
+  trigger
 } from '@angular/animations';
 import { AnimationsService } from './animations.service';
 

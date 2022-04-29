@@ -5,7 +5,6 @@ import { AppState } from '../../../core/core.state';
 import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { NotificationService } from '../../../core/notifications/notification.service';
-import { Router } from '@angular/router';
 import { UsersService } from '../users.service';
 import {
   actionUsersSearch,

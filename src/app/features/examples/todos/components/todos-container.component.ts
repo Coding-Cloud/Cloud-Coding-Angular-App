@@ -1,18 +1,21 @@
-import { selectTodosFilter } from '../todos.selectors';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  selectRemoveDoneTodosDisabled,
+  selectTodos,
+  selectTodosFilter
+} from '../todos.selectors';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 import { Observable, of as observableOf } from 'rxjs';
 
 import {
-  ROUTE_ANIMATIONS_ELEMENTS,
-  NotificationService
+  NotificationService,
+  ROUTE_ANIMATIONS_ELEMENTS
 } from '../../../../core/core.module';
 
 import * as todoActions from '../todos.actions';
 import { Todo, TodosFilter } from '../todos.model';
-import { selectTodos, selectRemoveDoneTodosDisabled } from '../todos.selectors';
 import { State } from '../../examples.state';
 
 @Component({

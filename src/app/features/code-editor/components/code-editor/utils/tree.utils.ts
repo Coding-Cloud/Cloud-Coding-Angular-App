@@ -2,7 +2,6 @@ import { MonacoTreeElement } from 'src/app/features/monaco-tree/ngx-monaco-tree.
 import { EditProjectDTO } from '../../../services/dto/edit-project-dto';
 import { FolderStatus } from '../../../types/folder.interface';
 import { Project } from '../../../types/project.interface';
-import { EditProjectUtils } from './edit-project.utils';
 
 export class TreeUtils {
   static intiateTreeFromProject(

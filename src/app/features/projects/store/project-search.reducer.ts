@@ -2,7 +2,6 @@ import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
 import { Project, ProjectsState } from '../../../shared/models/project.model';
 import {
-  actionProjectsRetrieveAllSuccess,
   actionProjectsSearchInit,
   actionProjectsSearchSuccess
 } from './projects.actions';

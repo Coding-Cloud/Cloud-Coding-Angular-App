@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { codeEditorRoutes } from './features/code-editor/code-editor-routing.module';
 
 export interface Link {
   path: string;

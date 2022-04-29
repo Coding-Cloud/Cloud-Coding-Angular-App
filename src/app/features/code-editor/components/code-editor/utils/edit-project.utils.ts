@@ -1,7 +1,6 @@
 import { EditProject } from '../../../types/edit-project';
 import { Folder, FolderStatus } from '../../../types/folder.interface';
 import { Project } from '../../../types/project.interface';
-import { copyObject } from './copy-object.utils';
 
 export class EditProjectUtils {
   static editProject(

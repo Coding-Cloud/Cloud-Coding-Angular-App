@@ -1,10 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MonacoTreeElement } from './ngx-monaco-tree.type';
 import { ContextMenuAction } from './monaco-tree-file/monaco-tree-file.type';
-import {
-  ContextMenuElementSeparator,
-  ContextMenuElementText
-} from './monaco-tree-context-menu/monaco-tree-context-menu.type';
 
 @Component({
   selector: 'monaco-tree',
