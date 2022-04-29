@@ -87,7 +87,11 @@ export class GroupViewComponent implements OnInit {
   }
 
   onSearchProject() {
-    const dialogRef = this.dialog.open(ProjectSearchDialogComponent);
+    const dialogRef = this.dialog.open(ProjectSearchDialogComponent, {
+      data: {
+        groupIdIgnore: this.groupId
+      }
+    });
     dialogRef.afterClosed().subscribe((result) => {
       console.group('Closed dialog', result);
     });
