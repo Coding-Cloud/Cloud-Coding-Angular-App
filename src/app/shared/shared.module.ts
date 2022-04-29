@@ -58,6 +58,7 @@ import { EmptyStringPipe } from './pipes/empty-string.pipe';
 import { BooleanYesNoPipe } from './pipes/boolean-yes-no.pipe';
 import { UsernamePipe } from './pipes/username.pipe';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
@@ -78,7 +79,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
     MatSnackBarModule,
     MatSlideToggleModule,
     MatDividerModule,
-
+    MatDialogModule,
+    MatAutocompleteModule,
     FontAwesomeModule,
     MatDialogModule
   ],
@@ -117,12 +119,12 @@ import { SpinnerComponent } from './spinner/spinner.component';
     MatSliderModule,
     MatDatepickerModule,
     MatNativeDateModule,
-
     FontAwesomeModule,
-
     BigInputComponent,
     BigInputActionComponent,
     ConfirmDialogComponent,
+    MatDialogModule,
+    MatAutocompleteModule,
     ProjectLanguagePipe,
     ProjectStatusPipe,
     ProjectVisibilityPipe,

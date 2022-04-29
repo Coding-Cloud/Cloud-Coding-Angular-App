@@ -8,7 +8,7 @@ export interface Group {
   ownerId: string;
   ownerUsername: string;
   conversationId: string;
-  createdWithProject: boolean;
+  isHidden: boolean;
   createdAt: Date;
   projects: Project[];
 }
@@ -29,7 +29,7 @@ export const emptyGroup: Group = {
   ownerId: '',
   ownerUsername: '',
   conversationId: '',
-  createdWithProject: false,
+  isHidden: false,
   createdAt: new Date(),
   projects: []
 };

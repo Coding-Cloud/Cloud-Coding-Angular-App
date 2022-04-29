@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
+  actionGroupsAddMembership,
+  actionGroupsAddMembershipError,
+  actionGroupsAddMembershipSuccess,
   actionGroupsAddOne,
   actionGroupsAddOneError,
   actionGroupsAddOneSuccess,
+  actionGroupsAddProject,
+  actionGroupsAddProjectError,
+  actionGroupsAddProjectSuccess,
   actionGroupsDeleteOneError,
   actionGroupsDeleteOneOwned,
   actionGroupsDeleteOneSuccess,
@@ -19,6 +25,9 @@ import {
   actionGroupsRetrieveAllOwned,
   actionGroupsRetrieveAllOwnedError,
   actionGroupsRetrieveAllOwnedSuccess,
+  actionGroupsUpdateMembership,
+  actionGroupsUpdateMembershipError,
+  actionGroupsUpdateMembershipSuccess,
   actionGroupsUpdateOneError,
   actionGroupsUpdateOneOwned,
   actionGroupsUpdateOneOwnedSuccess
@@ -178,6 +187,95 @@ export class GroupsEffects {
     { dispatch: false }
   );
 
+  updateMembership = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionGroupsUpdateMembership),
+      exhaustMap((action) =>
+        this.groupsService.updateGroupMembership(action.groupMembership).pipe(
+          map(() =>
+            actionGroupsUpdateMembershipSuccess({
+              groupMembership: action.groupMembership
+            })
+          ),
+          catchError((error) =>
+            of(actionGroupsUpdateMembershipError({ message: error.message }))
+          )
+        )
+      )
+    )
+  );
+
+  updateMembershipSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionGroupsUpdateMembershipSuccess),
+        tap(() => {
+          this.notificationService.success('Membre mis à jour');
+        })
+      ),
+    { dispatch: false }
+  );
+
+  addMembership = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionGroupsAddMembership),
+      exhaustMap((action) =>
+        this.groupsService.addGroupMembership(action.groupMembership).pipe(
+          map(() =>
+            actionGroupsAddMembershipSuccess({
+              groupMembership: action.groupMembership
+            })
+          ),
+          catchError((error) =>
+            of(actionGroupsAddMembershipError({ message: error.message }))
+          )
+        )
+      )
+    )
+  );
+
+  addMembershipSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionGroupsAddMembershipSuccess),
+        tap(() => {
+          this.notificationService.success('Membre ajouté');
+        })
+      ),
+    { dispatch: false }
+  );
+
+  addProject = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionGroupsAddProject),
+      exhaustMap((action) =>
+        this.projectsService
+          .updateProjectGroup(action.project.id, action.project.groupId)
+          .pipe(
+            map(() =>
+              actionGroupsAddProjectSuccess({
+                project: action.project
+              })
+            ),
+            catchError((error) =>
+              of(actionGroupsAddProjectError({ message: error.message }))
+            )
+          )
+      )
+    )
+  );
+
+  addProjectSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionGroupsAddProjectSuccess),
+        tap(() => {
+          this.notificationService.success('Projet ajouté');
+        })
+      ),
+    { dispatch: false }
+  );
+
   deleteOne = createEffect(() =>
     this.actions$.pipe(
       ofType(actionGroupsDeleteOneOwned),
@@ -245,7 +343,10 @@ export class GroupsEffects {
           actionGroupsGetOneProjectsError,
           actionGroupsRetrieveAllJoinedError,
           actionGroupsAddOneError,
-          actionGroupsDeleteOneError
+          actionGroupsDeleteOneError,
+          actionGroupsUpdateMembershipError,
+          actionGroupsAddMembershipError,
+          actionGroupsAddProjectError
         ),
         tap((action) => {
           this.notificationService.error(action.message);

@@ -8,9 +8,9 @@ export class ProjectLanguagePipe implements PipeTransform {
   transform(value?: ProjectLanguage, ..._args: unknown[]): string {
     switch (value) {
       case ProjectLanguage.ANGULAR:
-        return 'Angular';
+        return 'Angular - 12';
       case ProjectLanguage.REACT:
-        return 'React';
+        return 'React - 17';
       default:
         return 'Inconnu';
     }

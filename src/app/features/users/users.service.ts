@@ -19,4 +19,8 @@ export class UsersService {
       API_RESOURCE_URI.USERNAME(userId)
     );
   }
+
+  searchUsers(search: string): Observable<User[]> {
+    return this.http.get<User[]>(API_RESOURCE_URI.USERS_SEARCH + '/' + search);
+  }
 }

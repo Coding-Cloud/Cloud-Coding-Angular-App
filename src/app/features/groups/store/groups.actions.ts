@@ -64,6 +64,51 @@ export const actionGroupsGetMemberError = createAction(
   props<{ message: string }>()
 );
 
+export const actionGroupsUpdateMembership = createAction(
+  '[Groups] Update membership',
+  props<{ groupMembership: GroupMembership }>()
+);
+
+export const actionGroupsUpdateMembershipSuccess = createAction(
+  '[Groups] Update membership success',
+  props<{ groupMembership: GroupMembership }>()
+);
+
+export const actionGroupsUpdateMembershipError = createAction(
+  '[Groups] Update membership error',
+  props<{ message: string }>()
+);
+
+export const actionGroupsAddMembership = createAction(
+  '[Groups] Add membership',
+  props<{ groupMembership: GroupMembership }>()
+);
+
+export const actionGroupsAddMembershipSuccess = createAction(
+  '[Groups] Add membership success',
+  props<{ groupMembership: GroupMembership }>()
+);
+
+export const actionGroupsAddMembershipError = createAction(
+  '[Groups] Add membership error',
+  props<{ message: string }>()
+);
+
+export const actionGroupsAddProject = createAction(
+  '[Groups] Add project',
+  props<{ project: Project }>()
+);
+
+export const actionGroupsAddProjectSuccess = createAction(
+  '[Groups] Add project success',
+  props<{ project: Project }>()
+);
+
+export const actionGroupsAddProjectError = createAction(
+  '[Groups] Add project error',
+  props<{ message: string }>()
+);
+
 export const actionGroupsGetOneSuccess = createAction(
   '[Groups] Get One Success',
   props<{ group: Group }>()

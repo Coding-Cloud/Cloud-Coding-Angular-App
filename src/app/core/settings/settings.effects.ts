@@ -4,14 +4,30 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { select, Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { merge, of } from 'rxjs';
-import { tap, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  exhaustMap,
+  map,
+  tap,
+  withLatestFrom
+} from 'rxjs/operators';
 
 import { selectSettingsState } from '../core.state';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 
-import { actionSettingsChangeTheme } from './settings.actions';
-import { State } from './settings.model';
+import {
+  actionSettingsChangeTheme,
+  actionSettingsUpdateUser,
+  actionSettingsUpdateUserError,
+  actionSettingsUpdateUserPassword,
+  actionSettingsUpdateUserPasswordError,
+  actionSettingsUpdateUserPasswordSuccess,
+  actionSettingsUpdateUserSuccess
+} from './settings.actions';
+import { State } from '../../shared/models/settings.model';
 import { selectEffectiveTheme } from './settings.selectors';
+import { AuthService } from '../auth/auth.service';
+import { NotificationService } from '../notifications/notification.service';
 
 export const SETTINGS_KEY = 'SETTINGS';
 
@@ -50,11 +66,81 @@ export class SettingsEffects {
     { dispatch: false }
   );
 
+  updateUser = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionSettingsUpdateUser),
+      exhaustMap((action) =>
+        this.authService.update(action.form).pipe(
+          map(() => actionSettingsUpdateUserSuccess({ form: action.form })),
+          catchError((error) =>
+            of(actionSettingsUpdateUserError({ message: error.message }))
+          )
+        )
+      )
+    )
+  );
+
+  updateUserPassword = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionSettingsUpdateUserPassword),
+      exhaustMap((action) =>
+        this.authService.updatePassword(action.form).pipe(
+          map(() =>
+            actionSettingsUpdateUserPasswordSuccess({ form: action.form })
+          ),
+          catchError((error) =>
+            of(
+              actionSettingsUpdateUserPasswordError({ message: error.message })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  updateUserSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionSettingsUpdateUserSuccess),
+        tap(() => {
+          this.notificationService.success('Utilisateur mis à jour');
+        })
+      ),
+    { dispatch: false }
+  );
+
+  updateUserUpdatePasswordSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionSettingsUpdateUserPasswordSuccess),
+        tap(() => {
+          this.notificationService.success('Mot de passe mis à jour');
+        })
+      ),
+    { dispatch: false }
+  );
+
+  errors = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(
+          actionSettingsUpdateUserError,
+          actionSettingsUpdateUserPasswordError
+        ),
+        tap((action) => {
+          this.notificationService.error(action.message);
+        })
+      ),
+    { dispatch: false }
+  );
+
   constructor(
     private actions$: Actions,
     private store: Store<State>,
     private router: Router,
     private overlayContainer: OverlayContainer,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {}
 }

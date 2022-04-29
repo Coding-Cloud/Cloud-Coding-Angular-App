@@ -18,6 +18,9 @@ import {
   actionProjectsRetrieveAll,
   actionProjectsRetrieveAllError,
   actionProjectsRetrieveAllSuccess,
+  actionProjectsSearch,
+  actionProjectsSearchError,
+  actionProjectsSearchSuccess,
   actionProjectsUpdateOne,
   actionProjectsUpdateOneError,
   actionProjectsUpdateOneSuccess
@@ -175,6 +178,24 @@ export class ProjectsEffects {
     { dispatch: false }
   );
 
+  search = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionProjectsSearch),
+      exhaustMap((action) =>
+        this.projectsService.searchProjects(action.search).pipe(
+          map((projects) =>
+            actionProjectsSearchSuccess({
+              projects
+            })
+          ),
+          catchError((error) =>
+            of(actionProjectsSearchError({ message: error.message }))
+          )
+        )
+      )
+    )
+  );
+
   errors = createEffect(
     () =>
       this.actions$.pipe(
@@ -184,7 +205,8 @@ export class ProjectsEffects {
           actionProjectsGetOneError,
           actionProjectsGetOneGroupError,
           actionProjectsAddOneError,
-          actionProjectsUpdateOneError
+          actionProjectsUpdateOneError,
+          actionProjectsSearchError
         ),
         tap((action) => {
           this.notificationService.error(action.message);
