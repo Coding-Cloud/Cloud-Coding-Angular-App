@@ -23,6 +23,7 @@ import { copyObject } from './utils/copy-object.utils';
 import { EditProjectUtils } from './utils/edit-project.utils';
 import { TreeUtils } from './utils/tree.utils';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -36,7 +37,7 @@ export class CodeEditorComponent implements OnInit {
   code = '';
   readonly BASE_PROJECT_PATH = '/data/';
   // have to be get from back
-  baseUrlPath = 'http://localhost:8000';
+  baseUrlPath: string = environment.exposedAppBasePath;
   baseUrlPathTrust: SafeResourceUrl;
   currentFile = '';
   codeRunnerSysOut = '';
@@ -78,17 +79,18 @@ export class CodeEditorComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute
   ) {
-    this.baseUrlPathTrust = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.baseUrlPath
-    );
     this.projectId = this.activatedRoute.snapshot.params.id;
+    this.baseUrlPath = `${this.projectId}`;
+    this.baseUrlPathTrust = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.projectId + '.' + this.baseUrlPath
+    );
     this.BASE_PROJECT_PATH += `${this.projectId}/`;
   }
 
   ngOnInit(): void {
     this.isLoading = true;
     this.getProjectService
-      .getProject(this.BASE_PROJECT_PATH)
+      .getProject(this.projectId)
       .pipe(
         finalize(() => {
           this.isLoading = false;

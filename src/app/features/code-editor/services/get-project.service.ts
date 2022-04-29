@@ -12,11 +12,11 @@ export class GetProjectService {
 
   constructor(private http: HttpClient) {}
 
-  getProject(path: string): Observable<{
+  getProject(porjectId: string): Observable<{
     appFiles: { [key: string]: Folder };
   }> {
     return this.http.get<{
       appFiles: { [key: string]: Folder };
-    }>(`${this.baseUrl}?path=${path}`);
+    }>(`${this.baseUrl}/${porjectId}/read`);
   }
 }

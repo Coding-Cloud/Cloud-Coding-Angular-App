@@ -7,6 +7,7 @@ export const environment = {
   test: false,
   apiUrl: 'https://api.cloudcoding.fr',
   socketUrl: 'https://api.cloudcoding.fr',
+  exposedAppBasePath: 'cloudcoding.fr',
   versions: {
     app: packageJson.version,
     angular: packageJson.dependencies['@angular/core'],
