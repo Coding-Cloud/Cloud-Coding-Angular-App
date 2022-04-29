@@ -1,5 +1,7 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import {
+  actionGroupsAddMembershipSuccess,
+  actionGroupsAddProjectSuccess,
   actionGroupsGetMemberSuccess,
   actionGroupsGetOne,
   actionGroupsGetOneProjectsSuccess,
@@ -48,6 +50,17 @@ const reducer = createReducer(
   on(actionGroupsGetMemberSuccess, (state, payload) => ({
     ...state,
     members: [...state.members, payload.member]
+  })),
+  on(actionGroupsAddMembershipSuccess, (state, payload) => ({
+    ...state,
+    members: [...state.members, payload.groupMembership]
+  })),
+  on(actionGroupsAddProjectSuccess, (state, payload) => ({
+    ...state,
+    group: {
+      ...state.group,
+      projects: [...state.group.projects, payload.project]
+    }
   })),
   on(actionGroupsUpdateMembershipSuccess, (state, payload) => ({
     ...state,

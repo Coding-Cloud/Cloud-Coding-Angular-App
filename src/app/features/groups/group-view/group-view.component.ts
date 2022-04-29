@@ -4,6 +4,8 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../core/core.state';
 import { MatDialog } from '@angular/material/dialog';
 import {
+  actionGroupsAddMembership,
+  actionGroupsAddProject,
   actionGroupsDeleteOneOwned,
   actionGroupsGetOne,
   actionGroupsUpdateMembership,
@@ -25,6 +27,8 @@ import { selectUser } from '../../../core/auth/auth.selectors';
 import { Message } from '../../../shared/models/message.model';
 import { ProjectSearchDialogComponent } from '../../projects/project-search-dialog/project-search-dialog.component';
 import { UserSearchDialogComponent } from '../../users/user-search/user-search-dialog.component';
+import { Project } from '../../../shared/models/project.model';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'cc-group-view',
@@ -98,20 +102,35 @@ export class GroupViewComponent implements OnInit {
       },
       width: '400px'
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      console.group('Closed dialog', result);
+    dialogRef.afterClosed().subscribe((result?: Project) => {
+      if (result) {
+        const project = { ...result, groupId: this.groupId };
+        this.store.dispatch(actionGroupsAddProject({ project }));
+      }
     });
   }
 
   onSearchUser() {
-    const dialogRef = this.dialog.open(UserSearchDialogComponent, {
-      data: {
-        userIdIgnore: this.currentUserId
-      },
-      width: '400px'
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      console.group('Closed dialog', result);
-    });
+    const subscription = this.members$
+      .pipe(map((members) => members.map((member) => member.userId)))
+      .subscribe((membersIds) => {
+        const dialogRef = this.dialog.open(UserSearchDialogComponent, {
+          data: {
+            userIdsIgnore: membersIds
+          },
+          width: '400px'
+        });
+        dialogRef.afterClosed().subscribe((result?: User) => {
+          if (result) {
+            const groupMembership = {
+              groupId: this.groupId,
+              userId: result.id,
+              canEdit: false
+            };
+            this.store.dispatch(actionGroupsAddMembership({ groupMembership }));
+          }
+        });
+      });
+    subscription.unsubscribe();
   }
 }
