@@ -1,3 +1,5 @@
+import { EntityState } from '@ngrx/entity';
+
 export interface User {
   id: string;
   username: string;
@@ -40,3 +42,5 @@ export const emptyUser: User = {
   birthdate: new Date(),
   email: ''
 };
+
+export type UsersState = EntityState<User>;

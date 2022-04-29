@@ -8,8 +8,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ProjectViewComponent } from './project-view/project-view.component';
 import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { ProjectSearchDialogComponent } from './project-search-dialog/project-search-dialog.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [

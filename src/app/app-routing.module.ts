@@ -46,6 +46,11 @@ export const navigation: NavigationLinks = {
   codeEditor: {
     name: 'Code Editor',
     path: 'code-editor'
+  },
+  users: {
+    name: 'Utilisateurs',
+    path: 'users',
+    auth: true
   }
 };
 
@@ -93,6 +98,12 @@ const routes: Routes = [
     loadChildren: () =>
       import('./features/groups/groups.module').then((m) => m.GroupsModule)
   },
+  {
+    path: navigation.users.path,
+    loadChildren: () =>
+      import('./features/users/users.module').then((m) => m.UsersModule)
+  },
+
   {
     path: navigation.auth.path,
     loadChildren: () =>

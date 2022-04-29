@@ -25,7 +25,7 @@ import Timeout = NodeJS.Timeout;
 })
 export class ProjectSearchDialogComponent implements OnInit {
   projectResults$: Observable<Project[]>;
-  selectedProjects: Project | undefined;
+  selectedProject: Project | undefined;
   searchControl = new FormControl('');
   searchDebounce?: Timeout;
 
@@ -47,11 +47,11 @@ export class ProjectSearchDialogComponent implements OnInit {
   }
 
   onClose(): void {
-    this.dialogRef.close(this.selectedProjects);
+    this.dialogRef.close(this.selectedProject);
   }
 
   onOptionSelect(project: Project): void {
-    this.selectedProjects = project;
+    this.selectedProject = project;
     this.searchControl.patchValue(project.name);
   }
 

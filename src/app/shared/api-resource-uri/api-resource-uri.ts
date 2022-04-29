@@ -25,5 +25,6 @@ export const API_RESOURCE_URI = {
   PROJECTS_NAME: (projectId: string) =>
     `${env.apiUrl}/projects/${projectId}/name`,
   USERNAME: (id: string) => `${env.apiUrl}/users/${id}/name`,
-  USERS: `${env.apiUrl}/users`
+  USERS: `${env.apiUrl}/users`,
+  USERS_SEARCH: `${env.apiUrl}/users/search`
 };

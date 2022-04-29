@@ -67,6 +67,7 @@ import {
 import { TokenInterceptor } from './http-interceptors/http-auth.interceptor';
 import { ProjectsEffects } from '../features/projects/store/projects.effects';
 import { GroupsEffects } from '../features/groups/store/groups.effects';
+import { UsersEffects } from '../features/users/store/users.effects';
 
 export {
   TitleService,
@@ -110,7 +111,8 @@ export {
       AuthEffects,
       SettingsEffects,
       ProjectsEffects,
-      GroupsEffects
+      GroupsEffects,
+      UsersEffects
     ]),
     environment.production
       ? []
