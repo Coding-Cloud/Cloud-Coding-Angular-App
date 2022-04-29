@@ -1,22 +1,23 @@
 <h1 mat-dialog-title>Rechercher un projet</h1>
 <mat-dialog-content>
-  <mat-form-field class='w-100'>
-    <mat-label>Nom du projet</mat-label>
-    <input matInput
-           placeholder='Nom du projet'
-           (input)='onInput()'
-           [formControl]='searchControl'
-           [matAutocomplete]='auto'>
+  <div class='row'>
+    <mat-form-field class='col-12' appearance='fill'>
+      <mat-label>Nom du projet</mat-label>
+      <input matInput
+             placeholder='Nom du projet'
+             (input)='onInput()'
+             [formControl]='searchControl'
+             [matAutocomplete]='auto'>
 
-    <mat-autocomplete #auto='matAutocomplete' (optionSelected)='onOptionSelect($event.option.value)'>
-      <mat-option *ngFor='let project of (projectResults$ | async)'
-                  [value]='project'
-                  [disabled]='isIgnored(project)'>
-        {{ project.name }}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-  <mat-hint>Rechercher un projet</mat-hint>
+      <mat-autocomplete #auto='matAutocomplete' (optionSelected)='onOptionSelect($event.option.value)'>
+        <mat-option *ngFor='let project of (projectResults$ | async)'
+                    [value]='project'
+                    [disabled]='isIgnored(project)'>
+          {{ project.name }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions class='d-flex justify-content-end align-items-center'>
   <button mat-raised-button color='primary'
