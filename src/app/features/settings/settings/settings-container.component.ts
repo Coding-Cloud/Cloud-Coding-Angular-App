@@ -8,8 +8,11 @@ import {
   selectIsAuthenticated
 } from '../../../core/core.module';
 
-import { actionSettingsChangeTheme } from '../../../core/settings/settings.actions';
-import { SettingsState, State } from '../../../core/settings/settings.model';
+import {
+  actionSettingsChangeTheme,
+  actionSettingsSwitchUserEdit
+} from '../../../core/settings/settings.actions';
+import { SettingsState, State } from '../../../shared/models/settings.model';
 import { selectSettings } from '../../../core/settings/settings.selectors';
 import { User } from '../../../shared/models/user.model';
 import { selectUser } from '../../../core/auth/auth.selectors';
@@ -22,9 +25,10 @@ import { selectUser } from '../../../core/auth/auth.selectors';
 })
 export class SettingsContainerComponent implements OnInit {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
-  settings$: Observable<SettingsState> | undefined;
-  isAuthenticated$: Observable<boolean> | undefined;
-  user$: Observable<User> | undefined;
+  settings$: Observable<SettingsState>;
+  isAuthenticated$: Observable<boolean>;
+  user$: Observable<User>;
+  isUserEditMode$: Observable<boolean>;
 
   themes = [
     { value: 'DEFAULT-THEME', label: 'Bleu' },
@@ -33,15 +37,22 @@ export class SettingsContainerComponent implements OnInit {
     { value: 'BLACK-THEME', label: 'Sombre' }
   ];
 
-  constructor(private store: Store<State>) {}
-
-  ngOnInit() {
+  constructor(private store: Store<State>) {
     this.settings$ = this.store.pipe(select(selectSettings));
     this.isAuthenticated$ = this.store.pipe(select(selectIsAuthenticated));
     this.user$ = this.store.pipe(select(selectUser));
+    this.isUserEditMode$ = this.settings$.pipe(
+      select((settings: SettingsState) => settings.isEditUserMode)
+    );
   }
+
+  ngOnInit() {}
 
   onThemeSelect(event: MatSelectChange) {
     this.store.dispatch(actionSettingsChangeTheme({ theme: event.value }));
+  }
+
+  onUpdateUserSwitch() {
+    this.store.dispatch(actionSettingsSwitchUserEdit());
   }
 }

@@ -90,3 +90,20 @@ export const actionProjectsUpdateOneError = createAction(
   '[Projects] Update One Error',
   props<{ message: string }>()
 );
+
+export const actionProjectsSearchInit = createAction('[Projects] Search Init');
+
+export const actionProjectsSearch = createAction(
+  '[Projects] Search projects',
+  props<{ search: string }>()
+);
+
+export const actionProjectsSearchSuccess = createAction(
+  '[Projects] Search projects success',
+  props<{ projects: Project[] }>()
+);
+
+export const actionProjectsSearchError = createAction(
+  '[Projects] Search projects error',
+  props<{ message: string }>()
+);

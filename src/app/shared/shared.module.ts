@@ -57,6 +57,7 @@ import { DateFormatPipe } from './pipes/date-format.pipe';
 import { EmptyStringPipe } from './pipes/empty-string.pipe';
 import { BooleanYesNoPipe } from './pipes/boolean-yes-no.pipe';
 import { UsernamePipe } from './pipes/username.pipe';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
@@ -77,7 +78,8 @@ import { UsernamePipe } from './pipes/username.pipe';
     MatSnackBarModule,
     MatSlideToggleModule,
     MatDividerModule,
-
+    MatDialogModule,
+    MatAutocompleteModule,
     FontAwesomeModule,
     MatDialogModule
   ],
@@ -115,12 +117,12 @@ import { UsernamePipe } from './pipes/username.pipe';
     MatSliderModule,
     MatDatepickerModule,
     MatNativeDateModule,
-
     FontAwesomeModule,
-
     BigInputComponent,
     BigInputActionComponent,
     ConfirmDialogComponent,
+    MatDialogModule,
+    MatAutocompleteModule,
     ProjectLanguagePipe,
     ProjectStatusPipe,
     ProjectVisibilityPipe,

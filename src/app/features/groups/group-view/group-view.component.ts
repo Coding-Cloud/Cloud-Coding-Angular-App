@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import {
   actionGroupsDeleteOneOwned,
   actionGroupsGetOne,
+  actionGroupsUpdateMembership,
   actionGroupSwitchEditMode
 } from '../store/groups.actions';
 import { Observable } from 'rxjs';
@@ -22,6 +23,8 @@ import { projectsNavigation } from '../../projects/projects-routing.module';
 import { User } from '../../../shared/models/user.model';
 import { selectUser } from '../../../core/auth/auth.selectors';
 import { Message } from '../../../shared/models/message.model';
+import { ProjectSearchDialogComponent } from '../../projects/project-search-dialog/project-search-dialog.component';
+import { UserSearchDialogComponent } from '../../users/user-search/user-search-dialog.component';
 
 @Component({
   selector: 'cc-group-view',
@@ -35,6 +38,7 @@ export class GroupViewComponent implements OnInit {
   members$: Observable<GroupMembership[]>;
   editMode$: Observable<boolean>;
   currentUser$: Observable<User>;
+  currentUserId: string = '';
   messages$: Observable<Message[]>;
 
   projectsLinks = projectsNavigation;
@@ -51,6 +55,9 @@ export class GroupViewComponent implements OnInit {
     this.editMode$ = this.store.pipe(select(selectCurrentGroupIsEditMode));
     this.messages$ = this.store.pipe(select(selectCurrentGroupMessages));
     this.currentUser$ = this.store.pipe(select(selectUser));
+    this.currentUser$.subscribe((user) => {
+      this.currentUserId = user.id;
+    });
   }
 
   ngOnInit(): void {
@@ -74,5 +81,37 @@ export class GroupViewComponent implements OnInit {
 
   onEditSwitch() {
     this.store.dispatch(actionGroupSwitchEditMode());
+  }
+
+  onUpdateMembership(userId: string, canEdit: boolean) {
+    this.store.dispatch(
+      actionGroupsUpdateMembership({
+        groupMembership: { groupId: this.groupId, userId, canEdit }
+      })
+    );
+  }
+
+  onSearchProject() {
+    const dialogRef = this.dialog.open(ProjectSearchDialogComponent, {
+      data: {
+        groupIdIgnore: this.groupId
+      },
+      width: '400px'
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.group('Closed dialog', result);
+    });
+  }
+
+  onSearchUser() {
+    const dialogRef = this.dialog.open(UserSearchDialogComponent, {
+      data: {
+        userIdIgnore: this.currentUserId
+      },
+      width: '400px'
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.group('Closed dialog', result);
+    });
   }
 }

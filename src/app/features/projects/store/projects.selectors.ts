@@ -1,8 +1,10 @@
 import { createSelector } from '@ngrx/store';
 
-import { projectAdapter } from './project-list.reducer';
+import { projectListAdapter } from './project-list.reducer';
+import { projectSearchAdapter } from './project-search.reducer';
 import {
   selectCurrentProjectState,
+  selectProjectsSearchState,
   selectProjectsState
 } from '../../../core/core.state';
 import {
@@ -10,11 +12,16 @@ import {
   ProjectState
 } from '../../../shared/models/project.model';
 
-const { selectEntities, selectAll, selectTotal } =
-  projectAdapter.getSelectors();
+const projectListSelector = projectListAdapter.getSelectors();
+const projectSearchSelector = projectSearchAdapter.getSelectors();
 
 export const selectProjects = createSelector(
   selectProjectsState,
+  (state: ProjectsState) => state
+);
+
+export const selectProjectsSearch = createSelector(
+  selectProjectsSearchState,
   (state: ProjectsState) => state
 );
 
@@ -33,9 +40,20 @@ export const selectCurrentProjectIsEditMode = createSelector(
   (state: ProjectState) => state.editMode
 );
 
-export const selectAllProjects = createSelector(selectProjects, selectAll);
+export const selectAllProjects = createSelector(
+  selectProjects,
+  projectListSelector.selectAll
+);
 export const selectProjectsEntities = createSelector(
   selectProjects,
-  selectEntities
+  projectListSelector.selectEntities
 );
-export const selectProjectsCount = createSelector(selectProjects, selectTotal);
+export const selectProjectsCount = createSelector(
+  selectProjects,
+  projectListSelector.selectTotal
+);
+
+export const selectAllProjectsSearch = createSelector(
+  selectProjectsSearch,
+  projectSearchSelector.selectAll
+);

@@ -13,14 +13,10 @@
   <div class='row align-items-start'>
     <div *ngFor='let project of projectList$ | async' class='col-md-6 col-lg-4'>
       <mat-card>
-        <div class="d-flex flex-row justify-content-between">
+        <div class='d-flex flex-row justify-content-between'>
           <mat-card-title>
             <a [routerLink]=[projectsLinks.viewProject.path,project.id]>{{project.name}}</a>
           </mat-card-title>
-          <button mat-raised-button color='accent'
-             [routerLink]='"/" + navigation.codeEditor.path + "/project/" + project.id'>
-            Go Code !!
-          </button>
         </div>
         <mat-card-subtitle>
           {{project.language | projectLanguage}}
@@ -31,10 +27,16 @@
             <li><strong>Statut</strong> : {{project.status | projectStatus}}</li>
             <li><strong>Visibilité</strong> : {{project.globalVisibility | projectVisibility}}</li>
             <li><strong>Propriétaire</strong> : {{project.creatorId | username | async}}</li>
-            <li><strong>Groupe</strong> : {{project.groupId}}</li>
             <li><strong>Créé le</strong> : {{project.createdAt | date : 'longDate'}}</li>
           </ul>
         </mat-card-content>
+        <mat-card-actions align='end'>
+          <button mat-raised-button color='accent'
+                  [routerLink]='"/" + navigation.codeEditor.path + "/project/" + project.id'>
+            <mat-icon>code</mat-icon>
+            Go Code !!
+          </button>
+        </mat-card-actions>
       </mat-card>
     </div>
   </div>
