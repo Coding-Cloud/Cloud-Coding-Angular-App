@@ -9,9 +9,7 @@ export interface Project {
   status: ProjectStatus;
   globalVisibility: ProjectVisibility;
   creatorId: string;
-  creatorUsername?: string;
   groupId: string;
-  groupName?: string;
   createdAt: Date;
 }
 

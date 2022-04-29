@@ -30,6 +30,28 @@ export class GroupsService {
     );
   }
 
+  addGroupMembership(groupMembership: GroupMembership): Observable<any> {
+    return this.http.post(
+      API_RESOURCE_URI.GROUP_MEMBERSHIPS(
+        groupMembership.groupId,
+        groupMembership.userId
+      ),
+      { canEdit: groupMembership.canEdit }
+    );
+  }
+
+  updateGroupMembership(groupMembership: GroupMembership): Observable<any> {
+    return this.http.patch(
+      API_RESOURCE_URI.GROUP_MEMBERSHIPS(
+        groupMembership.groupId,
+        groupMembership.userId
+      ),
+      {
+        canEdit: groupMembership.canEdit
+      }
+    );
+  }
+
   updateGroup(groupId: string, group: GroupForm): Observable<any> {
     return this.http.patch<any>(API_RESOURCE_URI.GROUPS + '/' + groupId, {
       ...group
@@ -46,7 +68,7 @@ export class GroupsService {
 
   getGroupMemberships(groupId: string): Observable<GroupMembership[]> {
     return this.http.get<GroupMembership[]>(
-      API_RESOURCE_URI.GROUP_MEMBERSHIP_GROUP_ID + '/' + groupId
+      API_RESOURCE_URI.GROUP_MEMBERSHIPS_GROUP + '/' + groupId
     );
   }
 }

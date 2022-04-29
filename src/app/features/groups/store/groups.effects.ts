@@ -19,6 +19,9 @@ import {
   actionGroupsRetrieveAllOwned,
   actionGroupsRetrieveAllOwnedError,
   actionGroupsRetrieveAllOwnedSuccess,
+  actionGroupsUpdateMembership,
+  actionGroupsUpdateMembershipError,
+  actionGroupsUpdateMembershipSuccess,
   actionGroupsUpdateOneError,
   actionGroupsUpdateOneOwned,
   actionGroupsUpdateOneOwnedSuccess
@@ -178,6 +181,35 @@ export class GroupsEffects {
     { dispatch: false }
   );
 
+  updateMembership = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionGroupsUpdateMembership),
+      exhaustMap((action) =>
+        this.groupsService.updateGroupMembership(action.groupMembership).pipe(
+          map(() =>
+            actionGroupsUpdateMembershipSuccess({
+              groupMembership: action.groupMembership
+            })
+          ),
+          catchError((error) =>
+            of(actionGroupsUpdateMembershipError({ message: error.message }))
+          )
+        )
+      )
+    )
+  );
+
+  updateMembershipSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionGroupsUpdateMembershipSuccess),
+        tap(() => {
+          this.notificationService.success('Membre mis à jour');
+        })
+      ),
+    { dispatch: false }
+  );
+
   deleteOne = createEffect(() =>
     this.actions$.pipe(
       ofType(actionGroupsDeleteOneOwned),
@@ -245,7 +277,8 @@ export class GroupsEffects {
           actionGroupsGetOneProjectsError,
           actionGroupsRetrieveAllJoinedError,
           actionGroupsAddOneError,
-          actionGroupsDeleteOneError
+          actionGroupsDeleteOneError,
+          actionGroupsUpdateMembershipError
         ),
         tap((action) => {
           this.notificationService.error(action.message);

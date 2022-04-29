@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import {
   actionGroupsDeleteOneOwned,
   actionGroupsGetOne,
+  actionGroupsUpdateMembership,
   actionGroupSwitchEditMode
 } from '../store/groups.actions';
 import { Observable } from 'rxjs';
@@ -22,6 +23,7 @@ import { projectsNavigation } from '../../projects/projects-routing.module';
 import { User } from '../../../shared/models/user.model';
 import { selectUser } from '../../../core/auth/auth.selectors';
 import { Message } from '../../../shared/models/message.model';
+import { ProjectSearchDialogComponent } from '../../projects/project-search-dialog/project-search-dialog.component';
 
 @Component({
   selector: 'cc-group-view',
@@ -74,5 +76,24 @@ export class GroupViewComponent implements OnInit {
 
   onEditSwitch() {
     this.store.dispatch(actionGroupSwitchEditMode());
+  }
+
+  onUpdateMembership(userId: string, canEdit: boolean) {
+    this.store.dispatch(
+      actionGroupsUpdateMembership({
+        groupMembership: { groupId: this.groupId, userId, canEdit }
+      })
+    );
+  }
+
+  onSearchProject() {
+    const dialogRef = this.dialog.open(ProjectSearchDialogComponent, {
+      data: {
+        groupIdIgnore: this.groupId
+      }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.group('Closed dialog', result);
+    });
   }
 }

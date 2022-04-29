@@ -7,6 +7,7 @@ import {
 } from './auth.actions';
 import { Action, createReducer, on } from '@ngrx/store';
 import { emptyUser } from '../../shared/models/user.model';
+import { actionSettingsUpdateUserSuccess } from '../settings/settings.actions';
 
 export const initialState: AuthState = {
   isAuthenticated: false,
@@ -24,6 +25,13 @@ const reducer = createReducer(
   on(authGetMeSuccess, (state, payload) => ({
     ...state,
     user: payload.user
+  })),
+  on(actionSettingsUpdateUserSuccess, (state, payload) => ({
+    ...state,
+    user: {
+      ...state.user,
+      ...payload.form
+    }
   })),
   on(authGetMeError, authLogoutSuccess, () => ({ ...initialState }))
 );

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { API_RESOURCE_URI } from '../../shared/api-resource-uri/api-resource-uri';
 import { Observable } from 'rxjs';
 import { Project, ProjectForm } from '../../shared/models/project.model';
+import { HttpTools } from '../../shared/http-tools/http-tools';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,25 @@ export class ProjectsService {
 
   getProjects(): Observable<Project[]> {
     return this.http.get<Project[]>(API_RESOURCE_URI.PROJECTS_OWNED);
+  }
+
+  searchProjects(name: string): Observable<Project[]> {
+    return this.http.get<Project[]>(API_RESOURCE_URI.PROJECTS_SEARCH, {
+      params: HttpTools.objectToHttpParams({ name })
+    });
+  }
+
+  getProjectName(projectId: string): Observable<{ name: string }> {
+    return this.http.get<{ name: string }>(
+      API_RESOURCE_URI.PROJECTS_NAME + '/' + projectId
+    );
+  }
+
+  updateProjectGroup(projectId: string, groupId: string): Observable<any> {
+    return this.http.patch(
+      API_RESOURCE_URI.PROJECTS_UPDATE_GROUP(projectId, groupId),
+      {}
+    );
   }
 
   addProject(project: ProjectForm): Observable<string> {

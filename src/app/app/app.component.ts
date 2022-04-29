@@ -31,7 +31,8 @@ export class AppComponent implements OnInit {
   routerLinks = navigation;
 
   navigationMenu = Object.values(navigation).filter(
-    (link) => ['settings', 'auth', 'code-editor'].indexOf(link.path) === -1
+    (link) =>
+      ['settings', 'auth', 'code-editor', 'examples'].indexOf(link.path) === -1
   );
   navigationSideMenu = [...this.navigationMenu, navigation.settings];
 
