@@ -38,7 +38,7 @@ export class GroupViewComponent implements OnInit {
   members$: Observable<GroupMembership[]>;
   editMode$: Observable<boolean>;
   currentUser$: Observable<User>;
-  currentUserId: string = '';
+  currentUserId = '';
   messages$: Observable<Message[]>;
 
   projectsLinks = projectsNavigation;
@@ -94,7 +94,7 @@ export class GroupViewComponent implements OnInit {
   onSearchProject() {
     const dialogRef = this.dialog.open(ProjectSearchDialogComponent, {
       data: {
-        groupIdIgnore: this.groupId
+        groupIdsIgnore: [this.groupId]
       },
       width: '400px'
     });

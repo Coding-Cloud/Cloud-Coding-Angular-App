@@ -34,7 +34,7 @@ export class UserSearchDialogComponent implements OnInit {
     private store: Store<AppState>,
     @Inject(MAT_DIALOG_DATA)
     public data: {
-      userIdIgnore?: string;
+      userIdsIgnore?: string[];
     }
   ) {
     this.userResults$ = this.store.pipe(select(selectAllUsersSearch));
@@ -58,7 +58,9 @@ export class UserSearchDialogComponent implements OnInit {
   }
 
   isIgnored(user: User): boolean {
-    return user.id === this.data.userIdIgnore;
+    return <boolean>(
+      (this.data.userIdsIgnore && this.data.userIdsIgnore?.includes(user.id))
+    );
   }
 
   onInput() {

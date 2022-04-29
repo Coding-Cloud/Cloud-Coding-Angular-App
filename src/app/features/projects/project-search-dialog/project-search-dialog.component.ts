@@ -34,9 +34,9 @@ export class ProjectSearchDialogComponent implements OnInit {
     private store: Store<AppState>,
     @Inject(MAT_DIALOG_DATA)
     public data: {
-      groupIdIgnore?: string;
-      projectIdIgnore?: string;
-      projectNameIgnore?: string;
+      groupIdsIgnore?: string[];
+      projectIdsIgnore?: string[];
+      projectNamesIgnore?: string[];
     }
   ) {
     this.projectResults$ = this.store.pipe(select(selectAllProjectsSearch));
@@ -56,10 +56,13 @@ export class ProjectSearchDialogComponent implements OnInit {
   }
 
   isIgnored(project: Project): boolean {
-    return (
-      project.id === this.data.projectIdIgnore ||
-      project.name === this.data.projectNameIgnore ||
-      project.groupId === this.data.groupIdIgnore
+    return <boolean>(
+      ((this.data.groupIdsIgnore &&
+        this.data.groupIdsIgnore.includes(project.groupId)) ||
+        (this.data.projectIdsIgnore &&
+          this.data.projectIdsIgnore.includes(project.id)) ||
+        (this.data.projectNamesIgnore &&
+          this.data.projectNamesIgnore.includes(project.name)))
     );
   }
 
