@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { CodeEditorV2Module } from './features/code-editor-v2/code-editor-v2.module';
 
 export interface Link {
   path: string;
@@ -111,8 +112,8 @@ const routes: Routes = [
   {
     path: navigation.codeEditor.path,
     loadChildren: () =>
-      import('./features/code-editor/code-editor.module').then(
-        (m) => m.CodeEditorModule
+      import('./features/code-editor-v2/code-editor-v2.module').then(
+        (m) => m.CodeEditorV2Module
       )
   },
   {

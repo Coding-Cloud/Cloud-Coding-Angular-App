@@ -6,7 +6,14 @@ import {
   OnInit
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { fromEvent, Observable, Subject } from 'rxjs';
+import {
+  BehaviorSubject,
+  from,
+  fromEvent,
+  Observable,
+  of,
+  Subject
+} from 'rxjs';
 import { debounceTime, finalize, map, takeUntil } from 'rxjs/operators';
 import { ContextMenuAction } from 'src/app/features/monaco-tree/monaco-tree-file/monaco-tree-file.type';
 import { MonacoTreeElement } from 'src/app/features/monaco-tree/ngx-monaco-tree.type';
@@ -34,8 +41,11 @@ import { environment } from '../../../../../environments/environment';
 })
 export class CodeEditorComponent implements OnInit {
   editorOptions = { theme: 'vs-dark', language: 'typescript' };
+  code$ = new BehaviorSubject('');
+  loadingMonacoEditor$ = new BehaviorSubject(false);
   code = '';
-  readonly BASE_PROJECT_PATH = '/data/';
+  readonly BASE_PROJECT_PATH =
+    '/Users/remy/Documents/ESGI/annee_4/projet_annuel/project_test/';
   // have to be get from back
   baseUrlPath: string = environment.exposedAppBasePath;
   baseUrlPathTrust: SafeResourceUrl;
@@ -68,6 +78,8 @@ export class CodeEditorComponent implements OnInit {
 
   destroyKey = new Subject<void>();
 
+  destroyFileRead = new Subject<void>();
+
   projectId: string;
 
   constructor(
@@ -90,7 +102,7 @@ export class CodeEditorComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.getProjectService
-      .getProject(this.projectId)
+      .getProjectV2(this.projectId)
       .pipe(
         finalize(() => {
           this.isLoading = false;
@@ -173,21 +185,31 @@ export class CodeEditorComponent implements OnInit {
   }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
-  handleClickOnFolder(event: string): void {
+  handleClickOnFolder(path: string): void {
+    console.log(path);
     if (
-      this.currentProject.appFiles[`${this.BASE_PROJECT_PATH}${event}`] !==
+      this.currentProject.appFiles[`${this.BASE_PROJECT_PATH}${path}`] !==
         undefined &&
-      this.currentProject.appFiles[`${this.BASE_PROJECT_PATH}${event}`]
-        .contents !== ''
+      this.currentProject.appFiles[`${this.BASE_PROJECT_PATH}${path}`].type !==
+        'folder'
     ) {
-      this.code =
-        this.currentProject.appFiles[
-          `${this.BASE_PROJECT_PATH}${event}`
-        ].contents;
+      this.loadingMonacoEditor$.next(true);
+      this.getProjectService
+        .getFileProjectContent(this.projectId, `/${path}`)
+        .pipe(finalize(() => this.loadingMonacoEditor$.next(false)))
+        .subscribe((content) => {
+          this.code$.next(content.content);
+          this.code = content.content;
+          this.currentProject.appFiles[
+            `${this.BASE_PROJECT_PATH}${path}`
+          ].contents = content.content;
+        });
     } else {
-      this.code = '';
+      this.code$.next('');
     }
-    this.currentFile = `${this.BASE_PROJECT_PATH}${event}`;
+    console.log('avant là pas de soucis');
+
+    this.currentFile = `${this.BASE_PROJECT_PATH}${path}`;
     const isFile = this.currentFile.split('/').pop()?.includes('.');
     if (isFile) {
       const endFile = this.currentFile.split('/').pop()?.split('.').pop();
@@ -297,6 +319,8 @@ export class CodeEditorComponent implements OnInit {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   handleClickContextMenu(event: ContextMenuAction): void {
+    console.log("je suis l'event");
+
     if (event.action === 'delete_file') {
       this.deleteFolder({ path: event.name });
     }

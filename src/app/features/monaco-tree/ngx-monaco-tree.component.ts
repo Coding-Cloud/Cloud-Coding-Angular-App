@@ -10,7 +10,7 @@ import { ContextMenuAction } from './monaco-tree-file/monaco-tree-file.type';
 export class NgxMonacoTreeComponent {
   @Input() theme: 'vs-dark' | 'vs-light' = 'vs-dark';
   @Input() tree: MonacoTreeElement[] = [];
-  @Input() currentFile: string = '';
+  @Input() currentFile = '';
   @Input() width = '300px';
   @Input() height = '500px';
 

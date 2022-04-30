@@ -1,0 +1,16 @@
+<div class="code-editor-page">
+    <div  class="editor-content">
+        <div *ngIf="!isLoading" class="editor">
+            <monaco-tree [currentFile]="currentFile" class="editor__tree" [tree]="tree" (clickContextMenu)="handleClickContextMenu($event)"
+                (clickFile)="handleClickOnFolder($event)" (createFile)="handleCreateFile($event)"
+                (createDir)="handleCreateDir($event)" (renameFolder)="handleRenameFolder($event)"></monaco-tree>
+            <ngx-monaco-editor   class="editor__text" (ngModelChange)="handleChange($event)" [options]="editorOptions"
+                [ngModel]="(code$ | async)" (ngModelChange)="'jean'"></ngx-monaco-editor>
+        </div>
+        <app-spinner *ngIf="isLoading || (loadingMonacoEditor$ | async)"></app-spinner>
+        <!-- <button class="button__tree" (click)="handleSave()">GOOOO</button>  -->
+    </div>
+    <iframe class="iframe-view" [src]="this.baseUrlPathTrust" title="description"></iframe>
+</div>
+
+<app-terminal id="terminal" [text]="codeRunnerSysOut" ></app-terminal>

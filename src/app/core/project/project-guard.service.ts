@@ -10,8 +10,9 @@ import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { NotificationService } from '../notifications/notification.service';
 import { navigation } from '../../app-routing.module';
-import { ProjectsService } from 'src/app/features/projects/projects.service';
+import { GetProjectService } from 'src/app/features/code-editor-v2/services/get-project.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ProjectsService } from '../../features/projects/projects.service';
 
 @Injectable({
   providedIn: 'root'
