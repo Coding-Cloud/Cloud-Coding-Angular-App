@@ -92,10 +92,11 @@ export class CodeEditorComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) {
     this.projectId = this.activatedRoute.snapshot.params.id;
-    this.baseUrlPath = `${this.projectId}`;
     this.baseUrlPathTrust = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.projectId + '.' + this.baseUrlPath
+      this.baseUrlPath
     );
+    this.baseUrlPath += `${this.projectId}`;
+
     this.BASE_PROJECT_PATH += `${this.projectId}/`;
   }
 
@@ -207,7 +208,6 @@ export class CodeEditorComponent implements OnInit {
     } else {
       this.code$.next('');
     }
-    console.log('avant là pas de soucis');
 
     this.currentFile = `${this.BASE_PROJECT_PATH}${path}`;
     const isFile = this.currentFile.split('/').pop()?.includes('.');
