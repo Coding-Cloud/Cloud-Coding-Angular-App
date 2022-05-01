@@ -100,6 +100,9 @@ export class CodeEditorComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) {
     this.projectId = this.activatedRoute.snapshot.params.id;
+    if (!environment.exposedAppBasePath.includes('localhost')) {
+      this.baseUrlPath = `${this.projectId}.${this.baseUrlPath}`;
+    }
     this.baseUrlPathTrust = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.baseUrlPath
     );

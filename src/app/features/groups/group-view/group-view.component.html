@@ -12,7 +12,8 @@
           <mat-card *ngIf='!(editMode$ | async)'>
             <mat-card-content>
               <ul>
-                <li><strong>Propriétaire</strong> : {{((group$ | async)?.ownerId | username) | async}}</li>
+                <li><strong>Propriétaire</strong> : <a
+                  [routerLink]=[userViewLink,groupOwnerId]>{{((group$ | async)?.ownerId | username) | async}}</a></li>
                 <li><strong>Projets associés</strong> : {{(group$ | async)?.projects?.length ?? 0}}</li>
                 <li><strong>Créé le</strong> : {{(group$ | async)?.createdAt | date : 'longDate'}}</li>
               </ul>
@@ -32,7 +33,8 @@
         <div class='col-12 d-flex justify-content-between align-items-start'>
 
           <h3 class='main-heading'>Projets associés</h3>
-          <button mat-raised-button color='primary' (click)='onSearchProject()'>
+          <button mat-raised-button color='primary' (click)='onSearchProject()'
+                  *ngIf='currentUserId === (group$ | async)?.ownerId'>
             <mat-icon>add</mat-icon>
             Ajouter un projet
           </button>
@@ -40,7 +42,16 @@
         <div *ngFor='let project of (group$ | async)?.projects' class='col-6'>
           <mat-card>
             <mat-card-title>
-              <a [routerLink]=[projectViewLink,project.id]>{{project.name}}</a>
+              <div class='row'>
+                <div class='col-12 d-flex justify-content-between align-items-start'>
+                  <a [routerLink]=[projectViewLink,project.id]>{{project.name}}</a>
+                  <button mat-icon-button color='warn'
+                          *ngIf='(group$ | async)?.ownerId === (currentUser$ | async)?.id'
+                          (click)='onRemoveProject(project.id)'>
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                </div>
+              </div>
             </mat-card-title>
             <mat-card-subtitle>
               {{project.language | projectLanguage}}
@@ -61,27 +72,36 @@
       <div class='row'>
         <div class='col-12 d-flex justify-content-between align-items-start'>
           <h3 class='main-heading'>Membres</h3>
-          <button mat-raised-button color='primary' (click)='onSearchUser()'>
+          <button mat-raised-button color='primary' (click)='onSearchUser()'
+                  *ngIf='currentUserId === (group$ | async)?.ownerId'>
             <mat-icon>add</mat-icon>
-            Ajouter un nouveau membre
+            Ajouter un membre
           </button>
         </div>
         <div class='col-sm-6 col-md-4 col-12' *ngFor='let member of (members$ | async)'>
           <mat-card>
             <mat-card-title>
-              <a href='#'>{{member.userId | username | async}}</a>
+              <div class='row'>
+                <div class='col-12 d-flex justify-content-between align-items-start'>
+                  <a [routerLink]=[userViewLink,member.userId]>{{member.userId | username | async}}</a>
+                  <button mat-icon-button color='warn'
+                          *ngIf='(group$ | async)?.ownerId === (currentUser$ | async)?.id
+                                && member.userId !== (currentUser$ | async)?.id'
+                          (click)='onRemoveMembership(member.userId)'>
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                </div>
+              </div>
             </mat-card-title>
             <mat-card-subtitle>
               <mat-slide-toggle [checked]='member.canEdit'
-                                [disabled]='(group$ | async)?.ownerId !== (currentUser$ | async)?.id || member.userId === (currentUser$ | async)?.id'
+                                [disabled]='(group$ | async)?.ownerId !== (currentUser$ | async)?.id
+                                || member.userId === (currentUser$ | async)?.id'
                                 (change)='onUpdateMembership(member.userId,!member.canEdit)'>
                 Peut modifier
               </mat-slide-toggle>
             </mat-card-subtitle>
           </mat-card>
-        </div>
-        <div class='col-12'>
-
         </div>
       </div>
     </div>

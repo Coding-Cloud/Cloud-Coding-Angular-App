@@ -26,7 +26,6 @@
             <li><strong>Dernière version</strong> : {{project.lastVersion}}</li>
             <li><strong>Statut</strong> : {{project.status | projectStatus}}</li>
             <li><strong>Visibilité</strong> : {{project.globalVisibility | projectVisibility}}</li>
-            <li><strong>Propriétaire</strong> : {{project.creatorId | username | async}}</li>
             <li><strong>Créé le</strong> : {{project.createdAt | date : 'longDate'}}</li>
           </ul>
         </mat-card-content>

@@ -181,3 +181,33 @@ export const actionGroupsUpdateOneError = createAction(
 export const actionGroupSwitchEditMode = createAction(
   '[Groups] Switch Edit Mode'
 );
+
+export const actionGroupsRemoveMembership = createAction(
+  '[Groups] Remove membership',
+  props<{ groupMembership: GroupMembership }>()
+);
+
+export const actionGroupsRemoveMembershipSuccess = createAction(
+  '[Groups] Remove membership success',
+  props<{ groupMembership: GroupMembership }>()
+);
+
+export const actionGroupsRemoveMembershipError = createAction(
+  '[Groups] Remove membership error',
+  props<{ message: string }>()
+);
+
+export const actionGroupsRemoveProject = createAction(
+  '[Groups] Remove project',
+  props<{ groupId: string; projectId: string }>()
+);
+
+export const actionGroupsRemoveProjectSuccess = createAction(
+  '[Groups] Remove project success',
+  props<{ groupId: string; projectId: string }>()
+);
+
+export const actionGroupsRemoveProjectError = createAction(
+  '[Groups] Remove project error',
+  props<{ message: string }>()
+);

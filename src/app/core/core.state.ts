@@ -22,7 +22,8 @@ import { groupListReducer } from '../features/groups/store/group-list.reducer';
 import { groupReducer } from '../features/groups/store/current-group.reducer';
 import { projectsSearchReducer } from '../features/projects/store/project-search.reducer';
 import { usersSearchReducer } from '../features/users/store/user-search.reducer';
-import { UsersState } from '../shared/models/user.model';
+import { UsersState, UserState } from '../shared/models/user.model';
+import { userViewReducer } from '../features/users/store/user-view.reducer';
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
@@ -33,6 +34,7 @@ export const reducers: ActionReducerMap<AppState> = {
   groups: groupListReducer,
   currentGroup: groupReducer,
   userSearch: usersSearchReducer,
+  userView: userViewReducer,
   router: routerReducer
 };
 
@@ -70,6 +72,10 @@ export const selectUsersSearchState = createFeatureSelector<
   UsersState
 >('userSearch');
 
+export const selectUserViewState = createFeatureSelector<AppState, UserState>(
+  'userView'
+);
+
 export const selectGroupsState = createFeatureSelector<AppState, GroupsState>(
   'groups'
 );
@@ -98,5 +104,6 @@ export interface AppState {
   groups: GroupsState;
   currentGroup: GroupState;
   userSearch: UsersState;
+  userView: UserState;
   router: RouterReducerState<RouterStateUrl>;
 }

@@ -20,11 +20,6 @@
         <mat-card-subtitle>
           <strong>Créé le</strong> : {{group.createdAt | date : 'longDate'}}
         </mat-card-subtitle>
-        <mat-card-content>
-          <ul>
-            <li><strong>Propriétaire</strong> : {{group.ownerId | username | async}}</li>
-          </ul>
-        </mat-card-content>
       </mat-card>
     </div>
     <h3 class='col-12 main-heading'>Groupes rejoints</h3>
@@ -38,7 +33,8 @@
         </mat-card-subtitle>
         <mat-card-content>
           <ul>
-            <li><strong>Propriétaire</strong> : {{group.ownerId | username | async}}</li>
+            <li><strong>Propriétaire</strong> : <a
+              [routerLink]=[userViewLink,group.ownerId]>{{group.ownerId | username | async}}</a></li>
           </ul>
         </mat-card-content>
       </mat-card>

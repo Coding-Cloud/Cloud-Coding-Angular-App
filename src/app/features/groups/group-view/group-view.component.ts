@@ -8,6 +8,8 @@ import {
   actionGroupsAddProject,
   actionGroupsDeleteOneOwned,
   actionGroupsGetOne,
+  actionGroupsRemoveMembership,
+  actionGroupsRemoveProject,
   actionGroupsUpdateMembership,
   actionGroupSwitchEditMode
 } from '../store/groups.actions';
@@ -26,9 +28,10 @@ import { User } from '../../../shared/models/user.model';
 import { selectUser } from '../../../core/auth/auth.selectors';
 import { Message } from '../../../shared/models/message.model';
 import { ProjectSearchDialogComponent } from '../../projects/project-search-dialog/project-search-dialog.component';
-import { UserSearchDialogComponent } from '../../users/user-search/user-search-dialog.component';
+import { UserSearchDialogComponent } from '../../users/user-search-dialog/user-search-dialog.component';
 import { Project } from '../../../shared/models/project.model';
 import { map } from 'rxjs/operators';
+import { usersNavigation } from '../../users/users-routing.module';
 
 @Component({
   selector: 'cc-group-view',
@@ -38,16 +41,19 @@ import { map } from 'rxjs/operators';
 })
 export class GroupViewComponent implements OnInit {
   groupId = '';
+  currentUserId = '';
+  groupOwnerId = '';
   group$: Observable<Group>;
   members$: Observable<GroupMembership[]>;
   editMode$: Observable<boolean>;
   currentUser$: Observable<User>;
-  currentUserId = '';
   messages$: Observable<Message[]>;
 
   projectsLinks = projectsNavigation;
   rootLinks = navigation;
   projectViewLink = `/${this.rootLinks.projets.path}/${this.projectsLinks.viewProject.path}`;
+  userLinks = usersNavigation;
+  userViewLink = `/${this.rootLinks.users.path}/${this.userLinks.viewUser.path}`;
 
   constructor(
     private route: ActivatedRoute,
@@ -55,6 +61,9 @@ export class GroupViewComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this.group$ = this.store.pipe(select(selectCurrentGroup));
+    this.group$.subscribe((group) => {
+      this.groupOwnerId = group.ownerId;
+    });
     this.members$ = this.store.pipe(select(selectCurrentGroupMembers));
     this.editMode$ = this.store.pipe(select(selectCurrentGroupIsEditMode));
     this.messages$ = this.store.pipe(select(selectCurrentGroupMessages));
@@ -79,6 +88,44 @@ export class GroupViewComponent implements OnInit {
     confirmDialog.afterClosed().subscribe((result) => {
       if (result === true) {
         this.store.dispatch(actionGroupsDeleteOneOwned({ id: this.groupId }));
+      }
+    });
+  }
+
+  onRemoveProject(projectId: string): void {
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Enlever un projet',
+        message: 'Êtes vous sûr de vouloir retirer projet ?'
+      }
+    });
+    confirmDialog.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.store.dispatch(
+          actionGroupsRemoveProject({ projectId, groupId: this.groupId })
+        );
+      }
+    });
+  }
+
+  onRemoveMembership(userId: string): void {
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Enlever un membre',
+        message: 'Êtes vous sûr de vouloir retirer ce membre ?'
+      }
+    });
+    confirmDialog.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.store.dispatch(
+          actionGroupsRemoveMembership({
+            groupMembership: {
+              groupId: this.groupId,
+              userId,
+              canEdit: false
+            }
+          })
+        );
       }
     });
   }

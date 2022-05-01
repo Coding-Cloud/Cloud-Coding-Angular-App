@@ -27,6 +27,10 @@ export class ProjectsService {
     );
   }
 
+  getUserProjects(userId: string): Observable<Project[]> {
+    return this.http.get<Project[]>(API_RESOURCE_URI.PROJECTS_USER(userId));
+  }
+
   updateProjectGroup(projectId: string, groupId: string): Observable<any> {
     return this.http.patch(
       API_RESOURCE_URI.PROJECTS_UPDATE_GROUP(projectId, groupId),
@@ -60,5 +64,12 @@ export class ProjectsService {
 
   deleteProject(projectId: string): Observable<any> {
     return this.http.delete<any>(API_RESOURCE_URI.PROJECTS + '/' + projectId);
+  }
+
+  removeProjectGroup(projectId: string): Observable<any> {
+    return this.http.patch(
+      API_RESOURCE_URI.PROJECTS_REMOVE_GROUP(projectId),
+      {}
+    );
   }
 }

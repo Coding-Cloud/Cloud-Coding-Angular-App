@@ -7,6 +7,7 @@ import { selectAllProjects } from '../store/projects.selectors';
 import { projectsNavigation } from '../projects-routing.module';
 import { actionProjectsRetrieveAll } from '../store/projects.actions';
 import { navigation } from 'src/app/app-routing.module';
+import { usersNavigation } from '../../users/users-routing.module';
 
 @Component({
   selector: 'cc-projects',
@@ -15,10 +16,10 @@ import { navigation } from 'src/app/app-routing.module';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectListComponent implements OnInit {
+  navigation = navigation;
   projectsLinks = projectsNavigation;
 
   projectList$: Observable<Project[]>;
-  navigation = navigation;
 
   constructor(private store: Store<AppState>) {
     this.projectList$ = this.store.pipe(select(selectAllProjects));

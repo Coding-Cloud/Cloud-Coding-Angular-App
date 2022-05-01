@@ -21,6 +21,7 @@ import { navigation } from '../../../app-routing.module';
 import { Group } from '../../../shared/models/group.model';
 import { User } from '../../../shared/models/user.model';
 import { selectUser } from '../../../core/auth/auth.selectors';
+import { usersNavigation } from '../../users/users-routing.module';
 
 @Component({
   selector: 'cc-project-view',
@@ -31,9 +32,12 @@ import { selectUser } from '../../../core/auth/auth.selectors';
 export class ProjectViewComponent implements OnInit {
   projectId = '';
   groupId = '';
+  ownerId = '';
   groupsLinks = groupsNavigation;
+  userLinks = usersNavigation;
   rootLinks = navigation;
   groupViewLink = `/${this.rootLinks.groups.path}/${this.groupsLinks.viewGroup.path}`;
+  userViewLink = `/${this.rootLinks.users.path}/${this.userLinks.viewUser.path}`;
 
   project$: Observable<Project>;
   group$: Observable<Group>;
@@ -48,6 +52,7 @@ export class ProjectViewComponent implements OnInit {
     this.project$ = this.store.pipe(select(selectCurrentProject));
     this.group$ = this.store.pipe(select(selectCurrentProjectGroup));
     this.project$.subscribe((project) => (this.groupId = project.groupId));
+    this.project$.subscribe((project) => (this.ownerId = project.creatorId));
     this.editMode$ = this.store.pipe(select(selectCurrentProjectIsEditMode));
     this.currentUser$ = this.store.pipe(select(selectUser));
   }

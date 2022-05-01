@@ -19,9 +19,13 @@ export const API_RESOURCE_URI = {
   PROJECTS: `${env.apiUrl}/projects`,
   PROJECTS_OWNED: `${env.apiUrl}/projects/owned`,
   PROJECTS_SEARCH: `${env.apiUrl}/projects/search`,
+  PROJECTS_USER: (userId: string) =>
+    `${env.apiUrl}/projects/${userId}/projects`,
   PROJECTS_GROUP: `${env.apiUrl}/projects/group`,
   PROJECTS_UPDATE_GROUP: (projectId: string, groupId: string) =>
     `${env.apiUrl}/projects/${projectId}/${groupId}`,
+  PROJECTS_REMOVE_GROUP: (projectId: string) =>
+    `${env.apiUrl}/projects/${projectId}/remove-group`,
   PROJECTS_NAME: (projectId: string) =>
     `${env.apiUrl}/projects/${projectId}/name`,
   USERNAME: (id: string) => `${env.apiUrl}/users/${id}/name`,
