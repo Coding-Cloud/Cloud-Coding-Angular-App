@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_RESOURCE_URI } from '../../shared/api-resource-uri/api-resource-uri';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
   Group,
   GroupForm,
@@ -72,6 +72,12 @@ export class GroupsService {
       )
     );
   }
+
+  removeProject(groupId: string, projectId: string): Observable<any> {
+    return of({});
+    return this.http.delete(
+      API_RESOURCE_URI.PROJECTS_REMOVE_GROUP(projectId, groupId)
+    );
   }
 
   getGroup(groupId: string): Observable<Group> {
