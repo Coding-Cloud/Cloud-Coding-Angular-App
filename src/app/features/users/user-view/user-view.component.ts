@@ -1,8 +1,21 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../core/core.state';
-import { MatDialog } from '@angular/material/dialog';
+import {
+  actionUsersGetOne,
+  actionUsersGetUserProjects
+} from '../store/users.actions';
+import { Observable } from 'rxjs';
+import { User } from '../../../shared/models/user.model';
+import { Project } from '../../../shared/models/project.model';
+import {
+  selectUserView,
+  selectUserViewProjects
+} from '../store/users.selectors';
+import { usersNavigation } from '../users-routing.module';
+import { projectsNavigation } from '../../projects/projects-routing.module';
+import { navigation } from '../../../app-routing.module';
 
 @Component({
   selector: 'cc-user-view',
@@ -12,14 +25,22 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class UserViewComponent implements OnInit {
   userId = '';
+  user$: Observable<User>;
+  projects$: Observable<Project[]>;
 
-  constructor(
-    private route: ActivatedRoute,
-    private store: Store<AppState>,
-    private dialog: MatDialog
-  ) {}
+  usersNavigation = usersNavigation;
+  projectsLinks = projectsNavigation;
+  rootLinks = navigation;
+  projectViewLink = `/${this.rootLinks.projets.path}/${this.projectsLinks.viewProject.path}`;
+
+  constructor(private route: ActivatedRoute, private store: Store<AppState>) {
+    this.user$ = this.store.pipe(select(selectUserView));
+    this.projects$ = this.store.pipe(select(selectUserViewProjects));
+  }
 
   ngOnInit(): void {
     this.userId = this.route.snapshot.paramMap.get('id') ?? '';
+    this.store.dispatch(actionUsersGetOne({ id: this.userId }));
+    this.store.dispatch(actionUsersGetUserProjects({ id: this.userId }));
   }
 }
