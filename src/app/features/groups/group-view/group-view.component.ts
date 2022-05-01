@@ -31,6 +31,7 @@ import { ProjectSearchDialogComponent } from '../../projects/project-search-dial
 import { UserSearchDialogComponent } from '../../users/user-search-dialog/user-search-dialog.component';
 import { Project } from '../../../shared/models/project.model';
 import { map } from 'rxjs/operators';
+import { usersNavigation } from '../../users/users-routing.module';
 
 @Component({
   selector: 'cc-group-view',
@@ -40,16 +41,19 @@ import { map } from 'rxjs/operators';
 })
 export class GroupViewComponent implements OnInit {
   groupId = '';
+  currentUserId = '';
+  groupOwnerId = '';
   group$: Observable<Group>;
   members$: Observable<GroupMembership[]>;
   editMode$: Observable<boolean>;
   currentUser$: Observable<User>;
-  currentUserId = '';
   messages$: Observable<Message[]>;
 
   projectsLinks = projectsNavigation;
   rootLinks = navigation;
   projectViewLink = `/${this.rootLinks.projets.path}/${this.projectsLinks.viewProject.path}`;
+  userLinks = usersNavigation;
+  userViewLink = `/${this.rootLinks.users.path}/${this.userLinks.viewUser.path}`;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,6 +61,9 @@ export class GroupViewComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this.group$ = this.store.pipe(select(selectCurrentGroup));
+    this.group$.subscribe((group) => {
+      this.groupOwnerId = group.ownerId;
+    });
     this.members$ = this.store.pipe(select(selectCurrentGroupMembers));
     this.editMode$ = this.store.pipe(select(selectCurrentGroupIsEditMode));
     this.messages$ = this.store.pipe(select(selectCurrentGroupMessages));
