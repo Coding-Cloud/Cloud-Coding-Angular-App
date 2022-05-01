@@ -315,7 +315,7 @@ export class GroupsEffects {
     this.actions$.pipe(
       ofType(actionGroupsRemoveProject),
       exhaustMap((action) =>
-        this.groupsService.removeProject(action.groupId, action.projectId).pipe(
+        this.projectsService.removeProjectGroup(action.projectId).pipe(
           map(() =>
             actionGroupsRemoveProjectSuccess({
               groupId: action.groupId,

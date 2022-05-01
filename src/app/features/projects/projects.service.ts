@@ -61,4 +61,11 @@ export class ProjectsService {
   deleteProject(projectId: string): Observable<any> {
     return this.http.delete<any>(API_RESOURCE_URI.PROJECTS + '/' + projectId);
   }
+
+  removeProjectGroup(projectId: string): Observable<any> {
+    return this.http.patch(
+      API_RESOURCE_URI.PROJECTS_REMOVE_GROUP(projectId),
+      {}
+    );
+  }
 }

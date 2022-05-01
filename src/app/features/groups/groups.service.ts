@@ -73,13 +73,6 @@ export class GroupsService {
     );
   }
 
-  removeProject(groupId: string, projectId: string): Observable<any> {
-    return of({});
-    return this.http.delete(
-      API_RESOURCE_URI.PROJECTS_REMOVE_GROUP(projectId, groupId)
-    );
-  }
-
   getGroup(groupId: string): Observable<Group> {
     return this.http.get<Group>(API_RESOURCE_URI.GROUPS + '/' + groupId);
   }

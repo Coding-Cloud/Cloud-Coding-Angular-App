@@ -22,8 +22,8 @@ export const API_RESOURCE_URI = {
   PROJECTS_GROUP: `${env.apiUrl}/projects/group`,
   PROJECTS_UPDATE_GROUP: (projectId: string, groupId: string) =>
     `${env.apiUrl}/projects/${projectId}/${groupId}`,
-  PROJECTS_REMOVE_GROUP: (projectId: string, groupId: string) =>
-    `${env.apiUrl}/projects/${projectId}/${groupId}`,
+  PROJECTS_REMOVE_GROUP: (projectId: string) =>
+    `${env.apiUrl}/projects/${projectId}/remove-group`,
   PROJECTS_NAME: (projectId: string) =>
     `${env.apiUrl}/projects/${projectId}/name`,
   USERNAME: (id: string) => `${env.apiUrl}/users/${id}/name`,
