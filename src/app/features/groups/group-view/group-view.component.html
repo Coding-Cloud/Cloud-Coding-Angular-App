@@ -63,25 +63,33 @@
           <h3 class='main-heading'>Membres</h3>
           <button mat-raised-button color='primary' (click)='onSearchUser()'>
             <mat-icon>add</mat-icon>
-            Ajouter un nouveau membre
+            Ajouter un membre
           </button>
         </div>
         <div class='col-sm-6 col-md-4 col-12' *ngFor='let member of (members$ | async)'>
           <mat-card>
             <mat-card-title>
-              <a href='#'>{{member.userId | username | async}}</a>
+              <div class='row'>
+                <div class='col-12 d-flex justify-content-between align-items-start'>
+                  <a href='#'>{{member.userId | username | async}}</a>
+                  <button mat-icon-button color='warn'
+                          *ngIf='(group$ | async)?.ownerId === (currentUser$ | async)?.id
+                                && member.userId !== (currentUser$ | async)?.id'
+                          (click)='onRemoveMembership(member.userId)'>
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                </div>
+              </div>
             </mat-card-title>
             <mat-card-subtitle>
               <mat-slide-toggle [checked]='member.canEdit'
-                                [disabled]='(group$ | async)?.ownerId !== (currentUser$ | async)?.id || member.userId === (currentUser$ | async)?.id'
+                                [disabled]='(group$ | async)?.ownerId !== (currentUser$ | async)?.id
+                                || member.userId === (currentUser$ | async)?.id'
                                 (change)='onUpdateMembership(member.userId,!member.canEdit)'>
                 Peut modifier
               </mat-slide-toggle>
             </mat-card-subtitle>
           </mat-card>
-        </div>
-        <div class='col-12'>
-
         </div>
       </div>
     </div>
