@@ -1,4 +1,5 @@
 import { EntityState } from '@ngrx/entity';
+import { Project } from './project.model';
 
 export interface User {
   id: string;
@@ -44,3 +45,7 @@ export const emptyUser: User = {
 };
 
 export type UsersState = EntityState<User>;
+export type UserState = {
+  user: User;
+  projects: Project[];
+};
