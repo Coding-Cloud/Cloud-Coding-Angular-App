@@ -7,6 +7,7 @@ import {
   actionGroupsGetOneProjectsSuccess,
   actionGroupsGetOneSuccess,
   actionGroupsRemoveMembershipSuccess,
+  actionGroupsRemoveProjectSuccess,
   actionGroupsUpdateMembershipSuccess,
   actionGroupsUpdateOneOwnedSuccess,
   actionGroupSwitchEditMode
@@ -67,6 +68,15 @@ const reducer = createReducer(
     group: {
       ...state.group,
       projects: [...state.group.projects, payload.project]
+    }
+  })),
+  on(actionGroupsRemoveProjectSuccess, (state, payload) => ({
+    ...state,
+    group: {
+      ...state.group,
+      projects: state.group.projects.filter(
+        (project) => project.id !== payload.projectId
+      )
     }
   })),
   on(actionGroupsUpdateMembershipSuccess, (state, payload) => ({

@@ -196,3 +196,18 @@ export const actionGroupsRemoveMembershipError = createAction(
   '[Groups] Remove membership error',
   props<{ message: string }>()
 );
+
+export const actionGroupsRemoveProject = createAction(
+  '[Groups] Remove project',
+  props<{ groupId: string; projectId: string }>()
+);
+
+export const actionGroupsRemoveProjectSuccess = createAction(
+  '[Groups] Remove project success',
+  props<{ groupId: string; projectId: string }>()
+);
+
+export const actionGroupsRemoveProjectError = createAction(
+  '[Groups] Remove project error',
+  props<{ message: string }>()
+);

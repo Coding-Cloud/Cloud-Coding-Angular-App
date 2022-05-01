@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_RESOURCE_URI } from '../../shared/api-resource-uri/api-resource-uri';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
   Group,
   GroupForm,
@@ -71,7 +71,6 @@ export class GroupsService {
         groupMembership.userId
       )
     );
-  }
   }
 
   getGroup(groupId: string): Observable<Group> {
