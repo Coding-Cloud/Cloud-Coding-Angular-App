@@ -8,6 +8,7 @@ import {
   actionGroupsAddProject,
   actionGroupsDeleteOneOwned,
   actionGroupsGetOne,
+  actionGroupsRemoveMembership,
   actionGroupsUpdateMembership,
   actionGroupSwitchEditMode
 } from '../store/groups.actions';
@@ -79,6 +80,28 @@ export class GroupViewComponent implements OnInit {
     confirmDialog.afterClosed().subscribe((result) => {
       if (result === true) {
         this.store.dispatch(actionGroupsDeleteOneOwned({ id: this.groupId }));
+      }
+    });
+  }
+
+  onRemoveMembership(userId: string): void {
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Enlever un membre',
+        message: 'Êtes vous sûr de vouloir retirer ce membre ?'
+      }
+    });
+    confirmDialog.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.store.dispatch(
+          actionGroupsRemoveMembership({
+            groupMembership: {
+              groupId: this.groupId,
+              userId,
+              canEdit: false
+            }
+          })
+        );
       }
     });
   }

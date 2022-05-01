@@ -19,6 +19,9 @@ import {
   actionGroupsGetOneProjectsError,
   actionGroupsGetOneProjectsSuccess,
   actionGroupsGetOneSuccess,
+  actionGroupsRemoveMembership,
+  actionGroupsRemoveMembershipError,
+  actionGroupsRemoveMembershipSuccess,
   actionGroupsRetrieveAllJoined,
   actionGroupsRetrieveAllJoinedError,
   actionGroupsRetrieveAllJoinedSuccess,
@@ -245,6 +248,35 @@ export class GroupsEffects {
     { dispatch: false }
   );
 
+  removeMembership = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionGroupsRemoveMembership),
+      exhaustMap((action) =>
+        this.groupsService.removeGroupMembership(action.groupMembership).pipe(
+          map(() =>
+            actionGroupsRemoveMembershipSuccess({
+              groupMembership: action.groupMembership
+            })
+          ),
+          catchError((error) =>
+            of(actionGroupsRemoveMembershipError({ message: error.message }))
+          )
+        )
+      )
+    )
+  );
+
+  removeMembershipSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionGroupsRemoveMembershipSuccess),
+        tap(() => {
+          this.notificationService.success('Membre retiré');
+        })
+      ),
+    { dispatch: false }
+  );
+
   addProject = createEffect(() =>
     this.actions$.pipe(
       ofType(actionGroupsAddProject),
@@ -346,7 +378,8 @@ export class GroupsEffects {
           actionGroupsDeleteOneError,
           actionGroupsUpdateMembershipError,
           actionGroupsAddMembershipError,
-          actionGroupsAddProjectError
+          actionGroupsAddProjectError,
+          actionGroupsRemoveMembershipError,
         ),
         tap((action) => {
           this.notificationService.error(action.message);

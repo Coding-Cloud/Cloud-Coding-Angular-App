@@ -181,3 +181,18 @@ export const actionGroupsUpdateOneError = createAction(
 export const actionGroupSwitchEditMode = createAction(
   '[Groups] Switch Edit Mode'
 );
+
+export const actionGroupsRemoveMembership = createAction(
+  '[Groups] Remove membership',
+  props<{ groupMembership: GroupMembership }>()
+);
+
+export const actionGroupsRemoveMembershipSuccess = createAction(
+  '[Groups] Remove membership success',
+  props<{ groupMembership: GroupMembership }>()
+);
+
+export const actionGroupsRemoveMembershipError = createAction(
+  '[Groups] Remove membership error',
+  props<{ message: string }>()
+);
