@@ -7,6 +7,8 @@ import { of } from 'rxjs';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { UsersService } from '../users.service';
 import {
+  actionUsersGetOneError,
+  actionUsersGetUserProjectsError,
   actionUsersSearch,
   actionUsersSearchError,
   actionUsersSearchSuccess
@@ -35,7 +37,11 @@ export class UsersEffects {
   errors = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(actionUsersSearchError),
+        ofType(
+          actionUsersSearchError,
+          actionUsersGetOneError,
+          actionUsersGetUserProjectsError
+        ),
         tap((action) => {
           this.notificationService.error(action.message);
         })
