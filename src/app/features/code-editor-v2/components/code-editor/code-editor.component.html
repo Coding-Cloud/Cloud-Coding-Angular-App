@@ -13,4 +13,4 @@
     <iframe class="iframe-view" [src]="this.baseUrlPathTrust" title="description"></iframe>
 </div>
 
-<app-terminal id="terminal" [text]="codeRunnerSysOut" ></app-terminal>
+<app-terminal id="terminal" [text]="codeRunnerSysOut$ | async" ></app-terminal>

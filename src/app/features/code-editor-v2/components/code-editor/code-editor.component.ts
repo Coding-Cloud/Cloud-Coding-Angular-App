@@ -31,6 +31,8 @@ import { EditProjectUtils } from './utils/edit-project.utils';
 import { TreeUtils } from './utils/tree.utils';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
+import { makeInputFocusedAfterOneFocused } from './utils/html-input.utils';
+import { isFile } from './utils/folder.utils';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -50,7 +52,7 @@ export class CodeEditorComponent implements OnInit {
   baseUrlPath: string = environment.exposedAppBasePath;
   baseUrlPathTrust: SafeResourceUrl;
   currentFile = '';
-  codeRunnerSysOut = '';
+  codeRunnerSysOut$: BehaviorSubject<string> = new BehaviorSubject('');
   isLoading = false;
 
   tree: MonacoTreeElement[] = [];
@@ -126,9 +128,10 @@ export class CodeEditorComponent implements OnInit {
         );
         this.socketProject = copyObject<Project>(this.currentProject);
 
-        if (this.currentProject.appFiles[`${this.currentFile}`]) {
-          this.code =
-            this.currentProject.appFiles[`${this.currentFile}`].contents;
+        if (this.currentProject.appFiles[`${this.currentFile}`]?.contents) {
+          this.code$.next(
+            this.currentProject.appFiles[`${this.currentFile}`].contents
+          );
         }
         TreeUtils.editTree(this.tree, this.BASE_PROJECT_PATH, editsProjectDTO);
         this.cd.markForCheck();
@@ -144,8 +147,6 @@ export class CodeEditorComponent implements OnInit {
           this.currentProject
         );
         this.socketProject = copyObject<Project>(this.currentProject);
-        console.log('current project');
-        console.log(this.currentProject);
         TreeUtils.renameTreeFolder(
           this.BASE_PROJECT_PATH,
           renameProjectFolderResource.oldName,
@@ -172,7 +173,7 @@ export class CodeEditorComponent implements OnInit {
       });
 
     this.codeSocketService.listenLogsChanged().subscribe((message: string) => {
-      this.codeRunnerSysOut = message;
+      this.codeRunnerSysOut$.next(message);
       this.cd.markForCheck();
     });
   }
@@ -187,7 +188,6 @@ export class CodeEditorComponent implements OnInit {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   handleClickOnFolder(path: string): void {
-    console.log(path);
     if (
       this.currentProject.appFiles[`${this.BASE_PROJECT_PATH}${path}`] !==
         undefined &&
@@ -200,8 +200,10 @@ export class CodeEditorComponent implements OnInit {
         .pipe(finalize(() => this.loadingMonacoEditor$.next(false)))
         .subscribe((content) => {
           this.code$.next(content.content);
-          this.code = content.content;
           this.currentProject.appFiles[
+            `${this.BASE_PROJECT_PATH}${path}`
+          ].contents = content.content;
+          this.socketProject.appFiles[
             `${this.BASE_PROJECT_PATH}${path}`
           ].contents = content.content;
         });
@@ -210,8 +212,7 @@ export class CodeEditorComponent implements OnInit {
     }
 
     this.currentFile = `${this.BASE_PROJECT_PATH}${path}`;
-    const isFile = this.currentFile.split('/').pop()?.includes('.');
-    if (isFile) {
+    if (isFile(this.currentFile)) {
       const endFile = this.currentFile.split('/').pop()?.split('.').pop();
       const valueInMap = ExtensionToLanguage.get(endFile as string);
       if (valueInMap !== undefined) {
@@ -232,6 +233,10 @@ export class CodeEditorComponent implements OnInit {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   handleChange($event: any): void {
+    if (!isFile(this.currentFile)) {
+      return;
+    }
+
     const newValue: Folder = {
       name: this.currentFile.split(this.BASE_PROJECT_PATH)[1],
       type: 'file',
@@ -242,7 +247,6 @@ export class CodeEditorComponent implements OnInit {
     };
     this.hardProjectModification.appFiles[this.currentFile] = newValue;
     this.socketProjectModification.appFiles[this.currentFile] = newValue;
-
     this.currentProject.appFiles[this.currentFile] = newValue;
   }
 
@@ -286,8 +290,12 @@ export class CodeEditorComponent implements OnInit {
 
   private generateEditProjectDTO(): EditProjectDTO[] {
     const editProjectsDTO: EditProjectDTO[] = [];
+
     Object.entries(this.socketProjectModification.appFiles).forEach((value) => {
-      if (value[1].folderStatus === FolderStatus.MODIFIED) {
+      if (
+        value[1].folderStatus === FolderStatus.MODIFIED &&
+        value[1].type === 'file'
+      ) {
         const contentProjectModification = value[1].contents.split('\n');
         const contentProjectInitial =
           this.socketProject.appFiles[value[0]].contents.split('\n');
@@ -319,8 +327,6 @@ export class CodeEditorComponent implements OnInit {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   handleClickContextMenu(event: ContextMenuAction): void {
-    console.log("je suis l'event");
-
     if (event.action === 'delete_file') {
       this.deleteFolder({ path: event.name });
     }
@@ -335,23 +341,14 @@ export class CodeEditorComponent implements OnInit {
     dir.content?.forEach((element) => {
       if (element.name === lastName) {
         if (event.action === 'new_directory' || event.action === 'new_file') {
-          console.log('on met element à edited');
-          console.log(element);
           element.edited = true;
-          this.makeInputFocusedAfterOneFocused('inputCreate');
+          makeInputFocusedAfterOneFocused('inputCreate');
         } else if (event.action === 'rename_file') {
           element.rename = true;
-          this.makeInputFocusedAfterOneFocused('inputRename');
+          makeInputFocusedAfterOneFocused('inputRename');
         }
       }
     });
-  }
-
-  private makeInputFocusedAfterOneFocused(elementId: string): void {
-    setTimeout(() => {
-      const inputAppear = document.getElementById(elementId);
-      inputAppear?.focus();
-    }, 500);
   }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -379,7 +376,6 @@ export class CodeEditorComponent implements OnInit {
       event.path,
       event.nameFile
     );
-    console.log(editsProjectDTO);
     this.codeSocketService.sendProjectModification(
       'editProject',
       editsProjectDTO
@@ -412,6 +408,7 @@ export class CodeEditorComponent implements OnInit {
       event.path,
       event.nameDir
     );
+
     this.codeSocketService.sendProjectModification(
       'editProject',
       editsProjectDTO
@@ -431,11 +428,6 @@ export class CodeEditorComponent implements OnInit {
       this.currentProject
     );
     this.socketProject = copyObject<Project>(this.currentProject);
-    console.log('dans le rename');
-    console.log(this.currentProject);
-    console.log(this.socketProject);
-    console.log(this.socketProjectModification);
-    console.log(this.hardProjectModification);
 
     TreeUtils.renameTreeFolder(
       this.BASE_PROJECT_PATH,

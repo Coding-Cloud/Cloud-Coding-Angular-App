@@ -7,7 +7,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
   styleUrls: ['./terminal.component.scss']
 })
 export class TerminalComponent implements OnChanges {
-  @Input() text?: string;
+  @Input() text: string | null = null;
 
   constructor() {}
   ngOnChanges(changes: SimpleChanges): void {
