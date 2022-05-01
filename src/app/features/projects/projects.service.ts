@@ -56,6 +56,12 @@ export class ProjectsService {
     return this.http.get<Project>(API_RESOURCE_URI.PROJECTS + '/' + projectId);
   }
 
+  getProjectByUniqueName(uniqueName: string): Observable<Project> {
+    return this.http.get<Project>(
+      API_RESOURCE_URI.PROJECTS + '/unique-name/' + uniqueName
+    );
+  }
+
   getProjectsByGroupId(groupId: string): Observable<Project[]> {
     return this.http.get<Project[]>(
       API_RESOURCE_URI.PROJECTS + '/group/' + groupId

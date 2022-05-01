@@ -8,6 +8,7 @@ import {
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import {
   BehaviorSubject,
+  forkJoin,
   from,
   fromEvent,
   Observable,
@@ -26,6 +27,8 @@ import { UpdateProjectService } from '../../services/update-project.service';
 import { ExtensionToLanguage } from '../../types/extension-to-language';
 import { Folder, FolderStatus } from '../../types/folder.interface';
 import { Project } from '../../types/project.interface';
+import { Project as ProjectShare } from 'src/app/shared/models/project.model';
+
 import { copyObject } from './utils/copy-object.utils';
 import { EditProjectUtils } from './utils/edit-project.utils';
 import { TreeUtils } from './utils/tree.utils';
@@ -47,8 +50,7 @@ export class CodeEditorComponent implements OnInit {
   code$ = new BehaviorSubject('');
   loadingMonacoEditor$ = new BehaviorSubject(false);
   code = '';
-  readonly BASE_PROJECT_PATH =
-    '/Users/remy/Documents/ESGI/annee_4/projet_annuel/project_test/';
+  readonly BASE_PROJECT_PATH = environment.baseProjectPath;
   // have to be get from back
   baseUrlPath: string = environment.exposedAppBasePath;
   baseUrlPathTrust: SafeResourceUrl;
@@ -86,7 +88,9 @@ export class CodeEditorComponent implements OnInit {
 
   destroyFileRead = new Subject<void>();
 
-  projectId: string;
+  uniqueName: string;
+
+  project: ProjectShare | undefined;
 
   readonly IMAGE_EXTENSION = IMAGE_EXTENSION;
 
@@ -99,35 +103,35 @@ export class CodeEditorComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute
   ) {
-    this.projectId = this.activatedRoute.snapshot.params.id;
+    this.uniqueName = this.activatedRoute.snapshot.params.id;
+
     if (!environment.exposedAppBasePath.includes('localhost')) {
-      this.baseUrlPath = `${this.projectId}.${this.baseUrlPath}`;
+      this.baseUrlPath = `https://${this.uniqueName}.${this.baseUrlPath}`;
     }
     this.baseUrlPathTrust = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.baseUrlPath
     );
-    this.baseUrlPath += `${this.projectId}`;
-
-    this.BASE_PROJECT_PATH += `${this.projectId}/`;
+    this.baseUrlPath += `${this.uniqueName}`;
+    this.BASE_PROJECT_PATH += `${this.uniqueName}/`;
   }
 
   ngOnInit(): void {
     this.isLoading = true;
     this.getProjectService
-      .getProjectV2(this.projectId)
+      .getProjectV2(this.uniqueName)
       .pipe(
         finalize(() => {
           this.isLoading = false;
           this.cd.markForCheck();
         })
       )
-      .subscribe((project: Project) => {
-        this.currentProject = copyObject<Project>(project);
-        this.socketProject = copyObject<Project>(project);
+      .subscribe((projectCodeEditor: Project) => {
+        this.currentProject = copyObject<Project>(projectCodeEditor);
+        this.socketProject = copyObject<Project>(projectCodeEditor);
 
         this.initializeTreeFiles();
       });
-    this.codeSocketService.connect(this.projectId);
+    this.codeSocketService.connect(this.uniqueName);
     this.codeSocketService
       .listenProjectModification('projectModificationFromContributor')
       .subscribe((editsProjectDTO: EditProjectDTO[]) => {
@@ -205,7 +209,7 @@ export class CodeEditorComponent implements OnInit {
     ) {
       this.loadingMonacoEditor$.next(true);
       this.getProjectService
-        .getFileProjectContent(this.projectId, `/${path}`)
+        .getFileProjectContent(this.uniqueName, `/${path}`)
         .pipe(finalize(() => this.loadingMonacoEditor$.next(false)))
         .subscribe((content) => {
           this.code$.next(content.content);

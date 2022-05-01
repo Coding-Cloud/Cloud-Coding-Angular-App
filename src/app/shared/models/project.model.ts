@@ -4,6 +4,7 @@ import { Group } from './group.model';
 export interface Project {
   id: string;
   name: string;
+  uniqueName: string;
   lastVersion: number;
   language: ProjectLanguage;
   status: ProjectStatus;
@@ -40,6 +41,7 @@ export enum ProjectVisibility {
 export const emptyProject: Project = {
   id: '',
   name: '',
+  uniqueName: '',
   lastVersion: 0,
   language: ProjectLanguage.ANGULAR,
   status: ProjectStatus.INACTIVE,

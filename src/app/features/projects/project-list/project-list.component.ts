@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Project } from '../../../shared/models/project.model';
+import { Project, ProjectStatus } from '../../../shared/models/project.model';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../core/core.state';
 import { selectAllProjects } from '../store/projects.selectors';
@@ -21,11 +21,14 @@ export class ProjectListComponent implements OnInit {
 
   projectList$: Observable<Project[]>;
 
+  projectStatus = ProjectStatus;
+
   constructor(private store: Store<AppState>) {
     this.projectList$ = this.store.pipe(select(selectAllProjects));
   }
 
   ngOnInit(): void {
     this.store.dispatch(actionProjectsRetrieveAll());
+    this.projectList$.subscribe((value) => console.log(value));
   }
 }

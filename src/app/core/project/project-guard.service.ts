@@ -32,13 +32,12 @@ export class ProjectGuardService implements CanActivate {
       this.router.navigate([navigation.home.path]);
       return false;
     }
-    return this.projectsService.getProject(id).pipe(
+    return this.projectsService.getProjectByUniqueName(id).pipe(
       map((project) => {
         if (!project) {
           this.notificationService.error(
             'Vous ne pouvez pas accéder à ce projet'
           );
-          console.log('problème');
           this.router.navigate([navigation.home.path]);
           return false;
         } else {

@@ -109,13 +109,9 @@ export class ProjectsEffects {
       this.actions$.pipe(
         ofType(actionProjectsAddOneSuccess),
         tap((action: { projectId: string }) => {
-          this.router
-            .navigate([
-              navigation.codeEditor.path + '/project/' + action.projectId
-            ])
-            .then(() => {
-              this.notificationService.success('Projet ajouté');
-            });
+          this.router.navigate([navigation.projets.path]).then(() => {
+            this.notificationService.success('Projet ajouté');
+          });
         })
       ),
     { dispatch: false }

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Folder } from '../types/folder.interface';
 import { environment as env } from '../../../../environments/environment';
+import { Project } from 'src/app/shared/models/project.model';
 
 @Injectable({
   providedIn: 'root'
@@ -35,5 +36,9 @@ export class GetProjectService {
     return this.http.get<{ content: string }>(
       `${this.baseUrl}/${projectId}/read/file?path=${path}`
     );
+  }
+
+  getProjectByUniqueName(uniqueName: string): Observable<Project> {
+    return this.http.get<Project>(`${this.baseUrl}/unique-name/${uniqueName}`);
   }
 }

@@ -35,6 +35,8 @@ export class CodeSocketService {
     eventName: string,
     editProjectDTO: EditProjectDTO[]
   ): void {
+    console.log('emit de modif');
+
     this.socket?.emit(eventName, { project: editProjectDTO });
   }
 
