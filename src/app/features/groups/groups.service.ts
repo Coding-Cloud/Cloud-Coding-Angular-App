@@ -30,6 +30,18 @@ export class GroupsService {
     );
   }
 
+  updateGroup(groupId: string, group: GroupForm): Observable<any> {
+    return this.http.patch<any>(API_RESOURCE_URI.GROUPS + '/' + groupId, {
+      ...group
+    });
+  }
+
+  getGroupMemberships(groupId: string): Observable<GroupMembership[]> {
+    return this.http.get<GroupMembership[]>(
+      API_RESOURCE_URI.GROUP_MEMBERSHIPS_GROUP + '/' + groupId
+    );
+  }
+
   addGroupMembership(groupMembership: GroupMembership): Observable<any> {
     return this.http.post(
       API_RESOURCE_URI.GROUP_MEMBERSHIPS(
@@ -52,10 +64,14 @@ export class GroupsService {
     );
   }
 
-  updateGroup(groupId: string, group: GroupForm): Observable<any> {
-    return this.http.patch<any>(API_RESOURCE_URI.GROUPS + '/' + groupId, {
-      ...group
-    });
+  removeGroupMembership(groupMembership: GroupMembership): Observable<any> {
+    return this.http.delete(
+      API_RESOURCE_URI.GROUP_MEMBERSHIPS(
+        groupMembership.groupId,
+        groupMembership.userId
+      )
+    );
+  }
   }
 
   getGroup(groupId: string): Observable<Group> {
@@ -64,11 +80,5 @@ export class GroupsService {
 
   deleteGroup(groupId: string): Observable<any> {
     return this.http.delete<any>(API_RESOURCE_URI.GROUPS + '/' + groupId);
-  }
-
-  getGroupMemberships(groupId: string): Observable<GroupMembership[]> {
-    return this.http.get<GroupMembership[]>(
-      API_RESOURCE_URI.GROUP_MEMBERSHIPS_GROUP + '/' + groupId
-    );
   }
 }
