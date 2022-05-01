@@ -32,7 +32,8 @@
         <div class='col-12 d-flex justify-content-between align-items-start'>
 
           <h3 class='main-heading'>Projets associés</h3>
-          <button mat-raised-button color='primary' (click)='onSearchProject()'>
+          <button mat-raised-button color='primary' (click)='onSearchProject()'
+                  *ngIf='currentUserId === (group$ | async)?.ownerId'>
             <mat-icon>add</mat-icon>
             Ajouter un projet
           </button>
@@ -70,7 +71,8 @@
       <div class='row'>
         <div class='col-12 d-flex justify-content-between align-items-start'>
           <h3 class='main-heading'>Membres</h3>
-          <button mat-raised-button color='primary' (click)='onSearchUser()'>
+          <button mat-raised-button color='primary' (click)='onSearchUser()'
+                  *ngIf='currentUserId === (group$ | async)?.ownerId'>
             <mat-icon>add</mat-icon>
             Ajouter un membre
           </button>
