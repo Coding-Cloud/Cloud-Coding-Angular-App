@@ -1,11 +1,16 @@
 <div class="code-editor-page">
     <div  class="editor-content">
         <div *ngIf="!isLoading" class="editor">
-            <monaco-tree [currentFile]="currentFile" class="editor__tree" [tree]="tree" (clickContextMenu)="handleClickContextMenu($event)"
+            <monaco-tree [currentFile]="currentFile.path" class="editor__tree" [tree]="tree" (clickContextMenu)="handleClickContextMenu($event)"
                 (clickFile)="handleClickOnFolder($event)" (createFile)="handleCreateFile($event)"
                 (createDir)="handleCreateDir($event)" (renameFolder)="handleRenameFolder($event)"></monaco-tree>
-            <ngx-monaco-editor   class="editor__text" (ngModelChange)="handleChange($event)" [options]="editorOptions"
+            <span id="app-editor-picture-component" *ngIf="IMAGE_EXTENSION.includes(currentFile.type); else notImageFile">
+                <app-editor-picture [type]="currentFile.type" [code$]="code$" ></app-editor-picture>
+            </span>
+            <ng-template #notImageFile>
+                <ngx-monaco-editor   class="editor__text" (ngModelChange)="handleChange($event)" [options]="editorOptions"
                 [ngModel]="(code$ | async)" (ngModelChange)="'jean'"></ngx-monaco-editor>
+            </ng-template>
         </div>
         <app-spinner *ngIf="isLoading || (loadingMonacoEditor$ | async)"></app-spinner>
         <!-- <button class="button__tree" (click)="handleSave()">GOOOO</button>  -->

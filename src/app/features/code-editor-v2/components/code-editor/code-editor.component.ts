@@ -33,6 +33,7 @@ import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { makeInputFocusedAfterOneFocused } from './utils/html-input.utils';
 import { isFile } from './utils/folder.utils';
+import { FileTypes, IMAGE_EXTENSION } from '../../types/file-types.type';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -51,13 +52,16 @@ export class CodeEditorComponent implements OnInit {
   // have to be get from back
   baseUrlPath: string = environment.exposedAppBasePath;
   baseUrlPathTrust: SafeResourceUrl;
-  currentFile = '';
-  codeRunnerSysOut$: BehaviorSubject<string> = new BehaviorSubject('');
+  urlPathTrustImage: SafeResourceUrl = '';
+  currentFile: {
+    path: string;
+    type: FileTypes;
+  } = { path: '', type: 'other' };
+  codeRunnerSysOut$ = new BehaviorSubject('');
   isLoading = false;
 
   tree: MonacoTreeElement[] = [];
 
-  title = 'test-npx';
   hardProjectModification: Project = {
     appFiles: {}
   };
@@ -83,6 +87,8 @@ export class CodeEditorComponent implements OnInit {
   destroyFileRead = new Subject<void>();
 
   projectId: string;
+
+  readonly IMAGE_EXTENSION = IMAGE_EXTENSION;
 
   constructor(
     private updateProjectService: UpdateProjectService,
@@ -211,9 +217,9 @@ export class CodeEditorComponent implements OnInit {
       this.code$.next('');
     }
 
-    this.currentFile = `${this.BASE_PROJECT_PATH}${path}`;
-    if (isFile(this.currentFile)) {
-      const endFile = this.currentFile.split('/').pop()?.split('.').pop();
+    this.currentFile.path = `${this.BASE_PROJECT_PATH}${path}`;
+    if (isFile(this.currentFile.path)) {
+      const endFile = this.currentFile.path.split('/').pop()?.split('.').pop();
       const valueInMap = ExtensionToLanguage.get(endFile as string);
       if (valueInMap !== undefined) {
         this.editorOptions = { theme: 'vs-dark', language: valueInMap };
@@ -224,6 +230,8 @@ export class CodeEditorComponent implements OnInit {
           language: ExtensionToLanguage.get('default')!
         };
       }
+
+      this.currentFile.type = endFile as FileTypes;
     }
     // editOrOptionsIsModified, we have to wait the rerender of the component
     setTimeout(() => {
@@ -233,21 +241,21 @@ export class CodeEditorComponent implements OnInit {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   handleChange($event: any): void {
-    if (!isFile(this.currentFile)) {
+    if (!isFile(this.currentFile.path)) {
       return;
     }
 
     const newValue: Folder = {
-      name: this.currentFile.split(this.BASE_PROJECT_PATH)[1],
+      name: this.currentFile.path.split(this.BASE_PROJECT_PATH)[1],
       type: 'file',
-      fullPath: this.currentFile,
+      fullPath: this.currentFile.path,
       contents: $event,
       lastModified: Date.now(),
       folderStatus: FolderStatus.MODIFIED
     };
-    this.hardProjectModification.appFiles[this.currentFile] = newValue;
-    this.socketProjectModification.appFiles[this.currentFile] = newValue;
-    this.currentProject.appFiles[this.currentFile] = newValue;
+    this.hardProjectModification.appFiles[this.currentFile.path] = newValue;
+    this.socketProjectModification.appFiles[this.currentFile.path] = newValue;
+    this.currentProject.appFiles[this.currentFile.path] = newValue;
   }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -269,6 +277,10 @@ export class CodeEditorComponent implements OnInit {
     this.monacoTreeInput = (<HTMLElement>(
       this.elementRef.nativeElement
     )).querySelector('.inputarea');
+    if (this.monacoTreeInput === null) {
+      return;
+    }
+
     this.keyup$ = fromEvent(this.monacoTreeInput, 'keyup');
     this.destroyKey.next();
     this.keyup$

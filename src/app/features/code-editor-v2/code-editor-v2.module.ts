@@ -4,8 +4,9 @@ import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxMonacoTreeModule } from '../monaco-tree/ngx-monaco-tree.module';
 import { CodeEditorComponent } from './components/code-editor/code-editor.component';
-import { TerminalComponent } from './components/terminal/terminal.component';
+import { TerminalComponent } from './components/code-editor/components/terminal/terminal.component';
 import { CodeEditorV2RoutingModule } from './code-editor-v2-routing.module';
+import { EditorPictureComponent } from './components/code-editor/components/editor-picture/editor-picture.component';
 
 const monacoConfig: NgxMonacoEditorConfig = {
   /* defaultOptions: { scrollBeyondLastLine: false }, // pass default options to be used*/
@@ -22,7 +23,11 @@ const monacoConfig: NgxMonacoEditorConfig = {
 };
 
 @NgModule({
-  declarations: [CodeEditorComponent, TerminalComponent],
+  declarations: [
+    CodeEditorComponent,
+    TerminalComponent,
+    EditorPictureComponent
+  ],
   imports: [
     CommonModule,
     SharedModule,
