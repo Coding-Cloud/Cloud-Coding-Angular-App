@@ -141,9 +141,11 @@ export class CodeEditorComponent implements OnInit {
         );
         this.socketProject = copyObject<Project>(this.currentProject);
 
-        if (this.currentProject.appFiles[`${this.currentFile}`]?.contents) {
+        if (
+          this.currentProject.appFiles[`${this.currentFile.path}`]?.contents
+        ) {
           this.code$.next(
-            this.currentProject.appFiles[`${this.currentFile}`].contents
+            this.currentProject.appFiles[`${this.currentFile.path}`].contents
           );
         }
         TreeUtils.editTree(this.tree, this.BASE_PROJECT_PATH, editsProjectDTO);
