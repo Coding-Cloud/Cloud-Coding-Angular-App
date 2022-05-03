@@ -73,6 +73,14 @@ export class CodeSocketService {
     });
   }
 
+  listenSiteCanBeShow(): Observable<string> {
+    return new Observable((subscriber) => {
+      this.socket?.on('siteIsReady', (data) => {
+        subscriber.next(data);
+      });
+    });
+  }
+
   renameProjectFolder(renameProjectFolderDTO: RenameProjectFolderDTO): void {
     this.socket?.emit('renameFolder', renameProjectFolderDTO);
   }

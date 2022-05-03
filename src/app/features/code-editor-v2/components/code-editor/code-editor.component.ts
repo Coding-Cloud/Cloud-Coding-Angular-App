@@ -8,11 +8,9 @@ import {
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import {
   BehaviorSubject,
-  forkJoin,
-  from,
   fromEvent,
+  interval,
   Observable,
-  of,
   Subject
 } from 'rxjs';
 import { debounceTime, finalize, map, takeUntil } from 'rxjs/operators';
@@ -49,6 +47,7 @@ export class CodeEditorComponent implements OnInit {
   editorOptions = { theme: 'vs-dark', language: 'typescript' };
   code$ = new BehaviorSubject('');
   loadingMonacoEditor$ = new BehaviorSubject(false);
+  loadingIframe$ = new BehaviorSubject(true);
   code = '';
   readonly BASE_PROJECT_PATH = environment.baseProjectPath;
   // have to be get from back
@@ -94,6 +93,8 @@ export class CodeEditorComponent implements OnInit {
 
   readonly IMAGE_EXTENSION = IMAGE_EXTENSION;
 
+  private source = interval(3000);
+
   constructor(
     private updateProjectService: UpdateProjectService,
     private elementRef: ElementRef,
@@ -111,7 +112,6 @@ export class CodeEditorComponent implements OnInit {
     this.baseUrlPathTrust = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.baseUrlPath
     );
-    this.baseUrlPath += `${this.uniqueName}`;
     this.BASE_PROJECT_PATH += `${this.uniqueName}/`;
   }
 
@@ -191,6 +191,12 @@ export class CodeEditorComponent implements OnInit {
       this.codeRunnerSysOut$.next(message);
       this.cd.markForCheck();
     });
+
+    this.codeSocketService
+      .listenSiteCanBeShow()
+      .subscribe((message: string) => {
+        this.loadingIframe$.next(false);
+      });
   }
 
   initializeTreeFiles(): void {
