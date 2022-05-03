@@ -174,7 +174,7 @@ export class CodeEditorComponent implements OnInit {
     this.codeSocketService
       .listenDeleteProjectFolderName()
       .subscribe((deleteprojectFolderResource: DeleteProjectFolderResource) => {
-        TreeUtils.deleteFolder(
+        this.tree = TreeUtils.deleteFolder(
           deleteprojectFolderResource.path,
           this.BASE_PROJECT_PATH,
           this.tree
@@ -470,7 +470,7 @@ export class CodeEditorComponent implements OnInit {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   deleteFolder(event: { path: string }) {
-    TreeUtils.deleteFolder(
+    this.tree = TreeUtils.deleteFolder(
       this.BASE_PROJECT_PATH + event.path,
       this.BASE_PROJECT_PATH,
       this.tree

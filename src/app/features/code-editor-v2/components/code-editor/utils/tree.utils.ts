@@ -196,9 +196,14 @@ export class TreeUtils {
   static deleteFolder(
     path: string,
     baseProjectPath: string,
-    monacoTreeElement: MonacoTreeElement[] | undefined
-  ) {
+    monacoTreeElement: MonacoTreeElement[]
+  ): MonacoTreeElement[] {
     const pathSplit = path.split(baseProjectPath)[1].split('/');
+
+    if (pathSplit.length === 1) {
+      return monacoTreeElement?.filter((value) => value.name !== pathSplit[0]);
+    }
+
     const dirReference = monacoTreeElement?.find(
       (element) => element.name === pathSplit[0]
     );
@@ -214,5 +219,6 @@ export class TreeUtils {
     );
 
     folder.content = folder.content?.filter((value) => value.fullPath !== path);
+    return monacoTreeElement;
   }
 }
