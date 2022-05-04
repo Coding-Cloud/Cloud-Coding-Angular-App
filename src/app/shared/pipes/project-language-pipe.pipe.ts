@@ -11,6 +11,8 @@ export class ProjectLanguagePipe implements PipeTransform {
         return 'Angular - 12';
       case ProjectLanguage.REACT:
         return 'React - 17';
+      case ProjectLanguage.QUARKUS:
+        return 'Quarkus - 17';
       default:
         return 'Inconnu';
     }
