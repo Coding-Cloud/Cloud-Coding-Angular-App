@@ -23,7 +23,8 @@ export interface ProjectForm {
 
 export enum ProjectLanguage {
   ANGULAR = 'ANGULAR',
-  REACT = 'REACT'
+  REACT = 'REACT',
+  QUARKUS = 'QUARKUS'
 }
 
 export enum ProjectStatus {
@@ -52,8 +53,8 @@ export const emptyProject: Project = {
 };
 
 export type ProjectsState = EntityState<Project>;
-export type ProjectState = {
+export interface ProjectState {
   project: Project;
   group: Group;
   editMode: boolean;
-};
+}
