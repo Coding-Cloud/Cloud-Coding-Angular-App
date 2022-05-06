@@ -7,6 +7,7 @@ import { RenameProjectFolderResource } from './resource/rename-project-folder-re
 import { DeleteProjectFolderResource } from './resource/delete-project-folder-resource';
 import { DeleteProjectFolderDTO } from './dto/delete-project-folder-dto';
 import { environment as env } from '../../../../environments/environment';
+import { Buffer } from 'buffer';
 
 @Injectable({
   providedIn: 'root'
@@ -91,5 +92,12 @@ export class CodeSocketService {
       lastElement[0] !== '.' && lastElement?.includes('.') ? 'file' : 'dir';
     const deleteProjectFolderDTO: DeleteProjectFolderDTO = { path, type };
     this.socket?.emit('deleteFolder', deleteProjectFolderDTO);
+  }
+
+  uploadPicture(dataBuffer: number[], path: string): void {
+    console.log(dataBuffer);
+    console.log('je vais emmetre un socket');
+    const pictureInBase64 = Buffer.from(dataBuffer).toString('base64');
+    this.socket?.emit('uploadImage', { base64: pictureInBase64, path });
   }
 }

@@ -34,7 +34,8 @@ import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { makeInputFocusedAfterOneFocused } from './utils/html-input.utils';
 import { isFile } from './utils/folder.utils';
-import { FileTypes, IMAGE_EXTENSION } from '../../types/file-types.type';
+import { FileTypes } from '../../types/file-types.type';
+import { IMAGE_EXTENSION } from 'src/app/core/Image/image-extension';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

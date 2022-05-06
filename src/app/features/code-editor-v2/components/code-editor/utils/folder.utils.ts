@@ -1,4 +1,4 @@
-import { IMAGE_EXTENSION } from '../../../types/file-types.type';
+import { IMAGE_EXTENSION } from 'src/app/core/Image/image-extension';
 
 export const isFile = (path: string): boolean =>
   path.split('/').pop()?.includes('.') ?? false;

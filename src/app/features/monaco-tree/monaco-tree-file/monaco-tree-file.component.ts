@@ -16,6 +16,7 @@ import {
   ContextMenuElementText
 } from '../monaco-tree-context-menu/monaco-tree-context-menu.type';
 import { ContextMenuAction } from './monaco-tree-file.type';
+import { NotificationService } from '../../../core/notifications/notification.service';
 
 function getAbsolutePosition(element: any) {
   const r = { x: element.offsetLeft, y: element.offsetTop };
@@ -73,8 +74,6 @@ export class MonacoTreeFileComponent implements OnInit {
         type: 'element',
         name: 'New File',
         action: () => {
-          console.log('on clique sur le contexte menu new file');
-
           this.contextMenuClick.emit({
             action: 'new_file',
             name: this.name,
@@ -89,6 +88,18 @@ export class MonacoTreeFileComponent implements OnInit {
         action: () => {
           this.contextMenuClick.emit({
             action: 'new_directory',
+            name: this.name,
+            type: 'dir'
+          });
+          this.position = [-1000, -1000];
+        }
+      },
+      {
+        type: 'element',
+        name: 'Upload picture',
+        action: () => {
+          this.contextMenuClick.emit({
+            action: 'upload_picture',
             name: this.name,
             type: 'dir'
           });
