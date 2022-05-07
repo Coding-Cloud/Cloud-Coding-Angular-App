@@ -23,11 +23,12 @@ export class CodeSocketService {
     this.socket?.emit('disconnectCustom');
   }
 
-  connect(projectId: string): void {
+  connect(projectId: string, username: string): void {
     this.socket = io(this.uri, {
       transports: ['websocket', 'polling', 'flashsocket'],
       query: {
-        projectId
+        projectId,
+        username
       }
     });
   }
@@ -77,6 +78,14 @@ export class CodeSocketService {
   listenSiteCanBeShow(): Observable<string> {
     return new Observable((subscriber) => {
       this.socket?.on('siteIsReady', (data) => {
+        subscriber.next(data);
+      });
+    });
+  }
+
+  listenPlayerConnected(): Observable<string[]> {
+    return new Observable((subscriber) => {
+      this.socket?.on('developerConnected', (data) => {
         subscriber.next(data);
       });
     });

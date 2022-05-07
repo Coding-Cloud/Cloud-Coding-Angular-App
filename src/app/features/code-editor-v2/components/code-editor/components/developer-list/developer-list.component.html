@@ -1,0 +1,10 @@
+<div>
+    <button #collapsible type="button" class="collapsible" (click)="handleClickOnCollapse($event)">Developpeurs connectés</button>
+    <div class="content"  #collapsed>
+        <ul>
+            <li *ngFor='let playerConnected of playersConnected$ | async'>
+                {{playerConnected}}
+            </li>
+        </ul>
+    </div>
+</div>

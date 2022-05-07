@@ -36,6 +36,9 @@ import { makeInputFocusedAfterOneFocused } from './utils/html-input.utils';
 import { isFile } from './utils/folder.utils';
 import { FileTypes } from '../../types/file-types.type';
 import { IMAGE_EXTENSION } from 'src/app/core/Image/image-extension';
+import { AppState } from 'src/app/core/core.state';
+import { select, Store } from '@ngrx/store';
+import { selectUser } from 'src/app/core/auth/auth.selectors';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -103,7 +106,8 @@ export class CodeEditorComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private codeSocketService: CodeSocketService,
     private sanitizer: DomSanitizer,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private store: Store<AppState>
   ) {
     this.uniqueName = this.activatedRoute.snapshot.params.id;
 
@@ -132,7 +136,11 @@ export class CodeEditorComponent implements OnInit {
 
         this.initializeTreeFiles();
       });
-    this.codeSocketService.connect(this.uniqueName);
+    this.store
+      .pipe(select(selectUser))
+      .subscribe((user) =>
+        this.codeSocketService.connect(this.uniqueName, user.username)
+      );
     this.codeSocketService
       .listenProjectModification('projectModificationFromContributor')
       .subscribe((editsProjectDTO: EditProjectDTO[]) => {
