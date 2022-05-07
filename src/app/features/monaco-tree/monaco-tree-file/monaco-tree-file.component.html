@@ -20,10 +20,10 @@
             (keyup)="handleCreateKeyUp($event, row)" autofocus />
     </div>
 </span>
-<monaco-tree-context-menu [row]="row" *ngIf="type === 'dir'" [elements]="contextMenuDir" [top]="position ? position[1] : undefined"
+<monaco-tree-context-menu [row]="row" *ngIf="type === 'dir'" [elements]="contextMenuDir" [contextMenuIsShow]="true" [top]="position ? position[1] : undefined"
     [left]="position ? position[0] : undefined"></monaco-tree-context-menu>
 <monaco-tree-context-menu [row]="row" *ngIf="type === 'file'" [elements]="contextMenuFile"
-    [top]="position ? position[1] : undefined" [left]="position ? position[0] : undefined"></monaco-tree-context-menu>
+    [top]="position ? position[1] : undefined" [contextMenuIsShow]="true" [left]="position ? position[0] : undefined"></monaco-tree-context-menu>
 <monaco-tree-file (contextMenuClick)="handleRightClick($event)" (clickFile)="handleClickFile($event)"
     (createFile)="handleCreateFile($event)" (createDir)="handleCreateDir($event)"
     (renameFolder)="handleRenameFolder($event)" *ngFor="let row of content" [name]="row.name" [content]="row.content"

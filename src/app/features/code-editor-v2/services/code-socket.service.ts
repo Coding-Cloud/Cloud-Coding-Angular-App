@@ -95,8 +95,6 @@ export class CodeSocketService {
   }
 
   uploadPicture(dataBuffer: number[], path: string): void {
-    console.log(dataBuffer);
-    console.log('je vais emmetre un socket');
     const pictureInBase64 = Buffer.from(dataBuffer).toString('base64');
     this.socket?.emit('uploadImage', { base64: pictureInBase64, path });
   }

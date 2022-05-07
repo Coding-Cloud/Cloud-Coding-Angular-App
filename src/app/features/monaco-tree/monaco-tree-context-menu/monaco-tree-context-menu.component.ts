@@ -28,9 +28,12 @@ export class MonacoTreeContextMenuComponent {
   @Input() elements: Array<
     ContextMenuElementSeparator | ContextMenuElementText
   > = [];
+  @Input() contextMenuIsShow = true;
   @ViewChild('uploadInput') public uploadInput:
     | ElementRef<HTMLInputElement>
     | undefined;
+
+  isProcessRequest = false;
 
   readonly imageExtensionWithPoint = IMAGE_EXTENSION.map(
     (extension) => '.' + extension
@@ -55,12 +58,12 @@ export class MonacoTreeContextMenuComponent {
   }
 
   handleClickUploadImage(selectedFiles: FileList | null | undefined) {
-    console.log(selectedFiles);
     if (!selectedFiles || !this.isImageFileExtension(selectedFiles[0].name)) {
       this.notificationService.error(
         'Nous ne supportons que les fichier jpeg, jpg et png'
       );
     } else {
+      this.isProcessRequest = true;
       const fileReader = new FileReader();
       const fileByteArray: number[] = [];
       fileReader.readAsArrayBuffer(selectedFiles[0]);
@@ -78,6 +81,8 @@ export class MonacoTreeContextMenuComponent {
               selectedFiles[0].name
           );
         }
+        this.isProcessRequest = false;
+        this.contextMenuIsShow = false;
       };
     }
   }
