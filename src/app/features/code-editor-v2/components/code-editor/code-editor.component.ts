@@ -222,6 +222,16 @@ export class CodeEditorComponent implements OnInit {
         .pipe(finalize(() => this.loadingMonacoEditor$.next(false)))
         .subscribe((content) => {
           this.code$.next(content.content);
+          console.log('dans le click folder');
+          console.log(`${this.BASE_PROJECT_PATH}${path}`);
+          console.log(
+            this.currentProject.appFiles[`${this.BASE_PROJECT_PATH}${path}`]
+          );
+          console.log(
+            this.currentProject.appFiles[`${this.BASE_PROJECT_PATH}${path}`]
+              .contents
+          );
+
           this.currentProject.appFiles[
             `${this.BASE_PROJECT_PATH}${path}`
           ].contents = content.content;
@@ -407,6 +417,34 @@ export class CodeEditorComponent implements OnInit {
     this.codeSocketService.sendProjectModification(
       'editProject',
       editsProjectDTO
+    );
+    this.socketProject = copyObject<Project>(this.currentProject);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  handleCreateImage(file: { path: string; name: string }) {
+    console.log('on arrive dans le dernier create image');
+    const nameComplete = file.path + '/' + file.name;
+    console.log(this.currentProject);
+    const nameFile = nameComplete.split('/').pop();
+    if (nameFile === undefined)
+      throw new Error('Uplaod file error in code editor');
+
+    this.currentProject.appFiles[nameComplete] = {
+      name: nameFile,
+      type: 'file',
+      fullPath: nameComplete,
+      contents: '',
+      lastModified: Date.now()
+    };
+    console.log(this.currentProject);
+    console.log('entre current et tree');
+
+    TreeUtils.addFolderInTree(
+      this.tree,
+      this.BASE_PROJECT_PATH,
+      file.path,
+      file.name
     );
     this.socketProject = copyObject<Project>(this.currentProject);
   }

@@ -2,7 +2,7 @@
     <div  class="editor-content">
         <div *ngIf="!isLoading" class="editor">
             <monaco-tree [currentFile]="currentFile.path" class="editor__tree" [tree]="tree" (clickContextMenu)="handleClickContextMenu($event)"
-                (clickFile)="handleClickOnFolder($event)" (createFile)="handleCreateFile($event)"
+                (clickFile)="handleClickOnFolder($event)" (createFile)="handleCreateFile($event)" (createImage)="handleCreateImage($event)"
                 (createDir)="handleCreateDir($event)" (renameFolder)="handleRenameFolder($event)"></monaco-tree>
             <span id="app-editor-picture-component" *ngIf="IMAGE_EXTENSION.includes(currentFile.type); else notImageFile">
                 <app-editor-picture [type]="currentFile.type" [code$]="code$" ></app-editor-picture>

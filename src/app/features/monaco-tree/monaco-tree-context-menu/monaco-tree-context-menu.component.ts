@@ -1,16 +1,19 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostListener,
   Input,
+  Output,
   ViewChild
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/core/core.module';
 import { IMAGE_EXTENSION } from '../../../core/Image/image-extension';
 import { CodeSocketService } from '../../code-editor-v2/services/code-socket.service';
-import { files } from '../../utils/file-icon';
 import { environment } from '../../../../environments/environment';
+import { BehaviorSubject } from 'rxjs';
+import { EventEmitter } from '@angular/core';
 import {
   ContextMenuElementSeparator,
   ContextMenuElementText
@@ -33,6 +36,8 @@ export class MonacoTreeContextMenuComponent {
     | ElementRef<HTMLInputElement>
     | undefined;
 
+  @Output() createImage = new EventEmitter<{ path: string; name: string }>();
+
   isProcessRequest = false;
 
   readonly imageExtensionWithPoint = IMAGE_EXTENSION.map(
@@ -44,7 +49,8 @@ export class MonacoTreeContextMenuComponent {
   constructor(
     private eRef: ElementRef,
     private notificationService: NotificationService,
-    private codeSocketService: CodeSocketService
+    private codeSocketService: CodeSocketService,
+    private cd: ChangeDetectorRef
   ) {
     this.acceptedFileExtensionsImage = this.imageExtensionWithPoint.join(', ');
   }
@@ -63,6 +69,8 @@ export class MonacoTreeContextMenuComponent {
         'Nous ne supportons que les fichier jpeg, jpg et png'
       );
     } else {
+      console.log('on process la request');
+
       this.isProcessRequest = true;
       const fileReader = new FileReader();
       const fileByteArray: number[] = [];
@@ -80,9 +88,21 @@ export class MonacoTreeContextMenuComponent {
               '/' +
               selectedFiles[0].name
           );
+          // TODO régler problème de loader
+          this.isProcessRequest = false;
+          this.top = undefined;
+          this.left = undefined;
         }
-        this.isProcessRequest = false;
-        this.contextMenuIsShow = false;
+        const elementUplaod = this.elements.find(
+          (element) =>
+            element.type === 'element' && element.name === 'Upload picture'
+        );
+        if (elementUplaod?.type === 'element') {
+          this.createImage.emit({
+            path: this.row.fullPath,
+            name: selectedFiles[0].name
+          });
+        }
       };
     }
   }

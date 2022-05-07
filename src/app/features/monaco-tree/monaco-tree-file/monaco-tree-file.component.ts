@@ -46,6 +46,7 @@ export class MonacoTreeFileComponent implements OnInit {
   @Output() clickFile = new EventEmitter<string>();
   @Output() contextMenuClick = new EventEmitter<ContextMenuAction>();
   @Output() createFile = new EventEmitter<{ path: string; nameFile: string }>();
+  @Output() createImage = new EventEmitter<{ path: string; name: string }>();
   @Output() createDir = new EventEmitter<{ path: string; nameDir: string }>();
   @Output() renameFolder = new EventEmitter<{
     path: string;
@@ -267,6 +268,8 @@ export class MonacoTreeFileComponent implements OnInit {
   }
 
   handleCreateFile(event: { path: string; nameFile: string }) {
+    console.log('on est dans le create file');
+    console.log(event);
     this.createFile.emit(event);
   }
 
@@ -276,5 +279,12 @@ export class MonacoTreeFileComponent implements OnInit {
 
   handleRenameFolder(event: { path: string; newName: string }) {
     this.renameFolder.emit(event);
+  }
+
+  handleCreateImage(event: { path: string; name: string }) {
+    console.log('on est dans le create image');
+
+    console.log(event);
+    this.createImage.emit(event);
   }
 }

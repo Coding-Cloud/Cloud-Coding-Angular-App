@@ -17,6 +17,7 @@ export class NgxMonacoTreeComponent {
   @Output() clickFile = new EventEmitter<string>();
   @Output() clickContextMenu = new EventEmitter<ContextMenuAction>();
   @Output() createFile = new EventEmitter<{ path: string; nameFile: string }>();
+  @Output() createImage = new EventEmitter<{ path: string; name: string }>();
   @Output() createDir = new EventEmitter<{ path: string; nameDir: string }>();
   @Output() renameFolder = new EventEmitter<{
     path: string;
@@ -50,6 +51,12 @@ export class NgxMonacoTreeComponent {
 
   handleCreateFile(event: { path: string; nameFile: string }) {
     this.createFile.emit(event);
+  }
+
+  handleCreateImage(event: { path: string; name: string }) {
+    console.log('je suis dans le ngrx');
+
+    this.createImage.emit(event);
   }
 
   handleCreateDir(event: { path: string; nameDir: string }) {
