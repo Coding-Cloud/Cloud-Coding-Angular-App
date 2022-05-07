@@ -1,0 +1,31 @@
+<div class='container conversations'>
+  <div class='row'>
+    <div class='col-sm-6 col-12'>
+      <h1 class='main-heading'>Conversations</h1>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class='col-3 align-items-start mx-2 conversation-list'>
+      <mat-card *ngFor="let a of [].constructor(20)" class='row my-0 align-items-start'>
+        <mat-card-header>
+          Username
+        </mat-card-header>
+        <mat-card-content>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class='col-6 align-items-end mx-2 message-list'>
+      <div class="row" [ngClass]="{'justify-content-end': even}"
+           *ngFor="let a of [].constructor(20); let even=even">
+        <mat-card [ngClass]="{'sent-message': even, 'received-message': !even}">
+          <mat-card-header>
+            Username
+          </mat-card-header>
+          <mat-card-content>
+            Long message content to see how it fits the box adding more text to be sure if it fits fine in this small box
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

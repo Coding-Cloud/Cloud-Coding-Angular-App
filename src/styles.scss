@@ -22,6 +22,7 @@
 @import 'app/features/examples/notifications/components/notifications.component.scss-theme';
 @import 'app/features/examples/todos/components/todos-container.component.scss-theme';
 @import 'app/features/examples/examples/examples.component.scss-theme';
+@import 'app/features/conversation/conversation-list/conversation-list.component.scss-theme';
 
 @mixin custom-components-theme($theme) {
   @include cc-styles-reset-theme($theme);
@@ -30,6 +31,7 @@
   @include cc-big-input-component-theme($theme);
   @include cc-notifications-component-theme($theme);
   @include cc-todos-container-component-theme($theme);
+  @include cc-conversation-list-component-theme($theme);
   @include cc-examples-component-theme($theme);
 }
 
