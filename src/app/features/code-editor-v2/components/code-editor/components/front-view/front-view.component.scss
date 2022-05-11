@@ -1,5 +1,34 @@
 .iframe-view {
   display: block;
   width: 100%;
+  height: 100%;
   box-sizing: border-box;
+}
+
+.iframe-url {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid black;
+
+  & #icon-https {
+    font-size: 22px;
+    color: black;
+    margin-left: 2px;
+  }
+
+  & .https-input-clicked {
+    background-color: white;
+    color: black;
+  }
+  &__input {
+    border: none;
+    width: 100%;
+    padding-left: 10px;
+    background-color: #2a2d2e;
+    color: white;
+    &:focus {
+      background-color: white;
+      color: #2a2d2e;
+    }
+  }
 }

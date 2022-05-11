@@ -1,4 +1,5 @@
-<div>
-  <input [value]="url" />
+<div class="iframe-url d-flex justify-content-center align-items-center">
+  <mat-icon id="icon-https" [ngClass]="{'https-input-clicked': urlIsFocused}">https</mat-icon>
+  <input #inputUrl [ngClass]="{'iframe-url__input': true}" (focus)="handleFocus()" (focusout)="handleFocusOut()" (keyup)="handleChange($event)" [value]="urlSee" />
 </div>
 <iframe *ngIf="this.url" class="iframe-view" [src]="this.baseUrlPathTrust" title="description"></iframe>
