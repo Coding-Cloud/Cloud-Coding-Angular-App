@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { CodeEditorV2Module } from './features/code-editor-v2/code-editor-v2.module';
 
 export interface Link {
   path: string;
@@ -12,7 +11,21 @@ export interface NavigationLinks {
   [key: string]: Link;
 }
 
-export const navigation: NavigationLinks = {
+export type NavigationLinks2<T extends string> = {
+  [key in T]: Link;
+};
+
+export const navigation: NavigationLinks2<
+  | 'home'
+  | 'features'
+  | 'settings'
+  | 'examples'
+  | 'projets'
+  | 'groups'
+  | 'auth'
+  | 'codeEditor'
+  | 'social'
+> = {
   home: {
     name: 'Accueil',
     path: 'home'
@@ -47,9 +60,9 @@ export const navigation: NavigationLinks = {
     name: 'Code Editor',
     path: 'code-editor'
   },
-  users: {
-    name: 'Utilisateurs',
-    path: 'users',
+  social: {
+    name: 'Social',
+    path: 'social',
     auth: true
   }
 };
@@ -99,9 +112,9 @@ const routes: Routes = [
       import('./features/groups/groups.module').then((m) => m.GroupsModule)
   },
   {
-    path: navigation.users.path,
+    path: navigation.social.path,
     loadChildren: () =>
-      import('./features/users/users.module').then((m) => m.UsersModule)
+      import('./features/social/social.module').then((m) => m.SocialModule)
   },
 
   {

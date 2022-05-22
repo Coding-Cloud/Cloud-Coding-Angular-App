@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AppState } from '../../../core/core.state';
+import { AppState } from '../../../../core/core.state';
 import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { NotificationService } from '../../../core/notifications/notification.service';
+import { NotificationService } from '../../../../core/notifications/notification.service';
 import { UsersService } from '../users.service';
 import {
   actionUsersGetOne,
@@ -17,7 +17,7 @@ import {
   actionUsersSearchError,
   actionUsersSearchSuccess
 } from './users.actions';
-import { ProjectsService } from '../../projects/projects.service';
+import { ProjectsService } from '../../../projects/projects.service';
 
 @Injectable()
 export class UsersEffects {

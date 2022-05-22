@@ -5,11 +5,11 @@ import {
   OnInit
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from '../../../shared/models/user.model';
+import { User } from '../../../../shared/models/user.model';
 import { FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../core/core.state';
+import { AppState } from '../../../../core/core.state';
 import { selectAllUsersSearch } from '../store/users.selectors';
 import {
   actionUsersSearch,

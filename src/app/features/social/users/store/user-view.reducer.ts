@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { emptyUser, UserState } from '../../../shared/models/user.model';
+import { emptyUser, UserState } from '../../../../shared/models/user.model';
 import {
   actionUsersGetOne,
   actionUsersGetOneSuccess,

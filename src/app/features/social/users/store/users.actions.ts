@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { User } from '../../../shared/models/user.model';
-import { Project } from '../../../shared/models/project.model';
+import { User } from '../../../../shared/models/user.model';
+import { Project } from '../../../../shared/models/project.model';
 
 export const actionUsersSearchInit = createAction('[Users] Search Init');
 

@@ -28,10 +28,13 @@ import { User } from '../../../shared/models/user.model';
 import { selectUser } from '../../../core/auth/auth.selectors';
 import { Message } from '../../../shared/models/message.model';
 import { ProjectSearchDialogComponent } from '../../projects/project-search-dialog/project-search-dialog.component';
-import { UserSearchDialogComponent } from '../../users/user-search-dialog/user-search-dialog.component';
+import { UserSearchDialogComponent } from '../../social/users/user-search-dialog/user-search-dialog.component';
 import { Project } from '../../../shared/models/project.model';
 import { map } from 'rxjs/operators';
-import { usersNavigation } from '../../users/users-routing.module';
+import {
+  usersNavigation,
+  userViewLink
+} from '../../social/users/users-routing.module';
 
 @Component({
   selector: 'cc-group-view',
@@ -52,8 +55,7 @@ export class GroupViewComponent implements OnInit {
   projectsLinks = projectsNavigation;
   rootLinks = navigation;
   projectViewLink = `/${this.rootLinks.projets.path}/${this.projectsLinks.viewProject.path}`;
-  userLinks = usersNavigation;
-  userViewLink = `/${this.rootLinks.users.path}/${this.userLinks.viewUser.path}`;
+  userViewLink = userViewLink;
 
   constructor(
     private route: ActivatedRoute,

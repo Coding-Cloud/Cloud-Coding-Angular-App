@@ -1,10 +1,10 @@
 import { userSearchAdapter } from './user-search.reducer';
-import { UsersState, UserState } from '../../../shared/models/user.model';
+import { UsersState, UserState } from '../../../../shared/models/user.model';
 import { createSelector } from '@ngrx/store';
 import {
   selectUsersSearchState,
   selectUserViewState
-} from '../../../core/core.state';
+} from '../../../../core/core.state';
 
 const userSearchSelector = userSearchAdapter.getSelectors();
 

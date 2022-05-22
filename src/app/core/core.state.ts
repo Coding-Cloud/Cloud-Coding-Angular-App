@@ -21,9 +21,9 @@ import { GroupsState, GroupState } from '../shared/models/group.model';
 import { groupListReducer } from '../features/groups/store/group-list.reducer';
 import { groupReducer } from '../features/groups/store/current-group.reducer';
 import { projectsSearchReducer } from '../features/projects/store/project-search.reducer';
-import { usersSearchReducer } from '../features/users/store/user-search.reducer';
+import { usersSearchReducer } from '../features/social/users/store/user-search.reducer';
 import { UsersState, UserState } from '../shared/models/user.model';
-import { userViewReducer } from '../features/users/store/user-view.reducer';
+import { userViewReducer } from '../features/social/users/store/user-view.reducer';
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
