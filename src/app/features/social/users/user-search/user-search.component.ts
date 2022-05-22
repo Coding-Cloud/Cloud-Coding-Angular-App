@@ -31,7 +31,7 @@ export class UserSearchComponent implements OnInit {
   searchQuery = new FormControl('');
 
   pageIndex = 0;
-  pageSize = 25;
+  pageSize = 10;
 
   readonly displayedColumns = ['row'];
 
@@ -47,8 +47,8 @@ export class UserSearchComponent implements OnInit {
     this.store.dispatch(actionUsersSearchInit());
     this.store.dispatch(
       actionUsersSearch({
-        limit: 25,
-        page: 0
+        limit: this.pageSize,
+        page: this.pageIndex
       })
     );
   }
