@@ -1,17 +1,32 @@
 import { createAction, props } from '@ngrx/store';
-import { User } from '../../../shared/models/user.model';
-import { Project } from '../../../shared/models/project.model';
+import { User } from '../../../../shared/models/user.model';
+import { Project } from '../../../../shared/models/project.model';
 
 export const actionUsersSearchInit = createAction('[Users] Search Init');
 
+export const actionUsersSearchDialog = createAction(
+  '[Users] Search users dialog',
+  props<{ search: string }>()
+);
+
+export const actionUsersSearchDialogSuccess = createAction(
+  '[Users] Search users dialog success',
+  props<{ users: User[] }>()
+);
+
+export const actionUsersSearchDialogError = createAction(
+  '[Users] Search users dialog error',
+  props<{ message: string }>()
+);
+
 export const actionUsersSearch = createAction(
   '[Users] Search users',
-  props<{ search: string }>()
+  props<{ search?: string; limit: number; page: number }>()
 );
 
 export const actionUsersSearchSuccess = createAction(
   '[Users] Search users success',
-  props<{ users: User[] }>()
+  props<{ users: User[]; totalResults: number }>()
 );
 
 export const actionUsersSearchError = createAction(

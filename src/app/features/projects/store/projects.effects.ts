@@ -19,6 +19,9 @@ import {
   actionProjectsRetrieveAllError,
   actionProjectsRetrieveAllSuccess,
   actionProjectsSearch,
+  actionProjectsSearchDialog,
+  actionProjectsSearchDialogError,
+  actionProjectsSearchDialogSuccess,
   actionProjectsSearchError,
   actionProjectsSearchSuccess,
   actionProjectsUpdateOne,
@@ -174,20 +177,41 @@ export class ProjectsEffects {
     { dispatch: false }
   );
 
-  search = createEffect(() =>
+  searchDialog = createEffect(() =>
     this.actions$.pipe(
-      ofType(actionProjectsSearch),
+      ofType(actionProjectsSearchDialog),
       exhaustMap((action) =>
-        this.projectsService.searchProjects(action.search).pipe(
+        this.projectsService.searchProjectsDialog(action.search).pipe(
           map((projects) =>
-            actionProjectsSearchSuccess({
+            actionProjectsSearchDialogSuccess({
               projects
             })
           ),
           catchError((error) =>
-            of(actionProjectsSearchError({ message: error.message }))
+            of(actionProjectsSearchDialogError({ message: error.message }))
           )
         )
+      )
+    )
+  );
+
+  search = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionProjectsSearch),
+      exhaustMap((action) =>
+        this.projectsService
+          .searchProjects(action.page, action.limit, action.search)
+          .pipe(
+            map(({ projects, totalResults }) =>
+              actionProjectsSearchSuccess({
+                projects,
+                totalResults
+              })
+            ),
+            catchError((error) =>
+              of(actionProjectsSearchError({ message: error.message }))
+            )
+          )
       )
     )
   );
@@ -202,6 +226,7 @@ export class ProjectsEffects {
           actionProjectsGetOneGroupError,
           actionProjectsAddOneError,
           actionProjectsUpdateOneError,
+          actionProjectsSearchDialogError,
           actionProjectsSearchError
         ),
         tap((action) => {

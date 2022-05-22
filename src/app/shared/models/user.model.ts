@@ -44,7 +44,12 @@ export const emptyUser: User = {
   email: ''
 };
 
-export type UsersState = EntityState<User>;
+export type UsersState = {
+  users: EntityState<User>;
+  totalResults: number;
+  loading: boolean;
+};
+
 export type UserState = {
   user: User;
   projects: Project[];

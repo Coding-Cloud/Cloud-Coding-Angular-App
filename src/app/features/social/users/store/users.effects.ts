@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AppState } from '../../../core/core.state';
+import { AppState } from '../../../../core/core.state';
 import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { NotificationService } from '../../../core/notifications/notification.service';
+import { NotificationService } from '../../../../core/notifications/notification.service';
 import { UsersService } from '../users.service';
 import {
   actionUsersGetOne,
@@ -14,27 +14,51 @@ import {
   actionUsersGetUserProjectsError,
   actionUsersGetUserProjectsSuccess,
   actionUsersSearch,
+  actionUsersSearchDialog,
+  actionUsersSearchDialogError,
+  actionUsersSearchDialogSuccess,
   actionUsersSearchError,
   actionUsersSearchSuccess
 } from './users.actions';
-import { ProjectsService } from '../../projects/projects.service';
+import { ProjectsService } from '../../../projects/projects.service';
 
 @Injectable()
 export class UsersEffects {
-  search = createEffect(() =>
+  searchDialog = createEffect(() =>
     this.actions$.pipe(
-      ofType(actionUsersSearch),
+      ofType(actionUsersSearchDialog),
       exhaustMap((action) =>
-        this.usersService.searchUsers(action.search).pipe(
+        this.usersService.searchUsersDialog(action.search).pipe(
           map((users) =>
-            actionUsersSearchSuccess({
+            actionUsersSearchDialogSuccess({
               users
             })
           ),
           catchError((error) =>
-            of(actionUsersSearchError({ message: error.message }))
+            of(actionUsersSearchDialogError({ message: error.message }))
           )
         )
+      )
+    )
+  );
+
+  search = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionUsersSearch),
+      exhaustMap((action) =>
+        this.usersService
+          .searchUsers(action.page, action.limit, action.search)
+          .pipe(
+            map(({ users, totalResults }) =>
+              actionUsersSearchSuccess({
+                users,
+                totalResults
+              })
+            ),
+            catchError((error) =>
+              of(actionUsersSearchError({ message: error.message }))
+            )
+          )
       )
     )
   );
@@ -79,9 +103,10 @@ export class UsersEffects {
     () =>
       this.actions$.pipe(
         ofType(
-          actionUsersSearchError,
+          actionUsersSearchDialogError,
           actionUsersGetOneError,
-          actionUsersGetUserProjectsError
+          actionUsersGetUserProjectsError,
+          actionUsersSearchError
         ),
         tap((action) => {
           this.notificationService.error(action.message);

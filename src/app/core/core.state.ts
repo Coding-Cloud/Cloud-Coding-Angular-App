@@ -14,16 +14,20 @@ import { authReducer } from './auth/auth.reducer';
 import { RouterStateUrl } from './router/router.state';
 import { settingsReducer } from './settings/settings.reducer';
 import { SettingsState } from '../shared/models/settings.model';
-import { ProjectsState, ProjectState } from '../shared/models/project.model';
+import {
+  ProjectsSearchState,
+  ProjectsState,
+  ProjectState
+} from '../shared/models/project.model';
 import { projectListReducer } from '../features/projects/store/project-list.reducer';
 import { projectReducer } from '../features/projects/store/current-project.reducer';
 import { GroupsState, GroupState } from '../shared/models/group.model';
 import { groupListReducer } from '../features/groups/store/group-list.reducer';
 import { groupReducer } from '../features/groups/store/current-group.reducer';
 import { projectsSearchReducer } from '../features/projects/store/project-search.reducer';
-import { usersSearchReducer } from '../features/users/store/user-search.reducer';
+import { usersSearchReducer } from '../features/social/users/store/user-search.reducer';
 import { UsersState, UserState } from '../shared/models/user.model';
-import { userViewReducer } from '../features/users/store/user-view.reducer';
+import { userViewReducer } from '../features/social/users/store/user-view.reducer';
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
@@ -64,7 +68,7 @@ export const selectProjectsState = createFeatureSelector<
 
 export const selectProjectsSearchState = createFeatureSelector<
   AppState,
-  ProjectsState
+  ProjectsSearchState
 >('projectSearch');
 
 export const selectUsersSearchState = createFeatureSelector<
@@ -99,7 +103,7 @@ export interface AppState {
   auth: AuthState;
   settings: SettingsState;
   projects: ProjectsState;
-  projectSearch: ProjectsState;
+  projectSearch: ProjectsSearchState;
   currentProject: ProjectState;
   groups: GroupsState;
   currentGroup: GroupState;

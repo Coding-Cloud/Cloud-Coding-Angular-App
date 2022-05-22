@@ -60,6 +60,9 @@ import { BooleanYesNoPipe } from './pipes/boolean-yes-no.pipe';
 import { UsernamePipe } from './pipes/username.pipe';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   imports: [
@@ -83,7 +86,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatDialogModule,
     MatAutocompleteModule,
     FontAwesomeModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTableModule,
+    MatProgressBarModule,
+    MatPaginatorModule
   ],
   declarations: [
     BigInputComponent,
@@ -122,6 +128,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatDatepickerModule,
     MatNativeDateModule,
     FontAwesomeModule,
+    MatTableModule,
+    MatProgressBarModule,
+    MatPaginatorModule,
     BigInputComponent,
     BigInputActionComponent,
     ConfirmDialogComponent,

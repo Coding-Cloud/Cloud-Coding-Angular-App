@@ -8,6 +8,7 @@ import {
   selectProjectsState
 } from '../../../core/core.state';
 import {
+  ProjectsSearchState,
   ProjectsState,
   ProjectState
 } from '../../../shared/models/project.model';
@@ -22,7 +23,16 @@ export const selectProjects = createSelector(
 
 export const selectProjectsSearch = createSelector(
   selectProjectsSearchState,
-  (state: ProjectsState) => state
+  (state: ProjectsSearchState) => state.projects
+);
+
+export const selectProjectsSearchTotalResults = createSelector(
+  selectProjectsSearchState,
+  (state: ProjectsSearchState) => state.totalResults
+);
+export const selectProjectsSearchLoading = createSelector(
+  selectProjectsSearchState,
+  (state: ProjectsSearchState) => state.loading
 );
 
 export const selectCurrentProject = createSelector(

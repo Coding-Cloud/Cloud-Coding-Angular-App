@@ -1,21 +1,21 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../core/core.state';
+import { AppState } from '../../../../core/core.state';
 import {
   actionUsersGetOne,
   actionUsersGetUserProjects
 } from '../store/users.actions';
 import { Observable } from 'rxjs';
-import { User } from '../../../shared/models/user.model';
-import { Project } from '../../../shared/models/project.model';
+import { User } from '../../../../shared/models/user.model';
+import { Project } from '../../../../shared/models/project.model';
 import {
   selectUserView,
   selectUserViewProjects
 } from '../store/users.selectors';
+import { projectsNavigation } from '../../../projects/projects-routing.module';
+import { navigation } from '../../../../app-routing.module';
 import { usersNavigation } from '../users-routing.module';
-import { projectsNavigation } from '../../projects/projects-routing.module';
-import { navigation } from '../../../app-routing.module';
 
 @Component({
   selector: 'cc-user-view',

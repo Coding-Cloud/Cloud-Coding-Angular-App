@@ -1,16 +1,26 @@
 import { userSearchAdapter } from './user-search.reducer';
-import { UsersState, UserState } from '../../../shared/models/user.model';
+import { UsersState, UserState } from '../../../../shared/models/user.model';
 import { createSelector } from '@ngrx/store';
 import {
   selectUsersSearchState,
   selectUserViewState
-} from '../../../core/core.state';
+} from '../../../../core/core.state';
 
 const userSearchSelector = userSearchAdapter.getSelectors();
 
 export const selectUsersSearch = createSelector(
   selectUsersSearchState,
-  (state: UsersState) => state
+  (state: UsersState) => state.users
+);
+
+export const selectUsersSearchTotalResults = createSelector(
+  selectUsersSearchState,
+  (state: UsersState) => state.totalResults
+);
+
+export const selectUsersSearchLoading = createSelector(
+  selectUsersSearchState,
+  (state: UsersState) => state.loading
 );
 
 export const selectUserView = createSelector(

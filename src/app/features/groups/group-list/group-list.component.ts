@@ -12,8 +12,7 @@ import {
   selectAllJoinedGroups,
   selectAllOwnedGroups
 } from '../store/groups.selectors';
-import { usersNavigation } from '../../users/users-routing.module';
-import { navigation } from '../../../app-routing.module';
+import { userViewLink } from '../../social/users/users-routing.module';
 
 @Component({
   selector: 'cc-group-list',
@@ -23,9 +22,7 @@ import { navigation } from '../../../app-routing.module';
 })
 export class GroupListComponent implements OnInit {
   groupsLinks = groupsNavigation;
-  userLinks = usersNavigation;
-  rootLinks = navigation;
-  userViewLink = `/${this.rootLinks.users.path}/${this.userLinks.viewUser.path}`;
+  userViewLink = userViewLink;
 
   ownedGroupList$: Observable<Group[]>;
   joinedGroupList$: Observable<Group[]>;
