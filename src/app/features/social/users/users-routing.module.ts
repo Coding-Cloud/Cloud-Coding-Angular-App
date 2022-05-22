@@ -4,11 +4,16 @@ import { navigation, NavigationLinks2 } from '../../../app-routing.module';
 import { AuthGuardService } from '../../../core/core.module';
 import { UserViewComponent } from './user-view/user-view.component';
 import { socialNavigation } from '../social-routing.module';
+import { UserSearchComponent } from './user-search/user-search.component';
 
-export const usersNavigation: NavigationLinks2<'view'> = {
+export const usersNavigation: NavigationLinks2<'view' | 'search'> = {
   view: {
     path: 'view',
     name: 'Utilisateur'
+  },
+  search: {
+    path: '',
+    name: 'Rechercher un utilisateur'
   }
 };
 
@@ -21,6 +26,14 @@ const routes: Routes = [
     component: UserViewComponent,
     data: {
       title: usersNavigation.view.name
+    }
+  },
+  {
+    path: usersNavigation.search.path,
+    canActivate: [AuthGuardService],
+    component: UserSearchComponent,
+    data: {
+      title: usersNavigation.search.name
     }
   }
 ];

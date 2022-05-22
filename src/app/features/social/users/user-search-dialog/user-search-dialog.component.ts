@@ -12,7 +12,7 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../../core/core.state';
 import { selectAllUsersSearch } from '../store/users.selectors';
 import {
-  actionUsersSearch,
+  actionUsersSearchDialog,
   actionUsersSearchInit
 } from '../store/users.actions';
 import Timeout = NodeJS.Timeout;
@@ -71,7 +71,7 @@ export class UserSearchDialogComponent implements OnInit {
     if (searchValue.length >= 3) {
       this.searchDebounce = setTimeout(() => {
         this.store.dispatch(
-          actionUsersSearch({ search: this.searchControl.value })
+          actionUsersSearchDialog({ search: this.searchControl.value })
         );
       }, 150);
     }

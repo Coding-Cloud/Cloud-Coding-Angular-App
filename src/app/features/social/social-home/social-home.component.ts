@@ -1,13 +1,13 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { socialNavigation, socialUsersLink } from '../social-routing.module';
 
 @Component({
-  selector: 'app-social-home',
+  selector: 'cc-social-home',
   templateUrl: './social-home.component.html',
   styleUrls: ['./social-home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SocialHomeComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
+export class SocialHomeComponent {
+  readonly socialNavigation = socialNavigation;
+  readonly socialUsersLink = socialUsersLink;
 }
