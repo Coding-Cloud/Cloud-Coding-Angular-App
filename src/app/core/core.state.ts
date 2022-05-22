@@ -14,7 +14,11 @@ import { authReducer } from './auth/auth.reducer';
 import { RouterStateUrl } from './router/router.state';
 import { settingsReducer } from './settings/settings.reducer';
 import { SettingsState } from '../shared/models/settings.model';
-import { ProjectsState, ProjectState } from '../shared/models/project.model';
+import {
+  ProjectsSearchState,
+  ProjectsState,
+  ProjectState
+} from '../shared/models/project.model';
 import { projectListReducer } from '../features/projects/store/project-list.reducer';
 import { projectReducer } from '../features/projects/store/current-project.reducer';
 import { GroupsState, GroupState } from '../shared/models/group.model';
@@ -64,7 +68,7 @@ export const selectProjectsState = createFeatureSelector<
 
 export const selectProjectsSearchState = createFeatureSelector<
   AppState,
-  ProjectsState
+  ProjectsSearchState
 >('projectSearch');
 
 export const selectUsersSearchState = createFeatureSelector<
@@ -99,7 +103,7 @@ export interface AppState {
   auth: AuthState;
   settings: SettingsState;
   projects: ProjectsState;
-  projectSearch: ProjectsState;
+  projectSearch: ProjectsSearchState;
   currentProject: ProjectState;
   groups: GroupsState;
   currentGroup: GroupState;

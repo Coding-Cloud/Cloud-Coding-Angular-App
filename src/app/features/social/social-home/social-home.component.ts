@@ -1,5 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { socialNavigation, socialUsersLink } from '../social-routing.module';
+import {
+  socialNavigation,
+  socialProjectsLink,
+  socialUsersLink
+} from '../social-routing.module';
 
 @Component({
   selector: 'cc-social-home',
@@ -10,4 +14,5 @@ import { socialNavigation, socialUsersLink } from '../social-routing.module';
 export class SocialHomeComponent {
   readonly socialNavigation = socialNavigation;
   readonly socialUsersLink = socialUsersLink;
+  readonly socialProjectsLink = socialProjectsLink;
 }

@@ -1,37 +1,42 @@
 <div [class]='getRootClasse()'>
   <div class='row' *ngIf='isInRouteLink()'>
-    <h1 class='main-heading'>{{usersNavigation.search.name}}</h1>
+    <h1 class='main-heading'>{{socialNavigation.projects.name}}</h1>
   </div>
   <mat-card-content>
     <div class='row gy-2'>
       <mat-form-field class='col-12' appearance='standard'>
-        <mat-label>Nom, Email...</mat-label>
+        <mat-label>Nom</mat-label>
         <input matInput
-               placeholder='Nom, Email...'
+               placeholder='Nom'
                (keydown.enter)='onSearch()'
                [formControl]='searchQuery'>
       </mat-form-field>
       <mat-progress-bar class='col-12' mode='indeterminate' *ngIf='loading$ | async'></mat-progress-bar>
-      <table mat-table [dataSource]='(userResults$ | async) ?? []' class='col-12'>
+      <table mat-table [dataSource]='(projectResults$ | async) ?? []' class='col-12'>
         <ng-container matColumnDef='row'>
-          <td mat-cell *matCellDef='let user'>
+          <td mat-cell *matCellDef='let project'>
             <mat-card class='mt-3'>
-              <mat-card-title>{{user.username}}</mat-card-title>
-              <mat-card-content>
+              <mat-card-title>
+                {{project.name}}
+              </mat-card-title>
+              <mat-card-subtitle>
+                {{project.language | projectLanguage}}
+              </mat-card-subtitle>
+              <mat-card-content rel>
                 <ul>
-                  <li>{{user.firstname}} {{user.lastname}}</li>
-                  <li>{{user.email}}</li>
+                  <li><strong>Dernière version</strong> : {{project.lastVersion}}</li>
+                  <li><strong>Créé le</strong> : {{project.createdAt | date : 'longDate'}}</li>
                 </ul>
               </mat-card-content>
             </mat-card>
           </td>
         </ng-container>
 
-        <tr mat-row (click)='onClick(user)' *matRowDef='let user; columns: displayedColumns;'></tr>
+        <tr mat-row (click)='onClick(project)' *matRowDef='let project; columns: displayedColumns;'></tr>
       </table>
       <mat-paginator
         class='col-12'
-        [length]='userTotalResults$ | async'
+        [length]='projectTotalResults$ | async'
         [pageSize]='pageSize'
         [pageIndex]='pageIndex'
         [pageSizeOptions]='[5, 10, 25]'

@@ -13,9 +13,9 @@ import {
   selectUserView,
   selectUserViewProjects
 } from '../store/users.selectors';
-import { usersNavigation } from '../users-routing.module';
 import { projectsNavigation } from '../../../projects/projects-routing.module';
 import { navigation } from '../../../../app-routing.module';
+import { usersNavigation } from '../users-routing.module';
 
 @Component({
   selector: 'cc-user-view',

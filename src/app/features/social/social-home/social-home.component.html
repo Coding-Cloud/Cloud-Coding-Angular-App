@@ -4,7 +4,6 @@
   </div>
   <div class='row align-items-start'>
     <div class='col-md-12 col-lg-6'>
-      <div class='row'>
         <mat-card>
           <mat-card-header>
             <div mat-card-avatar style='
@@ -25,12 +24,28 @@
             <cc-user-search></cc-user-search>
           </mat-card-content>
         </mat-card>
-      </div>
     </div>
     <div class='col-md-12 col-lg-6'>
-      <div class='row'>
-        coucou 2
-      </div>
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar style='
+            background-image: url(assets/social-network.jpeg);
+            background-size: cover;'
+            >
+            </div>
+            <mat-card-title>
+              <a [routerLink]='socialProjectsLink'>
+                Projets
+              </a>
+            </mat-card-title>
+            <mat-card-subtitle>
+              Parcourez la liste des projets publiques.
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <cc-project-search></cc-project-search>
+          </mat-card-content>
+        </mat-card>
     </div>
   </div>
 </div>

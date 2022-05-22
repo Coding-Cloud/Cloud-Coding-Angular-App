@@ -3,9 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AuthGuardService } from '../../core/core.module';
 import { SocialHomeComponent } from './social-home/social-home.component';
-import { usersNavigation } from './users/users-routing.module';
+import { ProjectSearchComponent } from '../projects/project-search/project-search.component';
+import { ProjectsModule } from '../projects/projects.module';
 
-export const socialNavigation: NavigationLinks2<'social' | 'users'> = {
+export const socialNavigation: NavigationLinks2<
+  'social' | 'users' | 'projects'
+> = {
   social: {
     path: '',
     name: 'Réseau'
@@ -13,10 +16,15 @@ export const socialNavigation: NavigationLinks2<'social' | 'users'> = {
   users: {
     path: 'users',
     name: 'Utilisateurs'
+  },
+  projects: {
+    path: 'projects',
+    name: 'Projets'
   }
 };
 
 export const socialUsersLink = `/${navigation.social.path}/${socialNavigation.users.path}`;
+export const socialProjectsLink = `/${navigation.social.path}/${socialNavigation.projects.path}`;
 
 const routes: Routes = [
   {
@@ -34,6 +42,14 @@ const routes: Routes = [
       import('./users/users.module').then((m) => m.UsersModule),
     data: {
       title: socialNavigation.users.name
+    }
+  },
+  {
+    path: socialNavigation.projects.path,
+    canActivate: [AuthGuardService],
+    component: ProjectSearchComponent,
+    data: {
+      title: socialNavigation.projects.name
     }
   }
 ];

@@ -32,6 +32,7 @@ const reducer = createReducer(
   initialState,
   on(actionUsersSearchInit, (state) => ({
     ...state,
+    loading: false,
     totalResults: 0,
     users: userSearchAdapter.removeAll(state.users)
   })),
