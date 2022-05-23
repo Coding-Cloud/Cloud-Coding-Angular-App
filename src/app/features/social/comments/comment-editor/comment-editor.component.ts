@@ -75,7 +75,10 @@ export class CommentEditorComponent implements OnInit, OnDestroy {
       const content = JSON.stringify(
         this.commentFormGroup.value.commentContent
       );
-
+      this.commentFormGroup.controls.commentContent.setValue({
+        type: 'doc',
+        content: []
+      });
       this.submitForm.emit({ content });
     }
   }
