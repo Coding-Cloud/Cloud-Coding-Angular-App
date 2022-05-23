@@ -47,7 +47,7 @@ export class UsersEffects {
       ofType(actionUsersSearch),
       exhaustMap((action) =>
         this.usersService
-          .searchUsers(action.page, action.limit, action.search)
+          .searchUsers(action.page * action.limit, action.limit, action.search)
           .pipe(
             map(({ users, totalResults }) =>
               actionUsersSearchSuccess({
