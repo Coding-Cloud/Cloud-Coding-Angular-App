@@ -27,7 +27,8 @@ export class CommentEditorComponent implements OnInit, OnDestroy {
 
   toolbar: Toolbar = [
     ['bold', 'italic', 'underline', 'strike'],
-    ['blockquote', 'ordered_list', 'bullet_list'],
+    ['blockquote', 'code'],
+    ['ordered_list', 'bullet_list'],
     [{ heading: ['h4', 'h5', 'h6'] }],
     ['link', 'image'],
     ['text_color', 'background_color'],
@@ -41,7 +42,7 @@ export class CommentEditorComponent implements OnInit, OnDestroy {
           type: 'doc',
           content: [
             {
-              type: 'code_mirror',
+              type: 'codemirror',
               content: [
                 {
                   type: 'text',
@@ -71,10 +72,10 @@ export class CommentEditorComponent implements OnInit, OnDestroy {
 
   onCommentSubmit(): void {
     if (this.commentFormGroup.valid) {
-      const content = toHTML(
-        this.commentFormGroup.value.commentContent,
-        schema
+      const content = JSON.stringify(
+        this.commentFormGroup.value.commentContent
       );
+
       this.submitForm.emit({ content });
     }
   }

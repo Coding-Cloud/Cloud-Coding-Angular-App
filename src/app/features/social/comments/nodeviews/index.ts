@@ -11,11 +11,7 @@ import { python } from '@codemirror/lang-python';
 import { xml } from '@codemirror/lang-xml';
 
 const nodeViews = {
-  code_mirror: (
-    node: ProsemirrorNode,
-    view: EditorView,
-    getPos: () => number
-  ) =>
+  codemirror: (node: ProsemirrorNode, view: EditorView, getPos: () => number) =>
     new CodeMirrorView({
       node,
       view,

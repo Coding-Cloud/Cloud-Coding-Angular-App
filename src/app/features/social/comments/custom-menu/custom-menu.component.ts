@@ -34,13 +34,13 @@ export class CustomMenuComponent implements OnInit {
       return setBlockType(schema.nodes.paragraph)(state, dispatch);
     }
 
-    return setBlockType(schema.nodes.code_mirror)(state, dispatch);
+    return setBlockType(schema.nodes.codemirror)(state, dispatch);
   }
 
   update = (view: EditorView) => {
     const { state } = view;
     const { schema } = state;
-    this.isActive = isNodeActive(state, schema.nodes.code_mirror);
+    this.isActive = isNodeActive(state, schema.nodes.codemirror);
     this.isDisabled = !this.execute(state, undefined); // returns true if executable
   };
 

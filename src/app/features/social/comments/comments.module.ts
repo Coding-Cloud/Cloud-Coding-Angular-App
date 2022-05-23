@@ -5,6 +5,7 @@ import { NgxEditorModule } from 'ngx-editor';
 import { CommentEditorComponent } from './comment-editor/comment-editor.component';
 import { CustomMenuComponent } from './custom-menu/custom-menu.component';
 import { CommentViewComponent } from './comment-view/comment-view.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,6 @@ import { CommentViewComponent } from './comment-view/comment-view.component';
     CustomMenuComponent
   ],
   exports: [CommentEditorComponent, CommentViewComponent],
-  imports: [CommonModule, SharedModule, NgxEditorModule]
+  imports: [CommonModule, SharedModule, NgxEditorModule, RouterModule]
 })
 export class CommentsModule {}

@@ -1,15 +1,16 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
+  Input,
   OnDestroy,
-  OnInit,
-  Output
+  OnInit
 } from '@angular/core';
-import { Editor, Toolbar } from 'ngx-editor';
+import { Editor } from 'ngx-editor';
 import { FormControl, FormGroup } from '@angular/forms';
 import nodeViews from '../nodeviews';
 import schema from '../schema';
+import { Comment } from '../../../../shared/models/comment.model';
+import { userViewLink } from '../../users/users-routing.module';
 
 @Component({
   selector: 'cc-comment-view',
@@ -18,45 +19,22 @@ import schema from '../schema';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommentViewComponent implements OnInit, OnDestroy {
-  @Output() submitForm = new EventEmitter<{ content: string }>();
+  @Input() comment: Comment = {
+    content: '',
+    createdAt: new Date(),
+    id: '',
+    postId: '',
+    ownerId: ''
+  };
 
-  editor: Editor = new Editor({
-    schema,
-    nodeViews
-  });
+  userViewLink = userViewLink;
+
   editorView: Editor = new Editor({
     schema,
     nodeViews
   });
 
-  toolbar: Toolbar = [
-    ['bold', 'italic', 'underline', 'strike'],
-    ['code', 'blockquote'],
-    ['ordered_list', 'bullet_list'],
-    [{ heading: ['h4', 'h5', 'h6'] }],
-    ['link', 'image'],
-    ['text_color', 'background_color'],
-    []
-  ];
-
   commentFormGroup = new FormGroup({
-    commentContent: new FormControl({
-      value: {
-        type: 'doc',
-        content: [
-          {
-            type: 'code_mirror',
-            content: [
-              {
-                type: 'text',
-                text: 'function max(a, b) {\n  return a > b ? a : b\n}'
-              }
-            ]
-          }
-        ]
-      },
-      disabled: false
-    }),
     commentContentView: new FormControl({
       value: {
         type: 'doc',
@@ -67,25 +45,12 @@ export class CommentViewComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit(): void {
-    this.editor.destroy();
-    this.editorView.destroy();
-    this.editor = new Editor({
-      schema,
-      nodeViews
-    });
-    this.editorView = new Editor({
-      schema,
-      nodeViews
-    });
+    this.commentFormGroup.controls.commentContentView.setValue(
+      JSON.parse(this.comment.content)
+    );
   }
 
   ngOnDestroy(): void {
-    this.editor.destroy();
     this.editorView.destroy();
-  }
-
-  onCommentUpdate(): void {
-    const newContent = this.commentFormGroup.value.commentContent;
-    this.commentFormGroup.controls.commentContentView.setValue(newContent);
   }
 }

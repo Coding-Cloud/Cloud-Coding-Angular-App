@@ -4,7 +4,7 @@ import { node as codemirrorNode } from 'prosemirror-codemirror-6';
 
 const nodes = {
   ...basicNodes,
-  code_mirror: codemirrorNode
+  codemirror: codemirrorNode
 };
 
 const schema = new Schema({
