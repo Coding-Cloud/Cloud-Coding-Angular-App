@@ -30,28 +30,6 @@ export class UsersService {
     limit: number,
     search?: string
   ): Observable<{ users: User[]; totalResults: number }> {
-    return of({
-      users: [
-        {
-          id: '1',
-          username: 'test',
-          firstname: 'test',
-          lastname: 'test',
-          email: 'test@example.com',
-          birthdate: new Date()
-        },
-        {
-          id: '2',
-          username: 'test',
-          firstname: 'test',
-          lastname: 'test',
-          email: 'test@example.com',
-          birthdate: new Date()
-        }
-      ],
-      totalResults: 5
-    });
-
     return this.http.get<{ users: User[]; totalResults: number }>(
       API_RESOURCE_URI.USERS,
       {
