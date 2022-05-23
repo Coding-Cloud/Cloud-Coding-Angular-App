@@ -3,12 +3,16 @@ import {
   Component,
   Input,
   OnDestroy,
-  OnInit
+  OnInit,
+  ViewChild
 } from '@angular/core';
 import { Editor, toHTML, Toolbar } from 'ngx-editor';
 import { Project } from '../../../../shared/models/project.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import nodeViews from './nodeviews';
+import schema from './schema';
+import { CustomMenuComponent } from '../custom-menu/custom-menu.component';
 
 @Component({
   selector: 'cc-project-comment-editor',
@@ -20,8 +24,14 @@ export class ProjectCommentEditorComponent implements OnInit, OnDestroy {
   @Input()
   project: Project | null = null;
 
-  editor: Editor = new Editor();
-  public sanitizer: DomSanitizer;
+  editor: Editor = new Editor({
+    schema,
+    nodeViews
+  });
+  editorView: Editor = new Editor({
+    schema,
+    nodeViews
+  });
 
   toolbar: Toolbar = [
     ['bold', 'italic', 'underline', 'strike'],
@@ -29,34 +39,57 @@ export class ProjectCommentEditorComponent implements OnInit, OnDestroy {
     ['ordered_list', 'bullet_list'],
     [{ heading: ['h4', 'h5', 'h6'] }],
     ['link', 'image'],
-    ['text_color', 'background_color']
+    ['text_color', 'background_color'],
+    []
   ];
 
   commentFormGroup = new FormGroup({
     commentContent: new FormControl({
       value: {
         type: 'doc',
-        content: []
+        content: [
+          {
+            type: 'code_mirror',
+            content: [
+              {
+                type: 'text',
+                text: 'function max(a, b) {\n  return a > b ? a : b\n}'
+              }
+            ]
+          }
+        ]
       },
       disabled: false
+    }),
+    commentContentView: new FormControl({
+      value: {
+        type: 'doc',
+        content: []
+      },
+      disabled: true
     })
   });
 
-  constructor(sanitizer: DomSanitizer) {
-    this.sanitizer = sanitizer;
-  }
-
   ngOnInit(): void {
     this.editor.destroy();
-    this.editor = new Editor();
+    this.editorView.destroy();
+    this.editor = new Editor({
+      schema,
+      nodeViews
+    });
+    this.editorView = new Editor({
+      schema,
+      nodeViews
+    });
   }
 
   ngOnDestroy(): void {
     this.editor.destroy();
+    this.editorView.destroy();
   }
 
-  getCommentContent(): string {
-    console.log(toHTML(this.commentFormGroup.value.commentContent));
-    return toHTML(this.commentFormGroup.value.commentContent);
+  onCommentUpdate(): void {
+    const newContent = this.commentFormGroup.value.commentContent;
+    this.commentFormGroup.controls.commentContentView.setValue(newContent);
   }
 }
