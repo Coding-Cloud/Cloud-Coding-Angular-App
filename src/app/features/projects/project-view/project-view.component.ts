@@ -21,10 +21,8 @@ import { navigation } from '../../../app-routing.module';
 import { Group } from '../../../shared/models/group.model';
 import { User } from '../../../shared/models/user.model';
 import { selectUser } from '../../../core/auth/auth.selectors';
-import {
-  usersNavigation,
-  userViewLink
-} from '../../social/users/users-routing.module';
+import { userViewLink } from '../../social/users/users-routing.module';
+import { Comment } from '../../../shared/models/comment.model';
 
 @Component({
   selector: 'cc-project-view',
@@ -36,6 +34,7 @@ export class ProjectViewComponent implements OnInit {
   projectId = '';
   groupId = '';
   ownerId = '';
+  currentUserId = '';
   groupsLinks = groupsNavigation;
   rootLinks = navigation;
   groupViewLink = `/${this.rootLinks.groups.path}/${this.groupsLinks.viewGroup.path}`;
@@ -45,6 +44,8 @@ export class ProjectViewComponent implements OnInit {
   group$: Observable<Group>;
   editMode$: Observable<boolean>;
   currentUser$: Observable<User>;
+
+  projectComments: Comment[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -57,6 +58,7 @@ export class ProjectViewComponent implements OnInit {
     this.project$.subscribe((project) => (this.ownerId = project.creatorId));
     this.editMode$ = this.store.pipe(select(selectCurrentProjectIsEditMode));
     this.currentUser$ = this.store.pipe(select(selectUser));
+    this.currentUser$.subscribe((user) => (this.currentUserId = user.id));
   }
 
   ngOnInit(): void {
@@ -80,5 +82,16 @@ export class ProjectViewComponent implements OnInit {
 
   onEditSwitch() {
     this.store.dispatch(actionProjectSwitchEditMode());
+  }
+
+  onCommentSubmit(commentContent: string) {
+    this.projectComments.push({
+      id: '1',
+      ownerId: this.currentUserId,
+      createdAt: new Date(),
+      content: commentContent,
+      postId: this.projectId
+    });
+    console.log(this.projectComments);
   }
 }

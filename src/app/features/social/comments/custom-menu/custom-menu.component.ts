@@ -5,8 +5,8 @@ import { setBlockType } from 'prosemirror-commands';
 
 import { Editor } from 'ngx-editor';
 import { isNodeActive } from 'ngx-editor/helpers';
-import schema from '../project-comment-editor/schema';
-import nodeViews from '../project-comment-editor/nodeviews';
+import schema from '../schema';
+import nodeViews from '../nodeviews';
 
 @Component({
   selector: 'cc-custom-menu',

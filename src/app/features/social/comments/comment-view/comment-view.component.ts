@@ -1,28 +1,24 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
+  EventEmitter,
   OnDestroy,
   OnInit,
-  ViewChild
+  Output
 } from '@angular/core';
-import { Editor, toHTML, Toolbar } from 'ngx-editor';
-import { Project } from '../../../../shared/models/project.model';
+import { Editor, Toolbar } from 'ngx-editor';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
-import nodeViews from './nodeviews';
-import schema from './schema';
-import { CustomMenuComponent } from '../custom-menu/custom-menu.component';
+import nodeViews from '../nodeviews';
+import schema from '../schema';
 
 @Component({
-  selector: 'cc-project-comment-editor',
-  templateUrl: './project-comment-editor.component.html',
-  styleUrls: ['./project-comment-editor.component.scss'],
+  selector: 'cc-comment-view',
+  templateUrl: './comment-view.component.html',
+  styleUrls: ['./comment-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProjectCommentEditorComponent implements OnInit, OnDestroy {
-  @Input()
-  project: Project | null = null;
+export class CommentViewComponent implements OnInit, OnDestroy {
+  @Output() submitForm = new EventEmitter<{ content: string }>();
 
   editor: Editor = new Editor({
     schema,
