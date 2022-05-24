@@ -6,7 +6,7 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { Editor, toHTML, Toolbar, Validators } from 'ngx-editor';
+import { Editor, Toolbar, Validators } from 'ngx-editor';
 import { FormControl, FormGroup } from '@angular/forms';
 import nodeViews from '../nodeviews';
 import schema from '../schema';
@@ -19,6 +19,11 @@ import schema from '../schema';
 })
 export class CommentEditorComponent implements OnInit, OnDestroy {
   @Output() submitForm = new EventEmitter<{ content: string }>();
+
+  readonly initialValue = {
+    type: 'doc',
+    content: []
+  };
 
   editor: Editor = new Editor({
     schema,
@@ -38,20 +43,7 @@ export class CommentEditorComponent implements OnInit, OnDestroy {
   commentFormGroup = new FormGroup({
     commentContent: new FormControl(
       {
-        value: {
-          type: 'doc',
-          content: [
-            {
-              type: 'codemirror',
-              content: [
-                {
-                  type: 'text',
-                  text: 'function max(a, b) {\n  return a > b ? a : b\n}'
-                }
-              ]
-            }
-          ]
-        },
+        value: this.initialValue,
         disabled: false
       },
       Validators.required(schema)
@@ -75,10 +67,7 @@ export class CommentEditorComponent implements OnInit, OnDestroy {
       const content = JSON.stringify(
         this.commentFormGroup.value.commentContent
       );
-      this.commentFormGroup.controls.commentContent.setValue({
-        type: 'doc',
-        content: []
-      });
+      this.commentFormGroup.controls.commentContent.setValue(this.initialValue);
       this.submitForm.emit({ content });
     }
   }

@@ -11,6 +11,7 @@ import nodeViews from '../nodeviews';
 import schema from '../schema';
 import { Comment } from '../../../../shared/models/comment.model';
 import { userViewLink } from '../../users/users-routing.module';
+import { projectViewLink } from '../../../projects/projects-routing.module';
 
 @Component({
   selector: 'cc-comment-view',
@@ -23,11 +24,12 @@ export class CommentViewComponent implements OnInit, OnDestroy {
     content: '',
     createdAt: new Date(),
     id: '',
-    postId: '',
+    projectId: '',
     ownerId: ''
   };
 
   userViewLink = userViewLink;
+  projectViewLink = projectViewLink;
 
   editorView: Editor = new Editor({
     schema,
