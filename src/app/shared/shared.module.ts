@@ -144,7 +144,8 @@ import { ProjectNamePipe } from './pipes/project-name.pipe';
     EmptyStringPipe,
     BooleanYesNoPipe,
     UsernamePipe,
-    SpinnerComponent
+    SpinnerComponent,
+    ProjectNamePipe
   ]
 })
 export class SharedModule {

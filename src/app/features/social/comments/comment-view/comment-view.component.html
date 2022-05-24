@@ -1,9 +1,14 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-subtitle class='d-flex align-items-center'>
+    <mat-card-subtitle class='d-flex align-items-center' *ngIf="displayUserLink">
       <mat-icon>account_circle</mat-icon>
       &nbsp;<a
       [routerLink]=[userViewLink,comment.ownerId]>{{(comment.ownerId | username) | async}}</a>
+    </mat-card-subtitle>
+    <mat-card-subtitle class='d-flex align-items-center' *ngIf="displayProjectLink">
+      <mat-icon>cloud</mat-icon>
+      &nbsp;<a
+      [routerLink]=[projectViewLink,comment.projectId]>{{(comment.projectId | projectName) | async}}</a>
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>

@@ -20,6 +20,9 @@ import { projectViewLink } from '../../../projects/projects-routing.module';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommentViewComponent implements OnInit, OnDestroy {
+  @Input() displayUserLink = false;
+  @Input() displayProjectLink = false;
+
   @Input() comment: Comment = {
     content: '',
     createdAt: new Date(),
