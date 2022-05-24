@@ -1,7 +1,11 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+@import 'src/styles-variables';
+
 .border {
   display: grid;
   place-items: center;
   padding: 1rem;
-  border: 2px solid aqua;
-  border-radius: 3px;
+  background: rgba(90, 90, 90, 0.13);
+  border-radius: 4px;
 }

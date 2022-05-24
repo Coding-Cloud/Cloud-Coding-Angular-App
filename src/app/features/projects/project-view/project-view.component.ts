@@ -23,6 +23,15 @@ import { User } from '../../../shared/models/user.model';
 import { selectUser } from '../../../core/auth/auth.selectors';
 import { userViewLink } from '../../social/users/users-routing.module';
 import { Comment } from '../../../shared/models/comment.model';
+import {
+  selectAllComments,
+  selectCommentsLoading
+} from '../../social/comments/store/comments.selectors';
+import {
+  actionCommentsAddOne,
+  actionCommentsGetFromProject,
+  actionCommentsInit
+} from '../../social/comments/store/comments.actions';
 
 @Component({
   selector: 'cc-project-view',
@@ -44,8 +53,8 @@ export class ProjectViewComponent implements OnInit {
   group$: Observable<Group>;
   editMode$: Observable<boolean>;
   currentUser$: Observable<User>;
-
-  projectComments: Comment[] = [];
+  projectComments$: Observable<Comment[]>;
+  projectCommentsLoading$: Observable<boolean>;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,16 +63,27 @@ export class ProjectViewComponent implements OnInit {
   ) {
     this.project$ = this.store.pipe(select(selectCurrentProject));
     this.group$ = this.store.pipe(select(selectCurrentProjectGroup));
-    this.project$.subscribe((project) => (this.groupId = project.groupId));
-    this.project$.subscribe((project) => (this.ownerId = project.creatorId));
     this.editMode$ = this.store.pipe(select(selectCurrentProjectIsEditMode));
+    this.projectComments$ = this.store.pipe(select(selectAllComments));
+    this.projectCommentsLoading$ = this.store.pipe(
+      select(selectCommentsLoading)
+    );
     this.currentUser$ = this.store.pipe(select(selectUser));
+
+    this.project$.subscribe((project) => {
+      this.groupId = project.groupId;
+      this.ownerId = project.creatorId;
+    });
     this.currentUser$.subscribe((user) => (this.currentUserId = user.id));
   }
 
   ngOnInit(): void {
     this.projectId = this.route.snapshot.paramMap.get('id') ?? '';
     this.store.dispatch(actionProjectsGetOne({ id: this.projectId }));
+    this.store.dispatch(actionCommentsInit());
+    this.store.dispatch(
+      actionCommentsGetFromProject({ projectId: this.projectId })
+    );
   }
 
   onDelete(): void {
@@ -85,13 +105,13 @@ export class ProjectViewComponent implements OnInit {
   }
 
   onCommentSubmit(commentContent: string) {
-    this.projectComments.push({
-      id: '1',
-      ownerId: this.currentUserId,
-      createdAt: new Date(),
-      content: commentContent,
-      postId: this.projectId
-    });
-    console.log(this.projectComments);
+    this.store.dispatch(
+      actionCommentsAddOne({
+        comment: {
+          content: commentContent,
+          projectId: this.projectId
+        }
+      })
+    );
   }
 }
