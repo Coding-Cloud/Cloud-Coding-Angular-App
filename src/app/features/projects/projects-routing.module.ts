@@ -23,7 +23,7 @@ export const projectsNavigation: NavigationLinks2<
   }
 };
 
-export const projectViewLink = `${navigation.projets.path}/${projectsNavigation.viewProject.path}`;
+export const projectViewLink = `/${navigation.projets.path}/${projectsNavigation.viewProject.path}`;
 
 const routes: Routes = [
   {

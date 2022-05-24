@@ -72,7 +72,7 @@ export class ProjectsService {
 
   getProjectName(projectId: string): Observable<{ name: string }> {
     return this.http.get<{ name: string }>(
-      API_RESOURCE_URI.PROJECTS_NAME + '/' + projectId
+      API_RESOURCE_URI.PROJECTS_NAME(projectId)
     );
   }
 
