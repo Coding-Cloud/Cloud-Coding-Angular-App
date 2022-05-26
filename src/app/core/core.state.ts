@@ -28,9 +28,12 @@ import { projectsSearchReducer } from '../features/projects/store/project-search
 import { usersSearchReducer } from '../features/social/users/store/user-search.reducer';
 import { UsersState, UserState } from '../shared/models/user.model';
 import { userViewReducer } from '../features/social/users/store/user-view.reducer';
+import { CommentsState } from '../shared/models/comment.model';
+import { commentsReducer } from '../features/social/comments/store/comments.reducer';
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
+  comments: commentsReducer,
   settings: settingsReducer,
   projects: projectListReducer,
   projectSearch: projectsSearchReducer,
@@ -60,6 +63,11 @@ export const selectSettingsState = createFeatureSelector<
   AppState,
   SettingsState
 >('settings');
+
+export const selectCommentsState = createFeatureSelector<
+  AppState,
+  CommentsState
+>('comments');
 
 export const selectProjectsState = createFeatureSelector<
   AppState,
@@ -110,4 +118,5 @@ export interface AppState {
   userSearch: UsersState;
   userView: UserState;
   router: RouterReducerState<RouterStateUrl>;
+  comments: CommentsState;
 }

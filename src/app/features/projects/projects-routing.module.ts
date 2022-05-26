@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NavigationLinks, NavigationLinks2 } from '../../app-routing.module';
+import { navigation, NavigationLinks2 } from '../../app-routing.module';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { AuthGuardService } from '../../core/core.module';
 import { ProjectAddComponent } from './project-add/project-add.component';
@@ -22,6 +22,8 @@ export const projectsNavigation: NavigationLinks2<
     name: 'Projet'
   }
 };
+
+export const projectViewLink = `/${navigation.projets.path}/${projectsNavigation.viewProject.path}`;
 
 const routes: Routes = [
   {

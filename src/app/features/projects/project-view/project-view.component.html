@@ -40,5 +40,25 @@
         </mat-card-actions>
       </mat-card>
     </div>
+    <div class='col-md-6 col-lg-8'>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            Commentaires
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content *ngIf="!(projectCommentsLoading$ | async)" class='border' style='max-height:500px; overflow: auto'>
+          <cc-comment-view *ngFor='let comment of (projectComments$ | async)' [comment]='comment'
+                           [displayUserLink]="true"
+                           style='width: 100%;'></cc-comment-view>
+        </mat-card-content>
+        <mat-card-content *ngIf="(projectCommentsLoading$ | async)" class='border' style='height:300px;'>
+          <mat-spinner></mat-spinner>
+        </mat-card-content>
+        <mat-card-subtitle>
+          <cc-comment-editor (submitForm)='onCommentSubmit($event.content)'></cc-comment-editor>
+        </mat-card-subtitle>
+      </mat-card>
+    </div>
   </div>
 </div>
