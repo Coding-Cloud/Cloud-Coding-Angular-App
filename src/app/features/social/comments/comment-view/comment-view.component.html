@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card *ngIf="editMode === false">
   <mat-card-header>
     <mat-card-subtitle class='d-flex align-items-center' *ngIf="displayUserLink">
       <mat-icon>account_circle</mat-icon>
@@ -18,5 +18,13 @@
   </mat-card-content>
   <mat-card-subtitle>
     <span>{{comment.createdAt | date: 'dd MMM yyyy HH:mm:ss'}}</span>
+    <button mat-icon-button color="accent" *ngIf="comment.ownerId === currentUserId" (click)="onEditSwitch()">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button color="warn" *ngIf="comment.ownerId === currentUserId" (click)="onDelete()">
+      <mat-icon>delete</mat-icon>
+    </button>
   </mat-card-subtitle>
 </mat-card>
+<cc-comment-editor *ngIf="editMode === true" [initialComment]="comment" (submitForm)="onUpdateSubmit($event.content)"
+                   (cancel)="onEditSwitch()"></cc-comment-editor>

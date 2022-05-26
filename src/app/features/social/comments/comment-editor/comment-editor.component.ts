@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Output
@@ -10,6 +11,7 @@ import { Editor, Toolbar, Validators } from 'ngx-editor';
 import { FormControl, FormGroup } from '@angular/forms';
 import nodeViews from '../nodeviews';
 import schema from '../schema';
+import { Comment } from '../../../../shared/models/comment.model';
 
 @Component({
   selector: 'cc-comment-editor',
@@ -18,7 +20,11 @@ import schema from '../schema';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommentEditorComponent implements OnInit, OnDestroy {
+  @Input()
+  initialComment?: Comment;
+
   @Output() submitForm = new EventEmitter<{ content: string }>();
+  @Output() cancel = new EventEmitter();
 
   readonly initialValue = {
     type: 'doc',
@@ -56,6 +62,11 @@ export class CommentEditorComponent implements OnInit, OnDestroy {
       schema,
       nodeViews
     });
+    if (this.initialComment) {
+      this.commentFormGroup.controls.commentContent.setValue(
+        JSON.parse(this.initialComment.content)
+      );
+    }
   }
 
   ngOnDestroy(): void {
@@ -68,7 +79,12 @@ export class CommentEditorComponent implements OnInit, OnDestroy {
         this.commentFormGroup.value.commentContent
       );
       this.commentFormGroup.controls.commentContent.setValue(this.initialValue);
-      this.submitForm.emit({ content });
+      if (this.initialComment) this.submitForm.emit({ content });
     }
+  }
+
+  onCancel(): void {
+    this.commentFormGroup.controls.commentContent.setValue(this.initialValue);
+    this.cancel.emit();
   }
 }
