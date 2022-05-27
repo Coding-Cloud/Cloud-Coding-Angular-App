@@ -74,30 +74,12 @@ export class FrontViewComponent implements OnInit {
         );
         this.inputUrl?.nativeElement.blur();
       }, 2000);
-      //this.checkHealthPathService
-      //  .checkUrlIsReachable(this.projectUniqueName, event.target.value)
-      //  .pipe(finalize(() => this.loadingRequest$.next(false)))
-      //  .subscribe((isReachable: boolean) => {
-      //    if (isReachable) {
-      //      this.urlSee = this.formatUrl(event.target.value);
-      //      this.baseUrlPathTrust =
-      //        this.sanitizer.bypassSecurityTrustResourceUrl(event.target.value);
-      //      this.inputUrl?.nativeElement.blur();
-      //    } else {
-      //      this.notificationService.warn(
-      //        `l\' url ${event.target.value} n'existe pas`
-      //      );
-      //      this.inputUrl?.nativeElement.blur();
-      //    }
-      //  });
     }
   }
 
   handleLoad($event: any) {
     const location = this.iframeElement?.nativeElement.contentWindow?.location;
-    console.log(location);
     if (location !== undefined) {
-      console.log(this.iframeElement?.nativeElement.contentWindow);
       this.iframeElement?.nativeElement.contentWindow?.postMessage(
         'Request DOM manipulation',
         'http://localhost:8000'
@@ -105,31 +87,13 @@ export class FrontViewComponent implements OnInit {
 
       window.addEventListener('message', (event) => {
         if (event.origin !== 'http://localhost:8000') return;
-        console.log('data');
         const urlFormat = this.formatUrl(event.data);
         const urlSeeFormat = this.formatUrl(this.urlSee);
         if (urlSeeFormat !== urlFormat) {
-          console.log(urlFormat);
           this.urlSee = urlFormat;
           this.cd.markForCheck();
         }
       });
-      /*this.iframeElement?.nativeElement.contentWindow?.addEventListener(
-        'message',
-        (event) => {
-          console.log(event.origin)
-          // Reject all messages except ones from https://video.example.com
-          if (event.origin !== 'http://localhost:8000') return;
-
-          // Filter success messages
-          console.log(event.data)
-          if (event.data === 'succeeded') {
-            console.log('dans le succeed');
-            console.log(event.data);
-            // DOM manipulation is succeeded
-          }
-        }
-      );*/
     }
   }
 
