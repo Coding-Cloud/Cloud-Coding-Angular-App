@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Project, ProjectForm } from '../../../shared/models/project.model';
 import { Group } from '../../../shared/models/group.model';
+import { User } from '../../../shared/models/user.model';
 
 export const actionProjectsUpsertOne = createAction(
   '[Projects] Upsert One',
@@ -93,14 +94,29 @@ export const actionProjectsUpdateOneError = createAction(
 
 export const actionProjectsSearchInit = createAction('[Projects] Search Init');
 
+export const actionProjectsSearchDialog = createAction(
+  '[Projects] Search projects dialog',
+  props<{ search: string }>()
+);
+
+export const actionProjectsSearchDialogSuccess = createAction(
+  '[Projects] Search projects dialog success',
+  props<{ projects: Project[] }>()
+);
+
+export const actionProjectsSearchDialogError = createAction(
+  '[Projects] Search projects dialog error',
+  props<{ message: string }>()
+);
+
 export const actionProjectsSearch = createAction(
   '[Projects] Search projects',
-  props<{ search: string }>()
+  props<{ search?: string; limit: number; page: number }>()
 );
 
 export const actionProjectsSearchSuccess = createAction(
   '[Projects] Search projects success',
-  props<{ projects: Project[] }>()
+  props<{ projects: Project[]; totalResults: number }>()
 );
 
 export const actionProjectsSearchError = createAction(

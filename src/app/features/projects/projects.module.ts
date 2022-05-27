@@ -8,6 +8,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ProjectViewComponent } from './project-view/project-view.component';
 import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { ProjectSearchDialogComponent } from './project-search-dialog/project-search-dialog.component';
+import { ProjectSearchComponent } from './project-search/project-search.component';
 
 @NgModule({
   declarations: [
@@ -15,8 +16,10 @@ import { ProjectSearchDialogComponent } from './project-search-dialog/project-se
     ProjectAddComponent,
     ProjectViewComponent,
     ProjectEditComponent,
-    ProjectSearchDialogComponent
+    ProjectSearchDialogComponent,
+    ProjectSearchComponent
   ],
+  exports: [ProjectSearchComponent],
   imports: [
     CommonModule,
     SharedModule,

@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 import { Project } from '../../../shared/models/project.model';
 import { selectAllProjectsSearch } from '../store/projects.selectors';
 import {
-  actionProjectsSearch,
+  actionProjectsSearchDialog,
   actionProjectsSearchInit
 } from '../store/projects.actions';
 import { FormControl } from '@angular/forms';
@@ -74,7 +74,7 @@ export class ProjectSearchDialogComponent implements OnInit {
     if (searchValue.length >= 3) {
       this.searchDebounce = setTimeout(() => {
         this.store.dispatch(
-          actionProjectsSearch({ search: this.searchControl.value })
+          actionProjectsSearchDialog({ search: this.searchControl.value })
         );
       }, 150);
     }

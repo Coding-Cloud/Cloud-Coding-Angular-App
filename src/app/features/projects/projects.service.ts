@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_RESOURCE_URI } from '../../shared/api-resource-uri/api-resource-uri';
-import { Observable } from 'rxjs';
-import { Project, ProjectForm } from '../../shared/models/project.model';
+import { Observable, of } from 'rxjs';
+import {
+  Project,
+  ProjectForm,
+  ProjectLanguage,
+  ProjectStatus,
+  ProjectVisibility
+} from '../../shared/models/project.model';
 import { HttpTools } from '../../shared/http-tools/http-tools';
 
 @Injectable({
@@ -15,10 +21,53 @@ export class ProjectsService {
     return this.http.get<Project[]>(API_RESOURCE_URI.PROJECTS_OWNED);
   }
 
-  searchProjects(name: string): Observable<Project[]> {
+  searchProjectsDialog(name: string): Observable<Project[]> {
     return this.http.get<Project[]>(API_RESOURCE_URI.PROJECTS_SEARCH, {
       params: HttpTools.objectToHttpParams({ name })
     });
+  }
+
+  searchProjects(
+    offset: number,
+    limit: number,
+    search?: string
+  ): Observable<{ projects: Project[]; totalResults: number }> {
+    return of({
+      projects: [
+        {
+          id: '1',
+          creatorId: '1',
+          groupId: '1',
+          name: 'Project 1',
+          createdAt: new Date(),
+          lastVersion: 1,
+          globalVisibility: ProjectVisibility.PUBLIC,
+          language: ProjectLanguage.ANGULAR,
+          status: ProjectStatus.RUNNING,
+          uniqueName: 'project-1'
+        },
+        {
+          id: '2',
+          creatorId: '2',
+          groupId: '2',
+          name: 'Project 2',
+          createdAt: new Date(),
+          lastVersion: 1,
+          globalVisibility: ProjectVisibility.GUEST,
+          language: ProjectLanguage.QUARKUS,
+          status: ProjectStatus.INITIALISING,
+          uniqueName: 'project-2'
+        }
+      ],
+      totalResults: 2
+    });
+
+    return this.http.get<{ projects: Project[]; totalResults: number }>(
+      API_RESOURCE_URI.PROJECTS,
+      {
+        params: HttpTools.objectToHttpParams({ search, limit, offset })
+      }
+    );
   }
 
   getProjectName(projectId: string): Observable<{ name: string }> {

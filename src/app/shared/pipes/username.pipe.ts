@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { UsersService } from '../../features/users/users.service';
+import { UsersService } from '../../features/social/users/users.service';
 import { map } from 'rxjs/operators';
 
 @Pipe({

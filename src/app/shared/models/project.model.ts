@@ -53,6 +53,13 @@ export const emptyProject: Project = {
 };
 
 export type ProjectsState = EntityState<Project>;
+
+export type ProjectsSearchState = {
+  projects: EntityState<Project>;
+  totalResults: number;
+  loading: boolean;
+};
+
 export interface ProjectState {
   project: Project;
   group: Group;

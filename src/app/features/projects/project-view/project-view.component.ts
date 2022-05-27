@@ -21,7 +21,10 @@ import { navigation } from '../../../app-routing.module';
 import { Group } from '../../../shared/models/group.model';
 import { User } from '../../../shared/models/user.model';
 import { selectUser } from '../../../core/auth/auth.selectors';
-import { usersNavigation } from '../../users/users-routing.module';
+import {
+  usersNavigation,
+  userViewLink
+} from '../../social/users/users-routing.module';
 
 @Component({
   selector: 'cc-project-view',
@@ -34,10 +37,9 @@ export class ProjectViewComponent implements OnInit {
   groupId = '';
   ownerId = '';
   groupsLinks = groupsNavigation;
-  userLinks = usersNavigation;
   rootLinks = navigation;
   groupViewLink = `/${this.rootLinks.groups.path}/${this.groupsLinks.viewGroup.path}`;
-  userViewLink = `/${this.rootLinks.users.path}/${this.userLinks.viewUser.path}`;
+  userViewLink = userViewLink;
 
   project$: Observable<Project>;
   group$: Observable<Group>;

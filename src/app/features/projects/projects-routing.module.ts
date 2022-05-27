@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NavigationLinks } from '../../app-routing.module';
+import { NavigationLinks, NavigationLinks2 } from '../../app-routing.module';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { AuthGuardService } from '../../core/core.module';
 import { ProjectAddComponent } from './project-add/project-add.component';
 import { ProjectViewComponent } from './project-view/project-view.component';
 
-export const projectsNavigation: NavigationLinks = {
+export const projectsNavigation: NavigationLinks2<
+  'projectList' | 'newProject' | 'viewProject'
+> = {
   projectList: {
     path: '',
     name: 'Projets'

@@ -47,7 +47,7 @@ import { GroupsService } from '../groups.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { ProjectsService } from '../../projects/projects.service';
-import { UsersService } from '../../users/users.service';
+import { UsersService } from '../../social/users/users.service';
 
 @Injectable()
 export class GroupsEffects {
