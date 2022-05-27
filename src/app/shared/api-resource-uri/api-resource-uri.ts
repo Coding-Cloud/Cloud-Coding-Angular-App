@@ -10,6 +10,7 @@ export const API_RESOURCE_URI = {
   AUTH_SIGNUP: `${env.apiUrl}/auth/signup`,
   COMMENTS: `${env.apiUrl}/comments`,
   COMMENTS_PROJECT: `${env.apiUrl}/comments/project`,
+  COMMENTS_USER: `${env.apiUrl}/comments/user`,
   GROUP_MEMBERSHIPS: (groupId: string, userId: string) =>
     `${env.apiUrl}/group-memberships/${groupId}/${userId}`,
   GROUP_MEMBERSHIPS_GROUP: `${env.apiUrl}/group-memberships/group`,

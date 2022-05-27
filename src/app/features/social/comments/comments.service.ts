@@ -69,6 +69,60 @@ export class CommentsService {
     );
   }
 
+  getUserPublicComments(
+    userId: string
+  ): Observable<{ comments: Comment[]; totalResults: number }> {
+    return of({
+      comments: [
+        {
+          id: '16541',
+          projectId: '7b0d1dcb-cb28-436c-83f1-6bc718381d7b',
+          ownerId: userId,
+          content: JSON.stringify({
+            type: 'doc',
+            content: [
+              {
+                type: 'codemirror',
+                content: [
+                  {
+                    type: 'text',
+                    text: 'function max(a, b) {\n  return a > b ? a : b\n}'
+                  }
+                ]
+              }
+            ]
+          }),
+          createdAt: new Date()
+        },
+        {
+          id: '1123',
+          projectId: '7b0d1dcb-cb28-436c-83f1-6bc718381d7b',
+          ownerId: userId,
+          content: JSON.stringify({
+            type: 'doc',
+            content: [
+              {
+                type: 'codemirror',
+                content: [
+                  {
+                    type: 'text',
+                    text: 'function max(a, b) {\n  return a > b ? a : b\n}'
+                  }
+                ]
+              }
+            ]
+          }),
+          createdAt: new Date()
+        }
+      ],
+      totalResults: 2
+    });
+
+    return this.http.get<{ comments: Comment[]; totalResults: number }>(
+      API_RESOURCE_URI.COMMENTS_USER + '/' + userId
+    );
+  }
+
   addComment(comment: CreateComment): Observable<string> {
     return of(uuidv4());
     return this.http.post(
