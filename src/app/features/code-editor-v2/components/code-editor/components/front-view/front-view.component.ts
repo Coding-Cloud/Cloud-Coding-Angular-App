@@ -22,6 +22,10 @@ export class FrontViewComponent implements OnInit {
   @ViewChild('inputUrl') public inputUrl:
     | ElementRef<HTMLInputElement>
     | undefined;
+
+  @ViewChild('iframeElement') public iframeElement:
+    | ElementRef<HTMLIFrameElement>
+    | undefined;
   @Input() url: string | undefined;
   @Input() projectUniqueName: string | undefined;
   loadingRequest$ = new BehaviorSubject(false);
@@ -34,7 +38,12 @@ export class FrontViewComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private checkHealthPathService: CheckHealthPathService,
     private notificationService: NotificationService
-  ) {}
+  ) {
+    //const domain = parseDomain('localhost').hostname;
+    //if (domain) {
+    //  document.domain = domain.toString();
+    //}
+  }
 
   ngOnInit(): void {
     if (this.url !== undefined) {
@@ -78,6 +87,10 @@ export class FrontViewComponent implements OnInit {
           }
         });
     }
+  }
+
+  handleLoad($event: any) {
+    const location = this.iframeElement?.nativeElement.contentWindow?.location;
   }
 
   private formatUrl(url: string | undefined): string | undefined {
