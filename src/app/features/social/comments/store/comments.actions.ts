@@ -63,3 +63,18 @@ export const actionCommentsGetFromProjectError = createAction(
   '[Comments] Get project comments error',
   props<{ message: string }>()
 );
+
+export const actionCommentsGetFromUser = createAction(
+  '[Comments] Get user comments',
+  props<{ userId: string }>()
+);
+
+export const actionCommentsGetFromUserSuccess = createAction(
+  '[Comments] Get user comments success',
+  props<{ comments: Comment[]; totalResults: number }>()
+);
+
+export const actionCommentsGetFromUserError = createAction(
+  '[Comments] Get user comments error',
+  props<{ message: string }>()
+);
