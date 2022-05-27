@@ -13,23 +13,19 @@
 
   & #icon-https {
     font-size: 22px;
-    color: black;
+    color: white;
     margin-left: 2px;
   }
 
-  & .https-input-clicked {
+  /*& .https-input-clicked {
     background-color: white;
     color: black;
-  }
+  }*/
   &__input {
     border: none;
     width: 100%;
     padding-left: 10px;
     background-color: #1d1d1d;
     color: white;
-    &:focus {
-      background-color: white;
-      color: #2a2d2e;
-    }
   }
 }
