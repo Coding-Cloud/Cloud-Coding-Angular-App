@@ -1,0 +1,31 @@
+.iframe-view {
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.iframe-url {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid black;
+  background-color: #1d1d1d;
+
+  & #icon-https {
+    font-size: 22px;
+    color: white;
+    margin-left: 2px;
+  }
+
+  /*& .https-input-clicked {
+    background-color: white;
+    color: black;
+  }*/
+  &__input {
+    border: none;
+    width: 100%;
+    padding-left: 10px;
+    background-color: #1d1d1d;
+    color: white;
+  }
+}

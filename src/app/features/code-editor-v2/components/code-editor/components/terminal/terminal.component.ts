@@ -10,7 +10,5 @@ export class TerminalComponent implements OnChanges {
   @Input() text: string | null = null;
 
   constructor() {}
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes.text);
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
 }

@@ -18,7 +18,9 @@
         <app-spinner *ngIf="isLoading || (loadingMonacoEditor$ | async)"></app-spinner>
         <!-- <button class="button__tree" (click)="handleSave()">GOOOO</button>  -->
     </div>
-    <iframe *ngIf="!(loadingIframe$ | async)" class="iframe-view" [src]="this.baseUrlPathTrust" title="description"></iframe>
+
+    <app-front-view class="iframe-view" *ngIf="!(loadingIframe$ | async) && baseUrlPath" [url]="baseUrlPath" [projectUniqueName]="uniqueName" ></app-front-view>
+    <!--<iframe *ngIf="!(loadingIframe$ | async)" class="iframe-view" [src]="this.baseUrlPathTrust" title="description"></iframe>-->
     <app-spinner class="iframe-view" *ngIf="(loadingIframe$ | async)"></app-spinner>
 </div>
 
