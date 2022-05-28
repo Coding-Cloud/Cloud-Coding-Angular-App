@@ -15,6 +15,12 @@
   width: 30%;
   box-sizing: border-box;
   height: 70vh; /* Viewport-relative units */
+
+  &.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .editor {
@@ -38,10 +44,19 @@
 }
 
 #terminal {
+  display: block;
   height: 30vh;
 }
 
 #app-editor-picture-component {
   width: 70%;
   height: 70vh;
+}
+
+.spinner-editor {
+  width: 70%;
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
