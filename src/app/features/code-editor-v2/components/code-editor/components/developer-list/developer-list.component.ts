@@ -5,7 +5,8 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   ViewChild,
-  ElementRef
+  ElementRef,
+  Input
 } from '@angular/core';
 
 @Component({
@@ -23,6 +24,8 @@ export class DeveloperListComponent implements OnInit {
     | ElementRef<HTMLDivElement>
     | undefined;
 
+  @Input() projectUniqueName: string | undefined;
+
   iconChevronName = 'chevron_left';
 
   panelOpenState = false;
@@ -32,10 +35,14 @@ export class DeveloperListComponent implements OnInit {
   constructor(private codeSocketService: CodeSocketService) {}
 
   ngOnInit(): void {
-    this.codeSocketService.listenPlayerConnected().subscribe((data) => {
-      console.log('on reçoit la data');
-      this.playersConnected$.next(data);
-    });
+    if (this.projectUniqueName) {
+      this.codeSocketService.listenPlayerConnected().subscribe((data) => {
+        this.playersConnected$.next(data);
+      });
+      this.codeSocketService.sendPingToSayCanReceiveDevelopers(
+        this.projectUniqueName
+      );
+    }
   }
 
   handleClickOnCollapse() {

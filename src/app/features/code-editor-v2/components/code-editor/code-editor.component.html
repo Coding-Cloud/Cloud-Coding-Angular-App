@@ -8,7 +8,7 @@
                     (clickFile)="handleClickOnFolder($event)" (createFile)="handleCreateFile($event)" (createImage)="handleCreateImage($event)"
                     (createDir)="handleCreateDir($event)" (renameFolder)="handleRenameFolder($event)"></monaco-tree>
                 </div>
-                <app-developer-list class="d-block"></app-developer-list>
+                <app-developer-list [projectUniqueName]="uniqueName" class="d-block"></app-developer-list>
             </span>
             <span id="app-editor-picture-component" *ngIf="IMAGE_EXTENSION.includes(currentFile.type); else notImageFile">
                 <app-editor-picture [type]="currentFile.type" [code$]="code$" ></app-editor-picture>
