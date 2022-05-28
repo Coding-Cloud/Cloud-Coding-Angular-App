@@ -12,6 +12,9 @@ import {
   actionCommentsGetFromProject,
   actionCommentsGetFromProjectError,
   actionCommentsGetFromProjectSuccess,
+  actionCommentsGetFromUser,
+  actionCommentsGetFromUserError,
+  actionCommentsGetFromUserSuccess,
   actionCommentsInit,
   actionCommentsUpdateOneSuccess
 } from './comments.actions';
@@ -69,6 +72,14 @@ const reducer = createReducer(
     ...state,
     loading: false
   })),
+  on(actionCommentsGetFromUser, (state) => ({
+    ...state,
+    loading: true
+  })),
+  on(actionCommentsGetFromUserError, (state) => ({
+    ...state,
+    loading: false
+  })),
   on(
     actionCommentsGetFromProjectSuccess,
     (state, { comments, totalResults }) => ({
@@ -77,7 +88,13 @@ const reducer = createReducer(
       comments: commentsAdapter.setAll(comments, state.comments),
       totalResults
     })
-  )
+  ),
+  on(actionCommentsGetFromUserSuccess, (state, { comments, totalResults }) => ({
+    ...state,
+    loading: false,
+    comments: commentsAdapter.setAll(comments, state.comments),
+    totalResults
+  }))
 );
 
 export function commentsReducer(
