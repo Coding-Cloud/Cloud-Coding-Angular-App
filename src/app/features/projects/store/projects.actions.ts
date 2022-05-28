@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Project, ProjectForm } from '../../../shared/models/project.model';
 import { Group } from '../../../shared/models/group.model';
-import { User } from '../../../shared/models/user.model';
 
 export const actionProjectsUpsertOne = createAction(
   '[Projects] Upsert One',

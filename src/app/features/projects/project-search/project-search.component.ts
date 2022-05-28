@@ -65,7 +65,8 @@ export class ProjectSearchComponent implements OnInit {
     return this.isInRouteLink() ? 'container' : '';
   }
 
-  onSearch() {
+  onSearch(pageIndex = 0) {
+    this.pageIndex = pageIndex;
     const searchValue = this.searchQuery.value.trim();
     this.store.dispatch(
       actionProjectsSearch({
@@ -77,9 +78,8 @@ export class ProjectSearchComponent implements OnInit {
   }
 
   onSearchPage(pageIndex: number, pageSize: number) {
-    this.pageIndex = pageIndex;
     this.pageSize = pageSize;
-    this.onSearch();
+    this.onSearch(pageIndex);
   }
 
   onClick(project: Project) {

@@ -32,7 +32,7 @@ export class ProjectsService {
     limit: number,
     search?: string
   ): Observable<{ projects: Project[]; totalResults: number }> {
-    return of({
+    /* return of({
       projects: [
         {
           id: '1',
@@ -60,7 +60,7 @@ export class ProjectsService {
         }
       ],
       totalResults: 2
-    });
+    }); */
 
     return this.http.get<{ projects: Project[]; totalResults: number }>(
       API_RESOURCE_URI.PROJECTS,
@@ -72,7 +72,7 @@ export class ProjectsService {
 
   getProjectName(projectId: string): Observable<{ name: string }> {
     return this.http.get<{ name: string }>(
-      API_RESOURCE_URI.PROJECTS_NAME + '/' + projectId
+      API_RESOURCE_URI.PROJECTS_NAME(projectId)
     );
   }
 

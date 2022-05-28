@@ -31,10 +31,7 @@ import { ProjectSearchDialogComponent } from '../../projects/project-search-dial
 import { UserSearchDialogComponent } from '../../social/users/user-search-dialog/user-search-dialog.component';
 import { Project } from '../../../shared/models/project.model';
 import { map } from 'rxjs/operators';
-import {
-  usersNavigation,
-  userViewLink
-} from '../../social/users/users-routing.module';
+import { userViewLink } from '../../social/users/users-routing.module';
 
 @Component({
   selector: 'cc-group-view',

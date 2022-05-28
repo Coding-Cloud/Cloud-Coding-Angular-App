@@ -9,6 +9,7 @@ import { ProjectViewComponent } from './project-view/project-view.component';
 import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { ProjectSearchDialogComponent } from './project-search-dialog/project-search-dialog.component';
 import { ProjectSearchComponent } from './project-search/project-search.component';
+import { CommentsModule } from '../social/comments/comments.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ProjectSearchComponent } from './project-search/project-search.componen
     CommonModule,
     SharedModule,
     ProjectsRoutingModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    CommentsModule
   ]
 })
 export class ProjectsModule {}
