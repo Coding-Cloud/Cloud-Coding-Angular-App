@@ -79,7 +79,7 @@ export class CommentEditorComponent implements OnInit, OnDestroy {
         this.commentFormGroup.value.commentContent
       );
       this.commentFormGroup.controls.commentContent.setValue(this.initialValue);
-      if (this.initialComment) this.submitForm.emit({ content });
+      this.submitForm.emit({ content });
     }
   }
 

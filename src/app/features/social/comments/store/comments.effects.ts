@@ -95,9 +95,7 @@ export class CommentsEffects {
       this.actions$.pipe(
         ofType(actionCommentsDeleteOneSuccess),
         tap(() => {
-          this.router.navigate([navigation.projets.path]).then(() => {
-            this.notificationService.success('Commentaire supprimé');
-          });
+          this.notificationService.success('Commentaire supprimé');
         })
       ),
     { dispatch: false }
