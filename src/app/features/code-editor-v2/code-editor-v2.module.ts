@@ -8,6 +8,7 @@ import { TerminalComponent } from './components/code-editor/components/terminal/
 import { CodeEditorV2RoutingModule } from './code-editor-v2-routing.module';
 import { EditorPictureComponent } from './components/code-editor/components/editor-picture/editor-picture.component';
 import { DeveloperListComponent } from './components/code-editor/components/developer-list/developer-list.component';
+import { FrontViewComponent } from './components/code-editor/components/front-view/front-view.component';
 
 const monacoConfig: NgxMonacoEditorConfig = {
   /* defaultOptions: { scrollBeyondLastLine: false }, // pass default options to be used*/
@@ -28,7 +29,8 @@ const monacoConfig: NgxMonacoEditorConfig = {
     CodeEditorComponent,
     TerminalComponent,
     EditorPictureComponent,
-    DeveloperListComponent
+    DeveloperListComponent,
+    FrontViewComponent
   ],
   imports: [
     CommonModule,
