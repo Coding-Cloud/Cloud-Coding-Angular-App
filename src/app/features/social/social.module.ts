@@ -5,15 +5,16 @@ import { SocialRoutingModule } from './social-routing.module';
 import { SocialHomeComponent } from './social-home/social-home.component';
 import { UsersModule } from './users/users.module';
 import { ProjectsModule } from '../projects/projects.module';
-import { ProjectSearchComponent } from '../projects/project-search/project-search.component';
+import { CommentsModule } from './comments/comments.module';
 
 @NgModule({
   declarations: [SocialHomeComponent],
   imports: [
-    SocialRoutingModule,
-    UsersModule,
-    CommonModule,
     SharedModule,
+    CommonModule,
+    SocialRoutingModule,
+    CommentsModule,
+    UsersModule,
     ProjectsModule
   ]
 })
