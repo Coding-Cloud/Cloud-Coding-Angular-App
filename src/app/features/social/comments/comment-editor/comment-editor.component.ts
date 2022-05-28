@@ -7,7 +7,7 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { Editor, Toolbar, Validators } from 'ngx-editor';
+import { Editor, toDoc, toHTML, Toolbar, Validators } from 'ngx-editor';
 import { FormControl, FormGroup } from '@angular/forms';
 import nodeViews from '../nodeviews';
 import schema from '../schema';
@@ -64,7 +64,8 @@ export class CommentEditorComponent implements OnInit, OnDestroy {
     });
     if (this.initialComment) {
       this.commentFormGroup.controls.commentContent.setValue(
-        JSON.parse(this.initialComment.content)
+        JSON.parse(this.initialComment.content).json ??
+          toDoc(JSON.parse(this.initialComment.content).html)
       );
     }
   }
@@ -75,9 +76,10 @@ export class CommentEditorComponent implements OnInit, OnDestroy {
 
   onCommentSubmit(): void {
     if (this.commentFormGroup.valid) {
-      const content = JSON.stringify(
-        this.commentFormGroup.value.commentContent
-      );
+      const content = JSON.stringify({
+        json: this.commentFormGroup.value.commentContent,
+        html: toHTML(this.commentFormGroup.value.commentContent)
+      });
       this.commentFormGroup.controls.commentContent.setValue(this.initialValue);
       this.submitForm.emit({ content });
     }

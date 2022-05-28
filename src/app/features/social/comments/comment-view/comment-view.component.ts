@@ -5,7 +5,7 @@ import {
   OnDestroy,
   OnInit
 } from '@angular/core';
-import { Editor } from 'ngx-editor';
+import { Editor, toDoc } from 'ngx-editor';
 import { FormControl, FormGroup } from '@angular/forms';
 import nodeViews from '../nodeviews';
 import schema from '../schema';
@@ -69,7 +69,8 @@ export class CommentViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.commentFormGroup.controls.commentContentView.setValue(
-      JSON.parse(this.comment.content)
+      JSON.parse(this.comment.content).json ??
+        toDoc(JSON.parse(this.comment.content).html)
     );
   }
 
@@ -83,7 +84,7 @@ export class CommentViewComponent implements OnInit, OnDestroy {
 
   onUpdateSubmit(newContent: string) {
     this.commentFormGroup.controls.commentContentView.setValue(
-      JSON.parse(newContent)
+      JSON.parse(newContent).json
     );
     this.store.dispatch(
       actionCommentsUpdateOne({
