@@ -28,6 +28,7 @@ export class FrontViewComponent implements OnInit {
     | ElementRef<HTMLIFrameElement>
     | undefined;
   @Input() url: string | undefined;
+  @Input() isResize: boolean = true;
   @Input() projectUniqueName: string | undefined;
   loadingRequest$ = new BehaviorSubject(false);
   urlSee: string | undefined;

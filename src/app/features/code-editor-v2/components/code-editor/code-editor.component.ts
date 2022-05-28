@@ -40,6 +40,7 @@ import { IMAGE_EXTENSION } from 'src/app/core/Image/image-extension';
 import { AppState } from 'src/app/core/core.state';
 import { select, Store } from '@ngrx/store';
 import { selectUser } from 'src/app/core/auth/auth.selectors';
+import { ResizeEvent } from 'angular-resizable-element';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -57,7 +58,11 @@ export class CodeEditorComponent implements OnInit {
     | ElementRef<HTMLDivElement>
     | undefined;
   iconChevronName = 'expand_more';
-  editorOptions = { theme: 'vs-dark', language: 'typescript' };
+  editorOptions = {
+    theme: 'vs-dark',
+    language: 'typescript',
+    automaticLayout: true
+  };
   code$ = new BehaviorSubject('');
   loadingMonacoEditor$ = new BehaviorSubject(false);
   loadingIframe$ = new BehaviorSubject(true);
@@ -91,6 +96,11 @@ export class CodeEditorComponent implements OnInit {
   socketProject: Project = {
     appFiles: {}
   };
+
+  public style1: object = {};
+  public style2: object = {};
+  public style3: object = {};
+  isResizing = false;
 
   monacoTreeInput: any;
 
@@ -265,12 +275,17 @@ export class CodeEditorComponent implements OnInit {
       const endFile = this.currentFile.path.split('/').pop()?.split('.').pop();
       const valueInMap = ExtensionToLanguage.get(endFile as string);
       if (valueInMap !== undefined) {
-        this.editorOptions = { theme: 'vs-dark', language: valueInMap };
+        this.editorOptions = {
+          theme: 'vs-dark',
+          language: valueInMap,
+          automaticLayout: true
+        };
       } else {
         this.editorOptions = {
           theme: 'vs-dark',
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          language: ExtensionToLanguage.get('default')!
+          language: ExtensionToLanguage.get('default')!,
+          automaticLayout: true
         };
       }
 
@@ -550,5 +565,91 @@ export class CodeEditorComponent implements OnInit {
       this.treeCollapsed.nativeElement.style.display = 'none';
       this.iconChevronName = 'chevron_left';
     }
+  }
+
+  /*resizing*/
+
+  validate1(event: ResizeEvent): boolean {
+    const MIN_DIMENSIONS_PX = 50;
+    if (
+      event.rectangle.width &&
+      event.rectangle.height &&
+      (event.rectangle.width < MIN_DIMENSIONS_PX ||
+        event.rectangle.height < MIN_DIMENSIONS_PX)
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
+  validate2(event: ResizeEvent): boolean {
+    const MIN_DIMENSIONS_PX = 50;
+    if (
+      event.rectangle.width &&
+      event.rectangle.height &&
+      (event.rectangle.width < MIN_DIMENSIONS_PX ||
+        event.rectangle.height < MIN_DIMENSIONS_PX)
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
+  validate3(event: ResizeEvent): boolean {
+    const MIN_DIMENSIONS_PX = 50;
+    if (
+      event.rectangle.width &&
+      event.rectangle.height &&
+      (event.rectangle.width < MIN_DIMENSIONS_PX ||
+        event.rectangle.height < MIN_DIMENSIONS_PX)
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
+  onResizeEnd1(event: ResizeEvent): void {
+    this.style1 = {
+      left: `${event.rectangle.left}px`,
+      top: `${event.rectangle.top}px`,
+      width: `${event.rectangle.width}px`,
+      height: `${event.rectangle.height}px`
+    };
+  }
+
+  onResizeEnd2(event: ResizeEvent): void {
+    this.style2 = {
+      left: `${event.rectangle.left}px`,
+      width: `${event.rectangle.width}px`
+    };
+    this.isResizing = false;
+  }
+
+  onResizeEnd3(event: ResizeEvent): void {
+    this.style3 = {
+      left: `${event.rectangle.left}px`,
+      top: `${event.rectangle.top}px`,
+      width: `${event.rectangle.width}px`,
+      height: `${event.rectangle.height}px`
+    };
+  }
+
+  onResizing(event: ResizeEvent): void {
+    this.isResizing = true;
+    this.style1 = {
+      width: `${event.rectangle.left}px`
+    };
+
+    this.style2 = {
+      width: `${event.rectangle.width}px`
+    };
+
+    this.style3 = {
+      left: `${event.rectangle.left + event.rectangle.width!}px`,
+      width: `calc(100% - ${event.rectangle.left + event.rectangle.width!}px)`
+    };
   }
 }

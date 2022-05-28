@@ -10,6 +10,15 @@
   }
 }
 
+.iframe-view-resize {
+  display: block;
+  width: 100%;
+  height: 95%;
+  background: black;
+  opacity: 0.6;
+  z-index: 5;
+}
+
 .iframe-url {
   width: 100%;
   height: 5%;
