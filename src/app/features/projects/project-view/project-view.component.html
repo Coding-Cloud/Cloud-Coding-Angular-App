@@ -23,17 +23,19 @@
             <li><strong>Créé le</strong> : {{(project$ | async)?.createdAt | date : 'longDate'}}</li>
           </ul>
         </mat-card-content>
-        <mat-card-actions align='end' *ngIf='(project$ | async)?.creatorId === (currentUser$ | async)?.id'>
+        <mat-card-actions align='end'>
           <button mat-raised-button color='accent'
                   [routerLink]='"/" + rootLinks.codeEditor.path + "/project/" + (project$ | async)?.id'>
             <mat-icon>code</mat-icon>
             Go Code !!
           </button>
-          <button mat-raised-button color='primary' (click)='onEditSwitch()'>
+          <button mat-raised-button color='primary' *ngIf='(project$ | async)?.creatorId === (currentUser$ | async)?.id'
+                  (click)='onEditSwitch()'>
             <mat-icon>edit</mat-icon>
             Modifier
           </button>
-          <button mat-raised-button color='warn' (click)='onDelete()'>
+          <button mat-raised-button color='warn' *ngIf='(project$ | async)?.creatorId === (currentUser$ | async)?.id'
+                  (click)='onDelete()'>
             <mat-icon>delete</mat-icon>
             Supprimer
           </button>
