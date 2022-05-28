@@ -29,10 +29,16 @@
   padding: 0 8px;
   display: none;
   background-color: #1d1d1d;
-  max-height: 8vh;
-  overflow: auto;
   li {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     padding: 3px 0;
     list-style: none;
+  }
+  .connected-user {
+    color: green;
   }
 }

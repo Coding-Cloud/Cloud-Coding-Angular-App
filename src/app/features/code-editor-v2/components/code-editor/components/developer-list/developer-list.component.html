@@ -5,7 +5,7 @@
     <div class="content"  #collapsed>
         <ul>
             <li *ngFor='let playerConnected of playersConnected$ | async'>
-                {{playerConnected}}
+              <mat-icon class="connected-user">radio_button_checked</mat-icon><span>{{playerConnected}}</span>
             </li>
         </ul>
     </div>

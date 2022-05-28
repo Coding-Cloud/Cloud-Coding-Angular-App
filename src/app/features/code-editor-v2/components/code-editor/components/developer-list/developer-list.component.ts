@@ -1,5 +1,5 @@
 import { CodeSocketService } from '../../../../services/code-socket.service';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import {
   Component,
   OnInit,
@@ -27,12 +27,15 @@ export class DeveloperListComponent implements OnInit {
 
   panelOpenState = false;
 
-  playersConnected$: Observable<string[]> | undefined;
+  playersConnected$: BehaviorSubject<string[]> = new BehaviorSubject(Array());
 
   constructor(private codeSocketService: CodeSocketService) {}
 
   ngOnInit(): void {
-    this.playersConnected$ = this.codeSocketService.listenPlayerConnected();
+    this.codeSocketService.listenPlayerConnected().subscribe((data) => {
+      console.log('on reçoit la data');
+      this.playersConnected$.next(data);
+    });
   }
 
   handleClickOnCollapse() {

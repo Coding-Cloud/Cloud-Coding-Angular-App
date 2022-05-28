@@ -26,7 +26,6 @@
 .editor {
   display: flex;
   flex-direction: row;
-  height: 1vh;
 }
 
 .editor__text {
@@ -35,8 +34,10 @@
 }
 
 .editor__tree {
-  height: 70%;
+  background: #1d1d1d;
+  height: 70vh;
   width: 30%;
+  overflow: auto;
 }
 
 .button__tree {
