@@ -13,7 +13,10 @@ import {
   selectUserView,
   selectUserViewProjects
 } from '../store/users.selectors';
-import { projectsNavigation } from '../../../projects/projects-routing.module';
+import {
+  projectsNavigation,
+  projectViewLink
+} from '../../../projects/projects-routing.module';
 import { navigation } from '../../../../app-routing.module';
 import { usersNavigation } from '../users-routing.module';
 import { Comment } from '../../../../shared/models/comment.model';
@@ -42,9 +45,7 @@ export class UserViewComponent implements OnInit {
   userCommentsLoading$: Observable<boolean>;
 
   usersNavigation = usersNavigation;
-  projectsLinks = projectsNavigation;
-  rootLinks = navigation;
-  projectViewLink = `/${this.rootLinks.projets.path}/${this.projectsLinks.viewProject.path}`;
+  projectViewLink = projectViewLink;
 
   constructor(private route: ActivatedRoute, private store: Store<AppState>) {
     this.user$ = this.store.pipe(select(selectUserView));

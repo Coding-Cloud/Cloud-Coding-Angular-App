@@ -26,7 +26,7 @@ export class CommentsService {
   getUserPublicComments(
     userId: string
   ): Observable<{ comments: Comment[]; totalResults: number }> {
-    return of({
+    /* return of({
       comments: [
         {
           id: '16541',
@@ -70,7 +70,7 @@ export class CommentsService {
         }
       ],
       totalResults: 2
-    });
+    }); */
 
     return this.http.get<{ comments: Comment[]; totalResults: number }>(
       API_RESOURCE_URI.COMMENTS_USER + '/' + userId

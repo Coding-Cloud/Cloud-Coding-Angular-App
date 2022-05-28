@@ -20,13 +20,15 @@ import {
   actionCommentsGetFromProject,
   actionCommentsGetFromProjectError,
   actionCommentsGetFromProjectSuccess,
+  actionCommentsGetFromUser,
+  actionCommentsGetFromUserError,
+  actionCommentsGetFromUserSuccess,
   actionCommentsUpdateOne,
   actionCommentsUpdateOneError,
   actionCommentsUpdateOneSuccess
 } from './comments.actions';
 import { CommentsService } from '../comments.service';
 import { selectUser } from '../../../../core/auth/auth.selectors';
-import { navigation } from '../../../../app-routing.module';
 import { AppState } from '../../../../core/core.state';
 import { NotificationService } from '../../../../core/notifications/notification.service';
 
@@ -43,6 +45,26 @@ export class CommentsEffects {
           catchError((error) =>
             of(
               actionCommentsGetFromProjectError({
+                message: error.message.toString()
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  retrieveFromUser = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionCommentsGetFromUser),
+      exhaustMap((action) =>
+        this.commentsService.getUserPublicComments(action.userId).pipe(
+          map(({ comments, totalResults }) =>
+            actionCommentsGetFromUserSuccess({ comments, totalResults })
+          ),
+          catchError((error) =>
+            of(
+              actionCommentsGetFromUserError({
                 message: error.message.toString()
               })
             )
@@ -137,7 +159,8 @@ export class CommentsEffects {
           actionCommentsAddOneError,
           actionCommentsDeleteOneError,
           actionCommentsGetFromProjectError,
-          actionCommentsUpdateOneError
+          actionCommentsUpdateOneError,
+          actionCommentsGetFromUserError
         ),
         tap((action) => {
           this.notificationService.error(action.message);
