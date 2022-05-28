@@ -23,6 +23,8 @@ export class DeveloperListComponent implements OnInit {
     | ElementRef<HTMLDivElement>
     | undefined;
 
+  iconChevronName = 'chevron_left';
+
   panelOpenState = false;
 
   playersConnected$: Observable<string[]> | undefined;
@@ -33,14 +35,18 @@ export class DeveloperListComponent implements OnInit {
     this.playersConnected$ = this.codeSocketService.listenPlayerConnected();
   }
 
-  handleClickOnCollapse($event: any) {
-    console.log($event);
+  handleClickOnCollapse() {
     this.collapsible?.nativeElement.classList.toggle('active');
-    const content = this.collapsible?.nativeElement.nextElementSibling;
-    if (this.collapsed?.nativeElement.style.display === 'block') {
-      this.collapsed.nativeElement.style.display = 'none';
-    } else if (this.collapsed) {
+    console.log(this.collapsed?.nativeElement.style.display);
+    if (
+      this.collapsed?.nativeElement.style.display !== 'block' &&
+      this.collapsed
+    ) {
       this.collapsed.nativeElement.style.display = 'block';
+      this.iconChevronName = 'expand_more';
+    } else if (this.collapsed) {
+      this.collapsed.nativeElement.style.display = 'none';
+      this.iconChevronName = 'chevron_left';
     }
   }
 }

@@ -1,10 +1,13 @@
-<div class="code-editor-page">
+<div class="code-editor-page" xmlns="http://www.w3.org/1999/html">
     <div  class="editor-content">
         <div *ngIf="!isLoading" class="editor">
             <span class="editor__tree d-flex flex-column">
-                <monaco-tree [currentFile]="currentFile.path" [tree]="tree" (clickContextMenu)="handleClickContextMenu($event)"
+              <button #collapsible type="button" class="collapsible" (click)="handleClickOnCollapse()"><span>Project</span><mat-icon class="arrow chevron-left">{{iconChevronName}}</mat-icon></button>
+              <div class="content"  #collapsed>
+                  <monaco-tree [currentFile]="currentFile.path" [tree]="tree" (clickContextMenu)="handleClickContextMenu($event)"
                     (clickFile)="handleClickOnFolder($event)" (createFile)="handleCreateFile($event)" (createImage)="handleCreateImage($event)"
                     (createDir)="handleCreateDir($event)" (renameFolder)="handleRenameFolder($event)"></monaco-tree>
+                </div>
                 <app-developer-list></app-developer-list>
             </span>
             <span id="app-editor-picture-component" *ngIf="IMAGE_EXTENSION.includes(currentFile.type); else notImageFile">

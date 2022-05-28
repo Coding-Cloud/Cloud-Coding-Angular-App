@@ -1,5 +1,7 @@
 <div>
-    <button #collapsible type="button" class="collapsible" (click)="handleClickOnCollapse($event)">Developpeurs connectés</button>
+    <button #collapsible type="button" class="collapsible" (click)="handleClickOnCollapse()"><span>Developpeurs connectés</span>
+      <mat-icon class="arrow chevron-left">{{iconChevronName}}</mat-icon>
+    </button>
     <div class="content"  #collapsed>
         <ul>
             <li *ngFor='let playerConnected of playersConnected$ | async'>

@@ -8,6 +8,15 @@
   text-align: left;
   outline: none;
   font-size: 12px;
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .arrow {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+  }
 }
 
 .active,

@@ -3,7 +3,8 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  OnInit
+  OnInit,
+  ViewChild
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import {
@@ -48,6 +49,14 @@ import { selectUser } from 'src/app/core/auth/auth.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CodeEditorComponent implements OnInit {
+  @ViewChild('collapsible') public treeCollapsible:
+    | ElementRef<HTMLInputElement>
+    | undefined;
+
+  @ViewChild('collapsed') public treeCollapsed:
+    | ElementRef<HTMLDivElement>
+    | undefined;
+  iconChevronName = 'expand_more';
   editorOptions = { theme: 'vs-dark', language: 'typescript' };
   code$ = new BehaviorSubject('');
   loadingMonacoEditor$ = new BehaviorSubject(false);
@@ -530,5 +539,16 @@ export class CodeEditorComponent implements OnInit {
     this.codeSocketService.deleteProjectFolder(
       this.BASE_PROJECT_PATH + event.path
     );
+  }
+
+  handleClickOnCollapse(): void {
+    this.treeCollapsible?.nativeElement.classList.toggle('active');
+    if (this.treeCollapsed?.nativeElement.style.display === 'none') {
+      this.treeCollapsed.nativeElement.style.display = 'block';
+      this.iconChevronName = 'expand_more';
+    } else if (this.treeCollapsed) {
+      this.treeCollapsed.nativeElement.style.display = 'none';
+      this.iconChevronName = 'chevron_left';
+    }
   }
 }
