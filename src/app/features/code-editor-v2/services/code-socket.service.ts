@@ -107,4 +107,8 @@ export class CodeSocketService {
     const pictureInBase64 = Buffer.from(dataBuffer).toString('base64');
     this.socket?.emit('uploadImage', { base64: pictureInBase64, path });
   }
+
+  sendPingToSayCanReceiveDevelopers(projectId: string) {
+    this.socket?.emit('socketReadyToReceiveDevelopers', { projectId });
+  }
 }

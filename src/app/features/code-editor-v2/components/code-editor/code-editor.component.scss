@@ -15,12 +15,17 @@
   width: 30%;
   box-sizing: border-box;
   height: 70vh; /* Viewport-relative units */
+
+  &.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .editor {
   display: flex;
   flex-direction: row;
-  height: 1vh;
 }
 
 .editor__text {
@@ -29,8 +34,10 @@
 }
 
 .editor__tree {
-  height: 70%;
+  background: #1d1d1d;
+  height: 70vh;
   width: 30%;
+  overflow: auto;
 }
 
 .button__tree {
@@ -38,10 +45,45 @@
 }
 
 #terminal {
+  display: block;
   height: 30vh;
 }
 
 #app-editor-picture-component {
   width: 70%;
   height: 70vh;
+}
+
+.spinner-editor {
+  width: 70%;
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 5px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 12px;
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .arrow {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+  }
+}
+
+.active,
+.collapsible:hover {
+  background-color: #777;
 }

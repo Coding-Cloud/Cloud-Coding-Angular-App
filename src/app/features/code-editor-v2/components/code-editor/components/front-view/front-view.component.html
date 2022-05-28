@@ -2,6 +2,6 @@
   <mat-icon id="icon-https" [ngClass]="{'https-input-clicked': urlIsFocused}">https</mat-icon>
   <input #inputUrl [ngClass]="{'iframe-url__input': true}" (focus)="handleFocus()" (focusout)="handleFocusOut()" (keyup)="handleChange($event)" [value]="this.urlSee" />
 </div>
-<iframe #iframeElement (load)="handleLoad($event)"  *ngIf="this.baseUrlPathTrust && !(loadingRequest$ | async)" class="iframe-view" [src]="this.baseUrlPathTrust" title="description"></iframe>
+<iframe #iframeElement (load)="handleLoad($event)"  *ngIf="this.baseUrlPathTrust && !(loadingRequest$ | async)" class="iframe-view" [src]="this.baseUrlPathTrust"></iframe>
 
-<app-spinner class="iframe-view" *ngIf="(loadingRequest$ | async)"></app-spinner>
+<app-spinner class="iframe-view loader" *ngIf="(loadingRequest$ | async)"></app-spinner>
