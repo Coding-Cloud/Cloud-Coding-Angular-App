@@ -1,16 +1,15 @@
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
-  Input,
-  ViewChild,
+  ChangeDetectorRef,
+  Component,
   ElementRef,
-  ChangeDetectorRef
+  Input,
+  OnInit,
+  ViewChild
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { CheckHealthPathService } from '../../../../services/check-health-path.service';
 import { NotificationService } from '../../../../../../core/notifications/notification.service';
-import { finalize } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({

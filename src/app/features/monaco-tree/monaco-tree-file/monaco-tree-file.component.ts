@@ -16,7 +16,6 @@ import {
   ContextMenuElementText
 } from '../monaco-tree-context-menu/monaco-tree-context-menu.type';
 import { ContextMenuAction } from './monaco-tree-file.type';
-import { NotificationService } from '../../../core/notifications/notification.service';
 
 function getAbsolutePosition(element: any) {
   const r = { x: element.offsetLeft, y: element.offsetTop };

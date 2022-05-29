@@ -1,4 +1,4 @@
-import { nodes as basicNodes, marks } from 'ngx-editor';
+import { marks, nodes as basicNodes } from 'ngx-editor';
 import { Schema } from 'prosemirror-model';
 import { node as codemirrorNode } from 'prosemirror-codemirror-6';
 
