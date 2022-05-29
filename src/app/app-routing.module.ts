@@ -92,13 +92,13 @@ const routes: Routes = [
         (m) => m.SettingsModule
       )
   },
-  {
-    path: navigation.examples.path,
-    loadChildren: () =>
-      import('./features/examples/examples.module').then(
-        (m) => m.ExamplesModule
-      )
-  },
+  /*  {
+     path: navigation.examples.path,
+     loadChildren: () =>
+       import('./features/examples/examples.module').then(
+         (m) => m.ExamplesModule
+       )
+   }, */
   {
     path: navigation.projets.path,
     loadChildren: () =>

@@ -5,8 +5,8 @@ import { UserSearchDialogComponent } from './user-search-dialog/user-search-dial
 import { UsersRoutingModule } from './users-routing.module';
 import { UserViewComponent } from './user-view/user-view.component';
 import { UserSearchComponent } from './user-search/user-search.component';
-import { MatTableModule } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CommentsModule } from '../comments/comments.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +18,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   imports: [
     CommonModule,
     SharedModule,
+    CommentsModule,
     UsersRoutingModule,
     MatProgressBarModule
   ]

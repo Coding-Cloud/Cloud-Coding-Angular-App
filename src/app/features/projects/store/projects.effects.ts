@@ -200,7 +200,11 @@ export class ProjectsEffects {
       ofType(actionProjectsSearch),
       exhaustMap((action) =>
         this.projectsService
-          .searchProjects(action.page, action.limit, action.search)
+          .searchProjects(
+            action.page * action.limit,
+            action.limit,
+            action.search
+          )
           .pipe(
             map(({ projects, totalResults }) =>
               actionProjectsSearchSuccess({

@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { AuthGuardService } from '../../core/core.module';
 import { SocialHomeComponent } from './social-home/social-home.component';
 import { ProjectSearchComponent } from '../projects/project-search/project-search.component';
-import { ProjectsModule } from '../projects/projects.module';
 
 export const socialNavigation: NavigationLinks2<
   'social' | 'users' | 'projects'
@@ -37,12 +36,8 @@ const routes: Routes = [
   },
   {
     path: socialNavigation.users.path,
-    canActivate: [AuthGuardService],
     loadChildren: () =>
-      import('./users/users.module').then((m) => m.UsersModule),
-    data: {
-      title: socialNavigation.users.name
-    }
+      import('./users/users.module').then((m) => m.UsersModule)
   },
   {
     path: socialNavigation.projects.path,

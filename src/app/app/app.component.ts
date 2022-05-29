@@ -14,6 +14,8 @@ import {
 } from '../core/core.module';
 import { Link, navigation } from '../app-routing.module';
 import { authGetMe } from '../core/auth/auth.actions';
+import { selectUser } from '../core/auth/auth.selectors';
+import { userViewLink } from '../features/social/users/users-routing.module';
 
 @Component({
   selector: 'cc-root-component',
@@ -29,6 +31,7 @@ export class AppComponent implements OnInit {
   year = new Date().getFullYear();
   logo = 'assets/logo.png';
   routerLinks = navigation;
+  readonly userViewLink = userViewLink;
 
   navigationMenu = Object.values(navigation).filter(
     (link) =>
@@ -38,11 +41,18 @@ export class AppComponent implements OnInit {
 
   isAuthenticated$: Observable<boolean> | undefined;
   theme$: Observable<string> | undefined;
+  currentUserId = '';
 
   constructor(
     private store: Store<AppState>,
     private storageService: LocalStorageService
-  ) {}
+  ) {
+    this.store.pipe(select(selectUser)).subscribe((user) => {
+      if (user) {
+        this.currentUserId = user.id;
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.storageService.testLocalStorage();
@@ -53,7 +63,6 @@ export class AppComponent implements OnInit {
         this.store.dispatch(authGetMe());
       }
     });
-
     this.theme$ = this.store.pipe(select(selectEffectiveTheme));
   }
 

@@ -63,6 +63,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ProjectNamePipe } from './pipes/project-name.pipe';
 
 @NgModule({
   imports: [
@@ -102,7 +103,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     EmptyStringPipe,
     BooleanYesNoPipe,
     UsernamePipe,
-    SpinnerComponent
+    SpinnerComponent,
+    ProjectNamePipe
   ],
   exports: [
     CommonModule,
@@ -142,7 +144,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     EmptyStringPipe,
     BooleanYesNoPipe,
     UsernamePipe,
-    SpinnerComponent
+    SpinnerComponent,
+    ProjectNamePipe
   ]
 })
 export class SharedModule {

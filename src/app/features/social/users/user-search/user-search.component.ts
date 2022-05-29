@@ -61,7 +61,8 @@ export class UserSearchComponent implements OnInit {
     return this.isInRouteLink() ? 'container' : '';
   }
 
-  onSearch() {
+  onSearch(pageIndex = 0) {
+    this.pageIndex = pageIndex;
     const searchValue = this.searchQuery.value.trim();
     this.store.dispatch(
       actionUsersSearch({
@@ -73,9 +74,8 @@ export class UserSearchComponent implements OnInit {
   }
 
   onSearchPage(pageIndex: number, pageSize: number) {
-    this.pageIndex = pageIndex;
     this.pageSize = pageSize;
-    this.onSearch();
+    this.onSearch(pageIndex);
   }
 
   onClick(user: User) {
