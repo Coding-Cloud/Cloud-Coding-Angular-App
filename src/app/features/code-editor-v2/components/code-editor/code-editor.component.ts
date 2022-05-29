@@ -216,6 +216,8 @@ export class CodeEditorComponent implements OnInit {
       });
 
     this.codeSocketService.listenLogsChanged().subscribe((message: string) => {
+      console.log('message');
+      console.log(message);
       this.codeRunnerSysOut$.next(message);
       this.cd.markForCheck();
     });
