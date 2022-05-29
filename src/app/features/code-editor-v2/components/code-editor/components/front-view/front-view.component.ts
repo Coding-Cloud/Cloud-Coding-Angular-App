@@ -86,7 +86,11 @@ export class FrontViewComponent implements OnInit {
       );
 
       window.addEventListener('message', (event) => {
-        if (event.origin !== 'http://localhost:8000') return;
+        if (
+          event.origin !== 'http://localhost:8000' &&
+          !event.origin.includes('cloudcoding.fr')
+        )
+          return;
         const urlFormat = this.formatUrl(event.data);
         const urlSeeFormat = this.formatUrl(this.urlSee);
         if (urlSeeFormat !== urlFormat) {
