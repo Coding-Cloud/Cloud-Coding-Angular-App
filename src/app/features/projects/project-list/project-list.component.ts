@@ -7,7 +7,6 @@ import { selectAllProjects } from '../store/projects.selectors';
 import { projectsNavigation } from '../projects-routing.module';
 import { actionProjectsRetrieveAll } from '../store/projects.actions';
 import { navigation } from 'src/app/app-routing.module';
-import { usersNavigation } from '../../social/users/users-routing.module';
 
 @Component({
   selector: 'cc-projects',

@@ -1,12 +1,12 @@
 import { CodeSocketService } from '../../../../services/code-socket.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
-  ViewChild,
+  Component,
   ElementRef,
-  Input
+  Input,
+  OnInit,
+  ViewChild
 } from '@angular/core';
 
 @Component({

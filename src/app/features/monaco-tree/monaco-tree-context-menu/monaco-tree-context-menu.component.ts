@@ -2,18 +2,16 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
   Input,
   Output,
   ViewChild
 } from '@angular/core';
-import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/core/core.module';
 import { IMAGE_EXTENSION } from '../../../core/Image/image-extension';
 import { CodeSocketService } from '../../code-editor-v2/services/code-socket.service';
 import { environment } from '../../../../environments/environment';
-import { BehaviorSubject } from 'rxjs';
-import { EventEmitter } from '@angular/core';
 import {
   ContextMenuElementSeparator,
   ContextMenuElementText

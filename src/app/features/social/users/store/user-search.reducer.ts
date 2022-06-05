@@ -2,10 +2,10 @@ import { User, UsersState } from '../../../../shared/models/user.model';
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { Action, createReducer, on } from '@ngrx/store';
 import {
-  actionUsersSearchInit,
-  actionUsersSearchDialogSuccess,
   actionUsersSearch,
+  actionUsersSearchDialogSuccess,
   actionUsersSearchError,
+  actionUsersSearchInit,
   actionUsersSearchSuccess
 } from './users.actions';
 

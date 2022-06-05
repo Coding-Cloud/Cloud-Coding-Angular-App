@@ -1,16 +1,15 @@
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
-  Input,
-  ViewChild,
+  ChangeDetectorRef,
+  Component,
   ElementRef,
-  ChangeDetectorRef
+  Input,
+  OnInit,
+  ViewChild
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { CheckHealthPathService } from '../../../../services/check-health-path.service';
 import { NotificationService } from '../../../../../../core/notifications/notification.service';
-import { finalize } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -28,6 +27,7 @@ export class FrontViewComponent implements OnInit {
     | ElementRef<HTMLIFrameElement>
     | undefined;
   @Input() url: string | undefined;
+  @Input() isResize: boolean = true;
   @Input() projectUniqueName: string | undefined;
   loadingRequest$ = new BehaviorSubject(false);
   urlSee: string | undefined;
@@ -82,11 +82,15 @@ export class FrontViewComponent implements OnInit {
     if (location !== undefined) {
       this.iframeElement?.nativeElement.contentWindow?.postMessage(
         'Request DOM manipulation',
-        'http://localhost:8000'
+        `https://${this.projectUniqueName}.dev.cloudcoding.fr`
       );
 
       window.addEventListener('message', (event) => {
-        if (event.origin !== 'http://localhost:8000') return;
+        if (
+          event.origin !== 'http://localhost:8000' &&
+          !event.origin.includes('cloudcoding.fr')
+        )
+          return;
         const urlFormat = this.formatUrl(event.data);
         const urlSeeFormat = this.formatUrl(this.urlSee);
         if (urlSeeFormat !== urlFormat) {

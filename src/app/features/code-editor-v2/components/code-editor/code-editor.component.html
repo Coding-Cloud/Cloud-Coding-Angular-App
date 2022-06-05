@@ -1,30 +1,71 @@
 <div class="code-editor-page" xmlns="http://www.w3.org/1999/html">
-    <div  class="editor-content">
-        <div *ngIf="!isLoading" class="editor">
-            <span class="editor__tree d-flex flex-column">
-              <button #collapsible type="button" class="collapsible" (click)="handleClickOnCollapse()"><span>Project</span><mat-icon class="arrow chevron-left">{{iconChevronName}}</mat-icon></button>
-              <div class="content"  #collapsed>
-                  <monaco-tree [currentFile]="currentFile.path" [tree]="tree" (clickContextMenu)="handleClickContextMenu($event)"
-                    (clickFile)="handleClickOnFolder($event)" (createFile)="handleCreateFile($event)" (createImage)="handleCreateImage($event)"
-                    (createDir)="handleCreateDir($event)" (renameFolder)="handleRenameFolder($event)"></monaco-tree>
-                </div>
-                <app-developer-list [projectUniqueName]="uniqueName" class="d-block"></app-developer-list>
-            </span>
-            <span id="app-editor-picture-component" *ngIf="IMAGE_EXTENSION.includes(currentFile.type); else notImageFile">
+    <div class="editor-content">
+        <div class="editor">
+          <div class="element-1 rectangle-1"
+               [ngStyle]="style1"
+               mwlResizable
+               [validateResize]="validate1"
+               [enableGhostResize]="true"
+               [resizeSnapGrid]="{ left: 10, right: 10 }"
+               (resizeEnd)="onResizeEnd1($event)"
+               (resizing)="onResizing($event)">
+              <span *ngIf="!isLoading" class="editor__tree d-flex flex-column">
+                <button *ngIf="!isLoading"  #collapsible type="button" class="collapsible" (click)="handleClickOnCollapse()"><span>Project</span><mat-icon class="arrow chevron-left">{{iconChevronName}}</mat-icon></button>
+                <div *ngIf="!isLoading" class="content"  #collapsed>
+                    <monaco-tree *ngIf="!isLoading" [currentFile]="currentFile.path" [tree]="tree" (clickContextMenu)="handleClickContextMenu($event)"
+                      (clickFile)="handleClickOnFolder($event)" (createFile)="handleCreateFile($event)" (createImage)="handleCreateImage($event)"
+                      (createDir)="handleCreateDir($event)" (renameFolder)="handleRenameFolder($event)"></monaco-tree>
+                  </div>
+                  <app-developer-list [projectUniqueName]="uniqueName" class="d-block"></app-developer-list>
+              </span>
+          </div>
+          <div
+            class="element-2 rectangle-1"
+            [ngStyle]="style2"
+            mwlResizable
+            [validateResize]="validate2"
+            [enableGhostResize]="true"
+            [resizeSnapGrid]="{ left: 10, right: 10 }"
+            (resizeEnd)="onResizeEnd2($event)"
+            (resizing)="onResizing($event)"
+          >
+            <div
+              class="resize-handle-left-2"
+              mwlResizeHandle
+              [resizeEdges]="{ left: true }"
+            ></div>
+            <div
+              class="resize-handle-right-2"
+              mwlResizeHandle
+              [resizeEdges]="{ right: true }"
+            ></div>
+            <span id="app-editor-picture-component" *ngIf="IMAGE_EXTENSION.includes(currentFile.type) && !isLoading; else notImageFile">
                 <app-editor-picture [type]="currentFile.type" [code$]="code$" ></app-editor-picture>
             </span>
             <ng-template #notImageFile>
-                <ngx-monaco-editor   class="editor__text" (ngModelChange)="handleChange($event)" [options]="editorOptions"
-                [ngModel]="(code$ | async)" (ngModelChange)="'jean'"></ngx-monaco-editor>
+              <ngx-monaco-editor *ngIf="!isLoading" class="editor__text" (ngModelChange)="handleChange($event)" [options]="editorOptions"
+                                 [ngModel]="(code$ | async)" (ngModelChange)="'jean'"></ngx-monaco-editor>
             </ng-template>
+            <div class="spinner-editor-relative" *ngIf="isLoading || (loadingMonacoEditor$ | async)">
+              <app-spinner  class="spinner-editor"></app-spinner>
+            </div>
+          </div>
+          <div
+            class="element-3 rectangle-1"
+            [ngStyle]="style3"
+            mwlResizable
+            [validateResize]="validate3"
+            [enableGhostResize]="true"
+            [resizeSnapGrid]="{ left: 10, right: 10 }"
+            (resizeEnd)="onResizeEnd3($event)"
+            (resizing)="onResizing($event)"
+          >
+            <app-front-view [isResize]="isResizing" class="iframe-view" *ngIf="!(loadingIframe$ | async) && baseUrlPath" [url]="baseUrlPath" [projectUniqueName]="uniqueName" ></app-front-view>·
+            <app-spinner class="iframe-view loader" *ngIf="(loadingIframe$ | async)"></app-spinner>
+          </div>
         </div>
-        <app-spinner *ngIf="isLoading || (loadingMonacoEditor$ | async)" class="spinner-editor"></app-spinner>
         <!-- <button class="button__tree" (click)="handleSave()">GOOOO</button>  -->
     </div>
-
-    <app-front-view class="iframe-view" *ngIf="!(loadingIframe$ | async) && baseUrlPath" [url]="baseUrlPath" [projectUniqueName]="uniqueName" ></app-front-view>
-    <!--<iframe *ngIf="!(loadingIframe$ | async)" class="iframe-view" [src]="this.baseUrlPathTrust" title="description"></iframe>-->
-    <app-spinner class="iframe-view loader" *ngIf="(loadingIframe$ | async)"></app-spinner>
 </div>
 
-<app-terminal id="terminal" [text]="codeRunnerSysOut$ | async" ></app-terminal>
+<app-terminal id="terminal" [text$]="codeRunnerSysOut$" ></app-terminal>

@@ -13,11 +13,7 @@ import {
   selectUserView,
   selectUserViewProjects
 } from '../store/users.selectors';
-import {
-  projectsNavigation,
-  projectViewLink
-} from '../../../projects/projects-routing.module';
-import { navigation } from '../../../../app-routing.module';
+import { projectViewLink } from '../../../projects/projects-routing.module';
 import { usersNavigation } from '../users-routing.module';
 import { Comment } from '../../../../shared/models/comment.model';
 import {
