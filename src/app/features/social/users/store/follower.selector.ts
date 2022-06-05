@@ -1,8 +1,9 @@
-import { followerAdapter } from './follower.reducer';
+import { followerAdapter, followingAdapter } from './follower.reducer';
 import { createSelector } from '@ngrx/store';
 import { selectFollowersState } from '../../../../core/core.state';
 
 const followerSelector = followerAdapter.getSelectors();
+const followingSelector = followingAdapter.getSelectors();
 
 export const selectFollowers = createSelector(
   selectFollowersState,
@@ -21,7 +22,7 @@ export const selectAllFollowers = createSelector(
 
 export const selectAllFollowings = createSelector(
   selectFollowings,
-  followerSelector.selectAll
+  followingSelector.selectAll
 );
 
 export const selectFollowersLoading = createSelector(

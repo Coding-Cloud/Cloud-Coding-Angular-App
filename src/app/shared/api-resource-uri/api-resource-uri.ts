@@ -11,6 +11,13 @@ export const API_RESOURCE_URI = {
   COMMENTS: `${env.apiUrl}/comments`,
   COMMENTS_PROJECT: `${env.apiUrl}/comments/project`,
   COMMENTS_USER: `${env.apiUrl}/comments/user`,
+  FOLLOWERS_FOLLOWERS: (userId: string) =>
+    `${env.apiUrl}/followers/${userId}/followers`,
+  FOLLOWERS_FOLLOWINGS: (userId: string) =>
+    `${env.apiUrl}/followers/${userId}/followings`,
+  FOLLOWERS_IS_FOLLOWING: (userId: string) =>
+    `${env.apiUrl}/followers/${userId}/is-following`,
+  FOLLOWERS_FOLLOW: `${env.apiUrl}/followers`,
   GROUP_MEMBERSHIPS: (groupId: string, userId: string) =>
     `${env.apiUrl}/group-memberships/${groupId}/${userId}`,
   GROUP_MEMBERSHIPS_GROUP: `${env.apiUrl}/group-memberships/group`,

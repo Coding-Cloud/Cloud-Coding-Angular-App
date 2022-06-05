@@ -34,3 +34,34 @@ export const actionFollowingsGetFromUserError = createAction(
   '[Followers] Get Followings from user error',
   props<{ message: string }>()
 );
+
+export const actionFollowersFollow = createAction(
+  '[Followers] Follow',
+  props<{ userId: string }>()
+);
+
+export const actionFollowersFollowSuccess = createAction(
+  '[Followers] Follow success',
+  props<{ follower: Follower }>()
+);
+
+export const actionFollowersFollowError = createAction(
+  '[Followers] Follow error',
+  props<{ message: string }>()
+);
+
+// unfollow
+export const actionFollowersUnfollow = createAction(
+  '[Followers] Unfollow',
+  props<{ userId: string }>()
+);
+
+export const actionFollowersUnfollowSuccess = createAction(
+  '[Followers] Unfollow success',
+  props<{ userId: string }>()
+);
+
+export const actionFollowersUnfollowError = createAction(
+  '[Followers] Unfollow error',
+  props<{ message: string }>()
+);
