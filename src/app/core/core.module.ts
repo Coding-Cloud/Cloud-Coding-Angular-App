@@ -70,6 +70,7 @@ import { GroupsEffects } from '../features/groups/store/groups.effects';
 import { ProjectGuardService } from './project/project-guard.service';
 import { UsersEffects } from '../features/social/users/store/users.effects';
 import { CommentsEffects } from '../features/social/comments/store/comments.effects';
+import { FollowersEffects } from '../features/social/users/store/follower.effects';
 
 export {
   TitleService,
@@ -116,7 +117,8 @@ export {
       ProjectsEffects,
       GroupsEffects,
       UsersEffects,
-      CommentsEffects
+      CommentsEffects,
+      FollowersEffects
     ]),
     environment.production
       ? []
