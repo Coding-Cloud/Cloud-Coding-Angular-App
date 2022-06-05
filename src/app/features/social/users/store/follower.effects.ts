@@ -90,7 +90,7 @@ export class FollowersEffects {
             actionFollowersFollowSuccess({
               follower: {
                 followerId: user.id,
-                followingId: action.userId,
+                followedId: action.userId,
                 createdAt: new Date()
               }
             })

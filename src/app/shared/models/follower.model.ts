@@ -2,7 +2,7 @@ import { EntityState } from '@ngrx/entity';
 
 export interface Follower {
   followerId: string;
-  followingId: string;
+  followedId: string;
   createdAt: Date;
 }
 

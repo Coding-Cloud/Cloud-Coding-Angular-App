@@ -33,6 +33,11 @@ export const selectUserViewProjects = createSelector(
   (state: UserState) => state.projects
 );
 
+export const selectUserViewFollowing = createSelector(
+  selectUserViewState,
+  (state: UserState) => state.isFollowing
+);
+
 export const selectAllUsersSearch = createSelector(
   selectUsersSearch,
   userSearchSelector.selectAll

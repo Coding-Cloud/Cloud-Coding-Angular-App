@@ -16,9 +16,10 @@ import {
   actionFollowingsGetFromUserSuccess,
   actionFollowingsInit
 } from './follower.actions';
+import { getTime } from 'date-fns';
 
 function sortByDate(a: Follower, b: Follower): number {
-  return a.createdAt.getTime() - b.createdAt.getTime();
+  return getTime(a.createdAt) - getTime(b.createdAt);
 }
 
 export const followerAdapter: EntityAdapter<Follower> =
@@ -29,7 +30,7 @@ export const followerAdapter: EntityAdapter<Follower> =
 
 export const followingAdapter: EntityAdapter<Follower> =
   createEntityAdapter<Follower>({
-    selectId: (follower: Follower) => follower.followingId,
+    selectId: (follower: Follower) => follower.followedId,
     sortComparer: sortByDate
   });
 
@@ -92,13 +93,13 @@ const reducer = createReducer(
   })),
   on(actionFollowersFollowSuccess, (state, payload) => ({
     ...state,
-    followings: followingAdapter.addOne(payload.follower, state.followings),
-    followingTotalResults: state.followingTotalResults + 1
+    followers: followingAdapter.addOne(payload.follower, state.followers),
+    followerTotalResults: state.followerTotalResults + 1
   })),
   on(actionFollowersUnfollowSuccess, (state, payload) => ({
     ...state,
-    followings: followingAdapter.removeOne(payload.userId, state.followings),
-    followingTotalResults: state.followingTotalResults - 1
+    followers: followingAdapter.removeOne(payload.userId, state.followers),
+    followerTotalResults: state.followerTotalResults - 1
   }))
 );
 

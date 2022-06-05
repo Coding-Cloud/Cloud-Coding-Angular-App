@@ -12,8 +12,9 @@ export class FollowersService {
   constructor(private http: HttpClient) {}
 
   isFollowing(userId: string): Observable<boolean> {
-    return of(true);
-    // return this.http.get<boolean>(API_RESOURCE_URI.FOLLOWERS_IS_FOLLOWING(userId));
+    return this.http.get<boolean>(
+      API_RESOURCE_URI.FOLLOWERS_IS_FOLLOWING(userId)
+    );
   }
 
   getFollowers(
@@ -21,11 +22,11 @@ export class FollowersService {
     limit = 10,
     offset = 0
   ): Observable<{ followers: Follower[]; totalResults: number }> {
-    return of({ followers: [], totalResults: 0 });
-    /* return this.http.get<{ followers: Follower[]; totalResults: number }>(
+    return this.http.get<{ followers: Follower[]; totalResults: number }>(
       API_RESOURCE_URI.FOLLOWERS_FOLLOWERS(userId) +
+        '?' +
         HttpTools.objectToHttpParams({ limit, offset })
-    ); */
+    );
   }
 
   getFollowings(
@@ -33,11 +34,11 @@ export class FollowersService {
     limit = 10,
     offset = 0
   ): Observable<{ followers: Follower[]; totalResults: number }> {
-    return of({ followers: [], totalResults: 0 });
-    /* return this.http.get<{ followers: Follower[]; totalResults: number }>(
+    return this.http.get<{ followers: Follower[]; totalResults: number }>(
       API_RESOURCE_URI.FOLLOWERS_FOLLOWINGS(userId) +
+        '?' +
         HttpTools.objectToHttpParams({ limit, offset })
-    ); */
+    );
   }
 
   follow(userId: string): Observable<void> {

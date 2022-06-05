@@ -5,7 +5,11 @@ import {
   actionUsersGetOneSuccess,
   actionUsersGetUserProjectsSuccess
 } from './users.actions';
-import { actionFollowersIsFollowingSuccess } from './follower.actions';
+import {
+  actionFollowersFollowSuccess,
+  actionFollowersIsFollowingSuccess,
+  actionFollowersUnfollowSuccess
+} from './follower.actions';
 
 export const initialState: UserState = {
   user: emptyUser,
@@ -27,6 +31,14 @@ const reducer = createReducer(
   on(actionFollowersIsFollowingSuccess, (state, { isFollowing }) => ({
     ...state,
     isFollowing
+  })),
+  on(actionFollowersFollowSuccess, (state) => ({
+    ...state,
+    isFollowing: true
+  })),
+  on(actionFollowersUnfollowSuccess, (state) => ({
+    ...state,
+    isFollowing: false
   }))
 );
 
