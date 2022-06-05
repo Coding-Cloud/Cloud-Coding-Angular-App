@@ -18,6 +18,9 @@ import {
   actionFollowersGetFromUser,
   actionFollowersGetFromUserError,
   actionFollowersGetFromUserSuccess,
+  actionFollowersIsFollowing,
+  actionFollowersIsFollowingError,
+  actionFollowersIsFollowingSuccess,
   actionFollowersUnfollow,
   actionFollowersUnfollowError,
   actionFollowersUnfollowSuccess,
@@ -126,6 +129,28 @@ export class FollowersEffects {
     )
   );
 
+  isFollowing = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionFollowersIsFollowing),
+      exhaustMap((action) =>
+        this.followersService.isFollowing(action.userId).pipe(
+          map((isFollowing) =>
+            actionFollowersIsFollowingSuccess({
+              isFollowing
+            })
+          ),
+          catchError((error) =>
+            of(
+              actionFollowersIsFollowingError({
+                message: error.message.toString()
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
   errors = createEffect(
     () =>
       this.actions$.pipe(
@@ -133,7 +158,8 @@ export class FollowersEffects {
           actionFollowersGetFromUserError,
           actionFollowingsGetFromUserError,
           actionFollowersFollowError,
-          actionFollowersUnfollowError
+          actionFollowersUnfollowError,
+          actionFollowersIsFollowingError
         ),
         tap((action) => {
           this.notificationService.error(action.message);

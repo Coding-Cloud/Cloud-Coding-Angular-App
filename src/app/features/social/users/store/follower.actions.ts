@@ -50,7 +50,6 @@ export const actionFollowersFollowError = createAction(
   props<{ message: string }>()
 );
 
-// unfollow
 export const actionFollowersUnfollow = createAction(
   '[Followers] Unfollow',
   props<{ userId: string }>()
@@ -63,5 +62,20 @@ export const actionFollowersUnfollowSuccess = createAction(
 
 export const actionFollowersUnfollowError = createAction(
   '[Followers] Unfollow error',
+  props<{ message: string }>()
+);
+
+export const actionFollowersIsFollowing = createAction(
+  '[Followers] Is following',
+  props<{ userId: string }>()
+);
+
+export const actionFollowersIsFollowingSuccess = createAction(
+  '[Followers] Is following success',
+  props<{ isFollowing: boolean }>()
+);
+
+export const actionFollowersIsFollowingError = createAction(
+  '[Followers] Is following error',
   props<{ message: string }>()
 );
