@@ -14,7 +14,9 @@ import { catchError } from 'rxjs/operators';
 export class FriendshipsService {
   constructor(private http: HttpClient) {}
 
-  sendFriendRequest(userId: string): Observable<void> {
+  sendFriendRequest(userId: string): Observable<void | null> {
+    console.log('sendFriendRequest', userId);
+    return of(null);
     return this.http.post<void>(
       API_RESOURCE_URI.FRIEND_REQUESTS_SEND + '/' + userId,
       {}
@@ -65,6 +67,14 @@ export class FriendshipsService {
   }
 
   retrieveFriendship(userId: string): Observable<Friendship | null> {
+    console.log('retrieveFriendship', userId);
+    return of(null);
+    return of({
+      id: '123456',
+      createdAt: new Date(),
+      user1Id: '650803f3-078b-4852-9959-7d29199120ab',
+      user2Id: 'f5367555-5080-4704-b29c-906bd7565fa4'
+    });
     return this.http
       .get<Friendship>(API_RESOURCE_URI.FRIENDSHIPS + '/' + userId)
       .pipe(
@@ -78,6 +88,13 @@ export class FriendshipsService {
   }
 
   retrieveFriendRequest(userId: string): Observable<FriendRequest | null> {
+    console.log('retrieveFriendRequest', userId);
+    return of(null);
+    return of({
+      createdAt: new Date(),
+      requestedUserId: 'f5367555-5080-4704-b29c-906bd7565fa4',
+      requesterUserId: '650803f3-078b-4852-9959-7d29199120ab'
+    });
     return this.http
       .get<FriendRequest>(API_RESOURCE_URI.FRIEND_REQUESTS + '/' + userId)
       .pipe(

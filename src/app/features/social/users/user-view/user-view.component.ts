@@ -12,6 +12,8 @@ import { Project } from '../../../../shared/models/project.model';
 import {
   selectUserView,
   selectUserViewFollowing,
+  selectUserViewFriendRequest,
+  selectUserViewFriendship,
   selectUserViewProjects
 } from '../store/users.selectors';
 import { projectViewLink } from '../../../projects/projects-routing.module';
@@ -44,6 +46,21 @@ import {
   selectFollowingsLoading,
   selectFollowingsTotalResults
 } from '../store/follower.selector';
+import {
+  FriendRequest,
+  Friendship
+} from '../../../../shared/models/friendship.model';
+import {
+  actionFriendshipsGetOne,
+  actionFriendshipsRemoveOne
+} from '../../friendships/store/friendships.actions';
+import {
+  actionFriendRequestsAccept,
+  actionFriendRequestsCancel,
+  actionFriendRequestsReject,
+  actionFriendRequestsRetrieveOne,
+  actionFriendRequestsSend
+} from '../../friendships/store/friend-requests.actions';
 
 @Component({
   selector: 'cc-user-view',
@@ -67,6 +84,10 @@ export class UserViewComponent implements OnInit {
   followings$: Observable<Follower[]>;
   followingsTotalCount$: Observable<number>;
   followingsLoading$: Observable<boolean>;
+
+  friendship$: Observable<Friendship | null>;
+  friendRequest$: Observable<FriendRequest | null>;
+  friendshipId = '';
 
   usersNavigation = usersNavigation;
   projectViewLink = projectViewLink;
@@ -95,12 +116,24 @@ export class UserViewComponent implements OnInit {
     this.followersLoading$ = this.store.pipe(select(selectFollowersLoading));
     this.followingsLoading$ = this.store.pipe(select(selectFollowingsLoading));
 
+    this.friendship$ = this.store.pipe(select(selectUserViewFriendship));
+    this.friendRequest$ = this.store.pipe(select(selectUserViewFriendRequest));
+
     this.currentUser$.subscribe((user) => {
       this.currentUserId = user.id;
     });
     this.user$.subscribe((user) => {
       if (user.id !== '0' && user.id !== this.currentUserId) {
         this.store.dispatch(actionFollowersIsFollowing({ userId: user.id }));
+        this.store.dispatch(actionFriendshipsGetOne({ userId: user.id }));
+        this.store.dispatch(
+          actionFriendRequestsRetrieveOne({ userId: user.id })
+        );
+      }
+    });
+    this.friendship$.subscribe((friendship) => {
+      if (friendship) {
+        this.friendshipId = friendship.id;
       }
     });
   }
@@ -141,5 +174,39 @@ export class UserViewComponent implements OnInit {
     this.router
       .navigateByUrl('/', { skipLocationChange: true })
       .then(() => this.router.navigate([userViewLink, userId]));
+  }
+
+  isFriendWith(friendship: Friendship | null): boolean {
+    return friendship !== null;
+  }
+
+  isFriendRequestPending(friendRequest: FriendRequest | null): boolean {
+    return friendRequest !== null;
+  }
+
+  isFriendRequestReceived(friendRequest: FriendRequest | null): boolean {
+    return friendRequest?.requesterUserId === this.userId;
+  }
+
+  onFriendRequestAccept(): void {
+    this.store.dispatch(actionFriendRequestsAccept({ userId: this.userId }));
+  }
+
+  onFriendRequestSend(): void {
+    this.store.dispatch(actionFriendRequestsSend({ userId: this.userId }));
+  }
+
+  onFriendRequestReject(): void {
+    this.store.dispatch(actionFriendRequestsReject({ userId: this.userId }));
+  }
+
+  onFriendRequestCancel(): void {
+    this.store.dispatch(actionFriendRequestsCancel({ userId: this.userId }));
+  }
+
+  onFriendshipRemove(): void {
+    this.store.dispatch(
+      actionFriendshipsRemoveOne({ friendshipId: this.friendshipId })
+    );
   }
 }
