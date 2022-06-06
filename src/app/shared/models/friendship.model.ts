@@ -1,29 +1,26 @@
 import { EntityState } from '@ngrx/entity';
 
-export type FriendRequest = {
+export interface FriendRequest {
   requesterUserId: string;
   requestedUserId: string;
   createdAt: Date;
-};
+}
 
-export type Friendship = {
+export interface Friendship {
   id: string;
   user1Id: string;
   user2Id: string;
   createdAt: Date;
-};
+}
 
-export type FriendshipsState = {
+export interface FriendshipsState {
   friendships: EntityState<Friendship>;
-  totalResults: number;
   loading: boolean;
-};
+}
 
-export type FriendRequestsState = {
+export interface FriendRequestsState {
   sentFriendRequests: EntityState<FriendRequest>;
-  sentFriendRequestsTotalResults: number;
   sentFriendRequestsLoading: boolean;
   receivedFriendRequests: EntityState<FriendRequest>;
-  receivedFriendRequestsTotalResults: number;
   receivedFriendRequestsLoading: boolean;
-};
+}
