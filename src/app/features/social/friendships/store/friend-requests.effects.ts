@@ -189,6 +189,50 @@ export class FriendRequestsEffects {
     )
   );
 
+  cancelSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionFriendRequestsCancelSuccess),
+        tap(() => {
+          this.notificationService.success("Demande d'ami annulée");
+        })
+      ),
+    { dispatch: false }
+  );
+
+  rejectSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionFriendRequestsRejectSuccess),
+        tap(() => {
+          this.notificationService.success("Demande d'ami refusée");
+        })
+      ),
+    { dispatch: false }
+  );
+
+  sentSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionFriendRequestsSendSuccess),
+        tap(() => {
+          this.notificationService.success("Demande d'ami envoyée");
+        })
+      ),
+    { dispatch: false }
+  );
+
+  acceptSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(actionFriendRequestsAcceptSuccess),
+        tap(() => {
+          this.notificationService.success("Demande d'ami acceptée");
+        })
+      ),
+    { dispatch: false }
+  );
+
   errors = createEffect(
     () =>
       this.actions$.pipe(

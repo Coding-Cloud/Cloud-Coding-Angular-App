@@ -15,8 +15,6 @@ export class FriendshipsService {
   constructor(private http: HttpClient) {}
 
   sendFriendRequest(userId: string): Observable<void | null> {
-    console.log('sendFriendRequest', userId);
-    return of(null);
     return this.http.post<void>(
       API_RESOURCE_URI.FRIEND_REQUESTS_SEND + '/' + userId,
       {}

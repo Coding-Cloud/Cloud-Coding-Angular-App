@@ -49,7 +49,7 @@ const reducer = createReducer(
   initialState,
   on(actionFriendRequestsRetrieveAll, (_state) => ({
     ...initialState,
-    sendFriendRequestsLoading: true,
+    sentFriendRequestsLoading: true,
     receivedFriendRequestsLoading: true
   })),
   on(
