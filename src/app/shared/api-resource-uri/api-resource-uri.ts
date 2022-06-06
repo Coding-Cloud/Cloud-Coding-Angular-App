@@ -20,6 +20,7 @@ export const API_RESOURCE_URI = {
   FOLLOWERS_FOLLOW: `${env.apiUrl}/followers`,
   GROUP_MEMBERSHIPS: (groupId: string, userId: string) =>
     `${env.apiUrl}/group-memberships/${groupId}/${userId}`,
+  FRIEND_REQUESTS: `${env.apiUrl}/friend-requests`,
   FRIEND_REQUESTS_SEND: `${env.apiUrl}/friend-requests/send`,
   FRIEND_REQUESTS_ACCEPT: `${env.apiUrl}/friend-requests/accept`,
   FRIEND_REQUESTS_CANCEL: `${env.apiUrl}/friend-requests/cancel`,

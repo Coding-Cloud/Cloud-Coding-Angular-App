@@ -76,4 +76,17 @@ export class FriendshipsService {
         })
       );
   }
+
+  retrieveFriendRequest(userId: string): Observable<FriendRequest | null> {
+    return this.http
+      .get<FriendRequest>(API_RESOURCE_URI.FRIEND_REQUESTS + '/' + userId)
+      .pipe(
+        catchError((error) => {
+          if (error.status === 404) {
+            return of(null);
+          }
+          return throwError(error);
+        })
+      );
+  }
 }

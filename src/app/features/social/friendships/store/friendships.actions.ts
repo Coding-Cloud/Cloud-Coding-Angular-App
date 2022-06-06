@@ -15,6 +15,21 @@ export const actionFriendshipsRetrieveAllError = createAction(
   props<{ message: string }>()
 );
 
+export const actionFriendshipsGetOne = createAction(
+  '[Friendships] Get One',
+  props<{ userId: string }>()
+);
+
+export const actionFriendshipsGetOneSuccess = createAction(
+  '[Friendships] Get One Success',
+  props<{ friendship: Friendship | null }>()
+);
+
+export const actionFriendshipsGetOneError = createAction(
+  '[Friendships] Get One Error',
+  props<{ message: string }>()
+);
+
 export const actionFriendshipsRemoveOne = createAction(
   '[Friendships] Remove One',
   props<{ friendshipId: string }>()
