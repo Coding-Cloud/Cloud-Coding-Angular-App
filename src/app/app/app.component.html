@@ -63,18 +63,18 @@
               </mat-icon>
               <span>S'inscrire</span>
             </button>
-            <button mat-menu-item (click)="onLogoutClick()" *ngIf="(isAuthenticated$ | async)">
-              <mat-icon>
-                <fa-icon icon="power-off"></fa-icon>
-              </mat-icon>
-              <span>Se déconnecter</span>
-            </button>
             <a mat-menu-item [routerLink]="[userViewLink, currentUserId]" *ngIf="(isAuthenticated$ | async)">
               <mat-icon>
                 face
               </mat-icon>
               <span>Mon profil</span>
             </a>
+            <button mat-menu-item (click)="onLogoutClick()" *ngIf="(isAuthenticated$ | async)">
+              <mat-icon>
+                <fa-icon icon="power-off"></fa-icon>
+              </mat-icon>
+              <span>Se déconnecter</span>
+            </button>
           </mat-menu>
 
           <button mat-icon-button [routerLink]="routerLinks.settings.path" class="d-none d-sm-inline">

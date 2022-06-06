@@ -28,6 +28,7 @@ export const API_RESOURCE_URI = {
   MESSAGES: `${env.apiUrl}/messages`,
   PROJECTS: `${env.apiUrl}/projects`,
   PROJECTS_OWNED: `${env.apiUrl}/projects/owned`,
+  PROJECTS_JOINED: `${env.apiUrl}/projects/joined`,
   PROJECTS_SEARCH: `${env.apiUrl}/projects/search`,
   PROJECTS_USER: (userId: string) =>
     `${env.apiUrl}/projects/${userId}/projects`,
