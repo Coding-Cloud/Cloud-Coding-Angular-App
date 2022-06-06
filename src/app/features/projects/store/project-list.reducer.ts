@@ -4,6 +4,7 @@ import { Project, ProjectsState } from '../../../shared/models/project.model';
 import {
   actionProjectsDeleteOne,
   actionProjectsRetrieveAll,
+  actionProjectsRetrieveAllJoinedSuccess,
   actionProjectsRetrieveAllSuccess,
   actionProjectsUpdateOneSuccess,
   actionProjectsUpsertOne
@@ -35,6 +36,9 @@ const reducer = createReducer(
   }),
   on(actionProjectsRetrieveAll, (state) => projectListAdapter.removeAll(state)),
   on(actionProjectsRetrieveAllSuccess, (state, { projects }) =>
+    projectListAdapter.addMany(projects, state)
+  ),
+  on(actionProjectsRetrieveAllJoinedSuccess, (state, { projects }) =>
     projectListAdapter.addMany(projects, state)
   ),
   on(actionProjectsUpdateOneSuccess, (state, action) =>
