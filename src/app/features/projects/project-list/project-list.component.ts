@@ -22,8 +22,6 @@ export class ProjectListComponent implements OnInit {
 
   projectList$: Observable<Project[]>;
 
-  projectStatus = ProjectStatus;
-
   constructor(private store: Store<AppState>) {
     this.projectList$ = this.store.pipe(select(selectAllProjects));
     this.store.pipe(select(selectUser)).subscribe((user) => {
