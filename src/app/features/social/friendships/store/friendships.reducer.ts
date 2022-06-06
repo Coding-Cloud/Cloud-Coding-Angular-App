@@ -14,7 +14,7 @@ import {
 import { actionFriendRequestsAcceptSuccess } from './friend-requests.actions';
 
 function sortByDate(a: Friendship, b: Friendship): number {
-  return getTime(a.createdAt) - getTime(b.createdAt);
+  return getTime(new Date(a.createdAt)) - getTime(new Date(b.createdAt));
 }
 
 export const friendshipsAdapter: EntityAdapter<Friendship> =

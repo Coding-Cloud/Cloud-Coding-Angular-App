@@ -7,7 +7,7 @@ export const environment = {
   test: false,
   apiUrl: 'https://api.cloudcoding.fr',
   socketUrl: 'https://api.cloudcoding.fr',
-  exposedAppBasePath: 'dev.cloudcoding.fr',
+  exposedAppBasePath: 'cloudcoding.fr',
   baseProjectPath: '/data/',
   versions: {
     app: packageJson.version,
