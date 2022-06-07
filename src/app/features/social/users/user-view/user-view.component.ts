@@ -61,6 +61,8 @@ import {
   actionFriendRequestsRetrieveOne,
   actionFriendRequestsSend
 } from '../../friendships/store/friend-requests.actions';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'cc-user-view',
@@ -95,7 +97,8 @@ export class UserViewComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private dialog: MatDialog
   ) {
     this.user$ = this.store.pipe(select(selectUserView));
     this.isFollowing$ = this.store.pipe(select(selectUserViewFollowing));
@@ -205,8 +208,20 @@ export class UserViewComponent implements OnInit {
   }
 
   onFriendshipRemove(): void {
-    this.store.dispatch(
-      actionFriendshipsRemoveOne({ friendshipId: this.friendshipId })
-    );
+    this.dialog
+      .open(ConfirmDialogComponent, {
+        data: {
+          title: 'Retirer ami',
+          message: 'Voulez-vous vraiment retirer cet ami ?'
+        }
+      })
+      .afterClosed()
+      .subscribe((confirmed) => {
+        if (confirmed === true) {
+          this.store.dispatch(
+            actionFriendshipsRemoveOne({ friendshipId: this.friendshipId })
+          );
+        }
+      });
   }
 }

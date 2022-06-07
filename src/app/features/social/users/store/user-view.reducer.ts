@@ -71,12 +71,12 @@ const reducer = createReducer(
     actionFriendRequestsRetrieveOneSuccess,
     (state, { friendRequest }) => ({
       ...state,
-      friendRequest
+      friendRequest: friendRequest
     })
   ),
   on(actionFriendshipsGetOneSuccess, (state, { friendship }) => ({
     ...state,
-    friendship
+    friendship: friendship
   })),
   on(actionFriendshipsRemoveOneSuccess, (state) => ({
     ...state,

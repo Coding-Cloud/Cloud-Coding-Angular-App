@@ -48,7 +48,7 @@
                     </mat-list-item>
                   </mat-list>
                 </mat-card-content>
-                <mat-card-actions align='end'>
+                <mat-card-actions align='end' *ngIf='currentUserId !== userId'>
                   <div *ngIf='isFriendWith(friendship$ | async)'>
                     Vous êtes amis&nbsp;
                     <button mat-mini-fab color='warn' (click)='onFriendshipRemove()'>

@@ -22,7 +22,6 @@ export class FriendshipsService {
   }
 
   acceptFriendRequest(userId: string): Observable<string> {
-    // returns friendshipId
     return this.http.post(
       API_RESOURCE_URI.FRIEND_REQUESTS_ACCEPT + '/' + userId,
       {},
@@ -65,14 +64,6 @@ export class FriendshipsService {
   }
 
   retrieveFriendship(userId: string): Observable<Friendship | null> {
-    console.log('retrieveFriendship', userId);
-    return of(null);
-    return of({
-      id: '123456',
-      createdAt: new Date(),
-      user1Id: '650803f3-078b-4852-9959-7d29199120ab',
-      user2Id: 'f5367555-5080-4704-b29c-906bd7565fa4'
-    });
     return this.http
       .get<Friendship>(API_RESOURCE_URI.FRIENDSHIPS + '/' + userId)
       .pipe(
@@ -86,13 +77,6 @@ export class FriendshipsService {
   }
 
   retrieveFriendRequest(userId: string): Observable<FriendRequest | null> {
-    console.log('retrieveFriendRequest', userId);
-    return of(null);
-    return of({
-      createdAt: new Date(),
-      requestedUserId: 'f5367555-5080-4704-b29c-906bd7565fa4',
-      requesterUserId: '650803f3-078b-4852-9959-7d29199120ab'
-    });
     return this.http
       .get<FriendRequest>(API_RESOURCE_URI.FRIEND_REQUESTS + '/' + userId)
       .pipe(
