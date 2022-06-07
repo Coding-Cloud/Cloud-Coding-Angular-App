@@ -38,9 +38,6 @@ export class ProjectSearchComponent implements OnInit {
 
   constructor(private store: Store<AppState>, private router: Router) {
     this.projectResults$ = this.store.pipe(select(selectAllProjectsSearch));
-    this.projectResults$.subscribe((results) => {
-      console.log(results);
-    });
     this.projectTotalResults$ = this.store.pipe(
       select(selectProjectsSearchTotalResults)
     );

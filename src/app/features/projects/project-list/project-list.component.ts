@@ -28,6 +28,5 @@ export class ProjectListComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(actionProjectsRetrieveAll());
-    this.projectList$.subscribe((value) => console.log(value));
   }
 }
