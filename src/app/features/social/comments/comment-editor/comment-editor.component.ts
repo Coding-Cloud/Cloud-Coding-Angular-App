@@ -65,7 +65,7 @@ export class CommentEditorComponent implements OnInit, OnDestroy {
     if (this.initialComment) {
       this.commentFormGroup.controls.commentContent.setValue(
         JSON.parse(this.initialComment.content).json ??
-          toDoc(JSON.parse(this.initialComment.content).html)
+          toDoc(JSON.parse(this.initialComment.content).html, schema)
       );
     }
   }
@@ -78,7 +78,7 @@ export class CommentEditorComponent implements OnInit, OnDestroy {
     if (this.commentFormGroup.valid) {
       const content = JSON.stringify({
         json: this.commentFormGroup.value.commentContent,
-        html: toHTML(this.commentFormGroup.value.commentContent)
+        html: toHTML(this.commentFormGroup.value.commentContent, schema)
       });
       this.commentFormGroup.controls.commentContent.setValue(this.initialValue);
       this.submitForm.emit({ content });

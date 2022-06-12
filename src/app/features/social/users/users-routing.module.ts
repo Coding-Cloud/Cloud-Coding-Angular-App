@@ -26,7 +26,8 @@ const routes: Routes = [
     component: UserViewComponent,
     data: {
       title: usersNavigation.view.name
-    }
+    },
+    runGuardsAndResolvers: 'always'
   },
   {
     path: usersNavigation.search.path,

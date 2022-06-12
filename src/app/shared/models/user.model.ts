@@ -52,5 +52,6 @@ export type UsersState = {
 
 export type UserState = {
   user: User;
+  isFollowing: boolean;
   projects: Project[];
 };

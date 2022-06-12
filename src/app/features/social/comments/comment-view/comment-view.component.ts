@@ -70,7 +70,7 @@ export class CommentViewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.commentFormGroup.controls.commentContentView.setValue(
       JSON.parse(this.comment.content).json ??
-        toDoc(JSON.parse(this.comment.content).html)
+        toDoc(JSON.parse(this.comment.content).html, schema)
     );
   }
 

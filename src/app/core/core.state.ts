@@ -30,6 +30,8 @@ import { UsersState, UserState } from '../shared/models/user.model';
 import { userViewReducer } from '../features/social/users/store/user-view.reducer';
 import { CommentsState } from '../shared/models/comment.model';
 import { commentsReducer } from '../features/social/comments/store/comments.reducer';
+import { FollowersState } from '../shared/models/follower.model';
+import { followersReducer } from '../features/social/users/store/follower.reducer';
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
@@ -42,7 +44,8 @@ export const reducers: ActionReducerMap<AppState> = {
   currentGroup: groupReducer,
   userSearch: usersSearchReducer,
   userView: userViewReducer,
-  router: routerReducer
+  router: routerReducer,
+  followers: followersReducer
 };
 
 export const metaReducers: MetaReducer<AppState>[] = [
@@ -102,6 +105,11 @@ export const selectCurrentGroupState = createFeatureSelector<
   GroupState
 >('currentGroup');
 
+export const selectFollowersState = createFeatureSelector<
+  AppState,
+  FollowersState
+>('followers');
+
 export const selectRouterState = createFeatureSelector<
   AppState,
   RouterReducerState<RouterStateUrl>
@@ -119,4 +127,5 @@ export interface AppState {
   userView: UserState;
   router: RouterReducerState<RouterStateUrl>;
   comments: CommentsState;
+  followers: FollowersState;
 }
