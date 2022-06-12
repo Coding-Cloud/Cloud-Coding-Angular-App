@@ -41,7 +41,10 @@ import { AppState } from 'src/app/core/core.state';
 import { select, Store } from '@ngrx/store';
 import { selectUser } from 'src/app/core/auth/auth.selectors';
 import { ResizeEvent } from 'angular-resizable-element';
-import { validateResizing } from './utils/validate-resizing-utils';
+import {
+  resizeComponentsWhenMoveTerminal,
+  validateResizing
+} from './utils/resizing-utils';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -581,15 +584,6 @@ export class CodeEditorComponent implements OnInit {
     return validateResizing(event);
   }
 
-  onResizeEnd1(event: ResizeEvent): void {
-    this.style1 = {
-      ...this.style1,
-      left: `${event.rectangle.left}px`,
-      top: `${event.rectangle.top}px`,
-      width: `${event.rectangle.width}px`
-    };
-  }
-
   onResizeEnd2(event: ResizeEvent): void {
     this.style2 = {
       ...this.style2,
@@ -599,33 +593,8 @@ export class CodeEditorComponent implements OnInit {
     this.isResizing = false;
   }
 
-  onResizeEnd3(event: ResizeEvent): void {
-    this.style3 = {
-      ...this.style3,
-      left: `${event.rectangle.left}px`,
-      top: `${event.rectangle.top}px`,
-      width: `${event.rectangle.width}px`
-    };
-  }
-
   onResizeEnd4(event: ResizeEvent): void {
-    this.style1 = {
-      ...this.style1,
-      bottom: `calc(${this.style4BottomPreviousValue} - ${event.edges.top}px)`,
-      height: 'auto'
-    };
-
-    this.style2 = {
-      ...this.style2,
-      bottom: `calc(${this.style4BottomPreviousValue} - ${event.edges.top}px)`,
-      height: 'auto'
-    };
-
-    this.style3 = {
-      ...this.style3,
-      bottom: `calc(${this.style4BottomPreviousValue} - ${event.edges.top}px)`,
-      height: 'auto'
-    };
+    this.resizingUpperComponents(event);
 
     this.style4 = {
       ...this.style4,
@@ -669,22 +638,24 @@ export class CodeEditorComponent implements OnInit {
       height: 'auto'
     };
 
-    this.style1 = {
-      ...this.style1,
-      bottom: `calc(${this.style4BottomPreviousValue} - ${event.edges.top}px)`,
-      height: 'auto'
-    };
+    this.resizingUpperComponents(event);
+  }
 
-    this.style2 = {
-      ...this.style2,
-      bottom: `calc(${this.style4BottomPreviousValue} - ${event.edges.top}px)`,
-      height: 'auto'
-    };
-
-    this.style3 = {
-      ...this.style3,
-      bottom: `calc(${this.style4BottomPreviousValue} - ${event.edges.top}px)`,
-      height: 'auto'
-    };
+  private resizingUpperComponents(event: ResizeEvent): void {
+    this.style1 = resizeComponentsWhenMoveTerminal(
+      this.style1,
+      this.style4BottomPreviousValue,
+      event.edges.top
+    );
+    this.style2 = resizeComponentsWhenMoveTerminal(
+      this.style2,
+      this.style4BottomPreviousValue,
+      event.edges.top
+    );
+    this.style3 = resizeComponentsWhenMoveTerminal(
+      this.style3,
+      this.style4BottomPreviousValue,
+      event.edges.top
+    );
   }
 }

@@ -2,13 +2,7 @@
     <div class="editor-content">
         <div class="editor">
           <div class="element-1 rectangle-1"
-               [ngStyle]="style1"
-               mwlResizable
-               [validateResize]="validate"
-               [enableGhostResize]="true"
-               [resizeSnapGrid]="{ left: 10, right: 10, bottom: 10  }"
-               (resizeEnd)="onResizeEnd1($event)"
-               (resizing)="onResizing($event)">
+               [ngStyle]="style1">
               <span *ngIf="!isLoading" class="editor__tree d-flex flex-column">
                 <button *ngIf="!isLoading"  #collapsible type="button" class="collapsible" (click)="handleClickOnCollapse()"><span>Project</span><mat-icon class="arrow chevron-left">{{iconChevronName}}</mat-icon></button>
                 <div *ngIf="!isLoading" class="content"  #collapsed>
@@ -53,12 +47,6 @@
           <div
             class="element-3 rectangle-1"
             [ngStyle]="style3"
-            mwlResizable
-            [validateResize]="validate"
-            [enableGhostResize]="true"
-            [resizeSnapGrid]="{ left: 10, right: 10, bottom: 10 }"
-            (resizeEnd)="onResizeEnd3($event)"
-            (resizing)="onResizing($event)"
           >
             <app-front-view [isResize]="isResizing" class="iframe-view" *ngIf="!(loadingIframe$ | async) && baseUrlPath" [url]="baseUrlPath" [projectUniqueName]="uniqueName" ></app-front-view>·
             <app-spinner class="iframe-view loader" *ngIf="(loadingIframe$ | async)"></app-spinner>
