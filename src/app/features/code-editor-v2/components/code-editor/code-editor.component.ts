@@ -41,6 +41,7 @@ import { AppState } from 'src/app/core/core.state';
 import { select, Store } from '@ngrx/store';
 import { selectUser } from 'src/app/core/auth/auth.selectors';
 import { ResizeEvent } from 'angular-resizable-element';
+import { validateResizing } from './utils/validate-resizing-utils';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -97,9 +98,14 @@ export class CodeEditorComponent implements OnInit {
     appFiles: {}
   };
 
-  public style1: object = {};
-  public style2: object = {};
-  public style3: object = {};
+  public style1: object = { bottom: '30%' };
+  public style2: object = { bottom: '30%' };
+  public style3: object = { bottom: '30%' };
+  public style4: object = { top: '70%' };
+
+  public style4BottomPreviousValue: string = '30%';
+  public style4BTopPreviousValue: string = '70%';
+
   isResizing = false;
 
   monacoTreeInput: any;
@@ -571,59 +577,22 @@ export class CodeEditorComponent implements OnInit {
 
   /*resizing*/
 
-  validate1(event: ResizeEvent): boolean {
-    const MIN_DIMENSIONS_PX = 50;
-    if (
-      event.rectangle.width &&
-      event.rectangle.height &&
-      (event.rectangle.width < MIN_DIMENSIONS_PX ||
-        event.rectangle.height < MIN_DIMENSIONS_PX)
-    ) {
-      return false;
-    }
-
-    return true;
-  }
-
-  validate2(event: ResizeEvent): boolean {
-    const MIN_DIMENSIONS_PX = 50;
-    if (
-      event.rectangle.width &&
-      event.rectangle.height &&
-      (event.rectangle.width < MIN_DIMENSIONS_PX ||
-        event.rectangle.height < MIN_DIMENSIONS_PX)
-    ) {
-      return false;
-    }
-
-    return true;
-  }
-
-  validate3(event: ResizeEvent): boolean {
-    const MIN_DIMENSIONS_PX = 50;
-    if (
-      event.rectangle.width &&
-      event.rectangle.height &&
-      (event.rectangle.width < MIN_DIMENSIONS_PX ||
-        event.rectangle.height < MIN_DIMENSIONS_PX)
-    ) {
-      return false;
-    }
-
-    return true;
+  validate(event: ResizeEvent): boolean {
+    return validateResizing(event);
   }
 
   onResizeEnd1(event: ResizeEvent): void {
     this.style1 = {
+      ...this.style1,
       left: `${event.rectangle.left}px`,
       top: `${event.rectangle.top}px`,
-      width: `${event.rectangle.width}px`,
-      height: `${event.rectangle.height}px`
+      width: `${event.rectangle.width}px`
     };
   }
 
   onResizeEnd2(event: ResizeEvent): void {
     this.style2 = {
+      ...this.style2,
       left: `${event.rectangle.left}px`,
       width: `${event.rectangle.width}px`
     };
@@ -632,26 +601,90 @@ export class CodeEditorComponent implements OnInit {
 
   onResizeEnd3(event: ResizeEvent): void {
     this.style3 = {
+      ...this.style3,
       left: `${event.rectangle.left}px`,
       top: `${event.rectangle.top}px`,
-      width: `${event.rectangle.width}px`,
-      height: `${event.rectangle.height}px`
+      width: `${event.rectangle.width}px`
     };
+  }
+
+  onResizeEnd4(event: ResizeEvent): void {
+    this.style1 = {
+      ...this.style1,
+      bottom: `calc(${this.style4BottomPreviousValue} - ${event.edges.top}px)`,
+      height: 'auto'
+    };
+
+    this.style2 = {
+      ...this.style2,
+      bottom: `calc(${this.style4BottomPreviousValue} - ${event.edges.top}px)`,
+      height: 'auto'
+    };
+
+    this.style3 = {
+      ...this.style3,
+      bottom: `calc(${this.style4BottomPreviousValue} - ${event.edges.top}px)`,
+      height: 'auto'
+    };
+
+    this.style4 = {
+      ...this.style4,
+      top: `calc(${this.style4BTopPreviousValue} + ${event.edges.top}px)`,
+      bottom: 0,
+      height: 'auto'
+    };
+
+    this.style4BottomPreviousValue = `${this.style4BottomPreviousValue} - ${event.edges.top}px`;
+    this.style4BTopPreviousValue = `${this.style4BTopPreviousValue} + ${event.edges.top}px`;
+
+    this.isResizing = false;
   }
 
   onResizing(event: ResizeEvent): void {
     this.isResizing = true;
     this.style1 = {
+      ...this.style1,
       width: `${event.rectangle.left}px`
     };
 
     this.style2 = {
+      ...this.style2,
       width: `${event.rectangle.width}px`
     };
 
     this.style3 = {
+      ...this.style3,
       left: `${event.rectangle.left + event.rectangle.width!}px`,
       width: `calc(100% - ${event.rectangle.left + event.rectangle.width!}px)`
+    };
+  }
+
+  onResizingTerminal(event: ResizeEvent): void {
+    this.isResizing = true;
+
+    this.style4 = {
+      ...this.style4,
+      top: `calc(${this.style4BTopPreviousValue} + ${event.edges.top}px)`,
+      bottom: 0,
+      height: 'auto'
+    };
+
+    this.style1 = {
+      ...this.style1,
+      bottom: `calc(${this.style4BottomPreviousValue} - ${event.edges.top}px)`,
+      height: 'auto'
+    };
+
+    this.style2 = {
+      ...this.style2,
+      bottom: `calc(${this.style4BottomPreviousValue} - ${event.edges.top}px)`,
+      height: 'auto'
+    };
+
+    this.style3 = {
+      ...this.style3,
+      bottom: `calc(${this.style4BottomPreviousValue} - ${event.edges.top}px)`,
+      height: 'auto'
     };
   }
 }

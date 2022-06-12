@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class TerminalComponent implements OnChanges {
   @Input() text$: BehaviorSubject<string> | undefined;
+  @Input() isResizing = new BehaviorSubject(false);
 
   constructor() {}
   ngOnChanges(changes: SimpleChanges): void {}

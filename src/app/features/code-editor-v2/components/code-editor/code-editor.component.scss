@@ -14,7 +14,7 @@
   border: 2px solid black;
   width: 100%;
   box-sizing: border-box;
-  height: 70vh; /* Viewport-relative units */
+  height: 100%;
 
   &.loader {
     display: flex;
@@ -26,7 +26,7 @@
 .editor {
   display: flex;
   flex-direction: row;
-  height: 70vh;
+  height: 100vh;
   position: relative;
 }
 
@@ -44,13 +44,9 @@
   overflow: auto;
 }
 
-.button__tree {
-  margin-top: 600px;
-}
-
 #terminal {
-  display: block;
-  height: 30vh;
+  width: 100%;
+  height: 100%;
 }
 
 #app-editor-picture-component {
@@ -102,7 +98,7 @@
   top: 0;
   left: 0;
   width: calc(100% / 3);
-  height: 100%;
+  height: 70%;
   border: 2px solid black;
 }
 
@@ -111,7 +107,7 @@
   top: 0;
   left: calc(100% / 3);
   width: calc(100% / 3);
-  height: 100%;
+  height: 70%;
   border: 2px solid black;
 }
 
@@ -120,8 +116,18 @@
   top: 0;
   left: calc(100% / 3 * 2);
   width: calc(100% / 3);
-  height: 100%;
+  height: 70%;
   border: 2px solid black;
+}
+
+.element-4 {
+  position: absolute;
+  top: 70%;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  border: 2px solid black;
+  visibility: visible !important;
 }
 
 /*2*/

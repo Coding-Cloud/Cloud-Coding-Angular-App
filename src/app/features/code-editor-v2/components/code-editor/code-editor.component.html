@@ -4,9 +4,9 @@
           <div class="element-1 rectangle-1"
                [ngStyle]="style1"
                mwlResizable
-               [validateResize]="validate1"
+               [validateResize]="validate"
                [enableGhostResize]="true"
-               [resizeSnapGrid]="{ left: 10, right: 10 }"
+               [resizeSnapGrid]="{ left: 10, right: 10, bottom: 10  }"
                (resizeEnd)="onResizeEnd1($event)"
                (resizing)="onResizing($event)">
               <span *ngIf="!isLoading" class="editor__tree d-flex flex-column">
@@ -23,9 +23,9 @@
             class="element-2 rectangle-1"
             [ngStyle]="style2"
             mwlResizable
-            [validateResize]="validate2"
+            [validateResize]="validate"
             [enableGhostResize]="true"
-            [resizeSnapGrid]="{ left: 10, right: 10 }"
+            [resizeSnapGrid]="{ left: 10, right: 10, bottom: 10  }"
             (resizeEnd)="onResizeEnd2($event)"
             (resizing)="onResizing($event)"
           >
@@ -54,18 +54,34 @@
             class="element-3 rectangle-1"
             [ngStyle]="style3"
             mwlResizable
-            [validateResize]="validate3"
+            [validateResize]="validate"
             [enableGhostResize]="true"
-            [resizeSnapGrid]="{ left: 10, right: 10 }"
+            [resizeSnapGrid]="{ left: 10, right: 10, bottom: 10 }"
             (resizeEnd)="onResizeEnd3($event)"
             (resizing)="onResizing($event)"
           >
             <app-front-view [isResize]="isResizing" class="iframe-view" *ngIf="!(loadingIframe$ | async) && baseUrlPath" [url]="baseUrlPath" [projectUniqueName]="uniqueName" ></app-front-view>·
             <app-spinner class="iframe-view loader" *ngIf="(loadingIframe$ | async)"></app-spinner>
           </div>
+          <div
+            class="element-4 rectangle-1"
+            [ngStyle]="style4"
+            mwlResizable
+            [validateResize]="validate"
+            [enableGhostResize]="false"
+            [resizeSnapGrid]="{ top: 10, bottom: 10 }"
+            (resizeEnd)="onResizeEnd4($event)"
+            (resizing)="onResizingTerminal($event)"
+          >
+            <div
+              class="resize-handle-top-2"
+              mwlResizeHandle
+              [resizeEdges]="{ top: true }"
+            ></div>
+            <app-terminal id="terminal" [text$]="codeRunnerSysOut$" ></app-terminal>
+          </div>
         </div>
         <!-- <button class="button__tree" (click)="handleSave()">GOOOO</button>  -->
     </div>
 </div>
 
-<app-terminal id="terminal" [text$]="codeRunnerSysOut$" ></app-terminal>
