@@ -1,5 +1,5 @@
 ARG environment=prod
-FROM node:16 as node
+FROM node:16.15.0 as node
 ARG environment
 WORKDIR /app
 COPY . .
