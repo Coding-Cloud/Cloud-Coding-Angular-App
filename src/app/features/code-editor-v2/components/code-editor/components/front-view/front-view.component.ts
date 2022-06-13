@@ -82,8 +82,11 @@ export class FrontViewComponent implements OnInit {
     if (location !== undefined) {
       this.iframeElement?.nativeElement.contentWindow?.postMessage(
         'Request DOM manipulation',
-        `https://${this.projectUniqueName}.dev.cloudcoding.fr`
+        `*`
       );
+      /*this.iframeElement?.nativeElement.contentWindow?.addEventListener('click', () => {
+        console.log('je suis un event on click');
+      });*/
 
       window.addEventListener('message', (event) => {
         if (
