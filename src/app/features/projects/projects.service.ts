@@ -15,6 +15,10 @@ export class ProjectsService {
     return this.http.get<Project[]>(API_RESOURCE_URI.PROJECTS_OWNED);
   }
 
+  getJoinedProjects(): Observable<Project[]> {
+    return this.http.get<Project[]>(API_RESOURCE_URI.PROJECTS_JOINED);
+  }
+
   searchProjectsDialog(name: string): Observable<Project[]> {
     return this.http.get<Project[]>(API_RESOURCE_URI.PROJECTS_SEARCH, {
       params: HttpTools.objectToHttpParams({ name })
@@ -26,36 +30,6 @@ export class ProjectsService {
     limit: number,
     search?: string
   ): Observable<{ projects: Project[]; totalResults: number }> {
-    /* return of({
-      projects: [
-        {
-          id: '1',
-          creatorId: '1',
-          groupId: '1',
-          name: 'Project 1',
-          createdAt: new Date(),
-          lastVersion: 1,
-          globalVisibility: ProjectVisibility.PUBLIC,
-          language: ProjectLanguage.ANGULAR,
-          status: ProjectStatus.RUNNING,
-          uniqueName: 'project-1'
-        },
-        {
-          id: '2',
-          creatorId: '2',
-          groupId: '2',
-          name: 'Project 2',
-          createdAt: new Date(),
-          lastVersion: 1,
-          globalVisibility: ProjectVisibility.GUEST,
-          language: ProjectLanguage.QUARKUS,
-          status: ProjectStatus.INITIALISING,
-          uniqueName: 'project-2'
-        }
-      ],
-      totalResults: 2
-    }); */
-
     return this.http.get<{ projects: Project[]; totalResults: number }>(
       API_RESOURCE_URI.PROJECTS,
       {

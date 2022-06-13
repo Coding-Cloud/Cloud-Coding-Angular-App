@@ -10,6 +10,7 @@ import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { ProjectSearchDialogComponent } from './project-search-dialog/project-search-dialog.component';
 import { ProjectSearchComponent } from './project-search/project-search.component';
 import { CommentsModule } from '../social/comments/comments.module';
+import { ProjectViewCardComponent } from './project-list/project-view-card/project-view-card.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { CommentsModule } from '../social/comments/comments.module';
     ProjectViewComponent,
     ProjectEditComponent,
     ProjectSearchDialogComponent,
-    ProjectSearchComponent
+    ProjectSearchComponent,
+    ProjectViewCardComponent
   ],
   exports: [ProjectSearchComponent],
   imports: [
