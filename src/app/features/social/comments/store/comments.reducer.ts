@@ -20,7 +20,7 @@ import {
 } from './comments.actions';
 
 export function sortByCreatedAt(a: Comment, b: Comment): number {
-  return isBefore(a.createdAt, b.createdAt) ? -1 : 1;
+  return isBefore(new Date(a.createdAt), new Date(b.createdAt)) ? -1 : 1;
 }
 
 export const commentsAdapter: EntityAdapter<Comment> =
