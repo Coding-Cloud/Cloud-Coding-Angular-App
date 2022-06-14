@@ -12,6 +12,7 @@ export interface CreateMessage {
   content: string;
 }
 
-export interface UpdateMessage extends CreateMessage {
+export interface UpdateMessage {
   id: string;
+  content: string;
 }
