@@ -6,3 +6,12 @@ export interface Message {
   content: string;
   createdAt: Date;
 }
+
+export interface CreateMessage {
+  conversationId: string;
+  content: string;
+}
+
+export interface UpdateMessage extends CreateMessage {
+  id: string;
+}

@@ -73,6 +73,7 @@ import { CommentsEffects } from '../features/social/comments/store/comments.effe
 import { FollowersEffects } from '../features/social/users/store/follower.effects';
 import { FriendRequestsEffects } from '../features/social/friendships/store/friend-requests.effects';
 import { FriendshipsEffects } from '../features/social/friendships/store/friendships.effects';
+import { ConversationEffects } from '../features/conversation/store/conversation.effects';
 
 export {
   TitleService,
@@ -122,7 +123,8 @@ export {
       CommentsEffects,
       FollowersEffects,
       FriendRequestsEffects,
-      FriendshipsEffects
+      FriendshipsEffects,
+      ConversationEffects
     ]),
     environment.production
       ? []
