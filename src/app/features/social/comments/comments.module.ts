@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
     CommentViewComponent,
     CustomMenuComponent
   ],
-  exports: [CommentEditorComponent, CommentViewComponent],
+  exports: [CommentEditorComponent, CommentViewComponent, CustomMenuComponent],
   imports: [CommonModule, SharedModule, NgxEditorModule, RouterModule]
 })
 export class CommentsModule {}

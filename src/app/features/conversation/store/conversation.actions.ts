@@ -6,9 +6,14 @@ import {
   UpdateMessage
 } from '../../../shared/models/message.model';
 
-export const actionConversationsRetrieveOne = createAction(
+export const actionConversationsRetrieveOneByFriendship = createAction(
   '[Conversations] Retrieve One',
-  props<{ conversationId: string }>()
+  props<{ friendshipId: string }>()
+);
+
+export const actionConversationsRetrieveOneByGroup = createAction(
+  '[Conversations] Retrieve One',
+  props<{ groupId: string }>()
 );
 
 export const actionConversationsRetrieveOneSuccess = createAction(
@@ -22,7 +27,8 @@ export const actionConversationsRetrieveOneError = createAction(
 );
 
 export const actionConversationsRetrieveAllMessages = createAction(
-  '[Conversations] Retrieve All Messages'
+  '[Conversations] Retrieve All Messages',
+  props<{ conversationId: string }>()
 );
 
 export const actionConversationsRetrieveAllMessagesSuccess = createAction(
@@ -65,17 +71,17 @@ export const actionConversationsUpdateMessageError = createAction(
   props<{ message: string }>()
 );
 
-export const actionConversationsRemoveConversation = createAction(
-  '[Conversations] Remove Conversation',
-  props<{ conversationId: string }>()
+export const actionConversationsRemoveMessage = createAction(
+  '[Conversations] Remove Message',
+  props<{ messageId: string }>()
 );
 
-export const actionConversationsRemoveConversationSuccess = createAction(
-  '[Conversations] Remove Conversation Success',
-  props<{ conversationId: string }>()
+export const actionConversationsRemoveMessageSuccess = createAction(
+  '[Conversations] Remove Message Success',
+  props<{ messageId: string }>()
 );
 
-export const actionConversationsRemoveConversationError = createAction(
-  '[Conversations] Remove Conversation Error',
+export const actionConversationsRemoveMessageError = createAction(
+  '[Conversations] Remove Message Error',
   props<{ message: string }>()
 );

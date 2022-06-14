@@ -5,10 +5,12 @@ import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { Message } from '../../../shared/models/message.model';
 import { Action, createReducer, on } from '@ngrx/store';
 import {
+  actionConversationsRemoveMessageSuccess,
   actionConversationsRetrieveAllMessages,
   actionConversationsRetrieveAllMessagesError,
   actionConversationsRetrieveAllMessagesSuccess,
-  actionConversationsRetrieveOne,
+  actionConversationsRetrieveOneByFriendship,
+  actionConversationsRetrieveOneByGroup,
   actionConversationsRetrieveOneError,
   actionConversationsRetrieveOneSuccess,
   actionConversationsSendMessageSuccess,
@@ -39,14 +41,18 @@ export const initialState: ConversationState = {
 
 const reducer = createReducer(
   initialState,
-  on(actionConversationsRetrieveOne, (state) => ({
-    ...state,
-    conversation: {
-      id: '0',
-      createdAt: new Date()
-    },
-    conversationsLoading: true
-  })),
+  on(
+    actionConversationsRetrieveOneByFriendship,
+    actionConversationsRetrieveOneByGroup,
+    (state) => ({
+      ...state,
+      conversation: {
+        id: '0',
+        createdAt: new Date()
+      },
+      conversationsLoading: true
+    })
+  ),
   on(actionConversationsRetrieveOneSuccess, (state, { conversation }) => ({
     ...state,
     conversation,
@@ -77,6 +83,10 @@ const reducer = createReducer(
   on(actionConversationsUpdateMessageSuccess, (state, { message }) => ({
     ...state,
     messages: messagesAdapter.upsertOne(message, state.messages)
+  })),
+  on(actionConversationsRemoveMessageSuccess, (state, { messageId }) => ({
+    ...state,
+    messages: messagesAdapter.removeOne(messageId, state.messages)
   }))
 );
 
