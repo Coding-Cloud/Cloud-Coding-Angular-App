@@ -5,6 +5,7 @@ import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { Message } from '../../../shared/models/message.model';
 import { Action, createReducer, on } from '@ngrx/store';
 import {
+  actionConversationsMessagesReceived,
   actionConversationsRemoveMessageSuccess,
   actionConversationsRetrieveAllMessages,
   actionConversationsRetrieveAllMessagesError,
@@ -76,10 +77,14 @@ const reducer = createReducer(
     ...state,
     messagesLoading: false
   })),
-  on(actionConversationsSendMessageSuccess, (state, { message }) => ({
-    ...state,
-    messages: messagesAdapter.addOne(message, state.messages)
-  })),
+  on(
+    actionConversationsSendMessageSuccess,
+    actionConversationsMessagesReceived,
+    (state, { message }) => ({
+      ...state,
+      messages: messagesAdapter.addOne(message, state.messages)
+    })
+  ),
   on(actionConversationsUpdateMessageSuccess, (state, { message }) => ({
     ...state,
     messages: messagesAdapter.upsertOne(message, state.messages)

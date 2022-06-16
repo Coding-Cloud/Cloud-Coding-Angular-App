@@ -36,6 +36,11 @@ export const actionConversationsRetrieveAllMessagesSuccess = createAction(
   props<{ messages: Message[] }>()
 );
 
+export const actionConversationsMessagesReceived = createAction(
+  '[Conversations] Message Received',
+  props<{ message: Message }>()
+);
+
 export const actionConversationsRetrieveAllMessagesError = createAction(
   '[Conversations] Retrieve All Messages Error',
   props<{ message: string }>()
@@ -63,7 +68,7 @@ export const actionConversationsUpdateMessage = createAction(
 
 export const actionConversationsUpdateMessageSuccess = createAction(
   '[Conversations] Update Message Success',
-  props<{ message: Message }>()
+  props<{ message: UpdateMessage }>()
 );
 
 export const actionConversationsUpdateMessageError = createAction(
