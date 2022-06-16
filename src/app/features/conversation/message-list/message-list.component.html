@@ -1,1 +1,15 @@
-<p>message-list works!</p>
+<mat-card>
+  <mat-card-content
+    *ngIf='conversationLoaded((conversationLoading$ | async),(messageListLoading$ | async))'
+    style='max-height:500px; overflow: auto'
+  >
+    <div class='row'>
+      <div *ngFor='let message of messageList$ | async' [class]='determineMessageClass(message)'>
+        <cc-message-view [message]='message' [displayUserLink]='!isMessageFromCurrentUser(message)'></cc-message-view>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-content *ngIf='!conversationLoaded((conversationLoading$ | async),(messageListLoading$ | async))'>
+    <mat-spinner></mat-spinner>
+  </mat-card-content>
+</mat-card>

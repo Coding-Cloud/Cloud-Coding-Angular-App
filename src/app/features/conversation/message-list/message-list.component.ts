@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Conversation } from '../../../shared/models/conversation.model';
 import { Message } from '../../../shared/models/message.model';
@@ -19,7 +19,7 @@ import { selectUser } from '../../../core/auth/auth.selectors';
   styleUrls: ['./message-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MessageListComponent implements OnInit {
+export class MessageListComponent {
   conversation$: Observable<Conversation>;
   messageList$: Observable<Message[]>;
   conversationLoading$: Observable<boolean>;
@@ -51,5 +51,21 @@ export class MessageListComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  conversationLoaded(
+    conversationLoading: boolean,
+    messageListLoading: boolean
+  ): boolean {
+    return !conversationLoading && !messageListLoading;
+  }
+
+  isMessageFromCurrentUser(message: Message): boolean {
+    return message.userId === this.currentUserId;
+  }
+
+  determineMessageClass(message: Message): string {
+    if (this.isMessageFromCurrentUser(message)) {
+      return 'col-8 align-self-end';
+    }
+    return 'col-8';
+  }
 }
