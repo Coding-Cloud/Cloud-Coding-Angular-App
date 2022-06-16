@@ -18,12 +18,14 @@ export class ConversationService {
   // ---------------------------- CONVERSATIONS ----------------------------
 
   getConversationByFriendship(friendshipId: string): Observable<Conversation> {
+    console.log('friendshipId', friendshipId);
     return this.http.get<Conversation>(
       API_RESOURCE_URI.CONVERSATIONS_FRIENDSHIP + '/' + friendshipId
     );
   }
 
   getConversationByGroup(groupId: string): Observable<Conversation> {
+    console.log('groupId', groupId);
     return this.http.get<Conversation>(
       API_RESOURCE_URI.CONVERSATIONS_GROUP + '/' + groupId
     );
@@ -49,8 +51,10 @@ export class ConversationService {
     return this.http.delete<void>(API_RESOURCE_URI.MESSAGES + '/' + messageId);
   }
 
-  getMessages(conversationId: string): Observable<Message[]> {
-    return this.http.get<Message[]>(
+  getMessages(
+    conversationId: string
+  ): Observable<{ messages: Message[]; totalResults: number }> {
+    return this.http.get<{ messages: Message[]; totalResults: number }>(
       API_RESOURCE_URI.MESSAGES + '/' + conversationId
     );
   }

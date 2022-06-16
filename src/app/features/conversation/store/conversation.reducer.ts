@@ -87,7 +87,13 @@ const reducer = createReducer(
   ),
   on(actionConversationsUpdateMessageSuccess, (state, { message }) => ({
     ...state,
-    messages: messagesAdapter.upsertOne(message, state.messages)
+    messages: messagesAdapter.updateOne(
+      {
+        id: message.id,
+        changes: { content: message.content }
+      },
+      state.messages
+    )
   })),
   on(actionConversationsRemoveMessageSuccess, (state, { messageId }) => ({
     ...state,

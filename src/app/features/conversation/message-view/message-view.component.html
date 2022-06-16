@@ -1,4 +1,4 @@
-<mat-card *ngIf='editMode === false' [class]='message.userId === currentUserId ? "message-owned":""'>
+<div *ngIf='editMode === false'>
   <mat-card-header>
     <mat-card-subtitle class='d-flex align-items-center' *ngIf='displayUserLink'>
       <mat-icon>account_circle</mat-icon>
@@ -11,15 +11,15 @@
       <ngx-editor [editor]='editorView' formControlName='messageContentView'></ngx-editor>
     </form>
   </mat-card-content>
-  <mat-card-subtitle>
-    <span>{{message.createdAt | date: 'dd MMM yyyy HH:mm:ss'}}</span>
-    <button mat-icon-button color='accent' *ngIf='message.userId === currentUserId' (click)='onEditSwitch()'>
-      <mat-icon>edit</mat-icon>
-    </button>
-    <button mat-icon-button color='warn' *ngIf='message.userId === currentUserId' (click)='onDelete()'>
-      <mat-icon>delete</mat-icon>
-    </button>
-  </mat-card-subtitle>
-</mat-card>
+    <mat-card-subtitle>
+      <span>{{message.createdAt | date: 'dd MMM yyyy HH:mm:ss'}}</span>
+      <button mat-icon-button color='accent' *ngIf='message.userId === currentUserId' (click)='onEditSwitch()'>
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color='warn' *ngIf='message.userId === currentUserId' (click)='onDelete()'>
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-card-subtitle>
+</div>
 <cc-message-editor *ngIf='editMode === true' [initialMessage]='message' (submitForm)='onUpdateSubmit($event.content)'
                    (cancel)='onEditSwitch()'></cc-message-editor>

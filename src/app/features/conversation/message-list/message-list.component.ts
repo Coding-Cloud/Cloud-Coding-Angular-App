@@ -52,8 +52,8 @@ export class MessageListComponent {
   }
 
   conversationLoaded(
-    conversationLoading: boolean,
-    messageListLoading: boolean
+    conversationLoading: boolean | null,
+    messageListLoading: boolean | null
   ): boolean {
     return !conversationLoading && !messageListLoading;
   }
@@ -64,8 +64,8 @@ export class MessageListComponent {
 
   determineMessageClass(message: Message): string {
     if (this.isMessageFromCurrentUser(message)) {
-      return 'col-8 align-self-end';
+      return 'row justify-content-end';
     }
-    return 'col-8';
+    return 'row';
   }
 }

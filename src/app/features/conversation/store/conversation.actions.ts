@@ -7,12 +7,12 @@ import {
 } from '../../../shared/models/message.model';
 
 export const actionConversationsRetrieveOneByFriendship = createAction(
-  '[Conversations] Retrieve One',
+  '[Conversations] Retrieve One by friendship',
   props<{ friendshipId: string }>()
 );
 
 export const actionConversationsRetrieveOneByGroup = createAction(
-  '[Conversations] Retrieve One',
+  '[Conversations] Retrieve One by group',
   props<{ groupId: string }>()
 );
 

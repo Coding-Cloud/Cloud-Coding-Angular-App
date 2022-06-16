@@ -83,7 +83,7 @@ export class ConversationEffects {
       ofType(actionConversationsRetrieveAllMessages),
       exhaustMap((action) =>
         this.conversationService.getMessages(action.conversationId).pipe(
-          map((messages) =>
+          map(({ messages, totalResults }) =>
             actionConversationsRetrieveAllMessagesSuccess({ messages })
           ),
           catchError((error) =>

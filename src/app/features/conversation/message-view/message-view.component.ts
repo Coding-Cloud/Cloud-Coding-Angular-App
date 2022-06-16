@@ -67,7 +67,7 @@ export class MessageViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const parsedMessage = JSON.parse(this.message.content);
-    this.messageFormGroup.controls.commentContentView.setValue(
+    this.messageFormGroup.controls.messageContentView.setValue(
       parsedMessage.json ?? toDoc(parsedMessage.html, schema)
     );
   }

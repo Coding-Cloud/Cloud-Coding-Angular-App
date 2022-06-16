@@ -23,6 +23,7 @@ import {
 } from '../store/friendships.actions';
 import { userViewLink } from '../../users/users-routing.module';
 import { selectUser } from '../../../../core/auth/auth.selectors';
+import { actionConversationsRetrieveOneByFriendship } from '../../../conversation/store/conversation.actions';
 
 @Component({
   selector: 'cc-friend-list',
@@ -71,5 +72,13 @@ export class FriendListComponent implements OnInit {
 
   onFriendshipRemove(friendshipId: string): void {
     this.store.dispatch(actionFriendshipsRemoveOne({ friendshipId }));
+  }
+
+  onFriendshipClick(friendship: Friendship): void {
+    this.store.dispatch(
+      actionConversationsRetrieveOneByFriendship({
+        friendshipId: friendship.id
+      })
+    );
   }
 }
