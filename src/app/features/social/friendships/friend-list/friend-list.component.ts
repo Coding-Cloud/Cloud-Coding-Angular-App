@@ -27,6 +27,12 @@ import {
   actionConversationsRetrieveOneByFriendship,
   actionConversationsSendMessage
 } from '../../../conversation/store/conversation.actions';
+import {
+  selectConversation,
+  selectConversationLoading
+} from '../../../conversation/store/conversation.selectors';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'cc-friend-list',
@@ -41,18 +47,27 @@ export class FriendListComponent implements OnInit {
 
   currentUserId = '';
   conversationId = '';
+  conversationLoading$: Observable<boolean>;
 
   friendships$: Observable<Friendship[]>;
   friendshipLoading$: Observable<boolean>;
 
   userViewLink = userViewLink;
 
-  constructor(private store: Store<AppState>, private router: Router) {
+  constructor(
+    private store: Store<AppState>,
+    private router: Router,
+    private dialog: MatDialog
+  ) {
     this.friendships$ = this.store.select(selectAllFriendships);
     this.friendshipLoading$ = this.store.select(selectFriendshipsLoading);
+    this.conversationLoading$ = this.store.select(selectConversationLoading);
 
     this.store.select(selectUser).subscribe((user) => {
       this.currentUserId = user.id;
+    });
+    this.store.select(selectConversation).subscribe((conversation) => {
+      this.conversationId = conversation.id;
     });
   }
 
@@ -75,19 +90,33 @@ export class FriendListComponent implements OnInit {
   }
 
   onFriendshipRemove(friendshipId: string): void {
-    this.store.dispatch(actionFriendshipsRemoveOne({ friendshipId }));
+    this.dialog
+      .open(ConfirmDialogComponent, {
+        data: {
+          title: 'Retirer ami',
+          message: 'Voulez-vous vraiment retirer cet ami ?'
+        }
+      })
+      .afterClosed()
+      .subscribe((confirmed) => {
+        if (confirmed === true) {
+          this.store.dispatch(actionFriendshipsRemoveOne({ friendshipId }));
+        }
+      });
   }
 
   onFriendshipClick(friendship: Friendship): void {
-    this.store.dispatch(
-      actionConversationsRetrieveOneByFriendship({
-        friendshipId: friendship.id
-      })
-    );
+    if (this.showConversation) {
+      this.store.dispatch(
+        actionConversationsRetrieveOneByFriendship({
+          friendshipId: friendship.id
+        })
+      );
+    }
   }
 
   onMessageSend(content: string): void {
-    if (content.length > 0 && this.conversationId.length > 0) {
+    if (content.length > 0) {
       this.store.dispatch(
         actionConversationsSendMessage({
           message: {

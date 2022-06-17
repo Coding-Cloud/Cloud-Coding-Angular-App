@@ -19,8 +19,8 @@
                   {{getOtherUserId(friendship) | username | async}}
                 </a>
               </div>
-              <div mat-line *ngIf='showConversation'>
-                <button mat-icon-button color='warn'>
+              <div mat-line>
+                <button mat-icon-button color='warn' (click)='onFriendshipRemove(friendship.id)'>
                   <mat-icon>delete</mat-icon>
                 </button>
               </div>
@@ -30,21 +30,12 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div *ngIf='showConversation' class='col-8'>
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>
-            Conversation
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <cc-message-list></cc-message-list>
-        </mat-card-content>
-        <mat-card-footer>
-          <cc-message-editor (submitForm)='onMessageSend($event.content)'>
-          </cc-message-editor>
-        </mat-card-footer>
-      </mat-card>
+    <div *ngIf='conversationLoading$ | async' class='col-8'>
+      <mat-progress-bar mode='indeterminate'></mat-progress-bar>
+    </div>
+    <div *ngIf='showConversation && conversationId !== "0"' class='col-8'>
+      <cc-message-list></cc-message-list>
+      <cc-message-editor (submitForm)='onMessageSend($event.content)'></cc-message-editor>
     </div>
   </div>
 </div>

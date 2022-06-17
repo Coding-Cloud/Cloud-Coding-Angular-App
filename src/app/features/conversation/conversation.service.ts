@@ -34,16 +34,16 @@ export class ConversationService {
   // ------------------------------ MESSAGES ------------------------------
 
   sendMessage(message: CreateMessage): Observable<string> {
-    return this.http.post<string>(
+    return this.http.post(
       API_RESOURCE_URI.MESSAGES + '/' + message.conversationId,
-      { ...message, assetId: '' }
+      { ...message },
+      { responseType: 'text' }
     );
   }
 
   updateMessage(message: UpdateMessage): Observable<void> {
     return this.http.patch<void>(API_RESOURCE_URI.MESSAGES + '/' + message.id, {
-      ...message,
-      assetId: ''
+      ...message
     });
   }
 
