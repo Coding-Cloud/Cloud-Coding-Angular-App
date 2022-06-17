@@ -40,6 +40,10 @@
         <mat-card-content>
           <cc-message-list></cc-message-list>
         </mat-card-content>
+        <mat-card-footer>
+          <cc-message-editor (submitForm)='onMessageSend($event.content)'>
+          </cc-message-editor>
+        </mat-card-footer>
       </mat-card>
     </div>
   </div>

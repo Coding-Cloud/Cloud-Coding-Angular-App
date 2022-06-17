@@ -23,7 +23,10 @@ import {
 } from '../store/friendships.actions';
 import { userViewLink } from '../../users/users-routing.module';
 import { selectUser } from '../../../../core/auth/auth.selectors';
-import { actionConversationsRetrieveOneByFriendship } from '../../../conversation/store/conversation.actions';
+import {
+  actionConversationsRetrieveOneByFriendship,
+  actionConversationsSendMessage
+} from '../../../conversation/store/conversation.actions';
 
 @Component({
   selector: 'cc-friend-list',
@@ -37,6 +40,7 @@ export class FriendListComponent implements OnInit {
   socialFriendshipsLink = socialFriendshipsLink;
 
   currentUserId = '';
+  conversationId = '';
 
   friendships$: Observable<Friendship[]>;
   friendshipLoading$: Observable<boolean>;
@@ -80,5 +84,18 @@ export class FriendListComponent implements OnInit {
         friendshipId: friendship.id
       })
     );
+  }
+
+  onMessageSend(content: string): void {
+    if (content.length > 0 && this.conversationId.length > 0) {
+      this.store.dispatch(
+        actionConversationsSendMessage({
+          message: {
+            content,
+            conversationId: this.conversationId
+          }
+        })
+      );
+    }
   }
 }

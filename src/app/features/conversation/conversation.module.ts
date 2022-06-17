@@ -14,7 +14,7 @@ import { MessageListComponent } from './message-list/message-list.component';
     MessageEditorComponent,
     MessageListComponent
   ],
-  exports: [MessageListComponent],
+  exports: [MessageListComponent, MessageEditorComponent],
   imports: [
     CommonModule,
     SharedModule,
