@@ -11,6 +11,9 @@ export const API_RESOURCE_URI = {
   COMMENTS: `${env.apiUrl}/comments`,
   COMMENTS_PROJECT: `${env.apiUrl}/comments/project`,
   COMMENTS_USER: `${env.apiUrl}/comments/user`,
+  CONVERSATIONS: `${env.apiUrl}/conversations`,
+  CONVERSATIONS_FRIENDSHIP: `${env.apiUrl}/conversations/friendship`,
+  CONVERSATIONS_GROUP: `${env.apiUrl}/conversations/group`,
   FOLLOWERS_FOLLOWERS: (userId: string) =>
     `${env.apiUrl}/followers/${userId}/followers`,
   FOLLOWERS_FOLLOWINGS: (userId: string) =>

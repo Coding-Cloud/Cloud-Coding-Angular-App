@@ -38,6 +38,8 @@ import {
 } from '../shared/models/friendship.model';
 import { friendRequestsReducer } from '../features/social/friendships/store/friend-requests.reducer';
 import { friendshipsReducer } from '../features/social/friendships/store/friendships.reducer';
+import { ConversationState } from '../shared/models/conversation.model';
+import { conversationReducer } from '../features/conversation/store/conversation.reducer';
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
@@ -53,7 +55,8 @@ export const reducers: ActionReducerMap<AppState> = {
   router: routerReducer,
   followers: followersReducer,
   friendRequests: friendRequestsReducer,
-  friendships: friendshipsReducer
+  friendships: friendshipsReducer,
+  conversation: conversationReducer
 };
 
 export const metaReducers: MetaReducer<AppState>[] = [
@@ -89,6 +92,11 @@ export const selectCommentsState = createFeatureSelector<
   AppState,
   CommentsState
 >('comments');
+
+export const selectConversationState = createFeatureSelector<
+  AppState,
+  ConversationState
+>('conversation');
 
 export const selectProjectsState = createFeatureSelector<
   AppState,
@@ -148,4 +156,5 @@ export interface AppState {
   followers: FollowersState;
   friendRequests: FriendRequestsState;
   friendships: FriendshipsState;
+  conversation: ConversationState;
 }

@@ -1,0 +1,15 @@
+<mat-card>
+  <mat-card-content
+    *ngIf='conversationLoaded((conversationLoading$ | async),(messageListLoading$ | async))'
+    style='max-height:650px; overflow: auto'
+  >
+    <div *ngFor='let message of messageList$ | async' [class]='determineMessageClass(message)'>
+      <div class='col-8'>
+        <cc-message-view [message]='message' [displayUserLink]='!isMessageFromCurrentUser(message)'></cc-message-view>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-content *ngIf='!conversationLoaded((conversationLoading$ | async),(messageListLoading$ | async))'>
+    <mat-spinner></mat-spinner>
+  </mat-card-content>
+</mat-card>
