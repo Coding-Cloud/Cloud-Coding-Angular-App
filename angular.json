@@ -83,9 +83,9 @@
                 {
                   "type": "bundle",
                   "name": "main",
-                  "baseline": "1024kb",
-                  "maximumWarning": "250kb",
-                  "maximumError": "512kb"
+                  "baseline": "2048kb",
+                  "maximumWarning": "512kb",
+                  "maximumError": "1024kb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -131,9 +131,9 @@
                 {
                   "type": "bundle",
                   "name": "main",
-                  "baseline": "1024kb",
-                  "maximumWarning": "250kb",
-                  "maximumError": "512kb"
+                  "baseline": "2048kb",
+                  "maximumWarning": "512kb",
+                  "maximumError": "1024kb"
                 },
                 {
                   "type": "anyComponentStyle",
