@@ -32,6 +32,14 @@ import { UserSearchDialogComponent } from '../../social/users/user-search-dialog
 import { Project } from '../../../shared/models/project.model';
 import { map } from 'rxjs/operators';
 import { userViewLink } from '../../social/users/users-routing.module';
+import {
+  selectConversation,
+  selectConversationLoading
+} from '../../conversation/store/conversation.selectors';
+import {
+  actionConversationsRetrieveOneByGroup,
+  actionConversationsSendMessage
+} from '../../conversation/store/conversation.actions';
 
 @Component({
   selector: 'cc-group-view',
@@ -54,6 +62,9 @@ export class GroupViewComponent implements OnInit {
   projectViewLink = `/${this.rootLinks.projets.path}/${this.projectsLinks.viewProject.path}`;
   userViewLink = userViewLink;
 
+  conversationId = '';
+  conversationLoading$: Observable<boolean>;
+
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>,
@@ -61,11 +72,20 @@ export class GroupViewComponent implements OnInit {
   ) {
     this.group$ = this.store.pipe(select(selectCurrentGroup));
     this.group$.subscribe((group) => {
-      this.groupOwnerId = group.ownerId;
+      if (group.id !== '') {
+        this.groupOwnerId = group.ownerId;
+        this.store.dispatch(
+          actionConversationsRetrieveOneByGroup({ groupId: group.id })
+        );
+      }
     });
     this.members$ = this.store.pipe(select(selectCurrentGroupMembers));
     this.editMode$ = this.store.pipe(select(selectCurrentGroupIsEditMode));
     this.messages$ = this.store.pipe(select(selectCurrentGroupMessages));
+    this.conversationLoading$ = this.store.select(selectConversationLoading);
+    this.store.select(selectConversation).subscribe((conversation) => {
+      this.conversationId = conversation.id;
+    });
     this.currentUser$ = this.store.pipe(select(selectUser));
     this.currentUser$.subscribe((user) => {
       this.currentUserId = user.id;
@@ -178,5 +198,18 @@ export class GroupViewComponent implements OnInit {
         });
       });
     subscription.unsubscribe();
+  }
+
+  onMessageSend(content: string): void {
+    if (content.length > 0) {
+      this.store.dispatch(
+        actionConversationsSendMessage({
+          message: {
+            content,
+            conversationId: this.conversationId
+          }
+        })
+      );
+    }
   }
 }
