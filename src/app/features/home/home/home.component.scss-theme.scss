@@ -8,7 +8,8 @@
 
   cc-home {
     .background {
-      color: mat.get-color-from-palette($foreground, text);
+      height: 100%;
+      color: #fefefe;
       background-color: mat.get-color-from-palette($background, background);
 
       .gradient {
@@ -19,30 +20,6 @@
             mat.get-color-from-palette($background, background, 1) 100%
           );
         }
-      }
-    }
-
-    .follow-releases,
-    .contributors {
-      p {
-        background-color: mat.get-color-from-palette($background, background);
-
-        a {
-          color: mat.get-color-from-palette($accent);
-
-          &:hover {
-            color: mat.get-color-from-palette($accent, darker);
-          }
-        }
-      }
-    }
-
-    .contributors {
-      img {
-        border-color: mat.get-color-from-palette(
-          $background,
-          background
-        ) !important;
       }
     }
   }
