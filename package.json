@@ -64,6 +64,7 @@
     "browser-detect": "^0.2.28",
     "buffer": "^6.0.3",
     "date-fns": "^2.28.0",
+    "lottie-web": "^5.9.4",
     "monaco-editor": "^0.33.0",
     "ngx-editor": "~12.0.0",
     "ngx-lottie": "^7.1.0",
