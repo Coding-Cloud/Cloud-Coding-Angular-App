@@ -2,46 +2,46 @@
 
   <mat-sidenav-container>
 
-    <mat-sidenav #sidenav mode="push">
-      <div class="branding"><img [src]="logo" [alt]="logo" />
+    <mat-sidenav #sidenav mode='push'>
+      <div class='branding'><img [src]='logo' [alt]='logo' />
         <span>{{ appName }}</span></div>
       <mat-nav-list>
         <mat-list-item
-          *ngFor="let link of(isAuthenticated$ | async) ? navigationSideMenu : noAuthLinks(navigationSideMenu)"
-          (click)="sidenav.close()" [routerLink]="[link.path]"
-          routerLinkActive="active">
+          *ngFor='let link of(isAuthenticated$ | async) ? navigationSideMenu : noAuthLinks(navigationSideMenu)'
+          (click)='sidenav.close()' [routerLink]='[link.path]'
+          routerLinkActive='active'>
           {{link.name }}
         </mat-list-item>
       </mat-nav-list>
 
     </mat-sidenav>
-    <div class="wrapper">
+    <div class='wrapper'>
 
-      <div class="toolbar mat-elevation-z4 position-fixed">
-        <mat-toolbar color="primary">
-          <button mat-icon-button class="d-md-none" (click)="sidenav.open()">
-            <fa-icon icon="bars"></fa-icon>
+      <div class='toolbar mat-elevation-z4 position-fixed'>
+        <mat-toolbar color='primary'>
+          <button mat-icon-button class='d-md-none' (click)='sidenav.open()'>
+            <fa-icon icon='bars'></fa-icon>
           </button>
 
-          <span [routerLink]="routerLinks.home.path"
-                class="branding spacer center d-inline d-sm-none">
-            <img [src]="logo" [alt]="logo" /></span>
-          <span [routerLink]="routerLinks.home.path"
-                class="branding spacer center d-none d-sm-inline d-md-none">
-            <img [src]="logo" [alt]="logo" />
+          <span [routerLink]='routerLinks.home.path'
+                class='branding spacer center d-inline d-sm-none'>
+            <img [src]='logo' [alt]='logo' /></span>
+          <span [routerLink]='routerLinks.home.path'
+                class='branding spacer center d-none d-sm-inline d-md-none'>
+            <img [src]='logo' [alt]='logo' />
             {{ appName  }}
           </span>
-          <span [routerLink]="routerLinks.home.path"
-                class="branding spacer d-none d-md-inline">
-            <img [src]="logo" [alt]="logo" />
+          <span [routerLink]='routerLinks.home.path'
+                class='branding spacer d-none d-md-inline'>
+            <img [src]='logo' [alt]='logo' />
             {{ appName}}
           </span>
 
-          <span class="d-none d-md-inline">
-            <button mat-button class="nav-button"
-                    *ngFor="let link of (isAuthenticated$ | async) ? navigationMenu : noAuthLinks(navigationMenu)"
-                    [routerLink]="[link.path]"
-                    routerLinkActive="active">
+          <span class='d-none d-md-inline'>
+            <button mat-button class='nav-button'
+                    *ngFor='let link of (isAuthenticated$ | async) ? navigationMenu : noAuthLinks(navigationMenu)'
+                    [routerLink]='[link.path]'
+                    routerLinkActive='active'>
               {{link.name }}
             </button>
           </span>
@@ -49,62 +49,66 @@
             <mat-icon>message</mat-icon>
           </button>
           <button mat-icon-button
-                  [matMenuTriggerFor]="toolbarUserMenu">
-            <fa-icon icon="user-circle"></fa-icon>
+                  [matMenuTriggerFor]='toolbarUserMenu'>
+            <fa-icon icon='user-circle'></fa-icon>
           </button>
-          <mat-menu #toolbarUserMenu="matMenu">
-            <button mat-menu-item [routerLink]="routerLinks.auth.path" *ngIf="!(isAuthenticated$ | async)">
+          <mat-menu #toolbarUserMenu='matMenu'>
+            <button mat-menu-item [routerLink]='routerLinks.auth.path' *ngIf='!(isAuthenticated$ | async)'>
               <mat-icon>
                 login
               </mat-icon>
               <span>Se connecter</span>
             </button>
-            <button mat-menu-item [routerLink]='routerLinks.auth.path+"/register"' *ngIf="!(isAuthenticated$ | async)">
+            <button mat-menu-item [routerLink]='routerLinks.auth.path+"/register"' *ngIf='!(isAuthenticated$ | async)'>
               <mat-icon>
                 person_add
               </mat-icon>
               <span>S'inscrire</span>
             </button>
-            <a mat-menu-item [routerLink]="[userViewLink, currentUserId]" *ngIf="(isAuthenticated$ | async)">
+            <a mat-menu-item [routerLink]='[userViewLink, currentUserId]' *ngIf='(isAuthenticated$ | async)'>
               <mat-icon>
                 face
               </mat-icon>
               <span>Mon profil</span>
             </a>
-            <button mat-menu-item (click)="onLogoutClick()" *ngIf="(isAuthenticated$ | async)">
+            <button mat-menu-item (click)='onLogoutClick()' *ngIf='(isAuthenticated$ | async)'>
               <mat-icon>
-                <fa-icon icon="power-off"></fa-icon>
+                <fa-icon icon='power-off'></fa-icon>
               </mat-icon>
               <span>Se déconnecter</span>
             </button>
           </mat-menu>
 
-          <button mat-icon-button [routerLink]="routerLinks.settings.path" class="d-none d-sm-inline">
-            <fa-icon icon="cog"></fa-icon>
+          <button mat-icon-button [routerLink]='routerLinks.settings.path' class='d-none d-sm-inline'>
+            <fa-icon icon='cog'></fa-icon>
           </button>
         </mat-toolbar>
       </div>
 
-      <div class="content" [@routeAnimations]="o.isActivated && o.activatedRoute.routeConfig?.data?.title">
-        <router-outlet #o="outlet"></router-outlet>
+      <div class='content' [@routeAnimations]='o.isActivated && o.activatedRoute.routeConfig?.data?.title'>
+        <router-outlet #o='outlet'></router-outlet>
       </div>
 
-      <div class="footer">
-        <div class="row">
-          <div class="col-sm-12 links">
-            <a href="https://github.com/Coding-Cloud" target="_blank" rel="noopener noreferrer">
+      <div class='footer'>
+        <div class='row'>
+          <div class='col-sm-12 links'>
+            <a href='https://github.com/Coding-Cloud' target='_blank' rel='noopener noreferrer'>
               <fa-icon [icon]="['fab','github']"></fa-icon>
               <span>Github</span>
             </a>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12 signature">
-            &#169; <span class="year">{{year}}</span> - Pierre Ebrahim - Noé Larrieu-Lacoste - Rémy Machavoine
-            <br class="d-block d-sm-none">
-            <a href="https://github.com/Coding-Cloud/Cloud-Coding-Angular-App">
-              <fa-icon icon="rocket"></fa-icon>
-              {{version}} <span *ngIf="!isProd">[{{envName}}]</span>
+        <div class='row'>
+          <div class='col-12 signature'>
+            &#169; <span class='year'>{{year}}</span> - <span>
+            <a href='https://github.com/pooetitu' target='_blank'>Pierre Ebrahim</a> -
+            <a href='https://github.com/Nouuu' target='_blank'>Noé Larrieu-Lacoste</a> -
+            <a href='https://github.com/RemyMach' target='_blank'>Rémy Machavoine</a>
+          </span>
+            <br class='d-block d-sm-none'>
+            <a class='a2' href='https://github.com/Coding-Cloud/Cloud-Coding-Angular-App'>
+              <fa-icon icon='rocket'></fa-icon>
+              {{version}} <span *ngIf='!isProd'>[{{envName}}]</span>
             </a>
           </div>
         </div>

@@ -17,7 +17,6 @@ export type NavigationLinks2<T extends string> = {
 
 export const navigation: NavigationLinks2<
   | 'home'
-  | 'features'
   | 'settings'
   | 'examples'
   | 'projets'
@@ -29,10 +28,6 @@ export const navigation: NavigationLinks2<
   home: {
     name: 'Accueil',
     path: 'home'
-  },
-  features: {
-    name: 'Fonctionnalités',
-    path: 'features'
   },
   settings: {
     name: 'Paramètres',
@@ -77,13 +72,6 @@ const routes: Routes = [
     path: navigation.home.path,
     loadChildren: () =>
       import('./features/home/home.module').then((m) => m.HomeModule)
-  },
-  {
-    path: navigation.features.path,
-    loadChildren: () =>
-      import('./features/feature-list/feature-list.module').then(
-        (m) => m.FeatureListModule
-      )
   },
   {
     path: navigation.settings.path,
