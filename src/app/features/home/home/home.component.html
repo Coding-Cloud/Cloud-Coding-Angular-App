@@ -1,30 +1,50 @@
 <div class='background gradient'>
-    <div class='container'>
-      <div class='row justify-content-center'>
-        <h1>Bienvenue sur {{ appName }}</h1>
-      </div>
-      <div class='row mt-4'>
-        <div class='col-12'>
-          <div class='typo'>Le site ou vous pouvez</div>
-          <div class='tw typo'></div>
-          <div class='typo'>En toute liberté !</div>
-        </div>
-        <!--<div class='col-4'>
-
-          <a mat-raised-button class='actions-main' color='primary'
-             [routerLink]='"/" + navigation.features.path'>
-            {{ navigation.features.name }}
-          </a>
-          <a mat-raised-button class='actions-main' color='accent'
-             [routerLink]='"/" + navigation.examples.path'>
-            {{ navigation.examples.name }}
-          </a>
-          <a mat-raised-button class='actions-main' color='warn'
-             [routerLink]='"/" + navigation.settings.path'>
-            {{ navigation.settings.name }}
-          </a>
-        </div>-->
-      </div>
-      
+  <div class='container'>
+    <div class='row justify-content-center'>
+      <h1>Bienvenue sur {{ appName }}</h1>
     </div>
+    <div class='row mt-5 align-items-center'>
+      <div class='col-md-8 col-12'>
+        <div class='typo'>Le site ou vous pouvez</div>
+        <div class='tw1 typo'></div>
+        <div class='typo'>En toute liberté !</div>
+      </div>
+      <div class='col-md-4 col-12'>
+        <ng-lottie [options]='options1'></ng-lottie>
+      </div>
+    </div>
+    <div class='row d-flex justify-content-center mt-5'>
+      <div class='col-12 d-flex justify-content-center mb-5'>
+        <h2>Choisissez un modèle et <strong>codez directement</strong></h2>
+      </div>
+      <div class='col-md-3 col-6' *ngFor='let language of languages'>
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar [class]='language.imgClass'></div>
+            <mat-card-title>{{language.name}}</mat-card-title>
+            <mat-card-subtitle>{{language.techno}}</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+      </div>
+    </div>
+    <div class='row mt-5 align-items-center justify-content-around '>
+      <div class='col-md-4 col-12'>
+        <ng-lottie [options]='options2'></ng-lottie>
+      </div>
+      <div class='col-md-8 col-12'>
+        <div class='typo'>Une infrastructure</div>
+        <div class='tw2 typo'></div>
+      </div>
+    </div>
+    <div class='row mt-5 align-items-center justify-content-around'>
+
+      <div class='col-md-8 col-12'>
+        <div class='typo2'>Imaginé et développé par des étudiants <strong>passionnés</strong>.</div>
+        <div class='typo2'>Construit avec des technologies récentes tel que <span class='tw3'></span></div>
+      </div>
+      <div class='col-md-4 col-12'>
+        <ng-lottie [options]='options3'></ng-lottie>
+      </div>
+    </div>
+  </div>
 </div>

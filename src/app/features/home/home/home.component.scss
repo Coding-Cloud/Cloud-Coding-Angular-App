@@ -2,18 +2,23 @@
 
 h1 {
   text-align: center;
-  font-size: 3em;
+  font-size: 3.5em;
   text-transform: uppercase;
+  text-decoration: underline;
 }
 
 h2 {
   font-size: 1.5em;
-  text-transform: uppercase;
+  text-decoration: underline;
 }
 
 .typo {
   font-size: 3em;
   font-weight: bold;
+}
+
+.typo2 {
+  font-size: 1.5em;
 }
 
 .background {
@@ -128,4 +133,33 @@ h2 {
   .follow-releases {
     margin: 0 auto 40px auto;
   }
+}
+
+.react-image {
+  background-image: url('https://blog.octo.com/wp-content/uploads/2015/12/react-logo-1000-transparent.png');
+  background-size: cover;
+}
+
+.angular-image {
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/640px-Angular_full_color_logo.svg.png');
+  background-size: cover;
+}
+
+.quarkus-image {
+  background-image: url('https://design.jboss.org/quarkus/logo/final/PNG/quarkus_icon_rgb_1024px_default.png');
+  background-size: cover;
+}
+
+mat-card {
+  max-width: 400px;
+  background: #152736 !important;
+  padding: 10px !important;
+}
+
+mat-card-subtitle {
+  color: #fefefe !important;
+  margin-bottom: 0 !important;
+}
+mat-card-title {
+  color: #fefefe !important;
 }

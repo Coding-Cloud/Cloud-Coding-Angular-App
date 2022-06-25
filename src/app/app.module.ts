@@ -9,7 +9,14 @@ import { AppComponent } from './app/app.component';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
+
 registerLocaleData(localeFr);
+
+export function playerFactory() {
+  return player;
+}
 
 @NgModule({
   imports: [
@@ -21,7 +28,9 @@ registerLocaleData(localeFr);
     CoreModule,
 
     // app
-    AppRoutingModule
+    AppRoutingModule,
+    // Lottie file
+    LottieModule.forRoot({ player: playerFactory })
   ],
   declarations: [AppComponent],
   providers: [{ provide: LOCALE_ID, useValue: 'fr-FR' }],
