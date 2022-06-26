@@ -90,3 +90,30 @@ export const actionConversationsRemoveMessageError = createAction(
   '[Conversations] Remove Message Error',
   props<{ message: string }>()
 );
+
+export const actionConversationsInitSocket = createAction(
+  '[Conversations] Init Socket'
+);
+
+export const actionConversationsInitSocketSuccess = createAction(
+  '[Conversations] Init Socket Success'
+);
+
+export const actionConversationsInitSocketError = createAction(
+  '[Conversations] Init Socket Error',
+  props<{ message: string }>()
+);
+
+export const actionConversationsSocketNewMessage = createAction(
+  '[Conversations] Socket New Message',
+  props<{ message: Message }>()
+);
+
+export const actionConversationsSocketError = createAction(
+  '[Conversations] Socket Error',
+  props<{ message: string }>()
+);
+
+export const actionConversationsSocketVoid = createAction(
+  '[Conversations] Socket Void'
+);

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Follower } from '../../../shared/models/follower.model';
 import { API_RESOURCE_URI } from '../../../shared/api-resource-uri/api-resource-uri';
 import { HttpTools } from '../../../shared/http-tools/http-tools';

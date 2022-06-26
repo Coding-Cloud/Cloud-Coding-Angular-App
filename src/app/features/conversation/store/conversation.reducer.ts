@@ -89,7 +89,7 @@ const reducer = createReducer(
     ...state,
     messages: messagesAdapter.updateOne(
       {
-        id: message.id,
+        id: message.messageId,
         changes: { content: message.content }
       },
       state.messages

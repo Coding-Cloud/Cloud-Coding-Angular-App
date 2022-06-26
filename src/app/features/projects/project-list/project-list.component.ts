@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Project, ProjectStatus } from '../../../shared/models/project.model';
+import { Project } from '../../../shared/models/project.model';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../core/core.state';
 import { selectAllProjects } from '../store/projects.selectors';
