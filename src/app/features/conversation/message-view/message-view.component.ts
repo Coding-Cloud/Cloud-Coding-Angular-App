@@ -87,7 +87,7 @@ export class MessageViewComponent implements OnInit, OnDestroy {
     this.store.dispatch(
       actionConversationsUpdateMessage({
         message: {
-          id: this.message.id,
+          messageId: this.message.id,
           content: newContent
         }
       })
