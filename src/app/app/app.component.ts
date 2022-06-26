@@ -17,6 +17,7 @@ import { authGetMe } from '../core/auth/auth.actions';
 import { selectUser } from '../core/auth/auth.selectors';
 import { userViewLink } from '../features/social/users/users-routing.module';
 import { socialFriendshipsLink } from '../features/social/social-routing.module';
+import { actionConversationsInitSocket } from '../features/conversation/store/conversation.actions';
 
 @Component({
   selector: 'cc-root-component',
@@ -63,6 +64,7 @@ export class AppComponent implements OnInit {
     this.isAuthenticated$.subscribe((isAuthenticated) => {
       if (isAuthenticated) {
         this.store.dispatch(authGetMe());
+        this.store.dispatch(actionConversationsInitSocket());
       }
     });
     this.theme$ = this.store.pipe(select(selectEffectiveTheme));
