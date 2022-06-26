@@ -14,6 +14,7 @@ export const API_RESOURCE_URI = {
   CONVERSATIONS: `${env.apiUrl}/conversations`,
   CONVERSATIONS_FRIENDSHIP: `${env.apiUrl}/conversations/friendship`,
   CONVERSATIONS_GROUP: `${env.apiUrl}/conversations/group`,
+  CONVERSATION_SOCKET: `${env.socketUrl}/social-network`,
   FOLLOWERS_FOLLOWERS: (userId: string) =>
     `${env.apiUrl}/followers/${userId}/followers`,
   FOLLOWERS_FOLLOWINGS: (userId: string) =>

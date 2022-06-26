@@ -65,7 +65,7 @@ export class FriendshipsService {
 
   retrieveFriendship(userId: string): Observable<Friendship | null> {
     return this.http
-      .get<Friendship>(API_RESOURCE_URI.FRIENDSHIPS + '/' + userId)
+      .get<Friendship>(API_RESOURCE_URI.FRIENDSHIPS + '/user/' + userId)
       .pipe(
         catchError((error) => {
           if (error.status === 404) {

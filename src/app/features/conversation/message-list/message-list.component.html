@@ -1,8 +1,8 @@
 <mat-card>
   <mat-card-content
+    #scrollable [scrollTop]='scrollable.scrollHeight + 10'
     *ngIf='conversationLoaded((conversationLoading$ | async),(messageListLoading$ | async))'
-    style='max-height:650px; overflow: auto'
-  >
+      style='max-height:650px; overflow: auto;'>
     <div *ngIf='(messageList$ | async)?.length === 0'>
       <h6>Pas de messages envoyés dans cette conversation</h6>
     </div>
