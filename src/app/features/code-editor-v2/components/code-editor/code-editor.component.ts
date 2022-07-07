@@ -20,7 +20,7 @@ import { MonacoTreeElement } from 'src/app/features/monaco-tree/ngx-monaco-tree.
 import { CodeSocketService } from '../../services/code-socket.service';
 import { EditProjectDTO } from '../../services/dto/edit-project-dto';
 import { RenameProjectFolderResource } from '../../services/resource/rename-project-folder-resource';
-import { GetProjectService } from '../../services/get-project.service';
+import { GetProjectFilesService } from '../../services/project-api/get-project-files.service';
 import { DeleteProjectFolderResource } from '../../services/resource/delete-project-folder-resource';
 import { UpdateProjectService } from '../../services/update-project.service';
 import { ExtensionToLanguage } from '../../types/extension-to-language';
@@ -130,7 +130,7 @@ export class CodeEditorComponent implements OnInit {
   constructor(
     private updateProjectService: UpdateProjectService,
     private elementRef: ElementRef,
-    private getProjectService: GetProjectService,
+    private getProjectService: GetProjectFilesService,
     private cd: ChangeDetectorRef,
     private codeSocketService: CodeSocketService,
     private sanitizer: DomSanitizer,

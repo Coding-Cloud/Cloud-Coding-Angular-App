@@ -38,7 +38,7 @@ export class ProjectsService {
           globalVisibility: ProjectVisibility.PUBLIC,
           language: ProjectLanguage.ANGULAR,
           status: ProjectStatus.RUNNING,
-          uniqueName: 'project-1'
+          uniqueName: 'project-api-1'
         },
         {
           id: '2',
@@ -50,7 +50,7 @@ export class ProjectsService {
           globalVisibility: ProjectVisibility.GUEST,
           language: ProjectLanguage.QUARKUS,
           status: ProjectStatus.INITIALISING,
-          uniqueName: 'project-2'
+          uniqueName: 'project-api-2'
         }
       ],
       totalResults: 2

@@ -10,6 +10,7 @@ import { EditorPictureComponent } from './components/code-editor/components/edit
 import { DeveloperListComponent } from './components/code-editor/components/developer-list/developer-list.component';
 import { FrontViewComponent } from './components/code-editor/components/front-view/front-view.component';
 import { ResizableModule } from 'angular-resizable-element';
+import { CodeVersioningComponent } from './components/code-editor/components/code-versioning/code-versioning.component';
 
 const monacoConfig: NgxMonacoEditorConfig = {
   /* defaultOptions: { scrollBeyondLastLine: false }, // pass default options to be used*/
@@ -31,7 +32,8 @@ const monacoConfig: NgxMonacoEditorConfig = {
     TerminalComponent,
     EditorPictureComponent,
     DeveloperListComponent,
-    FrontViewComponent
+    FrontViewComponent,
+    CodeVersioningComponent
   ],
   imports: [
     CommonModule,

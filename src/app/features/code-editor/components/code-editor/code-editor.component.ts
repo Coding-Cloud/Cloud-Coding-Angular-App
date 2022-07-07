@@ -131,7 +131,7 @@ export class CodeEditorComponent implements OnInit {
           this.currentProject
         );
         this.socketProject = copyObject<Project>(this.currentProject);
-        console.log('current project');
+        console.log('current project-api');
         console.log(this.currentProject);
         TreeUtils.renameTreeFolder(
           this.BASE_PROJECT_PATH,

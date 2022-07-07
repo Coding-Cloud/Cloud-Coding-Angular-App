@@ -1,0 +1,68 @@
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 5px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 12px;
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .arrow {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+  }
+}
+
+.active,
+.collapsible:hover {
+  background-color: #777;
+}
+
+.content {
+  font-size: 12px;
+  padding: 0 8px;
+  display: none;
+  background-color: #1d1d1d;
+  ul {
+    padding-inline-start: 0;
+  }
+  li {
+    display: flex;
+    justify-content: flex-start;
+    align-items: start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 3px 0;
+    list-style: none;
+  }
+  .undo-arrow {
+    color: red;
+  }
+  .actual-icon {
+    color: green;
+  }
+  .add-version-icon {
+    color: blue;
+  }
+  .input-add-version {
+    background-color: #777;
+    padding: 2px;
+    padding-left: 0.5rem;
+    // radius for very rounded input
+    border-radius: 5px;
+    color: white;
+  }
+  .input-add-version::placeholder {
+    color: white;
+  }
+}
+
+.clickable {
+  cursor: pointer;
+}
