@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root'
 })
 export class ProjectVersionsService {
-  private baseUrl = `${env.apiUrl}/project-versions`;
+  private baseUrl = `${env.apiUrl}/projects-version`;
 
   constructor(private http: HttpClient) {}
 

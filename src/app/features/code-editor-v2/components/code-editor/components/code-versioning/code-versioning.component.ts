@@ -52,9 +52,13 @@ export class CodeVersioningComponent implements OnInit {
           this.projectVersions$.next(data);
         });
 
-      this.codeSocketService.sendPingToSayCanReceiveDevelopers(
-        this.projectUniqueName
-      );
+      this.codeSocketService
+        .listenProjectVersionHasChanged()
+        .subscribe((data) => {
+          this.projectVersions$.next(data);
+          console.log('listenProjectVersionHasChanged');
+          console.log(data);
+        });
 
       this.getProjectService
         .getProjectIdByUniqueName(this.projectUniqueName)
@@ -81,22 +85,34 @@ export class CodeVersioningComponent implements OnInit {
 
   handleClickRollback(indexVersion: number) {
     if (!this.projectUniqueName || !this.projectId) return;
-
-    const numberVersionRollback =
+    this.emitEventWhenVersionHasChanged();
+    /*const numberVersionRollback =
       this.projectVersions$.value.length - indexVersion;
-    console.log(indexVersion);
-    this.projectVersionsService.changeProjectVersion({
-      projectId: this.projectId,
-      numberVersionRollback
-    });
+    this.projectVersionsService
+      .changeProjectVersion({
+        projectId: this.projectId,
+        numberVersionRollback
+      })
+      .subscribe(() => {
+        this.emitEventWhenVersionHasChanged();
+      });*/
   }
 
   handleClickAddVersion(inputValue: string) {
     if (!this.projectUniqueName || !this.projectId) return;
-    console.log(inputValue);
-    this.projectVersionsService.addProjectVersion({
+    this.emitEventWhenVersionHasChanged();
+    /*this.projectVersionsService.addProjectVersion({
       projectId: this.projectId,
       title: inputValue
-    });
+    })
+      .subscribe(() => {
+        this.emitEventWhenVersionHasChanged();
+      });*/
+  }
+
+  emitEventWhenVersionHasChanged(): void {
+    if (!this.projectUniqueName) return;
+    console.log('emitEventWhenVersionHasChanged');
+    this.codeSocketService.changeVersionEvent(this.projectUniqueName);
   }
 }
