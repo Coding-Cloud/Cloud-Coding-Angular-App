@@ -198,6 +198,11 @@ export class CodeEditorComponent implements OnInit {
           renameProjectFolderResource.newName,
           this.currentProject
         );
+
+        this.hardProjectModification = copyObject<Project>(this.currentProject);
+        this.socketProjectModification = copyObject<Project>(
+          this.currentProject
+        );
         this.socketProject = copyObject<Project>(this.currentProject);
         TreeUtils.renameTreeFolder(
           this.BASE_PROJECT_PATH,
@@ -225,8 +230,6 @@ export class CodeEditorComponent implements OnInit {
       });
 
     this.codeSocketService.listenLogsChanged().subscribe((message: string) => {
-      console.log('message');
-      console.log(message);
       this.codeRunnerSysOut$.next(message);
       this.cd.markForCheck();
     });
@@ -260,15 +263,6 @@ export class CodeEditorComponent implements OnInit {
         .pipe(finalize(() => this.loadingMonacoEditor$.next(false)))
         .subscribe((content) => {
           this.code$.next(content.content);
-          console.log('dans le click folder');
-          console.log(`${this.BASE_PROJECT_PATH}${path}`);
-          console.log(
-            this.currentProject.appFiles[`${this.BASE_PROJECT_PATH}${path}`]
-          );
-          console.log(
-            this.currentProject.appFiles[`${this.BASE_PROJECT_PATH}${path}`]
-              .contents
-          );
 
           this.currentProject.appFiles[
             `${this.BASE_PROJECT_PATH}${path}`
@@ -282,6 +276,7 @@ export class CodeEditorComponent implements OnInit {
     }
 
     this.currentFile.path = `${this.BASE_PROJECT_PATH}${path}`;
+
     if (isFile(this.currentFile.path)) {
       const endFile = this.currentFile.path.split('/').pop()?.split('.').pop();
       const valueInMap = ExtensionToLanguage.get(endFile as string);
@@ -311,6 +306,12 @@ export class CodeEditorComponent implements OnInit {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   handleChange($event: any): void {
     if (!isFile(this.currentFile.path)) {
+      return;
+    }
+    // when click on file that is not changed, just clicked
+    if (
+      this.currentProject.appFiles[this.currentFile.path].contents === $event
+    ) {
       return;
     }
 
@@ -375,7 +376,8 @@ export class CodeEditorComponent implements OnInit {
     Object.entries(this.socketProjectModification.appFiles).forEach((value) => {
       if (
         value[1].folderStatus === FolderStatus.MODIFIED &&
-        value[1].type === 'file'
+        value[1].type === 'file' &&
+        this.currentProject.appFiles[value[0]] !== undefined
       ) {
         const contentProjectModification = value[1].contents.split('\n');
         const contentProjectInitial =
@@ -425,7 +427,12 @@ export class CodeEditorComponent implements OnInit {
           element.edited = true;
           makeInputFocusedAfterOneFocused('inputCreate');
         } else if (event.action === 'rename_file') {
-          element.rename = true;
+          if (element.rename === undefined) {
+            element.rename = new BehaviorSubject(true);
+          } else {
+            element.rename.next(true);
+          }
+
           makeInputFocusedAfterOneFocused('inputRename');
         }
       }
@@ -444,13 +451,15 @@ export class CodeEditorComponent implements OnInit {
         modifications: []
       }
     ];
-    this.currentProject.appFiles[nameComplete] = {
+
+    const newValue: Folder = {
       name: nameComplete.split(this.BASE_PROJECT_PATH)[1],
       type: 'file',
       fullPath: nameComplete,
       contents: '',
       lastModified: Date.now()
     };
+    this.currentProject.appFiles[nameComplete] = newValue;
     TreeUtils.addFolderInTree(
       this.tree,
       this.BASE_PROJECT_PATH,
@@ -466,9 +475,8 @@ export class CodeEditorComponent implements OnInit {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   handleCreateImage(file: { path: string; name: string }) {
-    console.log('on arrive dans le dernier create image');
     const nameComplete = file.path + '/' + file.name;
-    console.log(this.currentProject);
+
     const nameFile = nameComplete.split('/').pop();
     if (nameFile === undefined)
       throw new Error('Uplaod file error in code editor');
@@ -480,8 +488,6 @@ export class CodeEditorComponent implements OnInit {
       contents: '',
       lastModified: Date.now()
     };
-    console.log(this.currentProject);
-    console.log('entre current et tree');
 
     TreeUtils.addFolderInTree(
       this.tree,
@@ -536,6 +542,7 @@ export class CodeEditorComponent implements OnInit {
       newPath,
       this.currentProject
     );
+
     this.socketProject = copyObject<Project>(this.currentProject);
 
     TreeUtils.renameTreeFolder(
@@ -548,6 +555,8 @@ export class CodeEditorComponent implements OnInit {
       oldName: event.path,
       newName: newPath
     });
+    // change file show and content display after rename success
+    this.changeCurrentFile(newPath);
   }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -657,5 +666,29 @@ export class CodeEditorComponent implements OnInit {
       this.style4BottomPreviousValue,
       event.edges.top
     );
+  }
+  private changeCurrentFile(path: string): void {
+    if (isFile(this.currentFile.path)) {
+      this.currentFile.path = `${path}`;
+
+      const endFile = this.currentFile.path.split('/').pop()?.split('.').pop();
+      const valueInMap = ExtensionToLanguage.get(endFile as string);
+      if (valueInMap !== undefined) {
+        this.editorOptions = {
+          theme: 'vs-dark',
+          language: valueInMap,
+          automaticLayout: true
+        };
+      } else {
+        this.editorOptions = {
+          theme: 'vs-dark',
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          language: ExtensionToLanguage.get('default')!,
+          automaticLayout: true
+        };
+      }
+
+      this.currentFile.type = endFile as FileTypes;
+    }
   }
 }

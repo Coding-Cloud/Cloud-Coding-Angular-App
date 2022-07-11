@@ -1,4 +1,4 @@
-<div *ngIf="!rename" (contextmenu)="handleRightClickFile($event)" (click)="toggle()"
+<div *ngIf="!(rename | async)" (contextmenu)="handleRightClickFile($event)" (click)="toggle()"
     [class]="'monaco-tree-row' + (hide ? ' hide ' : ' ') + theme" >
     <span [style]="style"></span>
     <i *ngIf="folder" [class]="'monaco-tree-arrow codicon codicon-chevron-down' + (open ? ' open' : '')"></i>
@@ -6,7 +6,7 @@
     <div class="monaco-tree-name">{{name}}</div>
 </div>
 
-<span *ngIf="rename">
+<span *ngIf="rename | async">
     <div [class]="'monaco-tree-row' + (hide ? ' hide ' : ' ') + theme">
         <input #myInput type="text" id="inputRename" name="name" (focusout)="handleRenameFocusOut(row)"
             (keyup)="handleRenameKeyUp($event)" [value]="name" autofocus />

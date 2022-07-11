@@ -117,12 +117,12 @@ export class TreeUtils {
     const dirReference = tree.find(
       (element) => element.name === oldPathSplit[0]
     );
-    console.log(oldPathSplit);
-    console.log(dirReference);
+
     const folderToRename: MonacoTreeElement = this.getReferenceDirectory(
       oldPathSplit.slice(1),
       dirReference
     );
+
     const lengthContent = folderToRename.content?.length ?? 0;
     folderToRename.fullPath = newPath;
     if (lengthContent > 0) {

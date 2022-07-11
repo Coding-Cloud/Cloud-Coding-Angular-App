@@ -316,7 +316,7 @@ export class CodeEditorComponent implements OnInit {
           element.edited = true;
           this.makeInputFocusedAfterOneFocused('inputCreate');
         } else if (event.action === 'rename_file') {
-          element.rename = true;
+          element.rename.next(true);
           this.makeInputFocusedAfterOneFocused('inputRename');
         }
       }

@@ -56,8 +56,8 @@ export class CodeVersioningComponent implements OnInit {
         .listenProjectVersionHasChanged()
         .subscribe((data) => {
           this.projectVersions$.next(data);
-          console.log('listenProjectVersionHasChanged');
-          console.log(data);
+          //console.log('listenProjectVersionHasChanged');
+          //console.log(data);
         });
 
       this.getProjectService
