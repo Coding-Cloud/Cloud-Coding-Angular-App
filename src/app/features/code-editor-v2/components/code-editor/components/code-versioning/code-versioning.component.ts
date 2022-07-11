@@ -62,8 +62,8 @@ export class CodeVersioningComponent implements OnInit {
 
       this.getProjectService
         .getProjectIdByUniqueName(this.projectUniqueName)
-        .subscribe((projectId) => {
-          this.projectId = projectId;
+        .subscribe((project) => {
+          this.projectId = project.projectId;
         });
     }
   }

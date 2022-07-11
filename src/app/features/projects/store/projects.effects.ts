@@ -5,6 +5,7 @@ import { AppState } from '../../../core/core.state';
 import { ProjectsService } from '../projects.service';
 import {
   actionProjectsAddOne,
+  actionProjectsAddOneCustom,
   actionProjectsAddOneError,
   actionProjectsAddOneSuccess,
   actionProjectsDeleteOne,
@@ -96,6 +97,22 @@ export class ProjectsEffects {
       ofType(actionProjectsAddOne),
       exhaustMap((action) =>
         this.projectsService.addProject(action.project).pipe(
+          map((projectId: string) =>
+            actionProjectsAddOneSuccess({ projectId })
+          ),
+          catchError((error) =>
+            of(actionProjectsAddOneError({ message: error.message }))
+          )
+        )
+      )
+    )
+  );
+
+  addOneCustom = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionProjectsAddOneCustom),
+      exhaustMap((action) =>
+        this.projectsService.addProjectCustom(action.project).pipe(
           map((projectId: string) =>
             actionProjectsAddOneSuccess({ projectId })
           ),

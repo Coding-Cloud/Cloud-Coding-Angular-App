@@ -17,6 +17,11 @@
     align-items: center;
     font-size: 1rem;
   }
+
+  .message {
+    align-items: center;
+    font-size: 1rem;
+  }
 }
 
 .active,
@@ -41,4 +46,8 @@
   .connected-user {
     color: green;
   }
+}
+
+.link-group-conv {
+  text-decoration: none;
 }

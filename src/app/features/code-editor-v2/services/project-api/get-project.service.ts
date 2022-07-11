@@ -14,9 +14,16 @@ export class GetProjectService {
   constructor(private http: HttpClient) {}
 
   // get Project By unique-name
-  getProjectIdByUniqueName(projectId: string): Observable<string> {
+  getProjectIdByUniqueName(
+    projectId: string
+  ): Observable<{ projectId: string; groupId: string }> {
     return this.http
       .get<ProjectDto>(`${this.baseUrl}/unique-name/${projectId}`)
-      .pipe(map((project) => project.id));
+      .pipe(
+        map((project: ProjectDto) => ({
+          projectId: project.id,
+          groupId: project.groupId
+        }))
+      );
   }
 }

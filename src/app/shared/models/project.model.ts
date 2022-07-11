@@ -21,6 +21,14 @@ export interface ProjectForm {
   groupId?: string;
 }
 
+export interface ProjectCustomForm {
+  name: string;
+  language: ProjectLanguage;
+  link: string;
+  globalVisibility: ProjectVisibility;
+  groupId?: string;
+}
+
 export enum ProjectLanguage {
   ANGULAR = 'ANGULAR',
   REACT = 'REACT',
