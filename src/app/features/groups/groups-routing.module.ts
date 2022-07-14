@@ -21,7 +21,7 @@ export const groupsNavigation: NavigationLinks = {
   }
 };
 
-export const groupViewLink = `${navigation.groups.path}/${groupsNavigation.viewGroup.path}`;
+export const groupViewLink = `/${navigation.groups.path}/${groupsNavigation.viewGroup.path}`;
 
 const routes: Routes = [
   {
