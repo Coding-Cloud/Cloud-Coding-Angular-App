@@ -1,6 +1,10 @@
 <div>
-    <button #collapsible type="button" class="collapsible" (click)="handleClickOnCollapse()"><span>Developpeurs connectés</span>
-      <mat-icon class="arrow chevron-left">{{iconChevronName}}</mat-icon>
+    <button #collapsible type="button" class="collapsible" (click)="handleClickOnCollapse()">
+      <span>Developpeurs connectés</span>
+      <div class="d-flex justify-content-center align-items-center">
+        <a href="/groups/view/{{groupId}}" target="_blank" class="link-group-conv" ><mat-icon  class="message d-flex justify-content-center me-2" (click)="handleClickOpenGroupConversation()" >add_comment</mat-icon></a>
+        <mat-icon class="arrow chevron-left">{{iconChevronName}}</mat-icon>
+      </div>
     </button>
     <div class="content"  #collapsed>
         <ul>

@@ -2,9 +2,9 @@
     <ul *ngIf="!isProcessRequest">
         <li *ngFor="let element of elements"
 			[class]="element.type === 'element' ? 'monaco-tree-element' : 'monaco-tree-separator'"
-			(click)="element.type ==='element' && element.name !== 'Upload picture' 
-				? element.action() 
-				: element.type ==='element' && element.name === 'Upload picture' 
+			(click)="element.type ==='element' && element.name !== 'Upload picture'
+				? element.action()
+				: element.type ==='element' && element.name === 'Upload picture'
 				? handleUploadPicture() : null">
 			<input
 				*ngIf="element.type === 'element' && element.name === 'Upload picture'"

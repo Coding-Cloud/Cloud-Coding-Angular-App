@@ -2,12 +2,15 @@ import { CodeSocketService } from '../../../../services/code-socket.service';
 import { BehaviorSubject } from 'rxjs';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
   OnInit,
   ViewChild
 } from '@angular/core';
+import { Router } from '@angular/router';
+import { GetProjectService } from '../../../../services/project-api/get-project.service';
 
 @Component({
   selector: 'app-developer-list',
@@ -17,7 +20,7 @@ import {
 })
 export class DeveloperListComponent implements OnInit {
   @ViewChild('collapsible') public collapsible:
-    | ElementRef<HTMLInputElement>
+    | ElementRef<HTMLButtonElement>
     | undefined;
 
   @ViewChild('collapsed') public collapsed:
@@ -26,13 +29,22 @@ export class DeveloperListComponent implements OnInit {
 
   @Input() projectUniqueName: string | undefined;
 
+  groupId: string | undefined;
+
   iconChevronName = 'chevron_left';
 
   panelOpenState = false;
 
+  conversationId: string | undefined;
+
   playersConnected$: BehaviorSubject<string[]> = new BehaviorSubject(Array());
 
-  constructor(private codeSocketService: CodeSocketService) {}
+  constructor(
+    private codeSocketService: CodeSocketService,
+    private router: Router,
+    private getProjectService: GetProjectService,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     if (this.projectUniqueName) {
@@ -42,6 +54,13 @@ export class DeveloperListComponent implements OnInit {
       this.codeSocketService.sendPingToSayCanReceiveDevelopers(
         this.projectUniqueName
       );
+
+      this.getProjectService
+        .getProjectIdByUniqueName(this.projectUniqueName)
+        .subscribe((project) => {
+          this.groupId = project.groupId;
+          this.cd.markForCheck();
+        });
     }
   }
 
@@ -58,5 +77,10 @@ export class DeveloperListComponent implements OnInit {
       this.collapsed.nativeElement.style.display = 'none';
       this.iconChevronName = 'chevron_left';
     }
+  }
+
+  handleClickOpenGroupConversation() {
+    if (!this.groupId) return;
+    this.router.navigate([`./groups/${this.groupId}`]);
   }
 }

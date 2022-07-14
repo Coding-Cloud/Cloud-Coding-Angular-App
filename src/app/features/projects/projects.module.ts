@@ -11,6 +11,7 @@ import { ProjectSearchDialogComponent } from './project-search-dialog/project-se
 import { ProjectSearchComponent } from './project-search/project-search.component';
 import { CommentsModule } from '../social/comments/comments.module';
 import { ProjectViewCardComponent } from './project-list/project-view-card/project-view-card.component';
+import { ProjectAddCustomComponent } from './project-add-custom/project-add-custom.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ProjectViewCardComponent } from './project-list/project-view-card/proje
     ProjectEditComponent,
     ProjectSearchDialogComponent,
     ProjectSearchComponent,
+    ProjectAddCustomComponent,
     ProjectViewCardComponent
   ],
   exports: [ProjectSearchComponent],

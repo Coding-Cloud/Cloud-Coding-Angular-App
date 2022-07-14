@@ -91,6 +91,14 @@ export class CodeSocketService {
     });
   }
 
+  listenProjectVersionHasChanged(): Observable<string[]> {
+    return new Observable((subscriber) => {
+      this.socket?.on('currentProjectVersionHasChanged', (data) => {
+        subscriber.next(data);
+      });
+    });
+  }
+
   renameProjectFolder(renameProjectFolderDTO: RenameProjectFolderDTO): void {
     this.socket?.emit('renameFolder', renameProjectFolderDTO);
   }
@@ -110,5 +118,9 @@ export class CodeSocketService {
 
   sendPingToSayCanReceiveDevelopers(projectId: string) {
     this.socket?.emit('socketReadyToReceiveDevelopers', { projectId });
+  }
+
+  changeVersionEvent(uniqueName: string) {
+    this.socket?.emit('currentProjectVersionHasChanged', { uniqueName });
   }
 }

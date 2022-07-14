@@ -15,7 +15,7 @@ export const projectsNavigation: NavigationLinks2<
   },
   newProject: {
     path: 'new',
-    name: 'Nouveau projet'
+    name: 'Ajouter un projet'
   },
   viewProject: {
     path: 'view',

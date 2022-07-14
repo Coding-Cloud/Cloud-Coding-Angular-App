@@ -17,11 +17,6 @@
     align-items: center;
     font-size: 1rem;
   }
-
-  .message {
-    align-items: center;
-    font-size: 1rem;
-  }
 }
 
 .active,
@@ -34,20 +29,40 @@
   padding: 0 8px;
   display: none;
   background-color: #1d1d1d;
+  ul {
+    padding-inline-start: 0;
+  }
   li {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: start;
     flex-wrap: wrap;
     gap: 0.5rem;
     padding: 3px 0;
     list-style: none;
   }
-  .connected-user {
+  .undo-arrow {
+    color: red;
+  }
+  .actual-icon {
     color: green;
+  }
+  .add-version-icon {
+    color: blue;
+  }
+  .input-add-version {
+    background-color: #777;
+    padding: 2px;
+    padding-left: 0.5rem;
+    // radius for very rounded input
+    border-radius: 5px;
+    color: white;
+  }
+  .input-add-version::placeholder {
+    color: white;
   }
 }
 
-.link-group-conv {
-  text-decoration: none;
+.clickable {
+  cursor: pointer;
 }

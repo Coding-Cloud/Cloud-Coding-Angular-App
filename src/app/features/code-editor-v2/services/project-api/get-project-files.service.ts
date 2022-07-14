@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Folder } from '../types/folder.interface';
-import { environment as env } from '../../../../environments/environment';
+import { Folder } from '../../types/folder.interface';
+import { environment as env } from '../../../../../environments/environment';
 import { Project } from 'src/app/shared/models/project.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GetProjectService {
+export class GetProjectFilesService {
   private baseUrl = `${env.apiUrl}/projects`;
 
   constructor(private http: HttpClient) {}

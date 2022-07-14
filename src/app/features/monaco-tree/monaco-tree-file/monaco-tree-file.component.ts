@@ -16,6 +16,7 @@ import {
   ContextMenuElementText
 } from '../monaco-tree-context-menu/monaco-tree-context-menu.type';
 import { ContextMenuAction } from './monaco-tree-file.type';
+import { BehaviorSubject } from 'rxjs';
 
 function getAbsolutePosition(element: any) {
   const r = { x: element.offsetLeft, y: element.offsetTop };
@@ -39,7 +40,7 @@ export class MonacoTreeFileComponent implements OnInit {
   @Input() theme: 'vs-dark' | 'vs-light' = 'vs-dark';
   @Input() hide = false;
   @Input() edited: boolean | undefined;
-  @Input() rename: boolean | undefined;
+  @Input() rename: BehaviorSubject<boolean> | undefined;
   @Input() row: any;
 
   @Output() clickFile = new EventEmitter<string>();
@@ -242,7 +243,7 @@ export class MonacoTreeFileComponent implements OnInit {
 
   handleRenameKeyUp(event: any) {
     if (event.key === 'Enter') {
-      this.rename = false;
+      this.rename?.next(false);
       this.renameFolder.emit({
         path: this.row.fullPath,
         newName: event.target.value

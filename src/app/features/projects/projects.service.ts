@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_RESOURCE_URI } from '../../shared/api-resource-uri/api-resource-uri';
 import { Observable } from 'rxjs';
-import { Project, ProjectForm } from '../../shared/models/project.model';
+import {
+  Project,
+  ProjectCustomForm,
+  ProjectForm
+} from '../../shared/models/project.model';
 import { HttpTools } from '../../shared/http-tools/http-tools';
 
 @Injectable({
@@ -56,6 +60,14 @@ export class ProjectsService {
   }
 
   addProject(project: ProjectForm): Observable<string> {
+    return this.http.post(
+      API_RESOURCE_URI.PROJECTS,
+      { ...project },
+      { responseType: 'text' }
+    );
+  }
+
+  addProjectCustom(project: ProjectCustomForm): Observable<string> {
     return this.http.post(
       API_RESOURCE_URI.PROJECTS,
       { ...project },
