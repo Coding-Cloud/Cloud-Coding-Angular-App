@@ -45,7 +45,7 @@
               {{link.name }}
             </button>
           </span>
-          <button mat-icon-button [routerLink]='friendshipsLink'>
+          <button *ngIf='isAuthenticated$ | async' mat-icon-button [routerLink]='friendshipsLink'>
             <mat-icon>message</mat-icon>
           </button>
           <button mat-icon-button
