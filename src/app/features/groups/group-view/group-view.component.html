@@ -64,6 +64,14 @@
                 <li><strong>Créé le</strong> : {{project.createdAt | date : 'longDate'}}</li>
               </ul>
             </mat-card-content>
+            <mat-card-actions align='end'>
+              <button mat-raised-button color='accent'
+                      [routerLink]='"/" + rootLinks.codeEditor.path + "/project/" + project.uniqueName'>
+                <mat-icon>code</mat-icon>
+                Go Code !!
+              </button>
+            </mat-card-actions>
+
           </mat-card>
         </div>
       </div>

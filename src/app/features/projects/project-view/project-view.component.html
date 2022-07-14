@@ -25,7 +25,7 @@
         </mat-card-content>
         <mat-card-actions align='end'>
           <button mat-raised-button color='accent'
-                  [routerLink]='"/" + rootLinks.codeEditor.path + "/project/" + (project$ | async)?.id'>
+                  [routerLink]='"/" + rootLinks.codeEditor.path + "/project/" + (project$ | async)?.uniqueName'>
             <mat-icon>code</mat-icon>
             Go Code !!
           </button>
