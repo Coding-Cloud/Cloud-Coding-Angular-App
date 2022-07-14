@@ -118,7 +118,6 @@ export class AuthEffects {
       exhaustMap(() =>
         this.authService.logout().pipe(
           map(() => {
-            console.log('logout');
             return authLogoutSuccess();
           }),
           catchError((error) => of(authLogoutError({ message: error.message })))

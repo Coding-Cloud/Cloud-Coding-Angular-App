@@ -24,6 +24,15 @@ export const actionProjectsRetrieveAllError = createAction(
   '[Projects] Retrieve All Error',
   props<{ message: string }>()
 );
+export const actionProjectsRetrieveAllJoinedSuccess = createAction(
+  '[Projects] Retrieve All Joined Success',
+  props<{ projects: Project[] }>()
+);
+
+export const actionProjectsRetrieveAllJoinedError = createAction(
+  '[Projects] Retrieve All Joined Error',
+  props<{ message: string }>()
+);
 export const actionProjectsGetOne = createAction(
   '[Projects] Get One',
   props<{ id: string }>()

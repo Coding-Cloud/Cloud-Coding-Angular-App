@@ -1,9 +1,9 @@
 ARG environment=prod
-FROM node:16 as node
+FROM node:16.15.0 as node
 ARG environment
 WORKDIR /app
 COPY . .
-RUN npm install
+RUN npm install --legacy-peer-deps
 RUN npm run build:${environment}
 
 FROM nginx:alpine

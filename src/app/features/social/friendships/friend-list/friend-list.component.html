@@ -1,0 +1,41 @@
+<div [class]='getRootClasse()'>
+  <div class='row'>
+    <div [class]='showConversation ? "col-4":"col-12"'>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <a [routerLink]='socialFriendshipsLink'>
+              Amis
+            </a>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-progress-bar mode='indeterminate' *ngIf='friendshipLoading$ | async'></mat-progress-bar>
+          <mat-selection-list *ngIf='!(friendshipLoading$ | async)' multiple='false'>
+            <mat-list-option *ngFor='let friendship of (friendships$ | async)' (click)='onFriendshipClick(friendship)'>
+              <mat-icon mat-list-icon>person</mat-icon>
+              <div mat-line>
+                <a [routerLink]=[userViewLink,getOtherUserId(friendship)]>
+                  {{getOtherUserId(friendship) | username | async}}
+                </a>
+              </div>
+              <div mat-line>
+                <button mat-icon-button color='warn' (click)='onFriendshipRemove(friendship.id)'>
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+              <mat-divider></mat-divider>
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div *ngIf='conversationLoading$ | async' class='col-8'>
+      <mat-progress-bar mode='indeterminate'></mat-progress-bar>
+    </div>
+    <div *ngIf='showConversation && conversationId !== "0"' class='col-8'>
+      <cc-message-list></cc-message-list>
+      <cc-message-editor (submitForm)='onMessageSend($event.content)'></cc-message-editor>
+    </div>
+  </div>
+</div>

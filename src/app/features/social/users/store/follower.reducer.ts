@@ -19,7 +19,7 @@ import {
 import { getTime } from 'date-fns';
 
 function sortByDate(a: Follower, b: Follower): number {
-  return getTime(a.createdAt) - getTime(b.createdAt);
+  return getTime(new Date(a.createdAt)) - getTime(new Date(b.createdAt));
 }
 
 export const followerAdapter: EntityAdapter<Follower> =

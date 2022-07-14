@@ -6,6 +6,7 @@ import { GroupsRoutingModule } from './groups-routing.module';
 import { GroupAddComponent } from './group-add/group-add.component';
 import { GroupViewComponent } from './group-view/group-view.component';
 import { GroupEditComponent } from './group-edit/group-edit.component';
+import { ConversationModule } from '../conversation/conversation.module';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,6 @@ import { GroupEditComponent } from './group-edit/group-edit.component';
     GroupViewComponent,
     GroupEditComponent
   ],
-  imports: [CommonModule, SharedModule, GroupsRoutingModule]
+  imports: [CommonModule, SharedModule, GroupsRoutingModule, ConversationModule]
 })
 export class GroupsModule {}

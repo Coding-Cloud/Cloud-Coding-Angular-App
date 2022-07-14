@@ -103,6 +103,15 @@
             </mat-card-subtitle>
           </mat-card>
         </div>
+        <div class='col-12' *ngIf='conversationLoading$ | async'>
+          <mat-progress-bar mode='indeterminate'></mat-progress-bar>
+        </div>
+        <div *ngIf='conversationId !== "0"' class='col-12'>
+          <h3>Conversation</h3>
+          <cc-message-list></cc-message-list>
+          <cc-message-editor (submitForm)='onMessageSend($event.content)'></cc-message-editor>
+        </div>
+
       </div>
     </div>
   </div>

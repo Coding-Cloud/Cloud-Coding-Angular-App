@@ -10,6 +10,7 @@ import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { ProjectSearchDialogComponent } from './project-search-dialog/project-search-dialog.component';
 import { ProjectSearchComponent } from './project-search/project-search.component';
 import { CommentsModule } from '../social/comments/comments.module';
+import { ProjectViewCardComponent } from './project-list/project-view-card/project-view-card.component';
 import { ProjectAddCustomComponent } from './project-add-custom/project-add-custom.component';
 
 @NgModule({
@@ -20,7 +21,8 @@ import { ProjectAddCustomComponent } from './project-add-custom/project-add-cust
     ProjectEditComponent,
     ProjectSearchDialogComponent,
     ProjectSearchComponent,
-    ProjectAddCustomComponent
+    ProjectAddCustomComponent,
+    ProjectViewCardComponent
   ],
   exports: [ProjectSearchComponent],
   imports: [

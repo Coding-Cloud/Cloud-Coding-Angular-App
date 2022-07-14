@@ -1,0 +1,68 @@
+<div [class]='getRootClasse()'>
+  <div class='row'>
+    <div class='col-12'>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <a [routerLink]='socialFriendRequestsLink'>
+              Demandes d'amitié
+            </a>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class='row'>
+            <div class='col-12 col-lg-6'>
+              <h6>
+                Demandes d'amitié reçues
+              </h6>
+              <mat-progress-bar mode='indeterminate' *ngIf='receivedFriendRequestsLoading$ | async'></mat-progress-bar>
+              <mat-list *ngIf='!(receivedFriendRequestsLoading$ | async)'>
+                <mat-list-item *ngFor='let friendRequest of (receivedFriendRequests$ | async)'>
+                  <mat-icon mat-list-icon>person</mat-icon>
+                  <div mat-line>
+                    <a [routerLink]=[userViewLink,friendRequest.requesterUserId]>
+                      {{friendRequest.requesterUserId | username | async}}
+                    </a>
+                  </div>
+                  <div mat-line>
+                    <button mat-icon-button color='primary'
+                            (click)='onFriendRequestAccept(friendRequest.requesterUserId)'>
+                      <mat-icon>done</mat-icon>
+                    </button>
+                    &nbsp;
+                    <button mat-icon-button color='warn' (click)='onFriendRequestReject(friendRequest.requesterUserId)'>
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                  <mat-divider></mat-divider>
+                </mat-list-item>
+              </mat-list>
+            </div>
+            <div class='col-12 col-lg-6'>
+              <h6>
+                Demandes d'amitié envoyées
+              </h6>
+              <mat-progress-bar mode='indeterminate' *ngIf='sentFriendRequestsLoading$ | async'></mat-progress-bar>
+              <mat-list *ngIf='!(sentFriendRequestsLoading$ | async)'>
+                <mat-list-item *ngFor='let friendRequest of (sentFriendRequests$ | async)'>
+                  <mat-icon mat-list-icon>person</mat-icon>
+                  <div mat-line>
+                    <a [routerLink]=[userViewLink,friendRequest.requestedUserId]>
+                      {{friendRequest.requestedUserId | username | async}}
+                    </a>
+                  </div>
+                  <div mat-line>
+                    <button mat-icon-button color='warn' (click)='onFriendRequestCancel(friendRequest.requestedUserId)'>
+                      <mat-icon>block</mat-icon>
+                    </button>
+                  </div>
+                  <mat-divider></mat-divider>
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

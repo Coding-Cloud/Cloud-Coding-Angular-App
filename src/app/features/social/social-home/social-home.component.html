@@ -3,49 +3,60 @@
     <h1 class='main-heading'>{{socialNavigation.social.name}}</h1>
   </div>
   <div class='row align-items-start'>
+    <h3 class='my-2'>Relations</h3>
     <div class='col-md-12 col-lg-6'>
-        <mat-card>
-          <mat-card-header>
-            <div mat-card-avatar style='
-            background-image: url(assets/social-network.jpeg);
-            background-size: cover;'
-            >
-            </div>
-            <mat-card-title>
-              <a [routerLink]='socialUsersLink'>
-                Utilisateurs
-              </a>
-            </mat-card-title>
-            <mat-card-subtitle>
-              Parcourez la liste des utilisateurs inscrits et consultez leurs projets publiques.
-            </mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <cc-user-search></cc-user-search>
-          </mat-card-content>
-        </mat-card>
+      <cc-friend-list [showConversation]='false'></cc-friend-list>
     </div>
     <div class='col-md-12 col-lg-6'>
-        <mat-card>
-          <mat-card-header>
-            <div mat-card-avatar style='
+      <cc-friend-requests></cc-friend-requests>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class='row align-items-start'>
+    <h3 class='my-2'>Explorer</h3>
+    <div class='col-md-12 col-lg-6'>
+      <mat-card>
+        <mat-card-header>
+          <div mat-card-avatar style='
+            background-image: url(assets/social-network.jpeg);
+            background-size: cover;'
+          >
+          </div>
+          <mat-card-title>
+            <a [routerLink]='socialUsersLink'>
+              Utilisateurs
+            </a>
+          </mat-card-title>
+          <mat-card-subtitle>
+            Parcourez la liste des utilisateurs inscrits et consultez leurs projets publiques.
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <cc-user-search></cc-user-search>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class='col-md-12 col-lg-6'>
+      <mat-card>
+        <mat-card-header>
+          <div mat-card-avatar style='
             background-image: url(assets/coding.jpg);
             background-size: cover;'
-            >
-            </div>
-            <mat-card-title>
-              <a [routerLink]='socialProjectsLink'>
-                Projets
-              </a>
-            </mat-card-title>
-            <mat-card-subtitle>
-              Parcourez la liste des projets publiques.
-            </mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <cc-project-search></cc-project-search>
-          </mat-card-content>
-        </mat-card>
+          >
+          </div>
+          <mat-card-title>
+            <a [routerLink]='socialProjectsLink'>
+              Projets
+            </a>
+          </mat-card-title>
+          <mat-card-subtitle>
+            Parcourez la liste des projets publiques.
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <cc-project-search></cc-project-search>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
 </div>

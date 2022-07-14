@@ -1,5 +1,6 @@
 import { EntityState } from '@ngrx/entity';
 import { Project } from './project.model';
+import { FriendRequest, Friendship } from './friendship.model';
 
 export interface User {
   id: string;
@@ -44,14 +45,16 @@ export const emptyUser: User = {
   email: ''
 };
 
-export type UsersState = {
+export interface UsersState {
   users: EntityState<User>;
   totalResults: number;
   loading: boolean;
-};
+}
 
-export type UserState = {
+export interface UserState {
   user: User;
   isFollowing: boolean;
+  friendship: Friendship | null;
+  friendRequest: FriendRequest | null;
   projects: Project[];
-};
+}

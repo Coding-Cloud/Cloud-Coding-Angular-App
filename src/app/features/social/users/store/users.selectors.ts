@@ -38,6 +38,16 @@ export const selectUserViewFollowing = createSelector(
   (state: UserState) => state.isFollowing
 );
 
+export const selectUserViewFriendship = createSelector(
+  selectUserViewState,
+  (state: UserState) => state.friendship
+);
+
+export const selectUserViewFriendRequest = createSelector(
+  selectUserViewState,
+  (state: UserState) => state.friendRequest
+);
+
 export const selectAllUsersSearch = createSelector(
   selectUsersSearch,
   userSearchSelector.selectAll

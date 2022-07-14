@@ -18,6 +18,8 @@ import {
   actionProjectsGetOneSuccess,
   actionProjectsRetrieveAll,
   actionProjectsRetrieveAllError,
+  actionProjectsRetrieveAllJoinedError,
+  actionProjectsRetrieveAllJoinedSuccess,
   actionProjectsRetrieveAllSuccess,
   actionProjectsSearch,
   actionProjectsSearchDialog,
@@ -47,6 +49,26 @@ export class ProjectsEffects {
           catchError((error) =>
             of(
               actionProjectsRetrieveAllError({
+                message: error.message.toString()
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  retrieveAllJoined = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionProjectsRetrieveAll),
+      exhaustMap(() =>
+        this.projectsService.getJoinedProjects().pipe(
+          map((projects) =>
+            actionProjectsRetrieveAllJoinedSuccess({ projects })
+          ),
+          catchError((error) =>
+            of(
+              actionProjectsRetrieveAllJoinedError({
                 message: error.message.toString()
               })
             )
@@ -248,7 +270,8 @@ export class ProjectsEffects {
           actionProjectsAddOneError,
           actionProjectsUpdateOneError,
           actionProjectsSearchDialogError,
-          actionProjectsSearchError
+          actionProjectsSearchError,
+          actionProjectsRetrieveAllJoinedError
         ),
         tap((action) => {
           this.notificationService.error(action.message);

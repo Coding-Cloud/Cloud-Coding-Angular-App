@@ -32,6 +32,14 @@ import { CommentsState } from '../shared/models/comment.model';
 import { commentsReducer } from '../features/social/comments/store/comments.reducer';
 import { FollowersState } from '../shared/models/follower.model';
 import { followersReducer } from '../features/social/users/store/follower.reducer';
+import {
+  FriendRequestsState,
+  FriendshipsState
+} from '../shared/models/friendship.model';
+import { friendRequestsReducer } from '../features/social/friendships/store/friend-requests.reducer';
+import { friendshipsReducer } from '../features/social/friendships/store/friendships.reducer';
+import { ConversationState } from '../shared/models/conversation.model';
+import { conversationReducer } from '../features/conversation/store/conversation.reducer';
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
@@ -45,7 +53,10 @@ export const reducers: ActionReducerMap<AppState> = {
   userSearch: usersSearchReducer,
   userView: userViewReducer,
   router: routerReducer,
-  followers: followersReducer
+  followers: followersReducer,
+  friendRequests: friendRequestsReducer,
+  friendships: friendshipsReducer,
+  conversation: conversationReducer
 };
 
 export const metaReducers: MetaReducer<AppState>[] = [
@@ -67,10 +78,25 @@ export const selectSettingsState = createFeatureSelector<
   SettingsState
 >('settings');
 
+export const selectFriendRequestsState = createFeatureSelector<
+  AppState,
+  FriendRequestsState
+>('friendRequests');
+
+export const selectFriendshipsState = createFeatureSelector<
+  AppState,
+  FriendshipsState
+>('friendships');
+
 export const selectCommentsState = createFeatureSelector<
   AppState,
   CommentsState
 >('comments');
+
+export const selectConversationState = createFeatureSelector<
+  AppState,
+  ConversationState
+>('conversation');
 
 export const selectProjectsState = createFeatureSelector<
   AppState,
@@ -128,4 +154,7 @@ export interface AppState {
   router: RouterReducerState<RouterStateUrl>;
   comments: CommentsState;
   followers: FollowersState;
+  friendRequests: FriendRequestsState;
+  friendships: FriendshipsState;
+  conversation: ConversationState;
 }

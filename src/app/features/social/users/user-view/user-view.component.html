@@ -15,7 +15,7 @@
                 <mat-card-header
                   class='d-flex justify-content-between align-items-center'>
                   <mat-card-subtitle><strong>{{followersTotalCount$ | async}}</strong> abonnés -
-                    <strong>{{followingsTotalCount$ | async}}</strong> abonnement
+                    <strong>{{followingsTotalCount$ | async}}</strong> abonnements
                   </mat-card-subtitle>
                   <div *ngIf='userId !== currentUserId'>
                     <button *ngIf='!(isFollowing$ | async)' mat-raised-button color='primary' (click)='onFollow()'>
@@ -48,6 +48,37 @@
                     </mat-list-item>
                   </mat-list>
                 </mat-card-content>
+                <mat-card-actions align='end' *ngIf='currentUserId !== userId'>
+                  <div *ngIf='isFriendWith(friendship$ | async)'>
+                    Vous êtes amis&nbsp;
+                    <button mat-mini-fab color='warn' (click)='onFriendshipRemove()'>
+                      <mat-icon>person_remove</mat-icon>
+                    </button>
+                  </div>
+                  <div *ngIf='isFriendRequestPending(friendRequest$ | async)'>
+                    <div *ngIf='isFriendRequestReceived(friendRequest$ | async); else request_sent'>
+                      Demande d'ami reçu&nbsp;
+                      <button mat-mini-fab color='primary' (click)='onFriendRequestAccept()'>
+                        <mat-icon>done</mat-icon>
+                      </button>
+                      &nbsp;
+                      <button mat-mini-fab color='warn' (click)='onFriendRequestReject()'>
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </div>
+                    <ng-template #request_sent>
+                      Demande d'ami envoyée, attendez la réponse&nbsp;
+                      <button mat-mini-fab color='warn' (click)='onFriendRequestCancel()'>
+                        <mat-icon>block</mat-icon>
+                      </button>
+                    </ng-template>
+                  </div>
+                  <div *ngIf='!isFriendWith(friendship$ | async) && !isFriendRequestPending(friendRequest$ | async)'>
+                    <button mat-mini-fab color='primary' (click)='onFriendRequestSend()'>
+                      <mat-icon>person_add</mat-icon>
+                    </button>
+                  </div>
+                </mat-card-actions>
               </mat-card>
             </div>
           </div>

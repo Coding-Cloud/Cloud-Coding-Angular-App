@@ -71,6 +71,9 @@ import { ProjectGuardService } from './project/project-guard.service';
 import { UsersEffects } from '../features/social/users/store/users.effects';
 import { CommentsEffects } from '../features/social/comments/store/comments.effects';
 import { FollowersEffects } from '../features/social/users/store/follower.effects';
+import { FriendRequestsEffects } from '../features/social/friendships/store/friend-requests.effects';
+import { FriendshipsEffects } from '../features/social/friendships/store/friendships.effects';
+import { ConversationEffects } from '../features/conversation/store/conversation.effects';
 
 export {
   TitleService,
@@ -118,7 +121,10 @@ export {
       GroupsEffects,
       UsersEffects,
       CommentsEffects,
-      FollowersEffects
+      FollowersEffects,
+      FriendRequestsEffects,
+      FriendshipsEffects,
+      ConversationEffects
     ]),
     environment.production
       ? []

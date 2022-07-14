@@ -32,7 +32,8 @@ export interface ProjectCustomForm {
 export enum ProjectLanguage {
   ANGULAR = 'ANGULAR',
   REACT = 'REACT',
-  QUARKUS = 'QUARKUS'
+  QUARKUS = 'QUARKUS',
+  NESTJS = 'NESTJS'
 }
 
 export enum ProjectStatus {
@@ -62,11 +63,11 @@ export const emptyProject: Project = {
 
 export type ProjectsState = EntityState<Project>;
 
-export type ProjectsSearchState = {
+export interface ProjectsSearchState {
   projects: EntityState<Project>;
   totalResults: number;
   loading: boolean;
-};
+}
 
 export interface ProjectState {
   project: Project;

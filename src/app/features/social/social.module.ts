@@ -6,6 +6,7 @@ import { SocialHomeComponent } from './social-home/social-home.component';
 import { UsersModule } from './users/users.module';
 import { ProjectsModule } from '../projects/projects.module';
 import { CommentsModule } from './comments/comments.module';
+import { FriendshipsModule } from './friendships/friendships.module';
 
 @NgModule({
   declarations: [SocialHomeComponent],
@@ -14,6 +15,7 @@ import { CommentsModule } from './comments/comments.module';
     CommonModule,
     SocialRoutingModule,
     CommentsModule,
+    FriendshipsModule,
     UsersModule,
     ProjectsModule
   ]
