@@ -10,10 +10,14 @@ mat-sidenav-container {
   width: 100%;
 
   .toolbar {
-    position: fixed;
+    //position: fixed;
     width: 100%;
     display: flex;
     z-index: 10;
+
+    mat-toolbar {
+      //background-color: rgba(192, 82, 82, 0.5) !important;
+    }
 
     .nav-button {
       margin: 0 10px 0 0;
@@ -74,7 +78,7 @@ mat-sidenav-container {
 
     .content {
       flex: 1 0 auto;
-      margin-top: 64px;
+      //padding-top: 64px;
       overflow: hidden;
     }
 
@@ -152,7 +156,7 @@ mat-sidenav-container {
 
   @media (max-width: $toolbar-breakpoint) {
     .content {
-      margin-top: 56px !important;
+      //padding-top: 56px !important;
     }
   }
 }

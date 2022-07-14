@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NavigationLinks } from '../../app-routing.module';
+import { navigation, NavigationLinks } from '../../app-routing.module';
 import { AuthGuardService } from '../../core/core.module';
 import { GroupListComponent } from './group-list/group-list.component';
 import { GroupAddComponent } from './group-add/group-add.component';
@@ -20,6 +20,8 @@ export const groupsNavigation: NavigationLinks = {
     name: 'Group'
   }
 };
+
+export const groupViewLink = `${navigation.groups.path}/${groupsNavigation.viewGroup.path}`;
 
 const routes: Routes = [
   {

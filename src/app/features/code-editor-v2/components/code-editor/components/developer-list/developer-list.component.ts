@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { GetProjectService } from '../../../../services/project-api/get-project.service';
+import { groupViewLink } from '../../../../../groups/groups-routing.module';
 
 @Component({
   selector: 'app-developer-list',
@@ -38,6 +39,8 @@ export class DeveloperListComponent implements OnInit {
   conversationId: string | undefined;
 
   playersConnected$: BehaviorSubject<string[]> = new BehaviorSubject(Array());
+
+  groupViewLink = groupViewLink;
 
   constructor(
     private codeSocketService: CodeSocketService,
