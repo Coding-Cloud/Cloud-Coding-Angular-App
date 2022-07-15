@@ -5,13 +5,13 @@
       <mat-card>
         <mat-card-content>
           <div class='row gy-2'>
-            <mat-form-field class='col-12' appearance='fill'>
+            <mat-form-field appearance='fill' class='col-12'>
               <mat-label>Nom du projet</mat-label>
-              <input matInput placeholder='Nom du projet' formControlName='name'>
+              <input formControlName='name' matInput placeholder='Nom du projet'>
             </mat-form-field>
-            <mat-form-field class='col-12' appearance='fill'>
+            <mat-form-field appearance='fill' class='col-12'>
               <mat-label>lien public github ou gitlab</mat-label>
-              <input matInput placeholder='https://github.com/myanme/projet.git' formControlName='repositoryUrl'>
+              <input formControlName='repositoryUrl' matInput placeholder='https://github.com/myanme/projet.git'>
             </mat-form-field>
             <div class='col-12'>
               <h6>type de projet</h6>
@@ -22,6 +22,10 @@
                   [value]='projectLanguage.REACT'>{{projectLanguage.REACT | projectLanguage}}</mat-button-toggle>
                 <mat-button-toggle
                   [value]='projectLanguage.QUARKUS'>{{projectLanguage.QUARKUS | projectLanguage}}</mat-button-toggle>
+                <mat-button-toggle
+                  [value]='projectLanguage.NESTJS'>{{projectLanguage.NESTJS | projectLanguage}}</mat-button-toggle>
+                <mat-button-toggle
+                  [value]='projectLanguage.FLASK'>{{projectLanguage.FLASK | projectLanguage}}</mat-button-toggle>
               </mat-button-toggle-group>
             </div>
             <div class='col-12'>
@@ -38,7 +42,7 @@
           </div>
         </mat-card-content>
         <mat-card-actions align="end">
-          <button mat-raised-button color='accent' [disabled]='form.invalid' (click)='onSubmit()'>Ajouter
+          <button (click)='onSubmit()' [disabled]='form.invalid' color='accent' mat-raised-button>Ajouter
           </button>
         </mat-card-actions>
       </mat-card>

@@ -14,7 +14,9 @@ export class ProjectLanguagePipe implements PipeTransform {
       case ProjectLanguage.QUARKUS:
         return 'Quarkus - 17';
       case ProjectLanguage.NESTJS:
-        return 'NESTJS - 8';
+        return 'NestJS - 8';
+      case ProjectLanguage.FLASK:
+        return 'Flask - 2';
       default:
         return 'Inconnu';
     }
