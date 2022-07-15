@@ -15,7 +15,7 @@ export class ProjectVersionsService {
     projectUniqueName: string;
   }): Observable<string[]> {
     console.log('je apsse dans le get project versions');
-
+    return of(['1', '2', '3']);
     return this.http.get<string[]>(
       `${this.baseUrl}/${getProjectVersionsProp.projectUniqueName}`
     );
@@ -25,6 +25,7 @@ export class ProjectVersionsService {
     title: string;
     projectId: string;
   }): Observable<void> {
+    console.log('on add un project version');
     return this.http.post<void>(
       `${this.baseUrl}/${addProjectVersionProp.projectId}`,
       {

@@ -53,8 +53,6 @@ export class CodeVersioningComponent implements OnInit {
       this.projectVersionsService
         .getProjectVersions({ projectUniqueName: this.projectUniqueName })
         .subscribe((data) => {
-          console.log(data);
-          //this.projectVersions$.next(['1', '2']);
           this.projectVersions$.next(data);
         });
 
@@ -62,8 +60,10 @@ export class CodeVersioningComponent implements OnInit {
         .listenProjectVersionHasChanged()
         .subscribe((data) => {
           console.log('code socket service ');
+          console.log(data);
           this.projectVersions$.next(data);
-          //this.changeVersion.emit();
+          console.log('version has changed');
+          this.changeVersion.emit();
           //console.log('listenProjectVersionHasChanged');
           //console.log(data);
         });

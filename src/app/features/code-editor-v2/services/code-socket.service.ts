@@ -93,7 +93,10 @@ export class CodeSocketService {
 
   listenProjectVersionHasChanged(): Observable<string[]> {
     return new Observable((subscriber) => {
+      console.log("j'écoute bien l'event");
       this.socket?.on('currentProjectVersionHasChanged', (data) => {
+        console.log('je passe dans le listenProjectVersionHasChanged');
+        console.log(data);
         subscriber.next(data);
       });
     });
