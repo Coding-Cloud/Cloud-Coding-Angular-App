@@ -33,7 +33,8 @@ export enum ProjectLanguage {
   ANGULAR = 'ANGULAR',
   REACT = 'REACT',
   QUARKUS = 'QUARKUS',
-  NESTJS = 'NESTJS'
+  NESTJS = 'NESTJS',
+  FLASK = 'FLASK'
 }
 
 export enum ProjectStatus {
