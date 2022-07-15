@@ -691,4 +691,22 @@ export class CodeEditorComponent implements OnInit {
       this.currentFile.type = endFile as FileTypes;
     }
   }
+
+  handleCodeVersionChanged() {
+    this.isLoading = true;
+    this.getProjectService
+      .getProjectV2(this.uniqueName)
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+          this.cd.markForCheck();
+        })
+      )
+      .subscribe((projectCodeEditor: Project) => {
+        this.currentProject = copyObject<Project>(projectCodeEditor);
+        this.socketProject = copyObject<Project>(projectCodeEditor);
+
+        this.initializeTreeFiles();
+      });
+  }
 }

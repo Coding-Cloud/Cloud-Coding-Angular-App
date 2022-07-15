@@ -14,7 +14,7 @@ export class ProjectVersionsService {
   getProjectVersions(getProjectVersionsProp: {
     projectUniqueName: string;
   }): Observable<string[]> {
-    return of(['initial version', 'secund version', 'third version']);
+    //return of(['initial version', 'secund version', 'third version']);
     return this.http.get<string[]>(
       `${this.baseUrl}/${getProjectVersionsProp.projectUniqueName}`
     );

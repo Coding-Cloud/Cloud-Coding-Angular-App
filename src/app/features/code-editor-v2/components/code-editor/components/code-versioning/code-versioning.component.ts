@@ -4,7 +4,9 @@ import {
   ChangeDetectionStrategy,
   ViewChild,
   ElementRef,
-  Input
+  Input,
+  EventEmitter,
+  Output
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CodeSocketService } from '../../../../services/code-socket.service';
@@ -27,6 +29,8 @@ export class CodeVersioningComponent implements OnInit {
     | undefined;
 
   @Input() projectUniqueName: string | undefined;
+
+  @Output() changeVersion = new EventEmitter<void>();
 
   iconChevronName = 'chevron_left';
 
@@ -56,6 +60,7 @@ export class CodeVersioningComponent implements OnInit {
         .listenProjectVersionHasChanged()
         .subscribe((data) => {
           this.projectVersions$.next(data);
+          this.changeVersion.emit();
           //console.log('listenProjectVersionHasChanged');
           //console.log(data);
         });
@@ -86,7 +91,7 @@ export class CodeVersioningComponent implements OnInit {
   handleClickRollback(indexVersion: number) {
     if (!this.projectUniqueName || !this.projectId) return;
     this.emitEventWhenVersionHasChanged();
-    /*const numberVersionRollback =
+    const numberVersionRollback =
       this.projectVersions$.value.length - indexVersion;
     this.projectVersionsService
       .changeProjectVersion({
@@ -95,19 +100,21 @@ export class CodeVersioningComponent implements OnInit {
       })
       .subscribe(() => {
         this.emitEventWhenVersionHasChanged();
-      });*/
+      });
   }
 
   handleClickAddVersion(inputValue: string) {
     if (!this.projectUniqueName || !this.projectId) return;
     this.emitEventWhenVersionHasChanged();
-    /*this.projectVersionsService.addProjectVersion({
-      projectId: this.projectId,
-      title: inputValue
-    })
+    //return;
+    this.projectVersionsService
+      .addProjectVersion({
+        projectId: this.projectId,
+        title: inputValue
+      })
       .subscribe(() => {
         this.emitEventWhenVersionHasChanged();
-      });*/
+      });
   }
 
   emitEventWhenVersionHasChanged(): void {
