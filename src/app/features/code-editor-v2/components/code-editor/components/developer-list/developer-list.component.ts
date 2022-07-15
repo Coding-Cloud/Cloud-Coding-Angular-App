@@ -81,9 +81,4 @@ export class DeveloperListComponent implements OnInit {
       this.iconChevronName = 'chevron_left';
     }
   }
-
-  handleClickOpenGroupConversation() {
-    if (!this.groupId) return;
-    this.router.navigate([`./groups/${this.groupId}`]);
-  }
 }
