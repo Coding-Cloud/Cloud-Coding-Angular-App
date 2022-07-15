@@ -4,7 +4,7 @@
     <mat-icon class='arrow chevron-left'>{{iconChevronName}}</mat-icon>
   </button>
   <div class='content' #collapsed>
-    <ul>
+    <ul *ngIf="projectVersions$ | async">
       <li *ngFor='let projectVersion of projectVersions$ | async let last = last; let index = index'>
         <mat-icon *ngIf='!last' class='undo-arrow clickable' (click)='handleClickRollback(index)'>undo</mat-icon>
         <mat-icon *ngIf='last' class='actual-icon'>done</mat-icon>

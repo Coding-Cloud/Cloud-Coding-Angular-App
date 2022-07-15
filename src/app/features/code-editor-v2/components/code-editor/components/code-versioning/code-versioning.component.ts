@@ -36,8 +36,6 @@ export class CodeVersioningComponent implements OnInit {
 
   panelOpenState = false;
 
-  playersConnected$: BehaviorSubject<string[]> = new BehaviorSubject(Array());
-
   projectVersions$: BehaviorSubject<string[]> = new BehaviorSubject(Array());
 
   projectId: string | undefined;
@@ -49,7 +47,9 @@ export class CodeVersioningComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log("j'arrive dans le on init au moins");
     if (this.projectUniqueName) {
+      console.log('CodeVersioningComponent.ngOnInit');
       this.projectVersionsService
         .getProjectVersions({ projectUniqueName: this.projectUniqueName })
         .subscribe((data) => {
@@ -61,12 +61,13 @@ export class CodeVersioningComponent implements OnInit {
       this.codeSocketService
         .listenProjectVersionHasChanged()
         .subscribe((data) => {
+          console.log('code socket service ');
           this.projectVersions$.next(data);
-          this.changeVersion.emit();
+          //this.changeVersion.emit();
           //console.log('listenProjectVersionHasChanged');
           //console.log(data);
         });
-
+      console.log('get project');
       this.getProjectService
         .getProjectIdByUniqueName(this.projectUniqueName)
         .subscribe((project) => {
