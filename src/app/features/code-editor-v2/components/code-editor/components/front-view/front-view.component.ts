@@ -107,6 +107,7 @@ export class FrontViewComponent implements OnInit {
 
   private formatUrl(url: string | undefined): string | undefined {
     let urlReformat = url;
+    console.log(JSON.stringify(url));
     console.log(`url ${url}`);
     console.log(typeof url);
     if (typeof url === 'string' && url?.endsWith('/')) {
