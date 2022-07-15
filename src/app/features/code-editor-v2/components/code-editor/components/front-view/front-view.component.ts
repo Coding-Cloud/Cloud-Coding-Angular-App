@@ -108,10 +108,12 @@ export class FrontViewComponent implements OnInit {
   private formatUrl(url: string | undefined): string | undefined {
     let urlReformat = url;
 
-    if (typeof url === 'string' && url?.endsWith('/')) {
+    if (typeof url === 'string') {
+      if (url?.endsWith('/')) {
+        urlReformat = url.substring(0, url.length - 1);
+      }
       console.log(`url ${url}`);
       console.log(typeof url);
-      urlReformat = url.substring(0, url.length - 1);
       return urlReformat?.replace('http://', '').replace('https://', '');
     }
     console.log(JSON.stringify(url));
