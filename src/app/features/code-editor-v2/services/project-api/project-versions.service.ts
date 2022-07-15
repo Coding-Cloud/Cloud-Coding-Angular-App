@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { environment as env } from '../../../../../environments/environment';
+import {
+  environment,
+  environment as env
+} from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
@@ -15,7 +18,10 @@ export class ProjectVersionsService {
     projectUniqueName: string;
   }): Observable<string[]> {
     console.log('je apsse dans le get project versions');
-    //return of(['1', '2', '3']);
+    if (environment.envName === 'LOCAL') {
+      return of(['1', '2', '3']);
+    }
+
     return this.http.get<string[]>(
       `${this.baseUrl}/${getProjectVersionsProp.projectUniqueName}`
     );

@@ -25,6 +25,7 @@ export class CodeSocketService {
 
   connect(projectId: string, username: string): void {
     this.socket = io(this.uri, {
+      path: '/code-runner',
       transports: ['websocket', 'polling', 'flashsocket'],
       query: {
         projectId,
@@ -78,6 +79,7 @@ export class CodeSocketService {
   listenSiteCanBeShow(): Observable<string> {
     return new Observable((subscriber) => {
       this.socket?.on('siteIsReady', (data) => {
+        console.log('site is ready');
         subscriber.next(data);
       });
     });
