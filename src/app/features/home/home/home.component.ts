@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
       imgClass: 'react-image'
     },
     {
-      name: 'Angular 12',
+      name: 'Angular 14',
       techno: 'TypeScript 4',
       imgClass: 'angular-image'
     },
