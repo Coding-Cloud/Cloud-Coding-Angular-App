@@ -27,7 +27,7 @@ export class FrontViewComponent implements OnInit {
     | ElementRef<HTMLIFrameElement>
     | undefined;
   @Input() url: string | undefined;
-  @Input() isResize: boolean = true;
+  @Input() isResize = true;
   @Input() projectUniqueName: string | undefined;
   loadingRequest$ = new BehaviorSubject(false);
   urlSee: string | undefined;
@@ -92,8 +92,9 @@ export class FrontViewComponent implements OnInit {
         if (
           event.origin !== 'http://localhost:8000' &&
           !event.origin.includes('cloudcoding.fr')
-        )
+        ) {
           return;
+        }
         const urlFormat = this.formatUrl(event.data);
         const urlSeeFormat = this.formatUrl(this.urlSee);
         if (urlSeeFormat !== urlFormat) {
@@ -106,7 +107,9 @@ export class FrontViewComponent implements OnInit {
 
   private formatUrl(url: string | undefined): string | undefined {
     let urlReformat = url;
-    if (url?.endsWith('/')) {
+    console.log(`url ${url}`);
+    console.log(typeof url);
+    if (typeof url === 'string' && url?.endsWith('/')) {
       urlReformat = url.substring(0, url.length - 1);
     }
     return urlReformat?.replace('http://', '').replace('https://', '');
