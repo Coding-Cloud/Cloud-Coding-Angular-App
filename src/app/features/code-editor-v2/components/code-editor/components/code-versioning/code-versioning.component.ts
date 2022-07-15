@@ -54,8 +54,8 @@ export class CodeVersioningComponent implements OnInit {
         .getProjectVersions({ projectUniqueName: this.projectUniqueName })
         .subscribe((data) => {
           console.log(data);
-          this.projectVersions$.next(['1', '2']);
-          //this.projectVersions$.next(data);
+          //this.projectVersions$.next(['1', '2']);
+          this.projectVersions$.next(data);
         });
 
       this.codeSocketService
@@ -94,8 +94,7 @@ export class CodeVersioningComponent implements OnInit {
   handleClickRollback(indexVersion: number) {
     if (!this.projectUniqueName || !this.projectId) return;
     this.emitEventWhenVersionHasChanged();
-    const numberVersionRollback =
-      this.projectVersions$.value.length - indexVersion;
+    const numberVersionRollback = indexVersion;
     this.projectVersionsService
       .changeProjectVersion({
         projectId: this.projectId,
