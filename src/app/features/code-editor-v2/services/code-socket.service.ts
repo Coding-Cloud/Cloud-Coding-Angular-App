@@ -30,7 +30,8 @@ export class CodeSocketService {
       query: {
         projectId,
         username
-      }
+      },
+      reconnection: true
     });
   }
 
@@ -46,6 +47,7 @@ export class CodeSocketService {
   listenProjectModification(eventName: string): Observable<EditProjectDTO[]> {
     return new Observable((subscriber) => {
       this.socket?.on(eventName, (data) => {
+        console.info('project modification');
         console.log(data);
         subscriber.next(data);
       });
@@ -55,6 +57,7 @@ export class CodeSocketService {
   listenRenameProjectFolderName(): Observable<RenameProjectFolderResource> {
     return new Observable((subscriber) => {
       this.socket?.on('renameProjectFolder', (data) => {
+        console.info('rename project forlder name');
         subscriber.next(data);
       });
     });
@@ -63,6 +66,7 @@ export class CodeSocketService {
   listenDeleteProjectFolderName(): Observable<DeleteProjectFolderResource> {
     return new Observable((subscriber) => {
       this.socket?.on('deleteProjectFolder', (data) => {
+        console.info('delete project folder');
         subscriber.next(data);
       });
     });
@@ -71,6 +75,7 @@ export class CodeSocketService {
   listenLogsChanged(): Observable<string> {
     return new Observable((subscriber) => {
       this.socket?.on('logChanged', (data) => {
+        console.info('log changer");
         subscriber.next(data);
       });
     });
@@ -79,7 +84,7 @@ export class CodeSocketService {
   listenSiteCanBeShow(): Observable<string> {
     return new Observable((subscriber) => {
       this.socket?.on('siteIsReady', (data) => {
-        console.log('site is ready');
+        console.info('site is ready');
         subscriber.next(data);
       });
     });
@@ -88,6 +93,7 @@ export class CodeSocketService {
   listenPlayerConnected(): Observable<string[]> {
     return new Observable((subscriber) => {
       this.socket?.on('developerConnected', (data) => {
+        console.info('developerConnected');
         subscriber.next(data);
       });
     });
