@@ -75,7 +75,7 @@ export class CodeSocketService {
   listenLogsChanged(): Observable<string> {
     return new Observable((subscriber) => {
       this.socket?.on('logChanged', (data) => {
-        console.info('log changer");
+        console.info('log changer');
         subscriber.next(data);
       });
     });
