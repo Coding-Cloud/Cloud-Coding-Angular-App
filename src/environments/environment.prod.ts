@@ -7,6 +7,7 @@ export const environment = {
   test: false,
   apiUrl: 'https://api.cloudcoding.fr',
   socketUrl: 'https://api.cloudcoding.fr',
+  videoSocketUrl: 'https://remy-webrtc-live.herokuapp.com/',
   exposedAppBasePath: 'cloudcoding.fr',
   baseProjectPath: '/data/',
   versions: {

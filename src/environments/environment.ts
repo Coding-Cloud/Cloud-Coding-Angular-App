@@ -12,6 +12,7 @@ export const environment = {
   test: false,
   apiUrl: 'http://localhost:3000',
   socketUrl: 'http://localhost:3000',
+  videoSocketUrl: 'https://remy-webrtc-live.herokuapp.com/',
   exposedAppBasePath: 'http://localhost:8000',
   baseProjectPath:
     '/Users/remy/Documents/ESGI/annee_4/projet_annuel/project_test/',
