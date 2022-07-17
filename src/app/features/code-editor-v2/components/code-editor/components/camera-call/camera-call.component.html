@@ -5,48 +5,38 @@
 </div>
 
 <!-- to show incommming call and accept -->
-<div id="answer">
-  <div class="incomingWrapper">
-    <div class="itemWrapper">
+<div #answer id="answer">
+  <div class="incomingWrapper" style="width: 100%">
+    <div class="itemWrapper" style="width: 100%">
       <h2>Incomming Call</h2>
     </div>
-    <div class="itemWrapper">
-      <img id="profileImageA" style="padding: 30px; width: 140px; height: 140px;"
+    <div class="itemWrapper" style="width: 100%">
+      <img id="profileImageA" style="padding: 30px;  height: 140px;"
            src="/assets/profile.png" alt="">
     </div>
     <div class="itemWrapper">
       <h2 style="line-height: 0px;"><span id="callerName"></span></h2>
     </div>
-    <div class="itemWrapper" style="display: flex; flex-direction: row; margin-bottom: 20px;">
-      <button class="actionButton" onclick="answer()">Answer</button>
+    <p class="otherUser">{{otherUser}}</p>
+    <div class="itemWrapper" style="display: flex; flex-direction: row; justify-content: center; margin-bottom: 20px;">
+      <button class="actionButton" id="button-calling" (click)="handleAnswer()">Answer</button>
     </div>
   </div>
 </div>
 
 <!-- to show outgoing call -->
-<div id="calling">
+<div #calling id="calling" style="position: absolute; top: 0; left: 0;">
   <div class="incomingWrapper">
     <div class="itemWrapper">
       <h2>Calling</h2>
     </div>
     <div class="itemWrapper">
-      <img id="profileImageCA" style="padding: 30px; width: 140px; height: 140px;"
+      <img id="profileImageCA" style="padding: 30px;  height: 140px;"
            src="/assets/profile.png" alt="">
     </div>
+    <p class="otherUser">{{otherUser}}</p>
     <div class="itemWrapper">
       <h3 style="line-height: 0px;"><span id="otherUserNameCA"></span></h3>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- to show call in progress call -->
-<div id="inCall">
-  <div class="incomingWrapper">
-    <div class="itemWrapper">
-      <h3>On Call With</h3>
-      <h2 style="line-height: 0px;"><span id="otherUserNameC"></span></h2>
     </div>
   </div>
 </div>
@@ -54,13 +44,8 @@
 <br>
 
 <!-- to show local and remote video -->
-<div>
-</div>
-  <div>
-    <video [srcObject]="localVideoSrcObject" #localVideo width="500px" autoplay ></video>
-  </div>
-  <div >
-    <video [srcObject]="remoteVideoSrcObject" #remoteVideo width="500px" autoplay ></video>
-  </div>
-<div style="flex-grow: 1;">
+<div id="video-grid">
+    <video [srcObject]="localVideoSrcObject" #localVideo class="video-client" autoplay ></video>
+    <video [srcObject]="remoteVideoSrcObject" #remoteVideo class="video-client" autoplay ></video>
+  <video [srcObject]="remote2VideoSrcObject" #remoteVideo2 class="video-client"  autoplay ></video>
 </div>

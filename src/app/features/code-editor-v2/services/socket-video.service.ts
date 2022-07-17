@@ -11,7 +11,7 @@ import { RenameProjectFolderResource } from './resource/rename-project-folder-re
 export class SocketVideoService {
   socket: Socket | undefined;
 
-  readonly uri: string = 'http://localhost:5000';
+  readonly uri: string = 'http://turn.machavoine.fr:5000';
 
   constructor() {}
 

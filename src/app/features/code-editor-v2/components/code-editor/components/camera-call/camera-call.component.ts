@@ -4,7 +4,8 @@ import {
   ChangeDetectionStrategy,
   OnDestroy,
   ViewChild,
-  ElementRef
+  ElementRef,
+  Renderer2
 } from '@angular/core';
 import { SocketVideoService } from '../../../../services/socket-video.service';
 
@@ -17,14 +18,22 @@ export class CameraCallComponent implements OnInit, OnDestroy {
   @ViewChild('callerName', { static: true }) callerNameElement:
     | ElementRef
     | undefined;
-  @ViewChild('call', { static: true }) callElement: ElementRef | undefined;
-  @ViewChild('answer', { static: true }) answerElement: ElementRef | undefined;
+
+  @ViewChild('calling', { static: false }) callingElement:
+    | ElementRef
+    | undefined;
+
+  @ViewChild('answer', { static: false }) answerElement: ElementRef | undefined;
 
   @ViewChild('localVideo', { static: true }) localVideoElement:
     | HTMLVideoElement
     | undefined;
 
   @ViewChild('remoteVideo', { static: true }) remoteVideoElement:
+    | HTMLVideoElement
+    | undefined;
+
+  @ViewChild('remote2Video', { static: true }) remote2VideoElement:
     | HTMLVideoElement
     | undefined;
 
@@ -51,8 +60,6 @@ export class CameraCallComponent implements OnInit, OnDestroy {
 
   private callInProgress = false;
 
-  private otherUser: any;
-
   private myUsername: any;
 
   private remoteRTCMessage: any;
@@ -63,17 +70,33 @@ export class CameraCallComponent implements OnInit, OnDestroy {
 
   public remoteVideoSrcObject: MediaStream | null = null;
 
-  constructor(private socketVideoService: SocketVideoService) {}
+  public remote2VideoSrcObject: MediaStream | null = null;
+
+  public otherUser: string | null = null;
+
+  constructor(
+    private socketVideoService: SocketVideoService,
+    private renderer: Renderer2
+  ) {}
 
   ngOnInit(): void {}
 
   public handleValidUsername(username: string) {
     this.myUsername = username;
-    this.socketVideoService.connect(this.myUsername);
+    this.socketVideoService.connect('jean-12');
     this.socketVideoService.listenNewCall().subscribe((data: any) => {
       console.log(data);
       this.otherUser = data.caller;
       this.remoteRTCMessage = data.rtcMessage;
+      console.log('answer element');
+      console.log(this.answerElement);
+      console.log(this.answerElement?.nativeElement.display);
+      this.renderer.setStyle(
+        this.answerElement?.nativeElement,
+        'display',
+        'block'
+      );
+      console.log(this.answerElement?.nativeElement.display);
     });
 
     this.socketVideoService.listenCallAnswered().subscribe((data: any) => {
@@ -81,6 +104,11 @@ export class CameraCallComponent implements OnInit, OnDestroy {
       this.remoteRTCMessage = data.rtcMessage;
       this.peerConnection.setRemoteDescription(
         new RTCSessionDescription(this.remoteRTCMessage)
+      );
+      this.renderer.setStyle(
+        this.callingElement?.nativeElement,
+        'display',
+        'none'
       );
       console.log('Call Started. They Answered');
       this.callProgress();
@@ -108,7 +136,7 @@ export class CameraCallComponent implements OnInit, OnDestroy {
   }
 
   public handleCall() {
-    this.call('jean');
+    this.call('jean-12');
   }
 
   public call(username: string) {
@@ -124,6 +152,12 @@ export class CameraCallComponent implements OnInit, OnDestroy {
     this.beReady().then((bool) => {
       this.processAccept();
     });
+    if (this.answerElement) this.answerElement.nativeElement.display = 'none';
+    this.renderer.setStyle(
+      this.answerElement?.nativeElement,
+      'display',
+      'none'
+    );
   }
 
   private createPeerConnection() {
@@ -223,6 +257,16 @@ export class CameraCallComponent implements OnInit, OnDestroy {
     this.peerConnection.close();
     this.peerConnection = null;
     this.otherUser = null;
+    this.renderer.setStyle(
+      this.answerElement?.nativeElement,
+      'display',
+      'none'
+    );
+    this.renderer.setStyle(
+      this.callingElement?.nativeElement,
+      'display',
+      'none'
+    );
   }
 
   ngOnDestroy(): void {
@@ -236,7 +280,7 @@ export class CameraCallComponent implements OnInit, OnDestroy {
       (sessionDescription: any) => {
         this.peerConnection.setLocalDescription(sessionDescription);
         this.sendCall({
-          name: userName,
+          name: this.otherUser,
           rtcMessage: sessionDescription
         });
       },
@@ -297,6 +341,11 @@ export class CameraCallComponent implements OnInit, OnDestroy {
 
   private sendCall(data: any) {
     console.log('Send Call');
+    this.renderer.setStyle(
+      this.callingElement?.nativeElement,
+      'display',
+      'block'
+    );
     this.socketVideoService.sendCall(data);
   }
 

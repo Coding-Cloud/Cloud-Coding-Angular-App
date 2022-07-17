@@ -67,7 +67,10 @@
               mwlResizeHandle
               [resizeEdges]="{ top: true }"
             ></div>
-            <app-terminal id="terminal" [text$]="codeRunnerSysOut$" ></app-terminal>
+            <div class="bottom-bar">
+              <app-terminal id="terminal" [text$]="codeRunnerSysOut$" ></app-terminal>
+              <app-camera-call></app-camera-call>
+            </div>
           </div>
         </div>
         <!-- <button class="button__tree" (click)="handleSave()">GOOOO</button>  -->

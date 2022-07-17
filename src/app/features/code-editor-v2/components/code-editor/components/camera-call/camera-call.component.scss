@@ -1,0 +1,72 @@
+#answer {
+  // position absolute at the middle of the page
+  position: absolute;
+  width: auto;
+  height: 20%;
+  top: 0;
+  left: 0;
+  display: none;
+  color: #2a2d2e;
+  z-index: 20;
+}
+
+#calling {
+  //position: absolute;
+  width: auto;
+  height: 20%;
+  //top: 0;
+  //left: 0;
+  display: none;
+  color: #2a2d2e;
+  z-index: 20;
+}
+
+#button-calling {
+  // beautiful button design
+  background-color: #00bcd4;
+  border-radius: 10px;
+  padding: 10px;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: 0.3s;
+}
+
+.incomingWrapper {
+  width: 300px;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.itemWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.otherUser {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+#video-grid {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.video-client {
+  max-width: 33%;
+}
