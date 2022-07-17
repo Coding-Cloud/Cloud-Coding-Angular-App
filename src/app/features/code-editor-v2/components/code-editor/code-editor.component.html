@@ -52,6 +52,9 @@
             <app-front-view [isResize]="isResizing" class="iframe-view" *ngIf="!(loadingIframe$ | async) && baseUrlPath" [url]="baseUrlPath" [projectUniqueName]="uniqueName" ></app-front-view>·
             <app-spinner class="iframe-view loader" *ngIf="(loadingIframe$ | async)"></app-spinner>
           </div>
+          <div class="element-cam">
+            <app-camera-call></app-camera-call>
+          </div>
           <div
             class="element-4 rectangle-1"
             [ngStyle]="style4"
@@ -67,10 +70,7 @@
               mwlResizeHandle
               [resizeEdges]="{ top: true }"
             ></div>
-            <div class="bottom-bar">
-              <app-terminal id="terminal" [text$]="codeRunnerSysOut$" ></app-terminal>
-              <app-camera-call></app-camera-call>
-            </div>
+            <app-terminal id="terminal" [text$]="codeRunnerSysOut$" ></app-terminal>
           </div>
         </div>
         <!-- <button class="button__tree" (click)="handleSave()">GOOOO</button>  -->

@@ -61,12 +61,12 @@
 #video-grid {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  height: 100vh;
   width: 100%;
 }
 
 .video-client {
-  max-width: 33%;
+  max-width: 100%;
 }
