@@ -2,6 +2,10 @@
   <button #collapsible type='button' class='collapsible' (click)='handleClickOnCollapse()'>
     <span>Developpeurs connectés</span>
     <div class='d-flex justify-content-center align-items-center'>
+      <!--<mat-icon (click)="handleOpenCameraConv()" *ngIf="playersConnected$.value.length > 1" class="me-2">-->
+      <mat-icon (click)="handleOpenCameraConv()"  class="me-2">
+        videocam
+      </mat-icon>
       <a [routerLink]=[groupViewLink,groupId] target='_blank' class='link-group-conv'>
         <mat-icon class='message d-flex justify-content-center me-2'>
           add_comment

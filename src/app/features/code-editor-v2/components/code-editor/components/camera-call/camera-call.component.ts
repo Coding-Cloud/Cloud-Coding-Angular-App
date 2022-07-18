@@ -5,9 +5,11 @@ import {
   OnDestroy,
   ViewChild,
   ElementRef,
-  Renderer2
+  Renderer2,
+  Input
 } from '@angular/core';
 import { SocketVideoService } from '../../../../services/socket-video.service';
+import { CameraCallInitService } from '../../../../services/camera-call/camera-call-init.service';
 
 @Component({
   selector: 'app-camera-call',
@@ -40,6 +42,10 @@ export class CameraCallComponent implements OnInit, OnDestroy {
   @ViewChild('videoTest', { static: true }) videoTestElement:
     | HTMLVideoElement
     | undefined;
+
+  @Input() username: string = '';
+
+  @Input() projectUniqueName: string = '';
 
   private pdConfig: RTCConfiguration = {
     iceServers: [
@@ -76,14 +82,30 @@ export class CameraCallComponent implements OnInit, OnDestroy {
 
   constructor(
     private socketVideoService: SocketVideoService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private cameraCallInitService: CameraCallInitService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    //this.myUsername = this.username;
+    this.cameraCallInitService.cameraCallIsLive$.subscribe(
+      (projectUniqueName) => {
+        if (projectUniqueName !== '') {
+          this.myUsername = this.username;
+          this.initCameraListeners();
+          this.call(projectUniqueName);
+        }
+      }
+    );
+  }
 
   public handleValidUsername(username: string) {
     this.myUsername = username;
-    this.socketVideoService.connect('jean-12');
+    this.initCameraListeners();
+  }
+
+  private initCameraListeners() {
+    this.socketVideoService.connect(this.projectUniqueName);
     this.socketVideoService.listenNewCall().subscribe((data: any) => {
       console.log(data);
       this.otherUser = data.caller;
@@ -136,10 +158,12 @@ export class CameraCallComponent implements OnInit, OnDestroy {
   }
 
   public handleCall() {
-    this.call('jean-12');
+    this.call(this.myUsername);
+    //this.call('jean-12');
   }
 
   public call(username: string) {
+    console.log('call ' + username);
     this.otherUser = username;
     this.beReady().then((bool) => {
       console.log('dans le process call');

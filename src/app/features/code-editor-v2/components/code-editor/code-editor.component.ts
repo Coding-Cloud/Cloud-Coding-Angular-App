@@ -46,6 +46,7 @@ import {
   resizeComponentsWhenMoveTerminal,
   validateResizing
 } from './utils/resizing-utils';
+import { CameraCallInitService } from '../../services/camera-call/camera-call-init.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -72,6 +73,7 @@ export class CodeEditorComponent implements OnInit {
     | undefined;
 
   iconChevronName = 'expand_more';
+  cameraChevronName = 'chevron_left';
   editorOptions = {
     theme: 'vs-dark',
     language: 'typescript',
@@ -131,6 +133,8 @@ export class CodeEditorComponent implements OnInit {
 
   uniqueName: string;
 
+  username: string = '';
+
   project: ProjectShare | undefined;
 
   readonly IMAGE_EXTENSION = IMAGE_EXTENSION;
@@ -146,7 +150,8 @@ export class CodeEditorComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private cameraCallInitService: CameraCallInitService
   ) {
     this.uniqueName = this.activatedRoute.snapshot.params.id;
 
@@ -175,11 +180,12 @@ export class CodeEditorComponent implements OnInit {
 
         this.initializeTreeFiles();
       });
-    this.store
-      .pipe(select(selectUser))
-      .subscribe((user) =>
-        this.codeSocketService.connect(this.uniqueName, user.username)
-      );
+
+    // CODE SOCKETS PART
+    this.store.pipe(select(selectUser)).subscribe((user) => {
+      this.username = user.username;
+      this.codeSocketService.connect(this.uniqueName, user.username);
+    });
     this.codeSocketService
       .listenProjectModification('projectModificationFromContributor')
       .subscribe((editsProjectDTO: EditProjectDTO[]) => {
@@ -250,6 +256,16 @@ export class CodeEditorComponent implements OnInit {
       .subscribe((message: string) => {
         this.loadingIframe$.next(false);
       });
+
+    // CAMERA CALL PART
+
+    this.cameraCallInitService.cameraCallIsLive$.subscribe(
+      (projectUniqueName: string) => {
+        if (projectUniqueName !== '') {
+          this.handleClickCameraArrow();
+        }
+      }
+    );
   }
 
   initializeTreeFiles(): void {
@@ -722,7 +738,6 @@ export class CodeEditorComponent implements OnInit {
   }
 
   public handleClickCameraArrow() {
-    console.log(this.cameraCallComponent);
     if (this.cameraCallComponent?.nativeElement.style.display === 'block') {
       this.renderer.setStyle(
         this.cameraCallComponent?.nativeElement,
@@ -734,6 +749,7 @@ export class CodeEditorComponent implements OnInit {
         'width',
         '98%'
       );
+      this.cameraChevronName = 'chevron_left';
     } else {
       this.renderer.setStyle(
         this.cameraCallComponent?.nativeElement,
@@ -745,6 +761,8 @@ export class CodeEditorComponent implements OnInit {
         'width',
         '80%'
       );
+
+      this.cameraChevronName = 'chevron_right';
     }
   }
 }

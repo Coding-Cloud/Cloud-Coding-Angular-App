@@ -12,6 +12,7 @@ import {
 import { Router } from '@angular/router';
 import { GetProjectService } from '../../../../services/project-api/get-project.service';
 import { groupViewLink } from '../../../../../groups/groups-routing.module';
+import { CameraCallInitService } from '../../../../services/camera-call/camera-call-init.service';
 
 @Component({
   selector: 'app-developer-list',
@@ -46,7 +47,8 @@ export class DeveloperListComponent implements OnInit {
     private codeSocketService: CodeSocketService,
     private router: Router,
     private getProjectService: GetProjectService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private cameraCallInitService: CameraCallInitService
   ) {}
 
   ngOnInit(): void {
@@ -80,5 +82,10 @@ export class DeveloperListComponent implements OnInit {
       this.collapsed.nativeElement.style.display = 'none';
       this.iconChevronName = 'chevron_left';
     }
+  }
+
+  handleOpenCameraConv() {
+    if (this.projectUniqueName)
+      this.cameraCallInitService.initCameraCall(this.projectUniqueName);
   }
 }

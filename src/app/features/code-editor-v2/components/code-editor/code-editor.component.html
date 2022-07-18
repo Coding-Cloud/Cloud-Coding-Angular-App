@@ -74,11 +74,11 @@
         <!-- <button class="button__tree" (click)="handleSave()">GOOOO</button>  -->
     </div>
     <div id="arrow-content">
-      <mat-icon (click)="handleClickCameraArrow()" class='clickable'>expand_more</mat-icon>
+      <mat-icon (click)="handleClickCameraArrow()" class='clickable'>{{cameraChevronName}}</mat-icon>
     </div>
     <div id="camera-content">
       <div #cameraCallComponent id="camera-call-div">
-        <app-camera-call ></app-camera-call>
+        <app-camera-call [projectUniqueName]="uniqueName" [username]="username" ></app-camera-call>
       </div>
     </div>
 </div>
