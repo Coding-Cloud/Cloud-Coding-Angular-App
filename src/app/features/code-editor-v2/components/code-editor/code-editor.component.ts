@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   OnInit,
+  Renderer2,
   ViewChild
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -61,6 +62,15 @@ export class CodeEditorComponent implements OnInit {
   @ViewChild('collapsed') public treeCollapsed:
     | ElementRef<HTMLDivElement>
     | undefined;
+
+  @ViewChild('editorContent') public editorContentElement:
+    | ElementRef<HTMLDivElement>
+    | undefined;
+
+  @ViewChild('cameraCallComponent') public cameraCallComponent:
+    | ElementRef<HTMLDivElement>
+    | undefined;
+
   iconChevronName = 'expand_more';
   editorOptions = {
     theme: 'vs-dark',
@@ -135,7 +145,8 @@ export class CodeEditorComponent implements OnInit {
     private codeSocketService: CodeSocketService,
     private sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private renderer: Renderer2
   ) {
     this.uniqueName = this.activatedRoute.snapshot.params.id;
 
@@ -708,5 +719,32 @@ export class CodeEditorComponent implements OnInit {
 
         this.initializeTreeFiles();
       });
+  }
+
+  public handleClickCameraArrow() {
+    console.log(this.cameraCallComponent);
+    if (this.cameraCallComponent?.nativeElement.style.display === 'block') {
+      this.renderer.setStyle(
+        this.cameraCallComponent?.nativeElement,
+        'display',
+        'none'
+      );
+      this.renderer.setStyle(
+        this.editorContentElement?.nativeElement,
+        'width',
+        '98%'
+      );
+    } else {
+      this.renderer.setStyle(
+        this.cameraCallComponent?.nativeElement,
+        'display',
+        'block'
+      );
+      this.renderer.setStyle(
+        this.editorContentElement?.nativeElement,
+        'width',
+        '80%'
+      );
+    }
   }
 }

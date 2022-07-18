@@ -1,5 +1,5 @@
 <div class="code-editor-page" xmlns="http://www.w3.org/1999/html">
-    <div class="editor-content">
+    <div #editorContent class="editor-content">
         <div class="editor">
           <div class="element-1 rectangle-1"
                [ngStyle]="style1">
@@ -52,9 +52,7 @@
             <app-front-view [isResize]="isResizing" class="iframe-view" *ngIf="!(loadingIframe$ | async) && baseUrlPath" [url]="baseUrlPath" [projectUniqueName]="uniqueName" ></app-front-view>·
             <app-spinner class="iframe-view loader" *ngIf="(loadingIframe$ | async)"></app-spinner>
           </div>
-          <div class="element-cam">
-            <app-camera-call></app-camera-call>
-          </div>
+
           <div
             class="element-4 rectangle-1"
             [ngStyle]="style4"
@@ -74,6 +72,14 @@
           </div>
         </div>
         <!-- <button class="button__tree" (click)="handleSave()">GOOOO</button>  -->
+    </div>
+    <div id="arrow-content">
+      <mat-icon (click)="handleClickCameraArrow()" class='clickable'>expand_more</mat-icon>
+    </div>
+    <div id="camera-content">
+      <div #cameraCallComponent id="camera-call-div">
+        <app-camera-call ></app-camera-call>
+      </div>
     </div>
 </div>
 
