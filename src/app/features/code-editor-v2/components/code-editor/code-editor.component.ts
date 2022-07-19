@@ -62,6 +62,8 @@ export class CodeEditorComponent implements OnInit {
     | ElementRef<HTMLDivElement>
     | undefined;
   iconChevronName = 'expand_more';
+  iconRestart = 'refresh';
+  iconDependenciesResolve = 'get_app';
   editorOptions = {
     theme: 'vs-dark',
     language: 'typescript',
@@ -106,8 +108,8 @@ export class CodeEditorComponent implements OnInit {
   public style3: object = { bottom: '30%' };
   public style4: object = { top: '70%' };
 
-  public style4BottomPreviousValue: string = '30%';
-  public style4BTopPreviousValue: string = '70%';
+  public style4BottomPreviousValue = '30%';
+  public style4BTopPreviousValue = '70%';
 
   isResizing = false;
 
@@ -343,71 +345,6 @@ export class CodeEditorComponent implements OnInit {
       });
   }
 
-  private initialiseInputListening(): void {
-    this.monacoTreeInput = (<HTMLElement>(
-      this.elementRef.nativeElement
-    )).querySelector('.inputarea');
-    if (this.monacoTreeInput === null) {
-      return;
-    }
-
-    this.keyup$ = fromEvent(this.monacoTreeInput, 'keyup');
-    this.destroyKey.next();
-    this.keyup$
-      .pipe(
-        takeUntil(this.destroyKey),
-        map((i: any) => i.currentTarget.value),
-        debounceTime(1000)
-      )
-      .subscribe(() => {
-        const editsProjectDTO = this.generateEditProjectDTO();
-        this.codeSocketService.sendProjectModification(
-          'editProject',
-          editsProjectDTO
-        );
-        this.socketProject = copyObject<Project>(this.currentProject);
-        this.socketProjectModification.appFiles = {};
-      });
-  }
-
-  private generateEditProjectDTO(): EditProjectDTO[] {
-    const editProjectsDTO: EditProjectDTO[] = [];
-
-    Object.entries(this.socketProjectModification.appFiles).forEach((value) => {
-      if (
-        value[1].folderStatus === FolderStatus.MODIFIED &&
-        value[1].type === 'file' &&
-        this.currentProject.appFiles[value[0]] !== undefined
-      ) {
-        const contentProjectModification = value[1].contents.split('\n');
-        const contentProjectInitial =
-          this.socketProject.appFiles[value[0]].contents.split('\n');
-        const biggerLength =
-          contentProjectModification.length > contentProjectInitial.length
-            ? contentProjectModification.length
-            : contentProjectInitial.length;
-        const editProjectDTO: EditProjectDTO = {
-          name: value[0].split(this.BASE_PROJECT_PATH)[1],
-          type: 'file',
-          fullPath: value[0],
-          folderStatus: FolderStatus.MODIFIED,
-          modifications: []
-        };
-        for (let i = 0; i < biggerLength; i++) {
-          if (contentProjectModification[i] !== contentProjectInitial[i]) {
-            editProjectDTO.modifications?.push({
-              contents: contentProjectModification[i],
-              folderLine: i + 1
-            });
-          }
-        }
-        editProjectsDTO.push(editProjectDTO);
-      }
-    });
-
-    return editProjectsDTO;
-  }
-
   // eslint-disable-next-line @typescript-eslint/member-ordering
   handleClickContextMenu(event: ContextMenuAction): void {
     if (event.action === 'delete_file') {
@@ -587,8 +524,6 @@ export class CodeEditorComponent implements OnInit {
     }
   }
 
-  /*resizing*/
-
   validate(event: ResizeEvent): boolean {
     return validateResizing(event);
   }
@@ -601,6 +536,8 @@ export class CodeEditorComponent implements OnInit {
     };
     this.isResizing = false;
   }
+
+  /* resizing*/
 
   onResizeEnd4(event: ResizeEvent): void {
     this.resizingUpperComponents(event);
@@ -650,6 +587,97 @@ export class CodeEditorComponent implements OnInit {
     this.resizingUpperComponents(event);
   }
 
+  handleCodeVersionChanged() {
+    this.isLoading = true;
+    this.getProjectService
+      .getProjectV2(this.uniqueName)
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+          this.cd.markForCheck();
+        })
+      )
+      .subscribe((projectCodeEditor: Project) => {
+        this.currentProject = copyObject<Project>(projectCodeEditor);
+        this.socketProject = copyObject<Project>(projectCodeEditor);
+
+        this.initializeTreeFiles();
+      });
+  }
+
+  restartRunner(): void {
+    this.codeSocketService.restartRunner(this.uniqueName);
+  }
+
+  resolveDependencies(): void {
+    this.codeSocketService.resolveDependencies(this.uniqueName);
+  }
+
+  private initialiseInputListening(): void {
+    this.monacoTreeInput = (<HTMLElement>(
+      this.elementRef.nativeElement
+    )).querySelector('.inputarea');
+    if (this.monacoTreeInput === null) {
+      return;
+    }
+
+    this.keyup$ = fromEvent(this.monacoTreeInput, 'keyup');
+    this.destroyKey.next();
+    this.keyup$
+      .pipe(
+        takeUntil(this.destroyKey),
+        map((i: any) => i.currentTarget.value),
+        debounceTime(1000)
+      )
+      .subscribe(() => {
+        const editsProjectDTO = this.generateEditProjectDTO();
+        this.codeSocketService.sendProjectModification(
+          'editProject',
+          editsProjectDTO
+        );
+        this.socketProject = copyObject<Project>(this.currentProject);
+        this.socketProjectModification.appFiles = {};
+      });
+  }
+
+  private generateEditProjectDTO(): EditProjectDTO[] {
+    const editProjectsDTO: EditProjectDTO[] = [];
+
+    Object.entries(this.socketProjectModification.appFiles).forEach((value) => {
+      if (
+        value[1].folderStatus === FolderStatus.MODIFIED &&
+        value[1].type === 'file' &&
+        this.currentProject.appFiles[value[0]] !== undefined
+      ) {
+        const contentProjectModification = value[1].contents.split('\n');
+        const contentProjectInitial =
+          this.socketProject.appFiles[value[0]].contents.split('\n');
+        const biggerLength =
+          contentProjectModification.length > contentProjectInitial.length
+            ? contentProjectModification.length
+            : contentProjectInitial.length;
+        const editProjectDTO: EditProjectDTO = {
+          name: value[0].split(this.BASE_PROJECT_PATH)[1],
+          type: 'file',
+          fullPath: value[0],
+          folderStatus: FolderStatus.MODIFIED,
+          modifications: []
+        };
+        for (let i = 0; i < biggerLength; i++) {
+          if (contentProjectModification[i] !== contentProjectInitial[i]) {
+            editProjectDTO.modifications?.push({
+              contents: contentProjectModification[i],
+              folderLine: i + 1
+            });
+          }
+        }
+        editProjectsDTO.push(editProjectDTO);
+      }
+    });
+
+    return editProjectsDTO;
+  }
+
   private resizingUpperComponents(event: ResizeEvent): void {
     this.style1 = resizeComponentsWhenMoveTerminal(
       this.style1,
@@ -667,6 +695,7 @@ export class CodeEditorComponent implements OnInit {
       event.edges.top
     );
   }
+
   private changeCurrentFile(path: string): void {
     if (isFile(this.currentFile.path)) {
       this.currentFile.path = `${path}`;
@@ -690,23 +719,5 @@ export class CodeEditorComponent implements OnInit {
 
       this.currentFile.type = endFile as FileTypes;
     }
-  }
-
-  handleCodeVersionChanged() {
-    this.isLoading = true;
-    this.getProjectService
-      .getProjectV2(this.uniqueName)
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-          this.cd.markForCheck();
-        })
-      )
-      .subscribe((projectCodeEditor: Project) => {
-        this.currentProject = copyObject<Project>(projectCodeEditor);
-        this.socketProject = copyObject<Project>(projectCodeEditor);
-
-        this.initializeTreeFiles();
-      });
   }
 }

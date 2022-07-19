@@ -134,4 +134,12 @@ export class CodeSocketService {
   changeVersionEvent(uniqueName: string) {
     this.socket?.emit('currentProjectVersionHasChanged', { uniqueName });
   }
+
+  resolveDependencies(uniqueName: string) {
+    this.socket?.emit('resolveDependencies', { uniqueName });
+  }
+
+  restartRunner(uniqueName: string) {
+    this.socket?.emit('restartRunner', { uniqueName });
+  }
 }
