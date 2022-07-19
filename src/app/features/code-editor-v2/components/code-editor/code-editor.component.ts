@@ -232,7 +232,7 @@ export class CodeEditorComponent implements OnInit {
       });
 
     this.codeSocketService.listenLogsChanged().subscribe((message: string) => {
-      this.codeRunnerSysOut$.next(message);
+      this.codeRunnerSysOut$.next(this.codeRunnerSysOut$.getValue() + message);
       this.cd.markForCheck();
     });
 
