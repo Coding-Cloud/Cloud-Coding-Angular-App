@@ -27,18 +27,6 @@ export class CameraCallComponent implements OnInit, OnDestroy {
 
   @ViewChild('answer', { static: false }) answerElement: ElementRef | undefined;
 
-  @ViewChild('localVideo', { static: true }) localVideoElement:
-    | HTMLVideoElement
-    | undefined;
-
-  @ViewChild('remoteVideo', { static: true }) remoteVideoElement:
-    | HTMLVideoElement
-    | undefined;
-
-  @ViewChild('remote2Video', { static: true }) remote2VideoElement:
-    | HTMLVideoElement
-    | undefined;
-
   @ViewChild('videoTest', { static: true }) videoTestElement:
     | HTMLVideoElement
     | undefined;
@@ -50,6 +38,8 @@ export class CameraCallComponent implements OnInit, OnDestroy {
   @Input() username: string = '';
 
   @Input() projectUniqueName: string = '';
+
+  userToPeerConnection: Map<string, RTCPeerConnection> = new Map();
 
   private pdConfig: RTCConfiguration = {
     iceServers: [
@@ -97,7 +87,7 @@ export class CameraCallComponent implements OnInit, OnDestroy {
         if (projectUniqueName !== '') {
           this.myUsername = this.username;
           this.initCameraListeners();
-          this.call(projectUniqueName);
+          this.call('pomme');
         }
       }
     );
@@ -110,34 +100,35 @@ export class CameraCallComponent implements OnInit, OnDestroy {
 
   private initCameraListeners() {
     this.socketVideoService.connect(this.myUsername, this.projectUniqueName);
-    this.socketVideoService.listenNewCall().subscribe((data: any) => {
-      // person that is called
-      console.log(data);
-      this.otherUser = data.caller;
-      this.remoteRTCMessage = data.rtcMessage;
-      console.log('answer element');
-      console.log(this.answerElement);
-      console.log(this.answerElement?.nativeElement.display);
-      this.renderer.setStyle(
-        this.answerElement?.nativeElement,
-        'display',
-        'block'
-      );
-      console.log(this.answerElement?.nativeElement.display);
-    });
+    this.socketVideoService
+      .listenNewCall()
+      .subscribe((data: { caller: string; rtcMessage: any }) => {
+        // person that is called
+        this.otherUser = data.caller;
+        this.remoteRTCMessage = data.rtcMessage;
+
+        //console.log(data);
+        //this.remoteRTCMessage = data.rtcMessage;
+        console.log('answer element');
+        console.log(this.answerElement);
+        this.renderer.setStyle(
+          this.answerElement?.nativeElement,
+          'display',
+          'block'
+        );
+        console.log(this.answerElement?.nativeElement.display);
+      });
 
     this.socketVideoService
       .listenCallAnswered()
-      .subscribe((data: { callee: string; rtcMessage: any[] }) => {
+      .subscribe((data: { callee: string; rtcMessage: any }) => {
         // person that call
         console.log(data);
         // set le remoteRTC Message dans une RTCSessionDescription
-        data.rtcMessage.forEach((element: any) => {
-          this.remoteRTCMessage = element;
-          this.peerConnection.setRemoteDescription(
-            new RTCSessionDescription(this.remoteRTCMessage)
-          );
-        });
+        this.remoteRTCMessage = data.rtcMessage;
+        this.peerConnection.setRemoteDescription(
+          new RTCSessionDescription(data.rtcMessage)
+        );
         /*this.remoteRTCMessage = data.rtcMessage;
       this.peerConnection.setRemoteDescription(
         new RTCSessionDescription(this.remoteRTCMessage)
@@ -154,7 +145,6 @@ export class CameraCallComponent implements OnInit, OnDestroy {
 
     this.socketVideoService.listenCallIceCandidate().subscribe((data: any) => {
       console.log('Got ice candidate');
-      console.log(data);
       const message = data.rtcMessage;
       const candidate = new RTCIceCandidate({
         sdpMLineIndex: message.label,
@@ -165,6 +155,7 @@ export class CameraCallComponent implements OnInit, OnDestroy {
       if (this.peerConnection) {
         console.log('ICE candidate Added');
         console.log(this.peerConnection);
+        console.log(candidate);
         this.peerConnection.addIceCandidate(candidate);
       } else {
         console.log('ICE candidate Pushed');
@@ -242,7 +233,6 @@ export class CameraCallComponent implements OnInit, OnDestroy {
       console.log('localVideo');
       console.log('je set le stream');
       console.log(stream);
-      console.log(this.localVideoElement);
       this.addVideoElement(this.localStream);
 
       console.log('on passe dans le be ready');
@@ -280,14 +270,11 @@ export class CameraCallComponent implements OnInit, OnDestroy {
     this.remoteStream = event.stream;
     console.log('je set le stream remote');
     console.log(this.remoteStream);
-    console.log(this.remoteVideoElement);
     this.addVideoElement(this.remoteStream);
   }
 
   private handleRemoteStreamRemoved(event: any) {
     console.log('Remote stream removed. Event: ', event);
-    if (this.remoteVideoElement) this.remoteVideoSrcObject = null;
-    if (this.localVideoElement) this.localVideoSrcObject = null;
   }
 
   private stop() {
@@ -334,6 +321,7 @@ export class CameraCallComponent implements OnInit, OnDestroy {
     this.peerConnection.setRemoteDescription(
       new RTCSessionDescription(this.remoteRTCMessage)
     );
+
     this.peerConnection.createAnswer(
       (sessionDescription: any) => {
         this.peerConnection.setLocalDescription(sessionDescription);

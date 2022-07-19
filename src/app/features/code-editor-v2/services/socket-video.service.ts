@@ -30,21 +30,24 @@ export class SocketVideoService {
     });
   }
 
-  listenNewCall(): Observable<any> {
+  listenNewCall(): Observable<{ caller: string; rtcMessage: any }> {
     return new Observable((subscriber) => {
-      this.socket?.on('newCall', (data) => {
-        console.info('newCall event');
-        console.log(data);
-        subscriber.next(data);
-      });
+      this.socket?.on(
+        'newCall',
+        (data: { caller: string; rtcMessage: any }) => {
+          console.info('newCall event');
+          console.log(data);
+          subscriber.next(data);
+        }
+      );
     });
   }
 
-  listenCallAnswered(): Observable<{ callee: string; rtcMessage: any[] }> {
+  listenCallAnswered(): Observable<{ callee: string; rtcMessage: any }> {
     return new Observable((subscriber) => {
       this.socket?.on(
         'callAnswered',
-        (data: { callee: string; rtcMessage: any[] }) => {
+        (data: { callee: string; rtcMessage: any }) => {
           console.info('callAnswered event');
           console.info(data);
           subscriber.next(data);
