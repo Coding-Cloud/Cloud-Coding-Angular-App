@@ -11,7 +11,8 @@ import { RenameProjectFolderResource } from './resource/rename-project-folder-re
 export class SocketVideoService {
   socket: Socket | undefined;
 
-  readonly uri: string = 'http://turn.machavoine.fr:5000';
+  //readonly uri: string = 'http://turn.machavoine.fr:5000';
+  readonly uri: string = 'http://localhost:5000';
 
   constructor() {}
 
@@ -19,16 +20,17 @@ export class SocketVideoService {
     this.socket?.emit('disconnectCustom');
   }
 
-  connect(username: string): void {
+  connect(username: string, room: string): void {
     this.socket = io(this.uri, {
       transports: ['websocket', 'polling', 'flashsocket'],
       query: {
-        user: username
+        user: username,
+        room: room
       }
     });
   }
 
-  listenNewCall(): Observable<EditProjectDTO[]> {
+  listenNewCall(): Observable<any> {
     return new Observable((subscriber) => {
       this.socket?.on('newCall', (data) => {
         console.info('newCall event');
@@ -38,16 +40,20 @@ export class SocketVideoService {
     });
   }
 
-  listenCallAnswered(): Observable<RenameProjectFolderResource> {
+  listenCallAnswered(): Observable<{ callee: string; rtcMessage: any[] }> {
     return new Observable((subscriber) => {
-      this.socket?.on('callAnswered', (data) => {
-        console.info('callAnswered event');
-        subscriber.next(data);
-      });
+      this.socket?.on(
+        'callAnswered',
+        (data: { callee: string; rtcMessage: any[] }) => {
+          console.info('callAnswered event');
+          console.info(data);
+          subscriber.next(data);
+        }
+      );
     });
   }
 
-  listenCallIceCandidate(): Observable<RenameProjectFolderResource> {
+  listenCallIceCandidate(): Observable<any> {
     return new Observable((subscriber) => {
       this.socket?.on('ICEcandidate', (data) => {
         console.info('ICEcandidate event');

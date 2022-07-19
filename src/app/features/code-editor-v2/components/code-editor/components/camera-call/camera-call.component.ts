@@ -43,6 +43,10 @@ export class CameraCallComponent implements OnInit, OnDestroy {
     | HTMLVideoElement
     | undefined;
 
+  @ViewChild('videoGrid', { static: true }) videoGrid:
+    | HTMLDivElement
+    | undefined;
+
   @Input() username: string = '';
 
   @Input() projectUniqueName: string = '';
@@ -105,8 +109,9 @@ export class CameraCallComponent implements OnInit, OnDestroy {
   }
 
   private initCameraListeners() {
-    this.socketVideoService.connect(this.projectUniqueName);
+    this.socketVideoService.connect(this.myUsername, this.projectUniqueName);
     this.socketVideoService.listenNewCall().subscribe((data: any) => {
+      // person that is called
       console.log(data);
       this.otherUser = data.caller;
       this.remoteRTCMessage = data.rtcMessage;
@@ -121,20 +126,31 @@ export class CameraCallComponent implements OnInit, OnDestroy {
       console.log(this.answerElement?.nativeElement.display);
     });
 
-    this.socketVideoService.listenCallAnswered().subscribe((data: any) => {
-      console.log(data);
-      this.remoteRTCMessage = data.rtcMessage;
+    this.socketVideoService
+      .listenCallAnswered()
+      .subscribe((data: { callee: string; rtcMessage: any[] }) => {
+        // person that call
+        console.log(data);
+        // set le remoteRTC Message dans une RTCSessionDescription
+        data.rtcMessage.forEach((element: any) => {
+          this.remoteRTCMessage = element;
+          this.peerConnection.setRemoteDescription(
+            new RTCSessionDescription(this.remoteRTCMessage)
+          );
+        });
+        /*this.remoteRTCMessage = data.rtcMessage;
       this.peerConnection.setRemoteDescription(
         new RTCSessionDescription(this.remoteRTCMessage)
-      );
-      this.renderer.setStyle(
-        this.callingElement?.nativeElement,
-        'display',
-        'none'
-      );
-      console.log('Call Started. They Answered');
-      this.callProgress();
-    });
+      );*/
+
+        this.renderer.setStyle(
+          this.callingElement?.nativeElement,
+          'display',
+          'none'
+        );
+        console.log('Call Started. They Answered');
+        this.callProgress();
+      });
 
     this.socketVideoService.listenCallIceCandidate().subscribe((data: any) => {
       console.log('Got ice candidate');
@@ -224,12 +240,11 @@ export class CameraCallComponent implements OnInit, OnDestroy {
       this.localStream = stream;
       console.log(this.localStream);
       console.log('localVideo');
-      if (this.localVideoElement) {
-        console.log('je set le stream');
-        console.log(stream);
-        console.log(this.localVideoElement);
-        this.localVideoSrcObject = stream;
-      }
+      console.log('je set le stream');
+      console.log(stream);
+      console.log(this.localVideoElement);
+      this.addVideoElement(this.localStream);
+
       console.log('on passe dans le be ready');
       return this.createConnectionAndAddStream();
     } catch (e) {
@@ -260,13 +275,13 @@ export class CameraCallComponent implements OnInit, OnDestroy {
 
   private handleRemoteStreamAdded(event: any) {
     console.log('Remote stream added.');
+    // create element video last cgild of the div
+
     this.remoteStream = event.stream;
-    if (this.remoteVideoElement) {
-      console.log('je set le stream remote');
-      console.log(this.remoteStream);
-      console.log(this.remoteVideoElement);
-      this.remoteVideoSrcObject = this.remoteStream;
-    }
+    console.log('je set le stream remote');
+    console.log(this.remoteStream);
+    console.log(this.remoteVideoElement);
+    this.addVideoElement(this.remoteStream);
   }
 
   private handleRemoteStreamRemoved(event: any) {
@@ -380,5 +395,13 @@ export class CameraCallComponent implements OnInit, OnDestroy {
 
   private callProgress() {
     this.callInProgress = true;
+  }
+
+  private addVideoElement(stream: any) {
+    const video = this.renderer.createElement('video');
+    this.renderer.setAttribute(video, 'autoplay', 'true');
+    this.renderer.addClass(video, 'video-client');
+    video.srcObject = stream;
+    document.getElementById('video-grid')?.appendChild(video);
   }
 }
