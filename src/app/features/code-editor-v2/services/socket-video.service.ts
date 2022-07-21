@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
-import {
-  environment,
-  environment as env
-} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { EditProjectDTO } from './dto/edit-project-dto';
-import { RenameProjectFolderResource } from './resource/rename-project-folder-resource';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +23,8 @@ export class SocketVideoService {
       query: {
         user: username,
         room: room
-      }
+      },
+      path: '/camera'
     });
   }
 

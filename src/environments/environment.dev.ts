@@ -14,7 +14,7 @@ export const environment = {
   turnServerUrl: 'turn:turn.machavoine.fr',
   turnServerUser: 'guest',
   turnServerPass: 'pass',
-  cameraSocketUrl: 'http://turn.machavoine.fr:5000',
+  cameraSocketUrl: 'https://turn.machavoine.fr/camera',
   versions: {
     app: packageJson.version,
     angular: packageJson.dependencies['@angular/core'],
