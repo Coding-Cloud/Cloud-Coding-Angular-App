@@ -23,8 +23,7 @@ export class SocketVideoService {
       query: {
         user: username,
         room: room
-      },
-      path: '/camera'
+      }
     });
   }
 

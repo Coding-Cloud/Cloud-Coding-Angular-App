@@ -18,7 +18,7 @@ export const environment = {
   turnServerUrl: 'turn:turn.machavoine.fr',
   turnServerUser: 'guest',
   turnServerPass: 'pass',
-  cameraSocketUrl: 'https://turn.machavoine.fr/camera',
+  cameraSocketUrl: 'https://turn.machavoine.fr:5000',
   baseProjectPath:
     '/Users/remy/Documents/ESGI/annee_4/projet_annuel/project_test/',
   versions: {
