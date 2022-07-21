@@ -135,7 +135,7 @@ export class CodeEditorComponent implements OnInit {
 
   uniqueName: string;
 
-  username: string = '';
+  username = '';
 
   project: ProjectShare | undefined;
 
@@ -286,7 +286,6 @@ export class CodeEditorComponent implements OnInit {
     this.codeSocketService.resolveDependencies(this.uniqueName);
   }
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   handleClickOnFolder(path: string): void {
     if (
       this.currentProject.appFiles[`${this.BASE_PROJECT_PATH}${path}`] !==
@@ -340,7 +339,6 @@ export class CodeEditorComponent implements OnInit {
     }, 500);
   }
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   handleChange($event: any): void {
     if (!isFile(this.currentFile.path)) {
       return;
@@ -365,7 +363,6 @@ export class CodeEditorComponent implements OnInit {
     this.currentProject.appFiles[this.currentFile.path] = newValue;
   }
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   handleSave(): void {
     this.updateProjectService
       .updateProject(this.hardProjectModification)
@@ -380,94 +377,28 @@ export class CodeEditorComponent implements OnInit {
       });
   }
 
-  private initialiseInputListening(): void {
-    this.monacoTreeInput = (<HTMLElement>(
-      this.elementRef.nativeElement
-    )).querySelector('.inputarea');
-    if (this.monacoTreeInput === null) {
-      return;
-    }
-
-    this.keyup$ = fromEvent(this.monacoTreeInput, 'keyup');
-    this.destroyKey.next();
-    this.keyup$
-      .pipe(
-        takeUntil(this.destroyKey),
-        map((i: any) => i.currentTarget.value),
-        debounceTime(1000)
-      )
-      .subscribe(() => {
-        const editsProjectDTO = this.generateEditProjectDTO();
-        this.codeSocketService.sendProjectModification(
-          'editProject',
-          editsProjectDTO
-        );
-        this.socketProject = copyObject<Project>(this.currentProject);
-        this.socketProjectModification.appFiles = {};
-      });
-  }
-
-  private generateEditProjectDTO(): EditProjectDTO[] {
-    const editProjectsDTO: EditProjectDTO[] = [];
-
-    Object.entries(this.socketProjectModification.appFiles).forEach((value) => {
-      if (
-        value[1].folderStatus === FolderStatus.MODIFIED &&
-        value[1].type === 'file' &&
-        this.currentProject.appFiles[value[0]] !== undefined
-      ) {
-        const contentProjectModification = value[1].contents.split('\n');
-        const contentProjectInitial =
-          this.socketProject.appFiles[value[0]].contents.split('\n');
-        const biggerLength =
-          contentProjectModification.length > contentProjectInitial.length
-            ? contentProjectModification.length
-            : contentProjectInitial.length;
-        const editProjectDTO: EditProjectDTO = {
-          name: value[0].split(this.BASE_PROJECT_PATH)[1],
-          type: 'file',
-          fullPath: value[0],
-          folderStatus: FolderStatus.MODIFIED,
-          modifications: []
-        };
-        for (let i = 0; i < biggerLength; i++) {
-          if (contentProjectModification[i] !== contentProjectInitial[i]) {
-            editProjectDTO.modifications?.push({
-              contents: contentProjectModification[i],
-              folderLine: i + 1
-            });
-          }
-        }
-        editProjectsDTO.push(editProjectDTO);
-      }
-    });
-
-    return editProjectsDTO;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   handleClickContextMenu(event: ContextMenuAction): void {
     if (event.action === 'delete_file') {
       this.deleteFolder({ path: event.name });
     }
 
-    const element = this.tree.find((element) => element.name === 'src');
+    const element = this.tree.find((treeFolder) => treeFolder.name === 'src');
     const dir = TreeUtils.getReferenceDirectoryFromActiveDirectory(
       event.name.split('/'),
       { name: '', content: [element] }
     );
     const pathSplit = event.name.split('/');
     const lastName = pathSplit[pathSplit.length - 1];
-    dir.content?.forEach((element) => {
-      if (element.name === lastName) {
+    dir.content?.forEach((folder) => {
+      if (folder.name === lastName) {
         if (event.action === 'new_directory' || event.action === 'new_file') {
-          element.edited = true;
+          folder.edited = true;
           makeInputFocusedAfterOneFocused('inputCreate');
         } else if (event.action === 'rename_file') {
-          if (element.rename === undefined) {
-            element.rename = new BehaviorSubject(true);
+          if (folder.rename === undefined) {
+            folder.rename = new BehaviorSubject(true);
           } else {
-            element.rename.next(true);
+            folder.rename.next(true);
           }
 
           makeInputFocusedAfterOneFocused('inputRename');
@@ -637,8 +568,6 @@ export class CodeEditorComponent implements OnInit {
     this.isResizing = false;
   }
 
-  /* resizing*/
-
   onResizeEnd4(event: ResizeEvent): void {
     this.resizingUpperComponents(event);
 
@@ -674,6 +603,8 @@ export class CodeEditorComponent implements OnInit {
     };
   }
 
+  /* resizing*/
+
   onResizingTerminal(event: ResizeEvent): void {
     this.isResizing = true;
 
@@ -685,49 +616,6 @@ export class CodeEditorComponent implements OnInit {
     };
 
     this.resizingUpperComponents(event);
-  }
-
-  private resizingUpperComponents(event: ResizeEvent): void {
-    this.style1 = resizeComponentsWhenMoveTerminal(
-      this.style1,
-      this.style4BottomPreviousValue,
-      event.edges.top
-    );
-    this.style2 = resizeComponentsWhenMoveTerminal(
-      this.style2,
-      this.style4BottomPreviousValue,
-      event.edges.top
-    );
-    this.style3 = resizeComponentsWhenMoveTerminal(
-      this.style3,
-      this.style4BottomPreviousValue,
-      event.edges.top
-    );
-  }
-
-  private changeCurrentFile(path: string): void {
-    if (isFile(this.currentFile.path)) {
-      this.currentFile.path = `${path}`;
-
-      const endFile = this.currentFile.path.split('/').pop()?.split('.').pop();
-      const valueInMap = ExtensionToLanguage.get(endFile as string);
-      if (valueInMap !== undefined) {
-        this.editorOptions = {
-          theme: 'vs-dark',
-          language: valueInMap,
-          automaticLayout: true
-        };
-      } else {
-        this.editorOptions = {
-          theme: 'vs-dark',
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          language: ExtensionToLanguage.get('default')!,
-          automaticLayout: true
-        };
-      }
-
-      this.currentFile.type = endFile as FileTypes;
-    }
   }
 
   handleCodeVersionChanged() {
@@ -774,6 +662,114 @@ export class CodeEditorComponent implements OnInit {
       );
 
       this.cameraChevronName = 'chevron_right';
+    }
+  }
+
+  private initialiseInputListening(): void {
+    this.monacoTreeInput = (<HTMLElement>(
+      this.elementRef.nativeElement
+    )).querySelector('.inputarea');
+    if (this.monacoTreeInput === null) {
+      return;
+    }
+
+    this.keyup$ = fromEvent(this.monacoTreeInput, 'keyup');
+    this.destroyKey.next();
+    this.keyup$
+      .pipe(
+        takeUntil(this.destroyKey),
+        map((i: any) => i.currentTarget.value),
+        debounceTime(1000)
+      )
+      .subscribe(() => {
+        const editsProjectDTO = this.generateEditProjectDTO();
+        this.codeSocketService.sendProjectModification(
+          'editProject',
+          editsProjectDTO
+        );
+        this.socketProject = copyObject<Project>(this.currentProject);
+        this.socketProjectModification.appFiles = {};
+      });
+  }
+
+  private generateEditProjectDTO(): EditProjectDTO[] {
+    const editProjectsDTO: EditProjectDTO[] = [];
+
+    Object.entries(this.socketProjectModification.appFiles).forEach((value) => {
+      if (
+        value[1].folderStatus === FolderStatus.MODIFIED &&
+        value[1].type === 'file' &&
+        this.currentProject.appFiles[value[0]] !== undefined
+      ) {
+        const contentProjectModification = value[1].contents.split('\n');
+        const contentProjectInitial =
+          this.socketProject.appFiles[value[0]].contents.split('\n');
+        const biggerLength =
+          contentProjectModification.length > contentProjectInitial.length
+            ? contentProjectModification.length
+            : contentProjectInitial.length;
+        const editProjectDTO: EditProjectDTO = {
+          name: value[0].split(this.BASE_PROJECT_PATH)[1],
+          type: 'file',
+          fullPath: value[0],
+          folderStatus: FolderStatus.MODIFIED,
+          modifications: []
+        };
+        for (let i = 0; i < biggerLength; i++) {
+          if (contentProjectModification[i] !== contentProjectInitial[i]) {
+            editProjectDTO.modifications?.push({
+              contents: contentProjectModification[i],
+              folderLine: i + 1
+            });
+          }
+        }
+        editProjectsDTO.push(editProjectDTO);
+      }
+    });
+
+    return editProjectsDTO;
+  }
+
+  private resizingUpperComponents(event: ResizeEvent): void {
+    this.style1 = resizeComponentsWhenMoveTerminal(
+      this.style1,
+      this.style4BottomPreviousValue,
+      event.edges.top
+    );
+    this.style2 = resizeComponentsWhenMoveTerminal(
+      this.style2,
+      this.style4BottomPreviousValue,
+      event.edges.top
+    );
+    this.style3 = resizeComponentsWhenMoveTerminal(
+      this.style3,
+      this.style4BottomPreviousValue,
+      event.edges.top
+    );
+  }
+
+  private changeCurrentFile(path: string): void {
+    if (isFile(this.currentFile.path)) {
+      this.currentFile.path = `${path}`;
+
+      const endFile = this.currentFile.path.split('/').pop()?.split('.').pop();
+      const valueInMap = ExtensionToLanguage.get(endFile as string);
+      if (valueInMap !== undefined) {
+        this.editorOptions = {
+          theme: 'vs-dark',
+          language: valueInMap,
+          automaticLayout: true
+        };
+      } else {
+        this.editorOptions = {
+          theme: 'vs-dark',
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          language: ExtensionToLanguage.get('default')!,
+          automaticLayout: true
+        };
+      }
+
+      this.currentFile.type = endFile as FileTypes;
     }
   }
 }
