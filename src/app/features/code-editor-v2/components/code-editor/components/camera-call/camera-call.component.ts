@@ -255,6 +255,7 @@ export class CameraCallComponent implements OnInit, OnDestroy {
           name: userToJoin,
           rtcMessage: sessionDescription
         });
+        this.otherUser = userToJoin;
       },
       (error: any) => {
         console.log('Error');
@@ -315,7 +316,7 @@ export class CameraCallComponent implements OnInit, OnDestroy {
       console.log('je set le stream');
       console.log(stream);
       if (!this.hasLocalStreamShow) {
-        this.addVideoElement(this.localStream, this.myUsername);
+        this.addLocalVideoElement(this.localStream, this.myUsername);
         this.hasLocalStreamShow = true;
       }
 
@@ -389,6 +390,7 @@ export class CameraCallComponent implements OnInit, OnDestroy {
     if (this.callInProgress) {
       this.stop();
     }
+    this.socketVideoService.sendDisconnectEvent();
   }
 
   public processCall(otherUser: string) {
@@ -446,11 +448,11 @@ export class CameraCallComponent implements OnInit, OnDestroy {
         } else {
           console.log('NO Ice candidate in queue');
         }
-
         this.answerCall({
           caller: otherUser,
           rtcMessage: sessionDescription
         });
+        this.otherUser = otherUser;
       },
       (error: any) => {
         console.log('Error');
@@ -482,6 +484,36 @@ export class CameraCallComponent implements OnInit, OnDestroy {
     this.callInProgress = true;
   }
 
+  private addLocalVideoElement(stream: any, username: string) {
+    const video = this.renderer.createElement('video');
+    const icon = this.renderer.createElement('mat-icon');
+    const div = this.renderer.createElement('div');
+    const iconText = this.renderer.createText('call_end');
+    this.renderer.addClass(div, 'div-video');
+    this.renderer.setAttribute(video, 'autoplay', 'true');
+    this.renderer.addClass(video, 'video-client');
+    this.renderer.addClass(video, username);
+    video.srcObject = stream;
+    this.renderer.addClass(icon, 'icon-video');
+    this.renderer.addClass(icon, 'mat-icon');
+    this.renderer.addClass(icon, 'material-icons');
+    icon.addEventListener('click', () => {
+      this.deleteVideoElement(username);
+      this.renderer.setStyle(icon, 'display', 'none');
+      this.renderer.setStyle(
+        document.getElementById('video-grid'),
+        'display',
+        'none'
+      );
+      this.stop();
+      this.socketVideoService.sendDisconnectEvent();
+    });
+    div.appendChild(video);
+    icon.appendChild(iconText);
+    div.appendChild(icon);
+    document.getElementById('video-grid')?.appendChild(div);
+  }
+
   private addVideoElement(stream: any, username: string) {
     const video = this.renderer.createElement('video');
     this.renderer.setAttribute(video, 'autoplay', 'true');
@@ -494,7 +526,7 @@ export class CameraCallComponent implements OnInit, OnDestroy {
   private deleteVideoElement(username: string) {
     const video = document.getElementsByClassName(username)[0];
     console.log(video);
-    this.renderer.setStyle(video, 'display', 'none');
+    if (video) this.renderer.setStyle(video, 'display', 'none');
   }
 
   private logMapUserPeer(user?: string) {

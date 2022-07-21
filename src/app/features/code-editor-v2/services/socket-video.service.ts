@@ -123,4 +123,8 @@ export class SocketVideoService {
   sendJoinConversation(data: any) {
     this.socket?.emit('joinConversation', data);
   }
+
+  sendDisconnectEvent() {
+    this.socket?.emit('disconnected');
+  }
 }
