@@ -1,90 +1,58 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { ROUTE_ANIMATIONS_ELEMENTS } from '../../../core/core.module';
+import {
+  ROUTE_ANIMATIONS_ELEMENTS,
+  selectIsAuthenticated
+} from '../../../core/core.module';
 
 import {
-  actionSettingsChangeAnimationsElements,
-  actionSettingsChangeAnimationsPage,
-  actionSettingsChangeAutoNightMode,
-  actionSettingsChangeLanguage,
   actionSettingsChangeTheme,
-  actionSettingsChangeStickyHeader
+  actionSettingsSwitchUserEdit
 } from '../../../core/settings/settings.actions';
-import { SettingsState, State } from '../../../core/settings/settings.model';
+import { SettingsState, State } from '../../../shared/models/settings.model';
 import { selectSettings } from '../../../core/settings/settings.selectors';
+import { User } from '../../../shared/models/user.model';
+import { selectUser } from '../../../core/auth/auth.selectors';
 
 @Component({
-  selector: 'anms-settings',
+  selector: 'cc-settings',
   templateUrl: './settings-container.component.html',
   styleUrls: ['./settings-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SettingsContainerComponent implements OnInit {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
-  settings$: Observable<SettingsState> | undefined;
+  settings$: Observable<SettingsState>;
+  isAuthenticated$: Observable<boolean>;
+  user$: Observable<User>;
+  isUserEditMode$: Observable<boolean>;
 
   themes = [
-    { value: 'DEFAULT-THEME', label: 'blue' },
-    { value: 'LIGHT-THEME', label: 'light' },
-    { value: 'NATURE-THEME', label: 'nature' },
-    { value: 'BLACK-THEME', label: 'dark' }
+    { value: 'DEFAULT-THEME', label: 'Bleu' },
+    { value: 'LIGHT-THEME', label: 'Clair' },
+    { value: 'NATURE-THEME', label: 'Nature' },
+    { value: 'BLACK-THEME', label: 'Sombre' }
   ];
 
-  languages = [
-    { value: 'en', label: 'English' },
-    { value: 'de', label: 'Deutsch' },
-    { value: 'sk', label: 'Slovenčina' },
-    { value: 'fr', label: 'Français' },
-    { value: 'es', label: 'Español' },
-    { value: 'pt-br', label: 'Português' },
-    { value: 'zh-cn', label: '简体中文' },
-    { value: 'he', label: 'עברית' },
-    { value: 'ar', label: 'اللغة العربية' }
-  ];
-
-  constructor(private store: Store<State>) {}
-
-  ngOnInit() {
+  constructor(private store: Store<State>) {
     this.settings$ = this.store.pipe(select(selectSettings));
-  }
-
-  onLanguageSelect(change: MatSelectChange) {
-    this.store.dispatch(
-      actionSettingsChangeLanguage({ language: change.value })
+    this.isAuthenticated$ = this.store.pipe(select(selectIsAuthenticated));
+    this.user$ = this.store.pipe(select(selectUser));
+    this.isUserEditMode$ = this.settings$.pipe(
+      select((settings: SettingsState) => settings.isEditUserMode)
     );
   }
+
+  ngOnInit() {}
 
   onThemeSelect(event: MatSelectChange) {
     this.store.dispatch(actionSettingsChangeTheme({ theme: event.value }));
   }
 
-  onAutoNightModeToggle(event: MatSlideToggleChange) {
-    this.store.dispatch(
-      actionSettingsChangeAutoNightMode({ autoNightMode: event.checked })
-    );
-  }
-
-  onStickyHeaderToggle(event: MatSlideToggleChange) {
-    this.store.dispatch(
-      actionSettingsChangeStickyHeader({ stickyHeader: event.checked })
-    );
-  }
-
-  onPageAnimationsToggle(event: MatSlideToggleChange) {
-    this.store.dispatch(
-      actionSettingsChangeAnimationsPage({ pageAnimations: event.checked })
-    );
-  }
-
-  onElementsAnimationsToggle(event: MatSlideToggleChange) {
-    this.store.dispatch(
-      actionSettingsChangeAnimationsElements({
-        elementsAnimations: event.checked
-      })
-    );
+  onUpdateUserSwitch() {
+    this.store.dispatch(actionSettingsSwitchUserEdit());
   }
 }

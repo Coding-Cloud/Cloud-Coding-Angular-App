@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
@@ -21,43 +20,55 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import {
-  FontAwesomeModule,
-  FaIconLibrary
+  FaIconLibrary,
+  FontAwesomeModule
 } from '@fortawesome/angular-fontawesome';
 import {
-  faPlus,
-  faEdit,
-  faTrash,
-  faTimes,
-  faCaretUp,
+  faBook,
   faCaretDown,
+  faCaretUp,
+  faCheck,
+  faEdit,
   faExclamationTriangle,
   faFilter,
-  faTasks,
-  faCheck,
-  faSquare,
   faLanguage,
-  faPaintBrush,
   faLightbulb,
-  faWindowMaximize,
+  faPaintBrush,
+  faPlus,
+  faSquare,
   faStream,
-  faBook
+  faTasks,
+  faTimes,
+  faTrash,
+  faWindowMaximize
 } from '@fortawesome/free-solid-svg-icons';
-import { faMediumM, faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faGithub, faMediumM } from '@fortawesome/free-brands-svg-icons';
 
 import { BigInputComponent } from './big-input/big-input/big-input.component';
 import { BigInputActionComponent } from './big-input/big-input-action/big-input-action.component';
-import { RtlSupportDirective } from './rtl-support/rtl-support.directive';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ProjectLanguagePipe } from './pipes/project-language-pipe.pipe';
+import { ProjectStatusPipe } from './pipes/project-status.pipe';
+import { ProjectVisibilityPipe } from './pipes/project-visibility.pipe';
+import { DateFormatPipe } from './pipes/date-format.pipe';
+import { EmptyStringPipe } from './pipes/empty-string.pipe';
+import { BooleanYesNoPipe } from './pipes/boolean-yes-no.pipe';
+import { UsernamePipe } from './pipes/username.pipe';
+import { SpinnerComponent } from './spinner/spinner.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ProjectNamePipe } from './pipes/project-name.pipe';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-
-    TranslateModule,
-
     MatButtonModule,
     MatSelectModule,
     MatTabsModule,
@@ -73,21 +84,32 @@ import { RtlSupportDirective } from './rtl-support/rtl-support.directive';
     MatSnackBarModule,
     MatSlideToggleModule,
     MatDividerModule,
-
-    FontAwesomeModule
+    MatDialogModule,
+    MatAutocompleteModule,
+    FontAwesomeModule,
+    MatDialogModule,
+    MatTableModule,
+    MatProgressBarModule,
+    MatPaginatorModule
   ],
   declarations: [
     BigInputComponent,
     BigInputActionComponent,
-    RtlSupportDirective
+    ConfirmDialogComponent,
+    ProjectLanguagePipe,
+    ProjectStatusPipe,
+    ProjectVisibilityPipe,
+    DateFormatPipe,
+    EmptyStringPipe,
+    BooleanYesNoPipe,
+    UsernamePipe,
+    SpinnerComponent,
+    ProjectNamePipe
   ],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-
-    TranslateModule,
-
     MatButtonModule,
     MatMenuModule,
     MatTabsModule,
@@ -103,15 +125,27 @@ import { RtlSupportDirective } from './rtl-support/rtl-support.directive';
     MatSnackBarModule,
     MatSlideToggleModule,
     MatDividerModule,
+    MatExpansionModule,
     MatSliderModule,
     MatDatepickerModule,
     MatNativeDateModule,
-
     FontAwesomeModule,
-
+    MatTableModule,
+    MatProgressBarModule,
+    MatPaginatorModule,
     BigInputComponent,
     BigInputActionComponent,
-    RtlSupportDirective
+    ConfirmDialogComponent,
+    MatDialogModule,
+    MatAutocompleteModule,
+    ProjectLanguagePipe,
+    ProjectStatusPipe,
+    ProjectVisibilityPipe,
+    EmptyStringPipe,
+    BooleanYesNoPipe,
+    UsernamePipe,
+    SpinnerComponent,
+    ProjectNamePipe
   ]
 })
 export class SharedModule {

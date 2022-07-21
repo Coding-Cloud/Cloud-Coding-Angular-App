@@ -1,0 +1,20 @@
+<mat-card>
+  <form [formGroup]='messageFormGroup'>
+    <ngx-editor-menu [editor]='editor' [toolbar]='toolbar' [customMenuRef]='customMenu'>
+    </ngx-editor-menu>
+    <ngx-editor [editor]='editor' formControlName='messageContent'>
+    </ngx-editor>
+    <ng-template #customMenu>
+      <cc-custom-menu [editor]='editor'></cc-custom-menu>
+    </ng-template>
+  </form>
+  <mat-card-actions [align]='"end"'>
+    <button mat-raised-button color='accent' [disabled]='messageFormGroup.invalid' (click)='onMessageSubmit()'>
+      Enregistrer
+    </button>
+    <button *ngIf='initialMessage !== undefined' mat-raised-button color='warn' (click)='onCancel()'>
+      Annuler
+    </button>
+  </mat-card-actions>
+</mat-card>
+

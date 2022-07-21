@@ -1,0 +1,20 @@
+<div>
+  <button #collapsible type='button' class='collapsible' (click)='handleClickOnCollapse()'>
+    <span>Versions du projet</span>
+    <mat-icon class='arrow chevron-left'>{{iconChevronName}}</mat-icon>
+  </button>
+  <div class='content' #collapsed>
+    <ul *ngIf="projectVersions$ | async">
+      <li>
+        <mat-icon class='add-version-icon clickable' (click)='handleClickAddVersion(InputVersionValue.value)'>add
+        </mat-icon>
+        <input #InputVersionValue class='input-add-version' type='text' placeholder='Add new version' />
+      </li>
+      <li *ngFor='let projectVersion of projectVersions$ | async let first = first; let index = index'>
+        <mat-icon *ngIf='!first' class='undo-arrow clickable' (click)='handleClickRollback(index)'>undo</mat-icon>
+        <mat-icon *ngIf='first' class='actual-icon'>done</mat-icon>
+        <span>{{projectVersion}}</span>
+      </li>
+    </ul>
+  </div>
+</div>

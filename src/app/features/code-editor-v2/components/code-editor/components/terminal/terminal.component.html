@@ -1,0 +1,5 @@
+<div #scrollMe [scrollTop]="scrollMe.scrollHeight" id="terminal-container">
+    <p id="terminal-name">TERMINAL</p>
+    <div *ngIf="text$ | async" [innerText]="text$ | async" id="terminal-text"></div>
+</div>
+

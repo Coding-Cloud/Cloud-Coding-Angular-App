@@ -1,0 +1,53 @@
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 5px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 12px;
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .arrow {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+  }
+
+  .message {
+    align-items: center;
+    font-size: 1rem;
+  }
+}
+
+.active,
+.collapsible:hover {
+  background-color: #777;
+}
+
+.content {
+  font-size: 12px;
+  padding: 0 8px;
+  display: none;
+  background-color: #1d1d1d;
+  li {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 3px 0;
+    list-style: none;
+  }
+  .connected-user {
+    color: green;
+  }
+}
+
+.link-group-conv {
+  text-decoration: none;
+}

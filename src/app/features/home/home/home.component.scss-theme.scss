@@ -1,0 +1,26 @@
+@use '~@angular/material' as mat;
+
+@mixin cc-home-component-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
+
+  cc-home {
+    .background {
+      height: 100%;
+      color: #fefefe;
+      background-color: mat.get-color-from-palette($background, background);
+
+      .gradient {
+        &::before {
+          background: linear-gradient(
+            to bottom,
+            mat.get-color-from-palette($background, background, 0) 0%,
+            mat.get-color-from-palette($background, background, 1) 100%
+          );
+        }
+      }
+    }
+  }
+}

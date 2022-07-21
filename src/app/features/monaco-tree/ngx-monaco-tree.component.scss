@@ -1,0 +1,18 @@
+.monaco-tree {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe WPC, Segoe UI,
+    HelveticaNeue-dark, Ubuntu, Droid Sans, sans-serif;
+  width: 100%;
+}
+
+.monaco-tree.vs-dark {
+  background: #1d1d1d;
+  color: white;
+  display: block;
+  min-height: calc(60vh);
+  padding-right: 40px;
+}
+
+.monaco-tree.vs-light {
+  background: rgb(243, 243, 243);
+  color: rgb(97, 97, 97);
+}

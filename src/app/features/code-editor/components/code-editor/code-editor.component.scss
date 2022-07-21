@@ -1,0 +1,42 @@
+.code-editor-page {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.editor-content {
+  width: 70%;
+  box-sizing: border-box;
+}
+
+.iframe-view {
+  display: block;
+  border: 2px solid black;
+  width: 30%;
+  box-sizing: border-box;
+  height: 70vh; /* Viewport-relative units */
+}
+
+.editor {
+  display: flex;
+  flex-direction: row;
+  height: 1vh;
+}
+
+.editor__text {
+  width: 70%;
+  height: 70vh;
+}
+
+.editor__tree {
+  height: 100%;
+  width: 30%;
+}
+
+.button__tree {
+  margin-top: 600px;
+}
+
+#terminal {
+  height: 30vh;
+}

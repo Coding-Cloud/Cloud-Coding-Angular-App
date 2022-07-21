@@ -1,102 +1,47 @@
-import { ActivationEnd, Router } from '@angular/router';
-import { Injectable, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
+import { Injectable } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { select, Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { TranslateService } from '@ngx-translate/core';
-import { combineLatest, merge, of } from 'rxjs';
+import { merge, of } from 'rxjs';
 import {
+  catchError,
+  exhaustMap,
+  map,
   tap,
-  withLatestFrom,
-  distinctUntilChanged,
-  filter
+  withLatestFrom
 } from 'rxjs/operators';
 
 import { selectSettingsState } from '../core.state';
 import { LocalStorageService } from '../local-storage/local-storage.service';
-import { AnimationsService } from '../animations/animations.service';
-import { TitleService } from '../title/title.service';
 
 import {
-  actionSettingsChangeAnimationsElements,
-  actionSettingsChangeAnimationsPage,
-  actionSettingsChangeAnimationsPageDisabled,
-  actionSettingsChangeAutoNightMode,
-  actionSettingsChangeLanguage,
   actionSettingsChangeTheme,
-  actionSettingsChangeStickyHeader,
-  actionSettingsChangeHour
+  actionSettingsUpdateUser,
+  actionSettingsUpdateUserError,
+  actionSettingsUpdateUserPassword,
+  actionSettingsUpdateUserPasswordError,
+  actionSettingsUpdateUserPasswordSuccess,
+  actionSettingsUpdateUserSuccess
 } from './settings.actions';
-import {
-  selectEffectiveTheme,
-  selectSettingsLanguage,
-  selectPageAnimations,
-  selectElementsAnimations
-} from './settings.selectors';
-import { State } from './settings.model';
+import { State } from '../../shared/models/settings.model';
+import { selectEffectiveTheme } from './settings.selectors';
+import { AuthService } from '../auth/auth.service';
+import { NotificationService } from '../notifications/notification.service';
 
 export const SETTINGS_KEY = 'SETTINGS';
 
-const INIT = of('anms-init-effect-trigger');
+const INIT = of('cc-init-effect-trigger');
 
 @Injectable()
 export class SettingsEffects {
-  hour = 0;
-
-  changeHour = this.ngZone.runOutsideAngular(() =>
-    setInterval(() => {
-      const hour = new Date().getHours();
-      if (hour !== this.hour) {
-        this.hour = hour;
-        this.ngZone.run(() =>
-          this.store.dispatch(actionSettingsChangeHour({ hour }))
-        );
-      }
-    }, 60_000)
-  );
-
   persistSettings = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(
-          actionSettingsChangeAnimationsElements,
-          actionSettingsChangeAnimationsPage,
-          actionSettingsChangeAnimationsPageDisabled,
-          actionSettingsChangeAutoNightMode,
-          actionSettingsChangeLanguage,
-          actionSettingsChangeStickyHeader,
-          actionSettingsChangeTheme
-        ),
+        ofType(actionSettingsChangeTheme),
         withLatestFrom(this.store.pipe(select(selectSettingsState))),
         tap(([action, settings]) =>
           this.localStorageService.setItem(SETTINGS_KEY, settings)
-        )
-      ),
-    { dispatch: false }
-  );
-
-  updateRouteAnimationType = createEffect(
-    () =>
-      merge(
-        INIT,
-        this.actions$.pipe(
-          ofType(
-            actionSettingsChangeAnimationsElements,
-            actionSettingsChangeAnimationsPage
-          )
-        )
-      ).pipe(
-        withLatestFrom(
-          combineLatest([
-            this.store.pipe(select(selectPageAnimations)),
-            this.store.pipe(select(selectElementsAnimations))
-          ])
-        ),
-        tap(([action, [pageAnimations, elementsAnimations]]) =>
-          this.animationsService.updateRouteAnimationType(
-            pageAnimations,
-            elementsAnimations
-          )
         )
       ),
     { dispatch: false }
@@ -121,29 +66,69 @@ export class SettingsEffects {
     { dispatch: false }
   );
 
-  setTranslateServiceLanguage = createEffect(
+  updateUser = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionSettingsUpdateUser),
+      exhaustMap((action) =>
+        this.authService.update(action.form).pipe(
+          map(() => actionSettingsUpdateUserSuccess({ form: action.form })),
+          catchError((error) =>
+            of(actionSettingsUpdateUserError({ message: error.message }))
+          )
+        )
+      )
+    )
+  );
+
+  updateUserPassword = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actionSettingsUpdateUserPassword),
+      exhaustMap((action) =>
+        this.authService.updatePassword(action.form).pipe(
+          map(() =>
+            actionSettingsUpdateUserPasswordSuccess({ form: action.form })
+          ),
+          catchError((error) =>
+            of(
+              actionSettingsUpdateUserPasswordError({ message: error.message })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  updateUserSuccess = createEffect(
     () =>
-      this.store.pipe(
-        select(selectSettingsLanguage),
-        distinctUntilChanged(),
-        tap((language) => this.translateService.use(language))
+      this.actions$.pipe(
+        ofType(actionSettingsUpdateUserSuccess),
+        tap(() => {
+          this.notificationService.success('Utilisateur mis à jour');
+        })
       ),
     { dispatch: false }
   );
 
-  setTitle = createEffect(
+  updateUserUpdatePasswordSuccess = createEffect(
     () =>
-      merge(
-        this.actions$.pipe(ofType(actionSettingsChangeLanguage)),
-        this.router.events.pipe(
-          filter((event) => event instanceof ActivationEnd)
-        )
-      ).pipe(
+      this.actions$.pipe(
+        ofType(actionSettingsUpdateUserPasswordSuccess),
         tap(() => {
-          this.titleService.setTitle(
-            this.router.routerState.snapshot.root,
-            this.translateService
-          );
+          this.notificationService.success('Mot de passe mis à jour');
+        })
+      ),
+    { dispatch: false }
+  );
+
+  errors = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(
+          actionSettingsUpdateUserError,
+          actionSettingsUpdateUserPasswordError
+        ),
+        tap((action) => {
+          this.notificationService.error(action.message);
         })
       ),
     { dispatch: false }
@@ -155,9 +140,7 @@ export class SettingsEffects {
     private router: Router,
     private overlayContainer: OverlayContainer,
     private localStorageService: LocalStorageService,
-    private titleService: TitleService,
-    private animationsService: AnimationsService,
-    private translateService: TranslateService,
-    private ngZone: NgZone
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {}
 }

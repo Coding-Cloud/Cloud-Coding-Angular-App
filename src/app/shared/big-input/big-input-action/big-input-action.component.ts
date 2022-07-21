@@ -1,15 +1,15 @@
 import {
+  ChangeDetectionStrategy,
   Component,
-  Input,
-  Output,
   EventEmitter,
-  ChangeDetectionStrategy
+  Input,
+  Output
 } from '@angular/core';
 
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 @Component({
-  selector: 'anms-big-input-action',
+  selector: 'cc-big-input-action',
   templateUrl: './big-input-action.component.html',
   styleUrls: ['./big-input-action.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -1,4 +1,4 @@
-import { Injectable, ErrorHandler } from '@angular/core';
+import { ErrorHandler, Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
@@ -15,6 +15,9 @@ export class AppErrorHandler extends ErrorHandler {
   }
 
   handleError(error: Error | HttpErrorResponse) {
+    console.log('an error occured');
+    console.log(error);
+    console.log(error.message);
     let displayMessage = 'An error occurred.';
 
     if (!environment.production) {

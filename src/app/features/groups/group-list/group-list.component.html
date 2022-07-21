@@ -1,0 +1,43 @@
+<div class='container'>
+  <div class='row'>
+    <div class='col-sm-6 col-12'>
+      <h1 rtl class='main-heading'>{{groupsLinks.groupList.name}}</h1>
+    </div>
+    <div class='col-sm-6 col-12 d-flex align-items-sm-start justify-content-sm-end mb-2'>
+      <button mat-raised-button color='accent' [routerLink]='[groupsLinks.newGroup.path]'>
+        <mat-icon>add</mat-icon>
+        Nouveau groupe
+      </button>
+    </div>
+  </div>
+  <div class='row align-items-start'>
+    <h3 class='col-12 main-heading'>Mes groupes</h3>
+    <div *ngFor='let group of ownedGroupList$ | async' class='col-md-6 col-lg-4'>
+      <mat-card>
+        <mat-card-title>
+          <a [routerLink]=[groupsLinks.viewGroup.path,group.id]>{{group.name}}</a>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <strong>Créé le</strong> : {{group.createdAt | date : 'longDate'}}
+        </mat-card-subtitle>
+      </mat-card>
+    </div>
+    <h3 class='col-12 main-heading'>Groupes rejoints</h3>
+    <div *ngFor='let group of joinedGroupList$ | async' class='col-md-6 col-lg-4'>
+      <mat-card>
+        <mat-card-title>
+          <a [routerLink]=[groupsLinks.viewGroup.path,group.id]>{{group.name}}</a>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <strong>Créé le</strong> : {{group.createdAt | date : 'longDate'}}
+        </mat-card-subtitle>
+        <mat-card-content>
+          <ul>
+            <li><strong>Propriétaire</strong> : <a
+              [routerLink]=[userViewLink,group.ownerId]>{{group.ownerId | username | async}}</a></li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

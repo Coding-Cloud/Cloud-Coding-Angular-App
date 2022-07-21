@@ -1,91 +1,80 @@
-import browser from 'browser-detect';
 import { Component, OnInit } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { environment as env } from '../../environments/environment';
 
 import {
-  authLogin,
+  AppState,
   authLogout,
-  routeAnimations,
   LocalStorageService,
-  selectIsAuthenticated,
-  selectSettingsStickyHeader,
-  selectSettingsLanguage,
+  routeAnimations,
   selectEffectiveTheme,
-  AppState
+  selectIsAuthenticated
 } from '../core/core.module';
-import {
-  actionSettingsChangeAnimationsPageDisabled,
-  actionSettingsChangeLanguage
-} from '../core/settings/settings.actions';
+import { Link, navigation } from '../app-routing.module';
+import { authGetMe } from '../core/auth/auth.actions';
+import { selectUser } from '../core/auth/auth.selectors';
+import { userViewLink } from '../features/social/users/users-routing.module';
+import { socialFriendshipsLink } from '../features/social/social-routing.module';
+import { actionConversationsInitSocket } from '../features/conversation/store/conversation.actions';
 
 @Component({
-  selector: 'anms-root',
+  selector: 'cc-root-component',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   animations: [routeAnimations]
 })
 export class AppComponent implements OnInit {
+  appName = env.appName;
   isProd = env.production;
   envName = env.envName;
   version = env.versions.app;
   year = new Date().getFullYear();
   logo = 'assets/logo.png';
-  languages = ['en', 'de', 'sk', 'fr', 'es', 'pt-br', 'zh-cn', 'he', 'ar'];
-  navigation = [
-    { link: 'about', label: 'anms.menu.about' },
-    { link: 'feature-list', label: 'anms.menu.features' },
-    { link: 'examples', label: 'anms.menu.examples' }
-  ];
-  navigationSideMenu = [
-    ...this.navigation,
-    { link: 'settings', label: 'anms.menu.settings' }
-  ];
+  routerLinks = navigation;
+  readonly userViewLink = userViewLink;
+
+  navigationMenu: Link[] = Object.values(navigation).filter(
+    (link) =>
+      ['settings', 'auth', 'code-editor', 'examples'].indexOf(link.path) === -1
+  );
+  navigationSideMenu = [...this.navigationMenu, navigation.settings];
+  friendshipsLink = socialFriendshipsLink;
 
   isAuthenticated$: Observable<boolean> | undefined;
-  stickyHeader$: Observable<boolean> | undefined;
-  language$: Observable<string> | undefined;
   theme$: Observable<string> | undefined;
+  currentUserId = '';
 
   constructor(
     private store: Store<AppState>,
     private storageService: LocalStorageService
-  ) {}
-
-  private static isIEorEdgeOrSafari() {
-    return ['ie', 'edge', 'safari'].includes(browser().name || '');
+  ) {
+    this.store.pipe(select(selectUser)).subscribe((user) => {
+      if (user) {
+        this.currentUserId = user.id;
+      }
+    });
   }
 
   ngOnInit(): void {
     this.storageService.testLocalStorage();
-    if (AppComponent.isIEorEdgeOrSafari()) {
-      this.store.dispatch(
-        actionSettingsChangeAnimationsPageDisabled({
-          pageAnimationsDisabled: true
-        })
-      );
-    }
-
     this.isAuthenticated$ = this.store.pipe(select(selectIsAuthenticated));
-    this.stickyHeader$ = this.store.pipe(select(selectSettingsStickyHeader));
-    this.language$ = this.store.pipe(select(selectSettingsLanguage));
-    this.theme$ = this.store.pipe(select(selectEffectiveTheme));
-  }
 
-  onLoginClick() {
-    this.store.dispatch(authLogin());
+    this.isAuthenticated$.subscribe((isAuthenticated) => {
+      if (isAuthenticated) {
+        this.store.dispatch(authGetMe());
+        this.store.dispatch(actionConversationsInitSocket());
+      }
+    });
+    this.theme$ = this.store.pipe(select(selectEffectiveTheme));
   }
 
   onLogoutClick() {
     this.store.dispatch(authLogout());
   }
 
-  onLanguageSelect(event: MatSelectChange) {
-    this.store.dispatch(
-      actionSettingsChangeLanguage({ language: event.value })
-    );
+  noAuthLinks(links: Link[]) {
+    return links.filter((link) => !link.auth);
   }
 }

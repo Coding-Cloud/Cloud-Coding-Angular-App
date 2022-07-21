@@ -1,0 +1,174 @@
+<div class='container'>
+  <div class='row'>
+    <h1 class='main-heading'>{{usersNavigation.view.name}}</h1>
+  </div>
+  <div class='row align-items-start'>
+    <div class='col-md-12 col-lg-6'>
+      <div class='row'>
+        <div class='col-12'>
+          <div class='row'>
+            <h3 class='main-heading'>Informations</h3>
+          </div>
+          <div class='row'>
+            <div class='col-12'>
+              <mat-card>
+                <mat-card-header
+                  class='d-flex justify-content-between align-items-center'>
+                  <mat-card-subtitle><strong>{{followersTotalCount$ | async}}</strong> abonnés -
+                    <strong>{{followingsTotalCount$ | async}}</strong> abonnements
+                  </mat-card-subtitle>
+                  <div *ngIf='userId !== currentUserId'>
+                    <button *ngIf='!(isFollowing$ | async)' mat-raised-button color='primary' (click)='onFollow()'>
+                      <mat-icon>public</mat-icon>
+                      &nbsp;Suivre
+                    </button>
+                    <button *ngIf='isFollowing$ | async' mat-raised-button color='warn' (click)='onUnfollow()'>
+                      <mat-icon>public</mat-icon>
+                      &nbsp;Ne plus suivre
+                    </button>
+                  </div>
+                </mat-card-header>
+                <mat-card-content>
+                  <mat-list>
+                    <mat-list-item>
+                      <mat-icon matListIcon>account_circle</mat-icon>
+                      <span>{{(user$ | async)?.firstname}} {{(user$ | async)?.lastname}}</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <mat-icon matListIcon>badge</mat-icon>
+                      <span>{{(user$ | async)?.username}}</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <mat-icon matListIcon>email</mat-icon>
+                      <span>{{(user$ | async)?.email}}</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <mat-icon matListIcon>child_friendly</mat-icon>
+                      <span>{{(user$ | async)?.birthdate | date: 'longDate'}}</span>
+                    </mat-list-item>
+                  </mat-list>
+                </mat-card-content>
+                <mat-card-actions align='end' *ngIf='currentUserId !== userId'>
+                  <div *ngIf='isFriendWith(friendship$ | async)'>
+                    Vous êtes amis&nbsp;
+                    <button mat-mini-fab color='warn' (click)='onFriendshipRemove()'>
+                      <mat-icon>person_remove</mat-icon>
+                    </button>
+                  </div>
+                  <div *ngIf='isFriendRequestPending(friendRequest$ | async)'>
+                    <div *ngIf='isFriendRequestReceived(friendRequest$ | async); else request_sent'>
+                      Demande d'ami reçu&nbsp;
+                      <button mat-mini-fab color='primary' (click)='onFriendRequestAccept()'>
+                        <mat-icon>done</mat-icon>
+                      </button>
+                      &nbsp;
+                      <button mat-mini-fab color='warn' (click)='onFriendRequestReject()'>
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </div>
+                    <ng-template #request_sent>
+                      Demande d'ami envoyée, attendez la réponse&nbsp;
+                      <button mat-mini-fab color='warn' (click)='onFriendRequestCancel()'>
+                        <mat-icon>block</mat-icon>
+                      </button>
+                    </ng-template>
+                  </div>
+                  <div *ngIf='!isFriendWith(friendship$ | async) && !isFriendRequestPending(friendRequest$ | async)'>
+                    <button mat-mini-fab color='primary' (click)='onFriendRequestSend()'>
+                      <mat-icon>person_add</mat-icon>
+                    </button>
+                  </div>
+                </mat-card-actions>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <div class='col-12'>
+          <div class='row'>
+            <div class='col-12 col-lg-6'>
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Abonnés</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <mat-progress-bar mode='indeterminate' *ngIf='followersLoading$ | async'></mat-progress-bar>
+                  <mat-chip-list *ngIf='!(followersLoading$ | async)'>
+                    <mat-chip
+                      *ngFor='let follower of (followers$ | async)' class='link'
+                      (click)='onFollowerView(follower.followerId)'>
+                      {{follower.followerId | username | async}}
+                    </mat-chip>
+                  </mat-chip-list>
+                </mat-card-content>
+              </mat-card>
+            </div>
+            <div class='col-12 col-lg-6'>
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Abonnements</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <mat-progress-bar mode='indeterminate' *ngIf='followingsLoading$ | async'></mat-progress-bar>
+                  <mat-chip-list *ngIf='!(followingsLoading$ | async)'>
+                    <mat-chip
+                      *ngFor='let follower of (followings$ | async)' class='link'
+                      (click)='onFollowerView(follower.followedId)'>
+                      {{follower.followedId | username | async}}
+                    </mat-chip>
+                  </mat-chip-list>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='col-12 col-lg-6'>
+      <div class='row'>
+        <div class='col-12'>
+          <div class='row'>
+            <h3 class='main-heading'>Projets publiques</h3>
+          </div>
+          <div class='row'>
+            <div *ngFor='let project of (projects$ | async)' class='col-md-12 col-lg-6'>
+              <mat-card>
+                <mat-card-title>
+                  <a [routerLink]=[projectViewLink,project.id]>{{project.name}}</a>
+                </mat-card-title>
+                <mat-card-subtitle>
+                  {{project.language | projectLanguage}}
+                </mat-card-subtitle>
+                <mat-card-content rel>
+                  <ul>
+                    <li><strong>Dernière version</strong> : {{project.lastVersion}}</li>
+                    <li><strong>Statut</strong> : {{project.status | projectStatus}}</li>
+                    <li><strong>Visibilité</strong> : {{project.globalVisibility | projectVisibility}}</li>
+                    <li><strong>Créé le</strong> : {{project.createdAt | date : 'longDate'}}</li>
+                  </ul>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <div class='col-12'>
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>
+                Commentaires publiques
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content *ngIf='!(userCommentsLoading$ | async)' class='border'
+                              style='max-height:500px; overflow: auto'>
+              <cc-comment-view *ngFor='let comment of (userComments$ | async)' [comment]='comment'
+                               [displayProjectLink]='true'
+                               style='width: 100%;'></cc-comment-view>
+            </mat-card-content>
+            <mat-card-content *ngIf='(userCommentsLoading$ | async)' class='border' style='height:300px;'>
+              <mat-spinner></mat-spinner>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

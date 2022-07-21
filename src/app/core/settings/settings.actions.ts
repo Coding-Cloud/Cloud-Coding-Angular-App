@@ -1,41 +1,44 @@
 import { createAction, props } from '@ngrx/store';
-
-import { Language } from './settings.model';
-
-export const actionSettingsChangeLanguage = createAction(
-  '[Settings] Change Language',
-  props<{ language: Language }>()
-);
+import {
+  UpdateUserForm,
+  UpdateUserPasswordForm
+} from '../../shared/models/user.model';
 
 export const actionSettingsChangeTheme = createAction(
   '[Settings] Change Theme',
   props<{ theme: string }>()
 );
-export const actionSettingsChangeAutoNightMode = createAction(
-  '[Settings] Change Auto Night Mode',
-  props<{ autoNightMode: boolean }>()
+
+export const actionSettingsSwitchUserEdit = createAction(
+  '[Settings] Switch User Edit mode'
 );
 
-export const actionSettingsChangeStickyHeader = createAction(
-  '[Settings] Change Sticky Header',
-  props<{ stickyHeader: boolean }>()
+export const actionSettingsUpdateUser = createAction(
+  '[Settings] Update User',
+  props<{ form: UpdateUserForm }>()
 );
 
-export const actionSettingsChangeAnimationsPage = createAction(
-  '[Settings] Change Animations Page',
-  props<{ pageAnimations: boolean }>()
+export const actionSettingsUpdateUserSuccess = createAction(
+  '[Settings] Update User Success',
+  props<{ form: UpdateUserForm }>()
 );
 
-export const actionSettingsChangeAnimationsPageDisabled = createAction(
-  '[Settings] Change Animations Page Disabled',
-  props<{ pageAnimationsDisabled: boolean }>()
+export const actionSettingsUpdateUserError = createAction(
+  '[Settings] Update User Error',
+  props<{ message: string }>()
 );
 
-export const actionSettingsChangeAnimationsElements = createAction(
-  '[Settings] Change Animations Elements',
-  props<{ elementsAnimations: boolean }>()
+export const actionSettingsUpdateUserPassword = createAction(
+  '[Settings] Update User Password',
+  props<{ form: UpdateUserPasswordForm }>()
 );
-export const actionSettingsChangeHour = createAction(
-  '[Settings] Change Hours',
-  props<{ hour: number }>()
+
+export const actionSettingsUpdateUserPasswordSuccess = createAction(
+  '[Settings] Update User Password Success',
+  props<{ form: UpdateUserPasswordForm }>()
+);
+
+export const actionSettingsUpdateUserPasswordError = createAction(
+  '[Settings] Update User Password Error',
+  props<{ message: string }>()
 );

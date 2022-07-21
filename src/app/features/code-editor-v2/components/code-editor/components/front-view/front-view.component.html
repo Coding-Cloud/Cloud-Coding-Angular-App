@@ -1,0 +1,9 @@
+<div class="iframe-url d-flex justify-content-center align-items-center">
+  <mat-icon id="icon-https" [ngClass]="{'https-input-clicked': urlIsFocused}">https</mat-icon>
+  <input #inputUrl [ngClass]="{'iframe-url__input': true}" (focus)="handleFocus()" (focusout)="handleFocusOut()" (keyup)="handleChange($event)" [value]="this.urlSee" />
+</div>
+<div class="content-iframe">
+  <iframe #iframeElement (load)="handleLoad($event)"  *ngIf="this.baseUrlPathTrust && !(loadingRequest$ | async)" class="iframe-view" [src]="this.baseUrlPathTrust"></iframe>
+  <app-spinner class="iframe-view loader" *ngIf="(loadingRequest$ | async)"></app-spinner>
+  <div *ngIf="isResize" class="iframe-view-resize"></div>
+</div>

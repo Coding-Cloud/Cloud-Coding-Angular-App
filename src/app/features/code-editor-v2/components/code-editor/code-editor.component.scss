@@ -1,0 +1,178 @@
+.code-editor-page {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.editor-content {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.iframe-view {
+  display: block;
+  border: 2px solid black;
+  width: 100%;
+  box-sizing: border-box;
+  height: 100%;
+
+  &.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.editor {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  position: relative;
+}
+
+.editor__text {
+  background: #1d1d1d;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.editor__tree {
+  background: #1d1d1d;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+#terminal {
+  width: 100%;
+  height: 100%;
+}
+
+#app-editor-picture-component {
+  width: 100%;
+  height: 100%;
+}
+
+.spinner-editor {
+  position: absolute;
+  top: calc(50% - 50px);
+  left: calc(50% - 50px);
+}
+
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 5px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 12px;
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .arrow {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+  }
+}
+
+.active,
+.collapsible:hover {
+  background-color: #777;
+}
+
+/*pour le resize*/
+.rectangle-1 {
+  position: relative;
+  box-sizing: border-box;
+  /*required for the enableGhostResize option to work*/
+}
+
+.element-1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% / 3);
+  height: 70%;
+  border: 2px solid black;
+}
+
+.element-2 {
+  position: absolute;
+  top: 0;
+  left: calc(100% / 3);
+  width: calc(100% / 3);
+  height: 70%;
+  border: 2px solid black;
+}
+
+.element-3 {
+  position: absolute;
+  top: 0;
+  left: calc(100% / 3 * 2);
+  width: calc(100% / 3);
+  height: 70%;
+  border: 2px solid black;
+}
+
+.element-4 {
+  position: absolute;
+  top: 70%;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  border: 2px solid black;
+  visibility: visible !important;
+}
+
+/*2*/
+.resize-handle-top-2,
+.resize-handle-bottom-2 {
+  position: absolute;
+  height: 5px;
+  cursor: row-resize;
+  width: 100%;
+  z-index: 10;
+}
+
+.resize-handle-top-2 {
+  top: 0;
+}
+
+.resize-handle-bottom-2 {
+  bottom: 0;
+}
+
+.resize-handle-left-2,
+.resize-handle-right-2 {
+  position: absolute;
+  height: 100%;
+  cursor: col-resize;
+  width: 5px;
+  z-index: 10;
+}
+
+.resize-handle-left-2 {
+  left: 0;
+}
+
+.resize-handle-right-2 {
+  right: 0;
+}
+
+.tab-icon {
+  font-size: 1.75rem;
+  user-select: none;
+  cursor: pointer;
+  color: darkgray;
+
+  &:hover {
+    color: white;
+  }
+}

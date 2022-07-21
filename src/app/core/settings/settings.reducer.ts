@@ -1,46 +1,30 @@
-import { SettingsState, NIGHT_MODE_THEME } from './settings.model';
+import { SettingsState } from '../../shared/models/settings.model';
 import {
-  actionSettingsChangeAnimationsElements,
-  actionSettingsChangeAnimationsPage,
-  actionSettingsChangeAnimationsPageDisabled,
-  actionSettingsChangeAutoNightMode,
-  actionSettingsChangeHour,
-  actionSettingsChangeLanguage,
-  actionSettingsChangeStickyHeader,
-  actionSettingsChangeTheme
+  actionSettingsChangeTheme,
+  actionSettingsSwitchUserEdit,
+  actionSettingsUpdateUserPasswordSuccess,
+  actionSettingsUpdateUserSuccess
 } from './settings.actions';
 import { Action, createReducer, on } from '@ngrx/store';
 
 export const initialState: SettingsState = {
-  language: 'en',
-  theme: 'DEFAULT-THEME',
-  autoNightMode: false,
-  nightTheme: NIGHT_MODE_THEME,
-  stickyHeader: true,
-  pageAnimations: true,
-  pageAnimationsDisabled: false,
-  elementsAnimations: true,
-  hour: 0
+  theme: 'BLACK-THEME',
+  isEditUserMode: false
 };
 
 const reducer = createReducer(
   initialState,
+  on(actionSettingsChangeTheme, (state, action) => ({ ...state, ...action })),
+  on(actionSettingsSwitchUserEdit, (state) => ({
+    ...state,
+    isEditUserMode: !state.isEditUserMode
+  })),
   on(
-    actionSettingsChangeLanguage,
-    actionSettingsChangeTheme,
-    actionSettingsChangeAutoNightMode,
-    actionSettingsChangeStickyHeader,
-    actionSettingsChangeAnimationsPage,
-    actionSettingsChangeAnimationsElements,
-    actionSettingsChangeHour,
-    (state, action) => ({ ...state, ...action })
-  ),
-  on(
-    actionSettingsChangeAnimationsPageDisabled,
-    (state, { pageAnimationsDisabled }) => ({
+    actionSettingsUpdateUserSuccess,
+    actionSettingsUpdateUserPasswordSuccess,
+    (state) => ({
       ...state,
-      pageAnimationsDisabled,
-      pageAnimations: false
+      isEditUserMode: false
     })
   )
 );

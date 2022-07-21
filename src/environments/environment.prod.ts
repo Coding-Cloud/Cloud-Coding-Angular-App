@@ -1,11 +1,14 @@
 const packageJson = require('../../package.json');
 
 export const environment = {
-  appName: 'Angular Ngrx Material Starter',
+  appName: 'Cloud Coding',
   envName: 'PROD',
   production: true,
   test: false,
-  i18nPrefix: '',
+  apiUrl: 'https://api.cloudcoding.fr',
+  socketUrl: 'https://api.cloudcoding.fr',
+  exposedAppBasePath: 'cloudcoding.fr',
+  baseProjectPath: '/data/',
   versions: {
     app: packageJson.version,
     angular: packageJson.dependencies['@angular/core'],
@@ -13,7 +16,6 @@ export const environment = {
     material: packageJson.dependencies['@angular/material'],
     bootstrap: packageJson.dependencies.bootstrap,
     rxjs: packageJson.dependencies.rxjs,
-    ngxtranslate: packageJson.dependencies['@ngx-translate/core'],
     fontAwesome:
       packageJson.dependencies['@fortawesome/fontawesome-free-webfonts'],
     angularCli: packageJson.devDependencies['@angular/cli'],

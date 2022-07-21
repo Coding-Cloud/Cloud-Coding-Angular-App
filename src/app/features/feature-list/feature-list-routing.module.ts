@@ -1,13 +1,20 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-
+import { RouterModule, Routes } from '@angular/router';
+import { NavigationLinks } from '../../app-routing.module';
 import { FeatureListComponent } from './feature-list/feature-list.component';
+
+export const featureListNavigation: NavigationLinks = {
+  featureList: {
+    path: '',
+    name: 'Fonctionnalités'
+  }
+};
 
 const routes: Routes = [
   {
-    path: '',
+    path: featureListNavigation.featureList.path,
     component: FeatureListComponent,
-    data: { title: 'anms.menu.features' }
+    data: { title: featureListNavigation.featureList.name }
   }
 ];
 

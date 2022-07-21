@@ -1,0 +1,21 @@
+<div
+[class]="'monaco-tree ' + theme"
+>
+    <monaco-tree-file
+        (contextMenuClick)="handleClickContextMenu($event)"
+        (clickFile)="handleClickFile($event)"
+        (createFile)="handleCreateFile($event)"
+        (createImage)="handleCreateImage($event)"
+        (createDir)="handleCreateDir($event)"
+        (renameFolder)="handleRenameFolder($event)"
+        [theme]="theme"
+        *ngFor="let row of tree"
+        [name]="row.name"
+        [content]="row.content"
+        [depth]="0"
+        [hide]="false"
+        [edited]="row.edited"
+        [rename]="row.rename"
+        [row]="row"
+    ></monaco-tree-file>
+</div>

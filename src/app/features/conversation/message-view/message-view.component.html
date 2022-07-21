@@ -1,0 +1,27 @@
+<div *ngIf='!editMode'>
+  <mat-card-header>
+    <mat-card-subtitle class='d-flex align-items-center'>
+      <span *ngIf='displayUserLink' class='d-flex align-items-center'>
+      <mat-icon>account_circle</mat-icon>
+      &nbsp;<a
+        [routerLink]=[userViewLink,message.userId]>{{(message.userId | username) | async}}</a>&nbsp;
+      </span>
+      {{message.createdAt | date: 'dd MMM yyyy HH:mm:ss'}}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]='messageFormGroup'>
+      <ngx-editor [editor]='editorView' formControlName='messageContentView'></ngx-editor>
+    </form>
+  </mat-card-content>
+  <mat-card-subtitle>
+    <button mat-icon-button color='accent' *ngIf='message.userId === currentUserId' (click)='onEditSwitch()'>
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button color='warn' *ngIf='message.userId === currentUserId' (click)='onDelete()'>
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-subtitle>
+</div>
+<cc-message-editor *ngIf='editMode' [initialMessage]='message' (submitForm)='onUpdateSubmit($event.content)'
+                   (cancel)='onEditSwitch()'></cc-message-editor>

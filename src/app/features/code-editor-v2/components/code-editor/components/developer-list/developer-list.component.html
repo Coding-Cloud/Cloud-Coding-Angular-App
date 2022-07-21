@@ -1,0 +1,21 @@
+<div>
+  <button #collapsible type='button' class='collapsible' (click)='handleClickOnCollapse()'>
+    <span>Developpeurs connectés</span>
+    <div class='d-flex justify-content-center align-items-center'>
+      <a [routerLink]=[groupViewLink,groupId] target='_blank' class='link-group-conv'>
+        <mat-icon class='message d-flex justify-content-center me-2'>
+          add_comment
+        </mat-icon>
+      </a>
+      <mat-icon class='arrow chevron-left'>{{iconChevronName}}</mat-icon>
+    </div>
+  </button>
+  <div class='content' #collapsed>
+    <ul>
+      <li *ngFor='let playerConnected of playersConnected$ | async'>
+        <mat-icon class='connected-user'>radio_button_checked</mat-icon>
+        <span>{{playerConnected}}</span>
+      </li>
+    </ul>
+  </div>
+</div>

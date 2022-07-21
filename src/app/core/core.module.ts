@@ -1,19 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, Optional, SkipSelf, ErrorHandler } from '@angular/core';
+import { ErrorHandler, NgModule, Optional, SkipSelf } from '@angular/core';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {
-  HttpClientModule,
-  HttpClient,
-  HTTP_INTERCEPTORS
-} from '@angular/common/http';
-import {
-  StoreRouterConnectingModule,
-  RouterStateSerializer
+  RouterStateSerializer,
+  StoreRouterConnectingModule
 } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {
   FaIconLibrary,
   FontAwesomeModule
@@ -32,12 +26,12 @@ import { environment } from '../../environments/environment';
 
 import {
   AppState,
-  reducers,
   metaReducers,
+  reducers,
   selectRouterState
 } from './core.state';
 import { AuthEffects } from './auth/auth.effects';
-import { selectIsAuthenticated, selectAuth } from './auth/auth.selectors';
+import { selectAuth, selectIsAuthenticated } from './auth/auth.selectors';
 import { authLogin, authLogout } from './auth/auth.actions';
 import { AuthGuardService } from './auth/auth-guard.service';
 import { TitleService } from './title/title.service';
@@ -50,30 +44,36 @@ import { AppErrorHandler } from './error-handler/app-error-handler.service';
 import { CustomSerializer } from './router/custom-serializer';
 import { LocalStorageService } from './local-storage/local-storage.service';
 import { HttpErrorInterceptor } from './http-interceptors/http-error.interceptor';
-import { GoogleAnalyticsEffects } from './google-analytics/google-analytics.effects';
 import { NotificationService } from './notifications/notification.service';
 import { SettingsEffects } from './settings/settings.effects';
-import {
-  selectSettingsLanguage,
-  selectEffectiveTheme,
-  selectSettingsStickyHeader
-} from './settings/settings.selectors';
+import { selectEffectiveTheme } from './settings/settings.selectors';
 import { MatButtonModule } from '@angular/material/button';
 import {
-  faCog,
   faBars,
-  faRocket,
+  faCog,
+  faPlayCircle,
   faPowerOff,
-  faUserCircle,
-  faPlayCircle
+  faRocket,
+  faSignInAlt,
+  faUserCircle
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
+  faInstagram,
   faMediumM,
   faTwitter,
-  faInstagram,
   faYoutube
 } from '@fortawesome/free-brands-svg-icons';
+import { TokenInterceptor } from './http-interceptors/http-auth.interceptor';
+import { ProjectsEffects } from '../features/projects/store/projects.effects';
+import { GroupsEffects } from '../features/groups/store/groups.effects';
+import { ProjectGuardService } from './project/project-guard.service';
+import { UsersEffects } from '../features/social/users/store/users.effects';
+import { CommentsEffects } from '../features/social/comments/store/comments.effects';
+import { FollowersEffects } from '../features/social/users/store/follower.effects';
+import { FriendRequestsEffects } from '../features/social/friendships/store/friend-requests.effects';
+import { FriendshipsEffects } from '../features/social/friendships/store/friendships.effects';
+import { ConversationEffects } from '../features/conversation/store/conversation.effects';
 
 export {
   TitleService,
@@ -90,17 +90,8 @@ export {
   selectRouterState,
   NotificationService,
   selectEffectiveTheme,
-  selectSettingsLanguage,
-  selectSettingsStickyHeader
+  ProjectGuardService
 };
-
-export function httpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(
-    http,
-    `${environment.i18nPrefix}/assets/i18n/`,
-    '.json'
-  );
-}
 
 @NgModule({
   imports: [
@@ -126,27 +117,28 @@ export function httpLoaderFactory(http: HttpClient) {
     EffectsModule.forRoot([
       AuthEffects,
       SettingsEffects,
-      GoogleAnalyticsEffects
+      ProjectsEffects,
+      GroupsEffects,
+      UsersEffects,
+      CommentsEffects,
+      FollowersEffects,
+      FriendRequestsEffects,
+      FriendshipsEffects,
+      ConversationEffects
     ]),
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({
-          name: 'Angular NgRx Material Starter'
+          name: 'Cloud Coding App'
         }),
 
     // 3rd party
-    FontAwesomeModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
-        deps: [HttpClient]
-      }
-    })
+    FontAwesomeModule
   ],
   declarations: [],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: ErrorHandler, useClass: AppErrorHandler },
     { provide: RouterStateSerializer, useClass: CustomSerializer }
   ],
@@ -166,8 +158,7 @@ export function httpLoaderFactory(http: HttpClient) {
     MatButtonModule,
 
     // 3rd party
-    FontAwesomeModule,
-    TranslateModule
+    FontAwesomeModule
   ]
 })
 export class CoreModule {
@@ -185,6 +176,7 @@ export class CoreModule {
       faBars,
       faRocket,
       faPowerOff,
+      faSignInAlt,
       faUserCircle,
       faPlayCircle,
       faGithub,

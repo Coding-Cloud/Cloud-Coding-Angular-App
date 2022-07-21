@@ -1,0 +1,66 @@
+<div class='container'>
+  <div class='row'>
+    <div class='col-sm-6 col-12'>
+      <h1 rtl class='main-heading'>{{(project$ | async)?.name}}</h1>
+    </div>
+  </div>
+  <div class='row align-items-start'>
+    <div class='col-md-6 col-lg-4'>
+      <cc-project-edit [project]='project$ | async' *ngIf='editMode$ | async'></cc-project-edit>
+      <mat-card *ngIf='!(editMode$ | async)'>
+        <mat-card-content>
+          <ul>
+            <li><strong>Modèle</strong> : {{(project$ | async)?.language}}</li>
+            <li><strong>Dernière version</strong> : {{(project$ | async)?.lastVersion}}</li>
+            <li><strong>Statut</strong> : {{(project$ | async)?.status | projectStatus}}</li>
+            <li><strong>Visibilité</strong> : {{(project$ | async)?.globalVisibility | projectVisibility}}</li>
+            <li><strong>Propriétaire</strong> :
+              <a [routerLink]=[userViewLink,ownerId]>{{ownerId | username | async}}</a>
+            </li>
+            <li *ngIf='!(group$ | async)?.isHidden'><strong>Groupe</strong> : <a
+              [routerLink]=[groupViewLink,groupId]>{{(group$ | async)?.name | emptyString}}</a>
+            </li>
+            <li><strong>Créé le</strong> : {{(project$ | async)?.createdAt | date : 'longDate'}}</li>
+          </ul>
+        </mat-card-content>
+        <mat-card-actions align='end'>
+          <button mat-raised-button color='accent'
+                  [routerLink]='"/" + rootLinks.codeEditor.path + "/project/" + (project$ | async)?.uniqueName'>
+            <mat-icon>code</mat-icon>
+            Go Code !!
+          </button>
+          <button mat-raised-button color='primary' *ngIf='(project$ | async)?.creatorId === (currentUser$ | async)?.id'
+                  (click)='onEditSwitch()'>
+            <mat-icon>edit</mat-icon>
+            Modifier
+          </button>
+          <button mat-raised-button color='warn' *ngIf='(project$ | async)?.creatorId === (currentUser$ | async)?.id'
+                  (click)='onDelete()'>
+            <mat-icon>delete</mat-icon>
+            Supprimer
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <div class='col-md-6 col-lg-8'>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            Commentaires
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content *ngIf="!(projectCommentsLoading$ | async)" class='border' style='max-height:500px; overflow: auto'>
+          <cc-comment-view *ngFor='let comment of (projectComments$ | async)' [comment]='comment'
+                           [displayUserLink]="true"
+                           style='width: 100%;'></cc-comment-view>
+        </mat-card-content>
+        <mat-card-content *ngIf="(projectCommentsLoading$ | async)" class='border' style='height:300px;'>
+          <mat-spinner></mat-spinner>
+        </mat-card-content>
+        <mat-card-subtitle>
+          <cc-comment-editor (submitForm)='onCommentSubmit($event.content)'></cc-comment-editor>
+        </mat-card-subtitle>
+      </mat-card>
+    </div>
+  </div>
+</div>

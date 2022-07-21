@@ -1,0 +1,20 @@
+<mat-card>
+  <form [formGroup]='commentFormGroup'>
+    <ngx-editor-menu [editor]='editor' [toolbar]='toolbar' [customMenuRef]='customMenu'>
+    </ngx-editor-menu>
+    <ngx-editor [editor]='editor' formControlName='commentContent'>
+    </ngx-editor>
+    <ng-template #customMenu>
+      <cc-custom-menu [editor]='editor'></cc-custom-menu>
+    </ng-template>
+  </form>
+  <mat-card-actions [align]='"end"'>
+    <button mat-raised-button color='accent' [disabled]='commentFormGroup.invalid' (click)='onCommentSubmit()'>
+      Enregistrer
+    </button>
+    <button *ngIf="initialComment !== undefined" mat-raised-button color='warn' (click)='onCancel()'>
+      Annuler
+    </button>
+  </mat-card-actions>
+</mat-card>
+

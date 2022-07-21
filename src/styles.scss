@@ -18,43 +18,76 @@
 @import 'styles-reset.scss-theme';
 @import 'app/app/app.component.scss-theme';
 @import 'app/shared/big-input/big-input/big-input.component.scss-theme';
-@import 'app/features/about/about/about.component.scss-theme';
-@import 'app/features/examples/notifications/components/notifications.component.scss-theme';
-@import 'app/features/examples/todos/components/todos-container.component.scss-theme';
-@import 'app/features/examples/stock-market/components/stock-market-container.component.scss-theme';
-@import 'app/features/examples/theming/parent/parent.component.scss-theme';
-@import 'app/features/examples/theming/child/child.component.scss-theme';
-@import 'app/features/examples/examples/examples.component.scss-theme';
+@import 'app/features/home/home/home.component.scss-theme';
 
 @mixin custom-components-theme($theme) {
-  @include anms-styles-reset-theme($theme);
-  @include anms-app-component-theme($theme);
-  @include anms-about-component-theme($theme);
-  @include anms-big-input-component-theme($theme);
-  @include anms-notifications-component-theme($theme);
-  @include anms-todos-container-component-theme($theme);
-  @include anms-stock-market-container-component-theme($theme);
-  @include anms-parent-component-theme($theme);
-  @include anms-child-component-theme($theme);
-  @include anms-examples-component-theme($theme);
+  @include cc-styles-reset-theme($theme);
+  @include cc-app-component-theme($theme);
+  @include cc-home-component-theme($theme);
+  @include cc-big-input-component-theme($theme);
 }
 
 .default-theme {
-  @include mat.all-component-themes($anms-theme);
-  @include custom-components-theme($anms-theme);
+  @include mat.all-component-themes($cc-theme);
+  @include custom-components-theme($cc-theme);
 }
 
 .light-theme {
-  @include mat.all-component-themes($anms-light-theme);
-  @include custom-components-theme($anms-light-theme);
+  @include mat.all-component-themes($cc-light-theme);
+  @include custom-components-theme($cc-light-theme);
 }
 
 .black-theme {
-  @include mat.all-component-themes($anms-black-theme);
-  @include custom-components-theme($anms-black-theme);
+  @include mat.all-component-themes($cc-black-theme);
+  @include custom-components-theme($cc-black-theme);
 }
 
 .nature-theme {
-  @include mat.all-component-themes($anms-nature-theme);
-  @include custom-components-theme($anms-nature-theme);
+  @include mat.all-component-themes($cc-nature-theme);
+  @include custom-components-theme($cc-nature-theme);
+}
+
+.container {
+  margin-top: 20px;
+}
+
+.main-heading {
+  text-transform: uppercase;
+  margin: 0 0 20px 0;
+}
+
+mat-card {
+  margin: 0 0 20px 0;
+
+  mat-card-title {
+    position: relative;
+
+    code {
+      position: absolute;
+      top: 11px;
+      right: 0;
+      float: right;
+      font-size: 10px;
+    }
+  }
+  mat-card-subtitle {
+    min-height: 20px;
+  }
+
+  ul {
+    padding: 0 0 0 16px;
+
+    li {
+      margin: 0 0 10px 0;
+    }
+  }
+
+  a {
+    fa-icon {
+      position: relative;
+      bottom: 2px;
+      font-size: 16px;
+      margin: 6px;
+    }
+  }
 }

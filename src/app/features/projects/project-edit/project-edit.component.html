@@ -1,0 +1,32 @@
+<form [formGroup]='form'>
+  <mat-card>
+    <mat-card-content>
+      <div class='row gy-2'>
+        <mat-form-field class='col-12' appearance='fill'>
+          <mat-label>Nom du projet</mat-label>
+          <input matInput placeholder='Nom du projet' formControlName='name'>
+        </mat-form-field>
+        <div class='col-12'>
+          <h6>Visibilité</h6>
+          <mat-button-toggle-group formControlName='globalVisibility'>
+            <mat-button-toggle
+              [value]='projectVisibility.GUEST'>{{projectVisibility.GUEST | projectVisibility}}</mat-button-toggle>
+            <mat-button-toggle
+              [value]='projectVisibility.PUBLIC'>{{projectVisibility.PUBLIC | projectVisibility}}</mat-button-toggle>
+            <mat-button-toggle
+              [value]='projectVisibility.PRIVATE'>{{projectVisibility.PRIVATE | projectVisibility}}</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions align='end'>
+      <button mat-raised-button color='primary' (click)='onSubmit()'>
+        <mat-icon>edit</mat-icon>
+        Modifier
+      </button>
+      <button mat-raised-button color='warn' (click)='onEditSwitch()'>
+        Annuler
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

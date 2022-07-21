@@ -1,13 +1,21 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { SettingsContainerComponent } from './settings/settings-container.component';
+import { NavigationLinks } from '../../app-routing.module';
+
+export const settingsNavigation: NavigationLinks = {
+  settings: {
+    path: '',
+    name: 'Paramètres'
+  }
+};
 
 const routes: Routes = [
   {
-    path: '',
+    path: settingsNavigation.settings.path,
     component: SettingsContainerComponent,
-    data: { title: 'anms.menu.settings' }
+    data: { title: settingsNavigation.settings.name }
   }
 ];
 
