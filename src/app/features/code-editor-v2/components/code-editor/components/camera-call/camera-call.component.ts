@@ -11,6 +11,7 @@ import {
 import { SocketVideoService } from '../../../../services/socket-video.service';
 import { CameraCallInitService } from '../../../../services/camera-call/camera-call-init.service';
 import { addUserToMap } from './camera-call.utils';
+import { environment } from '../../../../../../../environments/environment';
 
 @Component({
   selector: 'app-camera-call',
@@ -47,11 +48,11 @@ export class CameraCallComponent implements OnInit, OnDestroy {
 
   private pdConfig: RTCConfiguration = {
     iceServers: [
-      { urls: 'stun:stun.machavoine.fr' },
+      { urls: environment.stunServerUrl },
       {
-        urls: 'turn:turn.machavoine.fr',
-        username: 'guest',
-        credential: 'pass'
+        urls: environment.turnServerUrl,
+        username: environment.turnServerUser,
+        credential: environment.turnServerPass
       }
     ]
   };
@@ -301,7 +302,6 @@ export class CameraCallComponent implements OnInit, OnDestroy {
 
   private async beReady(otherUser: string): Promise<void | boolean> {
     console.log('on passe dans le be ready ' + otherUser);
-    console.log(navigator.mediaDevices);
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
       video: true
@@ -361,10 +361,21 @@ export class CameraCallComponent implements OnInit, OnDestroy {
 
   private handleRemoteStreamRemoved(event: any) {
     console.log('Remote stream removed. Event: ', event);
+    this.localStream.getTracks().forEach((track: any) => track.stop());
   }
 
-  private stop() {
+  private async stop() {
+    console.log('local stream');
+    console.log(
+      this.userToPeerConnection.get(this.myUsername)?.peerConnection.getTracks()
+    );
+    console.log(this.localStream.getTracks());
+    this.userToPeerConnection
+      .get(this.myUsername)
+      ?.peerConnection.getTracks()
+      .forEach((track: any) => track.stop());
     this.localStream.getTracks().forEach((track: any) => track.stop());
+    console.log(this.localStream.getTracks());
     this.callInProgress = false;
     this.userToPeerConnection.forEach(
       (peerConnection: {
@@ -384,6 +395,15 @@ export class CameraCallComponent implements OnInit, OnDestroy {
         );
       }
     );
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: false })
+      .then((mediaStream) => {
+        const stream = mediaStream;
+        const tracks = stream.getTracks();
+
+        tracks[0].stop;
+      });
+    this.hasLocalStreamShow = false;
   }
 
   ngOnDestroy(): void {

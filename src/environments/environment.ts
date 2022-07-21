@@ -14,6 +14,11 @@ export const environment = {
   socketUrl: 'http://localhost:3000',
   videoSocketUrl: 'https://remy-webrtc-live.herokuapp.com/',
   exposedAppBasePath: 'http://localhost:8000',
+  stunServerUrl: 'stun:stun.machavoine.fr',
+  turnServerUrl: 'turn:turn.machavoine.fr',
+  turnServerUser: 'guest',
+  turnServerPass: 'pass',
+  cameraSocketUrl: 'http://turn.machavoine.fr:5000',
   baseProjectPath:
     '/Users/remy/Documents/ESGI/annee_4/projet_annuel/project_test/',
   versions: {

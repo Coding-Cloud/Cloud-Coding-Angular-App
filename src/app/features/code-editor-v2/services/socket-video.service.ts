@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
-import { environment as env } from '../../../../environments/environment';
+import {
+  environment,
+  environment as env
+} from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { EditProjectDTO } from './dto/edit-project-dto';
 import { RenameProjectFolderResource } from './resource/rename-project-folder-resource';
@@ -11,8 +14,7 @@ import { RenameProjectFolderResource } from './resource/rename-project-folder-re
 export class SocketVideoService {
   socket: Socket | undefined;
 
-  //readonly uri: string = 'http://turn.machavoine.fr:5000';
-  readonly uri: string = 'http://localhost:5000';
+  readonly uri: string = environment.cameraSocketUrl;
 
   constructor() {}
 
