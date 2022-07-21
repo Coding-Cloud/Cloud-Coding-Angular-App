@@ -56,10 +56,48 @@ export class SocketVideoService {
     });
   }
 
-  listenCallIceCandidate(): Observable<any> {
+  listenCallIceCandidate(): Observable<{ sender: string; rtcMessage: any }> {
     return new Observable((subscriber) => {
-      this.socket?.on('ICEcandidate', (data) => {
-        console.info('ICEcandidate event');
+      this.socket?.on(
+        'ICEcandidate',
+        (data: { sender: string; rtcMessage: any }) => {
+          console.info('ICEcandidate event');
+          subscriber.next(data);
+        }
+      );
+    });
+  }
+
+  listenGetAllUsersToJoin(): Observable<string[]> {
+    return new Observable((subscriber) => {
+      this.socket?.on('getAllUsersToJoin', (users: string[]) => {
+        console.info('GetAllUsersToJoin event');
+        subscriber.next(users);
+      });
+    });
+  }
+
+  listenNewCallByJoin(): Observable<{
+    caller: string;
+    rtcMessage: any;
+  }> {
+    return new Observable((subscriber) => {
+      this.socket?.on(
+        'newCallByJoin',
+        (data: { caller: string; rtcMessage: any }) => {
+          console.info('newCallByJoin event');
+          subscriber.next(data);
+        }
+      );
+    });
+  }
+
+  listenUserIsDisconnected(): Observable<{
+    user: string;
+  }> {
+    return new Observable((subscriber) => {
+      this.socket?.on('userDisconnected', (data: { user: string }) => {
+        console.info('user is disconnected');
         subscriber.next(data);
       });
     });
@@ -76,5 +114,13 @@ export class SocketVideoService {
 
   sendAnswerCall(data: any) {
     this.socket?.emit('answerCall', data);
+  }
+
+  sendGetUserToJoin(data: { room: string }) {
+    this.socket?.emit('getUsersToJoin', data);
+  }
+
+  sendJoinConversation(data: any) {
+    this.socket?.emit('joinConversation', data);
   }
 }

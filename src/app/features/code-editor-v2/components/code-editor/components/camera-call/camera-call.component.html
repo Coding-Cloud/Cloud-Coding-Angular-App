@@ -2,6 +2,7 @@
   <input #InputUsername id="input"/>
   <button (click)="handleValidUsername(InputUsername.value)">valid</button>
   <button (click)="handleCall()">call</button>
+  <button (click)="handleJoinExistingConversation()">join</button>
 </div>
 
 <!-- to show incommming call and accept -->
@@ -19,7 +20,7 @@
     </div>
     <p class="otherUser">{{otherUser}}</p>
     <div class="itemWrapper" style="display: flex; flex-direction: row; justify-content: center; margin-bottom: 20px;">
-      <button class="actionButton" id="button-calling" (click)="handleAnswer()">Answer</button>
+      <button class="actionButton" id="button-calling" (click)="handleAnswer(otherUser)">Answer</button>
     </div>
   </div>
 </div>
