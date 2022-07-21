@@ -73,6 +73,8 @@ export class CodeEditorComponent implements OnInit {
     | undefined;
 
   iconChevronName = 'expand_more';
+  iconRestart = 'refresh';
+  iconDependenciesResolve = 'get_app';
   cameraChevronName = 'chevron_left';
   editorOptions = {
     theme: 'vs-dark',
@@ -118,8 +120,8 @@ export class CodeEditorComponent implements OnInit {
   public style3: object = { bottom: '30%' };
   public style4: object = { top: '70%' };
 
-  public style4BottomPreviousValue: string = '30%';
-  public style4BTopPreviousValue: string = '70%';
+  public style4BottomPreviousValue = '30%';
+  public style4BTopPreviousValue = '70%';
 
   isResizing = false;
 
@@ -247,7 +249,7 @@ export class CodeEditorComponent implements OnInit {
       });
 
     this.codeSocketService.listenLogsChanged().subscribe((message: string) => {
-      this.codeRunnerSysOut$.next(message);
+      this.codeRunnerSysOut$.next(this.codeRunnerSysOut$.getValue() + message);
       this.cd.markForCheck();
     });
 
@@ -274,6 +276,14 @@ export class CodeEditorComponent implements OnInit {
       this.currentProject
     );
     this.cd.markForCheck();
+  }
+
+  restartRunner(): void {
+    this.codeSocketService.restartRunner(this.uniqueName);
+  }
+
+  resolveDependencies(): void {
+    this.codeSocketService.resolveDependencies(this.uniqueName);
   }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -614,8 +624,6 @@ export class CodeEditorComponent implements OnInit {
     }
   }
 
-  /*resizing*/
-
   validate(event: ResizeEvent): boolean {
     return validateResizing(event);
   }
@@ -628,6 +636,8 @@ export class CodeEditorComponent implements OnInit {
     };
     this.isResizing = false;
   }
+
+  /* resizing*/
 
   onResizeEnd4(event: ResizeEvent): void {
     this.resizingUpperComponents(event);
@@ -694,6 +704,7 @@ export class CodeEditorComponent implements OnInit {
       event.edges.top
     );
   }
+
   private changeCurrentFile(path: string): void {
     if (isFile(this.currentFile.path)) {
       this.currentFile.path = `${path}`;

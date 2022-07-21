@@ -116,7 +116,7 @@
   position: absolute;
   top: 0;
   left: calc(100% / 3 * 2);
-  width: 33%;
+  width: calc(100% / 3);
   height: 70%;
   border: 2px solid black;
 }
@@ -172,6 +172,17 @@
 
 .resize-handle-right-2 {
   right: 0;
+}
+
+.tab-icon {
+  font-size: 1.75rem;
+  user-select: none;
+  cursor: pointer;
+  color: darkgray;
+
+  &:hover {
+    color: white;
+  }
 }
 
 .bottom-bar {
