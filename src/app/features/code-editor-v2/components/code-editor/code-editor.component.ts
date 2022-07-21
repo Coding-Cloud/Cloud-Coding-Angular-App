@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   OnInit,
+  Renderer2,
   ViewChild
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -45,6 +46,7 @@ import {
   resizeComponentsWhenMoveTerminal,
   validateResizing
 } from './utils/resizing-utils';
+import { CameraCallInitService } from '../../services/camera-call/camera-call-init.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -61,9 +63,19 @@ export class CodeEditorComponent implements OnInit {
   @ViewChild('collapsed') public treeCollapsed:
     | ElementRef<HTMLDivElement>
     | undefined;
+
+  @ViewChild('editorContent') public editorContentElement:
+    | ElementRef<HTMLDivElement>
+    | undefined;
+
+  @ViewChild('cameraCallComponent') public cameraCallComponent:
+    | ElementRef<HTMLDivElement>
+    | undefined;
+
   iconChevronName = 'expand_more';
   iconRestart = 'refresh';
   iconDependenciesResolve = 'get_app';
+  cameraChevronName = 'chevron_left';
   editorOptions = {
     theme: 'vs-dark',
     language: 'typescript',
@@ -123,6 +135,8 @@ export class CodeEditorComponent implements OnInit {
 
   uniqueName: string;
 
+  username: string = '';
+
   project: ProjectShare | undefined;
 
   readonly IMAGE_EXTENSION = IMAGE_EXTENSION;
@@ -137,7 +151,9 @@ export class CodeEditorComponent implements OnInit {
     private codeSocketService: CodeSocketService,
     private sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private renderer: Renderer2,
+    private cameraCallInitService: CameraCallInitService
   ) {
     this.uniqueName = this.activatedRoute.snapshot.params.id;
 
@@ -166,11 +182,12 @@ export class CodeEditorComponent implements OnInit {
 
         this.initializeTreeFiles();
       });
-    this.store
-      .pipe(select(selectUser))
-      .subscribe((user) =>
-        this.codeSocketService.connect(this.uniqueName, user.username)
-      );
+
+    // CODE SOCKETS PART
+    this.store.pipe(select(selectUser)).subscribe((user) => {
+      this.username = user.username;
+      this.codeSocketService.connect(this.uniqueName, user.username);
+    });
     this.codeSocketService
       .listenProjectModification('projectModificationFromContributor')
       .subscribe((editsProjectDTO: EditProjectDTO[]) => {
@@ -241,6 +258,16 @@ export class CodeEditorComponent implements OnInit {
       .subscribe((message: string) => {
         this.loadingIframe$.next(false);
       });
+
+    // CAMERA CALL PART
+
+    this.cameraCallInitService.cameraCallIsLive$.subscribe(
+      (projectUniqueName: string) => {
+        if (projectUniqueName !== '') {
+          this.handleClickCameraArrow();
+        }
+      }
+    );
   }
 
   initializeTreeFiles(): void {
@@ -249,6 +276,14 @@ export class CodeEditorComponent implements OnInit {
       this.currentProject
     );
     this.cd.markForCheck();
+  }
+
+  restartRunner(): void {
+    this.codeSocketService.restartRunner(this.uniqueName);
+  }
+
+  resolveDependencies(): void {
+    this.codeSocketService.resolveDependencies(this.uniqueName);
   }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -343,6 +378,71 @@ export class CodeEditorComponent implements OnInit {
         };
         this.socketProject = copyObject<Project>(this.currentProject);
       });
+  }
+
+  private initialiseInputListening(): void {
+    this.monacoTreeInput = (<HTMLElement>(
+      this.elementRef.nativeElement
+    )).querySelector('.inputarea');
+    if (this.monacoTreeInput === null) {
+      return;
+    }
+
+    this.keyup$ = fromEvent(this.monacoTreeInput, 'keyup');
+    this.destroyKey.next();
+    this.keyup$
+      .pipe(
+        takeUntil(this.destroyKey),
+        map((i: any) => i.currentTarget.value),
+        debounceTime(1000)
+      )
+      .subscribe(() => {
+        const editsProjectDTO = this.generateEditProjectDTO();
+        this.codeSocketService.sendProjectModification(
+          'editProject',
+          editsProjectDTO
+        );
+        this.socketProject = copyObject<Project>(this.currentProject);
+        this.socketProjectModification.appFiles = {};
+      });
+  }
+
+  private generateEditProjectDTO(): EditProjectDTO[] {
+    const editProjectsDTO: EditProjectDTO[] = [];
+
+    Object.entries(this.socketProjectModification.appFiles).forEach((value) => {
+      if (
+        value[1].folderStatus === FolderStatus.MODIFIED &&
+        value[1].type === 'file' &&
+        this.currentProject.appFiles[value[0]] !== undefined
+      ) {
+        const contentProjectModification = value[1].contents.split('\n');
+        const contentProjectInitial =
+          this.socketProject.appFiles[value[0]].contents.split('\n');
+        const biggerLength =
+          contentProjectModification.length > contentProjectInitial.length
+            ? contentProjectModification.length
+            : contentProjectInitial.length;
+        const editProjectDTO: EditProjectDTO = {
+          name: value[0].split(this.BASE_PROJECT_PATH)[1],
+          type: 'file',
+          fullPath: value[0],
+          folderStatus: FolderStatus.MODIFIED,
+          modifications: []
+        };
+        for (let i = 0; i < biggerLength; i++) {
+          if (contentProjectModification[i] !== contentProjectInitial[i]) {
+            editProjectDTO.modifications?.push({
+              contents: contentProjectModification[i],
+              folderLine: i + 1
+            });
+          }
+        }
+        editProjectsDTO.push(editProjectDTO);
+      }
+    });
+
+    return editProjectsDTO;
   }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -587,97 +687,6 @@ export class CodeEditorComponent implements OnInit {
     this.resizingUpperComponents(event);
   }
 
-  handleCodeVersionChanged() {
-    this.isLoading = true;
-    this.getProjectService
-      .getProjectV2(this.uniqueName)
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-          this.cd.markForCheck();
-        })
-      )
-      .subscribe((projectCodeEditor: Project) => {
-        this.currentProject = copyObject<Project>(projectCodeEditor);
-        this.socketProject = copyObject<Project>(projectCodeEditor);
-
-        this.initializeTreeFiles();
-      });
-  }
-
-  restartRunner(): void {
-    this.codeSocketService.restartRunner(this.uniqueName);
-  }
-
-  resolveDependencies(): void {
-    this.codeSocketService.resolveDependencies(this.uniqueName);
-  }
-
-  private initialiseInputListening(): void {
-    this.monacoTreeInput = (<HTMLElement>(
-      this.elementRef.nativeElement
-    )).querySelector('.inputarea');
-    if (this.monacoTreeInput === null) {
-      return;
-    }
-
-    this.keyup$ = fromEvent(this.monacoTreeInput, 'keyup');
-    this.destroyKey.next();
-    this.keyup$
-      .pipe(
-        takeUntil(this.destroyKey),
-        map((i: any) => i.currentTarget.value),
-        debounceTime(1000)
-      )
-      .subscribe(() => {
-        const editsProjectDTO = this.generateEditProjectDTO();
-        this.codeSocketService.sendProjectModification(
-          'editProject',
-          editsProjectDTO
-        );
-        this.socketProject = copyObject<Project>(this.currentProject);
-        this.socketProjectModification.appFiles = {};
-      });
-  }
-
-  private generateEditProjectDTO(): EditProjectDTO[] {
-    const editProjectsDTO: EditProjectDTO[] = [];
-
-    Object.entries(this.socketProjectModification.appFiles).forEach((value) => {
-      if (
-        value[1].folderStatus === FolderStatus.MODIFIED &&
-        value[1].type === 'file' &&
-        this.currentProject.appFiles[value[0]] !== undefined
-      ) {
-        const contentProjectModification = value[1].contents.split('\n');
-        const contentProjectInitial =
-          this.socketProject.appFiles[value[0]].contents.split('\n');
-        const biggerLength =
-          contentProjectModification.length > contentProjectInitial.length
-            ? contentProjectModification.length
-            : contentProjectInitial.length;
-        const editProjectDTO: EditProjectDTO = {
-          name: value[0].split(this.BASE_PROJECT_PATH)[1],
-          type: 'file',
-          fullPath: value[0],
-          folderStatus: FolderStatus.MODIFIED,
-          modifications: []
-        };
-        for (let i = 0; i < biggerLength; i++) {
-          if (contentProjectModification[i] !== contentProjectInitial[i]) {
-            editProjectDTO.modifications?.push({
-              contents: contentProjectModification[i],
-              folderLine: i + 1
-            });
-          }
-        }
-        editProjectsDTO.push(editProjectDTO);
-      }
-    });
-
-    return editProjectsDTO;
-  }
-
   private resizingUpperComponents(event: ResizeEvent): void {
     this.style1 = resizeComponentsWhenMoveTerminal(
       this.style1,
@@ -718,6 +727,53 @@ export class CodeEditorComponent implements OnInit {
       }
 
       this.currentFile.type = endFile as FileTypes;
+    }
+  }
+
+  handleCodeVersionChanged() {
+    this.isLoading = true;
+    this.getProjectService
+      .getProjectV2(this.uniqueName)
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+          this.cd.markForCheck();
+        })
+      )
+      .subscribe((projectCodeEditor: Project) => {
+        this.currentProject = copyObject<Project>(projectCodeEditor);
+        this.socketProject = copyObject<Project>(projectCodeEditor);
+
+        this.initializeTreeFiles();
+      });
+  }
+
+  public handleClickCameraArrow() {
+    if (this.cameraCallComponent?.nativeElement.style.display === 'block') {
+      this.renderer.setStyle(
+        this.cameraCallComponent?.nativeElement,
+        'display',
+        'none'
+      );
+      this.renderer.setStyle(
+        this.editorContentElement?.nativeElement,
+        'width',
+        '98%'
+      );
+      this.cameraChevronName = 'chevron_left';
+    } else {
+      this.renderer.setStyle(
+        this.cameraCallComponent?.nativeElement,
+        'display',
+        'block'
+      );
+      this.renderer.setStyle(
+        this.editorContentElement?.nativeElement,
+        'width',
+        '80%'
+      );
+
+      this.cameraChevronName = 'chevron_right';
     }
   }
 }

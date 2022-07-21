@@ -1,0 +1,52 @@
+<div>
+  <input #InputUsername id="input"/>
+  <button (click)="handleValidUsername(InputUsername.value)">valid</button>
+  <button (click)="handleCall()">call</button>
+  <button (click)="handleJoinExistingConversation()">join</button>
+</div>
+
+<!-- to show incommming call and accept -->
+<div #answer id="answer">
+  <div class="incomingWrapper" style="width: 100%">
+    <div class="itemWrapper" style="width: 100%">
+      <h2>Incomming Call</h2>
+    </div>
+    <div class="itemWrapper" style="width: 100%">
+      <img id="profileImageA" style="padding: 30px;  height: 140px;"
+           src="/assets/profile.png" alt="">
+    </div>
+    <div class="itemWrapper">
+      <h2 style="line-height: 0px;"><span id="callerName"></span></h2>
+    </div>
+    <p class="otherUser">{{otherUser}}</p>
+    <div class="itemWrapper" style="display: flex; flex-direction: row; justify-content: center; margin-bottom: 20px;">
+      <button class="actionButton" id="button-calling" (click)="handleAnswer(otherUser)">Answer</button>
+    </div>
+  </div>
+</div>
+
+<!-- to show outgoing call -->
+<div #calling id="calling" style="position: absolute; top: 0; left: 0;">
+  <div class="incomingWrapper">
+    <div class="itemWrapper">
+      <h2>Calling</h2>
+    </div>
+    <div class="itemWrapper">
+      <img id="profileImageCA" style="padding: 30px;  height: 140px;"
+           src="/assets/profile.png" alt="">
+    </div>
+    <p class="otherUser">{{otherUser}}</p>
+    <div class="itemWrapper">
+      <h3 style="line-height: 0px;"><span id="otherUserNameCA"></span></h3>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<!-- to show local and remote video -->
+<div #videoGrid id="video-grid">
+    <!--<video [srcObject]="localVideoSrcObject" #localVideo class="video-client" autoplay ></video>
+    <video [srcObject]="remoteVideoSrcObject" #remoteVideo class="video-client" autoplay ></video>
+  <video [srcObject]="remote2VideoSrcObject" #remoteVideo2 class="video-client"  autoplay ></video>-->
+</div>
