@@ -20,7 +20,7 @@ export class CodeSocketService {
   constructor() {}
 
   disconnect(): void {
-    this.socket?.emit('disconnectCustom');
+    this.socket?.close();
   }
 
   connect(projectId: string, username: string): void {

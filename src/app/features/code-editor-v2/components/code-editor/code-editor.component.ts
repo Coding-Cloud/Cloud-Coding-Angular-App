@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  OnDestroy,
   OnInit,
   Renderer2,
   ViewChild
@@ -55,7 +56,7 @@ import { CameraCallInitService } from '../../services/camera-call/camera-call-in
   styleUrls: ['./code-editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CodeEditorComponent implements OnInit {
+export class CodeEditorComponent implements OnInit, OnDestroy {
   @ViewChild('collapsible') public treeCollapsible:
     | ElementRef<HTMLInputElement>
     | undefined;
@@ -663,6 +664,10 @@ export class CodeEditorComponent implements OnInit {
 
       this.cameraChevronName = 'chevron_right';
     }
+  }
+
+  ngOnDestroy(): void {
+    this.codeSocketService.disconnect();
   }
 
   private initialiseInputListening(): void {
