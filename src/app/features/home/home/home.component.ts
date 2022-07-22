@@ -28,6 +28,16 @@ export class HomeComponent implements OnInit {
       name: 'Quarkus 2.8.2',
       techno: 'Java 17',
       imgClass: 'quarkus-image'
+    },
+    {
+      name: 'NestJS 8',
+      techno: 'TypeScript 4',
+      imgClass: 'nestjs-image'
+    },
+    {
+      name: 'Flask 2',
+      techno: 'Python 3',
+      imgClass: 'flask-image'
     }
   ];
 
