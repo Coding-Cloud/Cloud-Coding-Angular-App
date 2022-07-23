@@ -85,7 +85,8 @@ export class DeveloperListComponent implements OnInit {
   }
 
   handleOpenCameraConv() {
-    if (this.projectUniqueName)
-      this.cameraCallInitService.initCameraCall(this.projectUniqueName);
+    if (this.projectUniqueName) {
+      this.cameraCallInitService.triggerHasToJoin(this.projectUniqueName);
+    }
   }
 }

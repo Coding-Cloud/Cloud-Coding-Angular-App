@@ -100,6 +100,22 @@ export class SocketVideoService {
     });
   }
 
+  listenYouHaveToJoin(): Observable<void> {
+    return new Observable((subscriber) => {
+      this.socket?.on('youHaveToJoin', () => {
+        subscriber.next();
+      });
+    });
+  }
+
+  listenYouHaveToCall(): Observable<void> {
+    return new Observable((subscriber) => {
+      this.socket?.on('youHaveToCall', () => {
+        subscriber.next();
+      });
+    });
+  }
+
   sendCall(data: any) {
     console.log('send a call in service');
     this.socket?.emit('call', data);
@@ -123,5 +139,9 @@ export class SocketVideoService {
 
   sendDisconnectEvent() {
     this.socket?.emit('disconnected');
+  }
+
+  sendAskIfHasToJoin(data: { room: string }) {
+    this.socket?.emit('hasToJoinOrCall', data);
   }
 }

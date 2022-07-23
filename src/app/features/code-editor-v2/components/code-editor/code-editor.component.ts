@@ -264,16 +264,16 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
 
     // CAMERA CALL PART
 
-    this.cameraCallInitService.cameraCallIsLive$.subscribe(
-      (projectUniqueName: string) => {
+    this.cameraCallInitService
+      .listenAskIfHasToJoin()
+      .subscribe((projectUniqueName: string) => {
         if (
           projectUniqueName !== '' &&
           this.cameraChevronName === 'chevron_left'
         ) {
           this.handleClickCameraArrow();
         }
-      }
-    );
+      });
 
     this.cameraEventService.listenNewCallTriggered().subscribe(() => {
       console.log("je suis dans le client et j'écoute les new call ");
@@ -680,7 +680,11 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.codeSocketService.disconnect();
+    console.log('disconnect event');
+    this.codeSocketService.disconnect({
+      room: this.uniqueName,
+      user: this.username
+    });
   }
 
   private initialiseInputListening(): void {

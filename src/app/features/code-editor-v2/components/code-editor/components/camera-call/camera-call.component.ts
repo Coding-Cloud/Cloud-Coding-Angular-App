@@ -67,6 +67,7 @@ export class CameraCallComponent implements OnInit, OnDestroy {
   private remoteRTCMessage: any;
   private iceCandidatesFromCaller: RTCIceCandidate[] = [];
   private hasLocalStreamShow = false;
+  private playersConnected: string[] = [];
 
   constructor(
     private socketVideoService: SocketVideoService,
@@ -79,19 +80,12 @@ export class CameraCallComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.myUsername = this.username;
     this.initCameraListeners();
-    this.cameraCallInitService.cameraCallIsLive$.subscribe(
-      (projectUniqueName) => {
-        if (projectUniqueName !== '') {
-          this.myUsername = this.username;
-          // this.initCameraListeners();
-          this.playersConnected$.getValue().forEach((user) => {
-            if (user !== this.myUsername) this.call(user);
-          });
-          // this.call('pomme')
-          // this.call('tim')
-        }
-      }
-    );
+    this.cameraCallInitService
+      .listenAskIfHasToJoin()
+      .subscribe((projectName) => {
+        if (projectName !== '')
+          this.socketVideoService.sendAskIfHasToJoin({ room: projectName });
+      });
   }
 
   public handleValidUsername(username: string) {
@@ -310,8 +304,21 @@ export class CameraCallComponent implements OnInit, OnDestroy {
         this.deleteVideoElement(data.user);
       });
 
+    this.socketVideoService.listenYouHaveToJoin().subscribe(() => {
+      this.socketVideoService.sendGetUserToJoin({
+        room: this.projectUniqueName
+      });
+    });
+
+    this.socketVideoService.listenYouHaveToCall().subscribe(() => {
+      this.myUsername = this.username;
+      this.playersConnected.forEach((user: string) => {
+        if (user !== this.myUsername) this.call(user);
+      });
+    });
+
     this.codeSocketService.listenPlayerConnected().subscribe((data) => {
-      this.playersConnected$.next(data);
+      this.playersConnected = data;
     });
   }
 

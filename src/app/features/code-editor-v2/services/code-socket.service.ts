@@ -19,8 +19,9 @@ export class CodeSocketService {
 
   constructor() {}
 
-  disconnect(): void {
+  disconnect(data: { room: string; user: string }): void {
     this.socket?.close();
+    this.socket?.send('disconnectUser', data);
   }
 
   connect(projectId: string, username: string): void {
