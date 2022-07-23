@@ -82,9 +82,9 @@ export class FrontViewComponent implements OnInit {
     if (location !== undefined) {
       this.iframeElement?.nativeElement.contentWindow?.postMessage(
         'Request DOM manipulation',
-        `*`
+        '*'
       );
-      /*this.iframeElement?.nativeElement.contentWindow?.addEventListener('click', () => {
+      /* this.iframeElement?.nativeElement.contentWindow?.addEventListener('click', () => {
         console.log('je suis un event on click');
       });*/
 
@@ -95,7 +95,10 @@ export class FrontViewComponent implements OnInit {
         ) {
           return;
         }
-        const urlFormat = this.formatUrl(event.data);
+        let urlFormat = this.urlSee;
+        if (event.data) {
+          urlFormat = this.formatUrl(event.data);
+        }
         const urlSeeFormat = this.formatUrl(this.urlSee);
         if (urlSeeFormat !== urlFormat) {
           this.urlSee = urlFormat;
