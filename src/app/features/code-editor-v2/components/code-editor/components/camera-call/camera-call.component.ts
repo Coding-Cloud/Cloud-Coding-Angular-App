@@ -402,6 +402,7 @@ export class CameraCallComponent implements OnInit, OnDestroy {
       console.log(stream);
       if (!this.hasLocalStreamShow) {
         this.addLocalVideoElement(this.localStream, this.myUsername);
+        console.log('set local stream to true');
         this.hasLocalStreamShow = true;
       }
 
@@ -455,10 +456,10 @@ export class CameraCallComponent implements OnInit, OnDestroy {
       this.userToPeerConnection.get(this.myUsername)?.peerConnection.getTracks()
     );
     console.log(this.localStream.getTracks());
-    this.userToPeerConnection
+    /* this.userToPeerConnection
       .get(this.myUsername)
       ?.peerConnection.getTracks()
-      .forEach((track: any) => track.stop());
+      .forEach((track: any) => track.stop());*/
     this.localStream.getTracks().forEach((track: any) => track.stop());
     console.log(this.localStream.getTracks());
     this.callInProgress = false;
@@ -480,6 +481,9 @@ export class CameraCallComponent implements OnInit, OnDestroy {
         );
       }
     );
+    console.log('end of stop');
+    this.hasLocalStreamShow = false;
+    this.userToPeerConnection = new Map();
     /* navigator.mediaDevices
       .getUserMedia({ video: true, audio: false })
       .then((mediaStream) => {
@@ -488,7 +492,6 @@ export class CameraCallComponent implements OnInit, OnDestroy {
 
         tracks[0].stop;
       });*/
-    this.hasLocalStreamShow = false;
   }
 
   private answerCall(data: any) {
@@ -531,18 +534,28 @@ export class CameraCallComponent implements OnInit, OnDestroy {
     icon.addEventListener('click', () => {
       this.deleteVideoElement(username);
       this.renderer.setStyle(icon, 'display', 'none');
-      this.renderer.setStyle(
-        document.getElementById('video-grid'),
-        'display',
-        'none'
-      );
+
+      let child = document.getElementById('video-grid')?.lastElementChild;
+      while (child) {
+        document.getElementById('video-grid')?.removeChild(child);
+        child = document.getElementById('video-grid')?.lastElementChild;
+      }
       this.stop();
-      // this.socketVideoService.sendDisconnectEvent();
+      this.hasLocalStreamShow = false;
+      this.socketVideoService.sendDisconnectEvent();
     });
     div.appendChild(video);
     icon.appendChild(iconText);
     div.appendChild(icon);
+    this.renderer.setStyle(
+      document.getElementById('video-grid'),
+      'display',
+      'block'
+    );
     document.getElementById('video-grid')?.appendChild(div);
+    console.log('end of create local video element');
+    console.log(div);
+    console.log(document.getElementById('video-grid'));
   }
 
   private addVideoElement(stream: any, username: string) {
