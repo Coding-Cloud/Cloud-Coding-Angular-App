@@ -1,17 +1,19 @@
 import {
   Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  OnDestroy,
-  ViewChild,
   ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
   Renderer2,
-  Input
+  ViewChild
 } from '@angular/core';
 import { SocketVideoService } from '../../../../services/socket-video.service';
 import { CameraCallInitService } from '../../../../services/camera-call/camera-call-init.service';
 import { addUserToMap } from './camera-call.utils';
 import { environment } from '../../../../../../../environments/environment';
+import { CodeSocketService } from '../../../../services/code-socket.service';
+import { BehaviorSubject } from 'rxjs';
+import { CameraEventService } from '../../../../services/camera-event.service';
 
 @Component({
   selector: 'app-camera-call',
@@ -37,15 +39,16 @@ export class CameraCallComponent implements OnInit, OnDestroy {
     | HTMLDivElement
     | undefined;
 
-  @Input() username: string = '';
+  @Input() username = '';
 
-  @Input() projectUniqueName: string = '';
+  @Input() projectUniqueName = '';
 
   userToPeerConnection: Map<
     string,
     { peerConnection: any | null; iceCandidateFromCaller: RTCIceCandidate[] }
   > = new Map();
-
+  public otherUser = '';
+  playersConnected$: BehaviorSubject<string[]> = new BehaviorSubject(Array());
   private pdConfig: RTCConfiguration = {
     iceServers: [
       { urls: environment.stunServerUrl },
@@ -56,40 +59,36 @@ export class CameraCallComponent implements OnInit, OnDestroy {
       }
     ]
   };
-
   private localStream: any;
-
   private peerConnection: any;
-
   private remoteStream: any;
-
   private callInProgress = false;
-
   private myUsername: any;
-
   private remoteRTCMessage: any;
-
   private iceCandidatesFromCaller: RTCIceCandidate[] = [];
-
   private hasLocalStreamShow = false;
-
-  public otherUser: string = '';
 
   constructor(
     private socketVideoService: SocketVideoService,
     private renderer: Renderer2,
-    private cameraCallInitService: CameraCallInitService
+    private cameraCallInitService: CameraCallInitService,
+    private codeSocketService: CodeSocketService,
+    private cameraEventService: CameraEventService
   ) {}
 
   ngOnInit(): void {
     this.myUsername = this.username;
+    this.initCameraListeners();
     this.cameraCallInitService.cameraCallIsLive$.subscribe(
       (projectUniqueName) => {
         if (projectUniqueName !== '') {
           this.myUsername = this.username;
-          this.initCameraListeners();
-          this.call('pomme');
-          this.call('tim');
+          // this.initCameraListeners();
+          this.playersConnected$.getValue().forEach((user) => {
+            if (user !== this.myUsername) this.call(user);
+          });
+          // this.call('pomme')
+          // this.call('tim')
         }
       }
     );
@@ -100,17 +99,125 @@ export class CameraCallComponent implements OnInit, OnDestroy {
     this.initCameraListeners();
   }
 
+  public handleCall() {
+    this.call(this.myUsername);
+    // this.call('jean-12');
+  }
+
+  public call(otherUser: string) {
+    console.log('call ' + otherUser);
+    this.otherUser = otherUser;
+    this.beReady(otherUser).then((bool) => {
+      console.log('dans le process call');
+      this.processCall(otherUser);
+      this.logMapUserPeer();
+    });
+  }
+
+  public handleAnswer(otherUser: string) {
+    console.log('go in handleAnswer');
+    this.beReady(otherUser).then((bool) => {
+      this.processAccept(otherUser);
+      this.logMapUserPeer();
+    });
+    if (this.answerElement) this.answerElement.nativeElement.display = 'none';
+    this.renderer.setStyle(
+      this.answerElement?.nativeElement,
+      'display',
+      'none'
+    );
+  }
+
+  public handleJoinExistingConversation() {
+    this.socketVideoService.sendGetUserToJoin({ room: this.projectUniqueName });
+  }
+
+  ngOnDestroy(): void {
+    if (this.callInProgress) {
+      this.stop();
+    }
+    this.socketVideoService.sendDisconnectEvent();
+  }
+
+  public processCall(otherUser: string) {
+    this.userToPeerConnection.get(otherUser)?.peerConnection.createOffer(
+      (sessionDescription: any) => {
+        this.userToPeerConnection
+          .get(otherUser)
+          ?.peerConnection.setLocalDescription(sessionDescription);
+        this.sendCall({
+          name: otherUser,
+          rtcMessage: sessionDescription
+        });
+      },
+      (error: any) => {
+        console.log('Error');
+      }
+    );
+  }
+
+  public processAccept(otherUser: string) {
+    console.log('process accept');
+    this.userToPeerConnection
+      .get(otherUser)
+      ?.peerConnection.setRemoteDescription(
+        new RTCSessionDescription(this.remoteRTCMessage)
+      );
+
+    this.userToPeerConnection.get(otherUser)?.peerConnection.createAnswer(
+      (sessionDescription: any) => {
+        this.userToPeerConnection
+          .get(otherUser)
+          ?.peerConnection.setLocalDescription(sessionDescription);
+        console.log('processAccept avant iceCandidatesFromCaller');
+        if (this.iceCandidatesFromCaller.length > 0) {
+          for (let i = 0; i < this.iceCandidatesFromCaller.length; i++) {
+            //
+            const candidate = this.iceCandidatesFromCaller[i];
+            console.log('ICE candidate Added From queue');
+            try {
+              this.userToPeerConnection
+                .get(otherUser)
+                ?.peerConnection.addIceCandidate(candidate)
+                .then((done: any) => {
+                  console.log(done);
+                })
+                .catch((error: any) => {
+                  console.log(error);
+                });
+            } catch (error: any) {
+              console.log(error);
+            }
+          }
+          this.iceCandidatesFromCaller = [];
+          console.log('ICE candidate queue cleared');
+        } else {
+          console.log('NO Ice candidate in queue');
+        }
+        this.answerCall({
+          caller: otherUser,
+          rtcMessage: sessionDescription
+        });
+        this.otherUser = otherUser;
+      },
+      (error: any) => {
+        console.log('Error');
+      }
+    );
+  }
+
   private initCameraListeners() {
     this.socketVideoService.connect(this.myUsername, this.projectUniqueName);
     this.socketVideoService
       .listenNewCall()
       .subscribe((data: { caller: string; rtcMessage: any }) => {
         // person that is called
+        this.cameraEventService.triggerNewCall();
         this.otherUser = data.caller;
         this.remoteRTCMessage = data.rtcMessage;
 
-        //console.log(data);
-        //this.remoteRTCMessage = data.rtcMessage;
+        // console.log(data);
+        // this.remoteRTCMessage = data.rtcMessage;
         console.log('answer element');
         console.log(this.answerElement);
         this.renderer.setStyle(
@@ -118,7 +225,6 @@ export class CameraCallComponent implements OnInit, OnDestroy {
           'display',
           'block'
         );
-        console.log(this.answerElement?.nativeElement.display);
       });
 
     this.socketVideoService
@@ -203,38 +309,10 @@ export class CameraCallComponent implements OnInit, OnDestroy {
         console.log(data.user);
         this.deleteVideoElement(data.user);
       });
-  }
-  public handleCall() {
-    this.call(this.myUsername);
-    //this.call('jean-12');
-  }
 
-  public call(otherUser: string) {
-    console.log('call ' + otherUser);
-    this.otherUser = otherUser;
-    this.beReady(otherUser).then((bool) => {
-      console.log('dans le process call');
-      this.processCall(otherUser);
-      this.logMapUserPeer();
+    this.codeSocketService.listenPlayerConnected().subscribe((data) => {
+      this.playersConnected$.next(data);
     });
-  }
-
-  public handleAnswer(otherUser: string) {
-    console.log('go in handleAnswer');
-    this.beReady(otherUser).then((bool) => {
-      this.processAccept(otherUser);
-      this.logMapUserPeer();
-    });
-    if (this.answerElement) this.answerElement.nativeElement.display = 'none';
-    this.renderer.setStyle(
-      this.answerElement?.nativeElement,
-      'display',
-      'none'
-    );
-  }
-
-  public handleJoinExistingConversation() {
-    this.socketVideoService.sendGetUserToJoin({ room: this.projectUniqueName });
   }
 
   private joinExistingUserInChat(userToJoin: string) {
@@ -295,7 +373,7 @@ export class CameraCallComponent implements OnInit, OnDestroy {
       .get(username)
       ?.peerConnection.addStream(this.localStream);
     this.logMapUserPeer();
-    //this.peerConnection.addStream(this.localStream);
+    // this.peerConnection.addStream(this.localStream);
     console.log('after peerConnection');
     return true;
   }
@@ -395,89 +473,15 @@ export class CameraCallComponent implements OnInit, OnDestroy {
         );
       }
     );
-    navigator.mediaDevices
+    /* navigator.mediaDevices
       .getUserMedia({ video: true, audio: false })
       .then((mediaStream) => {
         const stream = mediaStream;
         const tracks = stream.getTracks();
 
         tracks[0].stop;
-      });
+      });*/
     this.hasLocalStreamShow = false;
-  }
-
-  ngOnDestroy(): void {
-    if (this.callInProgress) {
-      this.stop();
-    }
-    this.socketVideoService.sendDisconnectEvent();
-  }
-
-  public processCall(otherUser: string) {
-    this.userToPeerConnection.get(otherUser)?.peerConnection.createOffer(
-      (sessionDescription: any) => {
-        this.userToPeerConnection
-          .get(otherUser)
-          ?.peerConnection.setLocalDescription(sessionDescription);
-        this.sendCall({
-          name: otherUser,
-          rtcMessage: sessionDescription
-        });
-      },
-      (error: any) => {
-        console.log('Error');
-      }
-    );
-  }
-
-  public processAccept(otherUser: string) {
-    console.log('process accept');
-    this.userToPeerConnection
-      .get(otherUser)
-      ?.peerConnection.setRemoteDescription(
-        new RTCSessionDescription(this.remoteRTCMessage)
-      );
-
-    this.userToPeerConnection.get(otherUser)?.peerConnection.createAnswer(
-      (sessionDescription: any) => {
-        this.userToPeerConnection
-          .get(otherUser)
-          ?.peerConnection.setLocalDescription(sessionDescription);
-        console.log('processAccept avant iceCandidatesFromCaller');
-        if (this.iceCandidatesFromCaller.length > 0) {
-          for (let i = 0; i < this.iceCandidatesFromCaller.length; i++) {
-            //
-            const candidate = this.iceCandidatesFromCaller[i];
-            console.log('ICE candidate Added From queue');
-            try {
-              this.userToPeerConnection
-                .get(otherUser)
-                ?.peerConnection.addIceCandidate(candidate)
-                .then((done: any) => {
-                  console.log(done);
-                })
-                .catch((error: any) => {
-                  console.log(error);
-                });
-            } catch (error: any) {
-              console.log(error);
-            }
-          }
-          this.iceCandidatesFromCaller = [];
-          console.log('ICE candidate queue cleared');
-        } else {
-          console.log('NO Ice candidate in queue');
-        }
-        this.answerCall({
-          caller: otherUser,
-          rtcMessage: sessionDescription
-        });
-        this.otherUser = otherUser;
-      },
-      (error: any) => {
-        console.log('Error');
-      }
-    );
   }
 
   private answerCall(data: any) {
@@ -526,7 +530,7 @@ export class CameraCallComponent implements OnInit, OnDestroy {
         'none'
       );
       this.stop();
-      this.socketVideoService.sendDisconnectEvent();
+      // this.socketVideoService.sendDisconnectEvent();
     });
     div.appendChild(video);
     icon.appendChild(iconText);
