@@ -17,23 +17,23 @@
     </mat-sidenav>
     <div class='wrapper'>
 
-      <div class='toolbar'>
+      <div *ngIf='!isOnCodeEditorPage()' class='toolbar'>
         <mat-toolbar color='primary'>
           <button mat-icon-button class='d-md-none' (click)='sidenav.open()'>
             <fa-icon icon='bars'></fa-icon>
           </button>
 
           <a [routerLink]='routerLinks.home.path'
-                class='branding spacer center d-inline d-sm-none' style='text-decoration: none;'>
+             class='branding spacer center d-inline d-sm-none' style='text-decoration: none;'>
             <img [src]='logo' [alt]='logo' />
           </a>
           <a [routerLink]='routerLinks.home.path'
-                class='branding spacer center d-none d-sm-inline d-md-none' style='text-decoration: none;'>
+             class='branding spacer center d-none d-sm-inline d-md-none' style='text-decoration: none;'>
             <img [src]='logo' [alt]='logo' />
             {{ appName  }}
           </a>
           <a [routerLink]='routerLinks.home.path'
-                class='branding spacer d-none d-md-inline' style='text-decoration: none;'>
+             class='branding spacer d-none d-md-inline' style='text-decoration: none;'>
             <img [src]='logo' [alt]='logo' />
             {{ appName}}
           </a>
@@ -90,7 +90,7 @@
         <router-outlet #o='outlet'></router-outlet>
       </div>
 
-      <div class='footer'>
+      <div *ngIf='!isOnCodeEditorPage()' class='footer'>
         <div class='row'>
           <div class='col-sm-12 links'>
             <a href='https://github.com/Coding-Cloud' target='_blank' rel='noopener noreferrer'>
