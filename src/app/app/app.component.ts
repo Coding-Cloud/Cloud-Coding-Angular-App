@@ -18,6 +18,7 @@ import { selectUser } from '../core/auth/auth.selectors';
 import { userViewLink } from '../features/social/users/users-routing.module';
 import { socialFriendshipsLink } from '../features/social/social-routing.module';
 import { actionConversationsInitSocket } from '../features/conversation/store/conversation.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cc-root-component',
@@ -48,7 +49,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-    private storageService: LocalStorageService
+    private storageService: LocalStorageService,
+    public router: Router
   ) {
     this.store.pipe(select(selectUser)).subscribe((user) => {
       if (user) {
@@ -76,5 +78,9 @@ export class AppComponent implements OnInit {
 
   noAuthLinks(links: Link[]) {
     return links.filter((link) => !link.auth);
+  }
+
+  isOnCodeEditorPage(): boolean {
+    return this.router.url.includes('/code-editor');
   }
 }
