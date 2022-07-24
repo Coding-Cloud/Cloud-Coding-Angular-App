@@ -49,6 +49,7 @@ import {
 } from './utils/resizing-utils';
 import { CameraCallInitService } from '../../services/camera-call/camera-call-init.service';
 import { CameraEventService } from '../../services/camera-event.service';
+import { navigation } from '../../../../app-routing.module';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -73,6 +74,9 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
   @ViewChild('cameraCallComponent') public cameraCallComponent:
     | ElementRef<HTMLDivElement>
     | undefined;
+
+  routerLinks = navigation;
+  logo = 'assets/logo.png';
 
   iconChevronName = 'expand_more';
   iconRestart = 'refresh';
