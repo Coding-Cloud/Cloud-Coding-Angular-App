@@ -7,12 +7,26 @@
 .monaco-tree.vs-dark {
   background: #1d1d1d;
   color: white;
-  display: block;
-  min-height: calc(60vh);
+  display: flex;
+  flex-direction: column;
+  min-height: 60vh;
   padding-right: 40px;
 }
 
 .monaco-tree.vs-light {
   background: rgb(243, 243, 243);
   color: rgb(97, 97, 97);
+}
+
+.monaco-tree-row {
+  font-size: 14px;
+  line-height: 24px;
+  display: flex;
+  gap: 6px;
+  cursor: pointer;
+  padding-left: 32px;
+}
+
+.sub-directory-element {
+  height: 15vh;
 }

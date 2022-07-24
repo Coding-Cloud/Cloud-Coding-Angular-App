@@ -1,21 +1,49 @@
 <div
-[class]="'monaco-tree ' + theme"
+  [class]="'monaco-tree ' + theme"
 >
-    <monaco-tree-file
-        (contextMenuClick)="handleClickContextMenu($event)"
-        (clickFile)="handleClickFile($event)"
-        (createFile)="handleCreateFile($event)"
-        (createImage)="handleCreateImage($event)"
-        (createDir)="handleCreateDir($event)"
-        (renameFolder)="handleRenameFolder($event)"
-        [theme]="theme"
-        *ngFor="let row of tree"
-        [name]="row.name"
-        [content]="row.content"
-        [depth]="0"
-        [hide]="false"
-        [edited]="row.edited"
-        [rename]="row.rename"
-        [row]="row"
-    ></monaco-tree-file>
+  <!--<input
+    *ngIf="element.type === 'element' && element.name === 'Upload picture'"
+    type="file"
+    class="d-none"
+    #uploadInput
+    (change)="handleClickUploadImage(uploadInput?.files)"
+    [accept]="acceptedFileExtensionsImage"
+  />-->
+  <span *ngIf="monacoTreeElement.edited">
+    <div [class]="'monaco-tree-row' + (hide ? ' hide ' : ' ') + theme">
+        <input #myInput (focusout)="handleFocusOut(monacoTreeElement)"
+               (keyup)="handleCreateKeyUp($event, monacoTreeElement)" autofocus
+               id="inputCreate"
+               name="name" type="text"/>
+    </div>
+</span>
+  <monaco-tree-file
+    (clickFile)="handleClickFile($event)"
+    (contextMenuClick)="handleClickContextMenu($event)"
+    (createDir)="handleCreateDir($event)"
+    (createFile)="handleCreateFile($event)"
+    (createImage)="handleCreateImage($event)"
+    (renameFolder)="handleRenameFolder($event)"
+    *ngFor="let row of tree"
+    [content]="row.content"
+    [depth]="0"
+    [edited]="row.edited"
+    [hide]="false"
+    [name]="row.name"
+    [rename]="row.rename"
+    [row]="row"
+    [theme]="theme"
+  ></monaco-tree-file>
+  <div
+    (contextmenu)="handleRightClickFile($event)"
+    class="sub-directory-element"
+  >
+
+    <monaco-tree-context-menu (createImage)="handleCreateImage($event)" [elements]="contextMenuDir"
+                              [left]="position ? position[0] : undefined"
+                              [row]="monacoTreeElement"
+                              [top]="position ? position[1] : undefined">
+    </monaco-tree-context-menu>
+
+  </div>
 </div>

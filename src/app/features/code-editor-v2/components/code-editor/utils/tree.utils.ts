@@ -65,24 +65,34 @@ export class TreeUtils {
     path: string,
     nameFolder: string
   ): void {
+    console.log('path', path);
+    console.log('nameFolder', nameFolder);
+    let itemToAdd;
+    if (nameFolder.includes('.')) {
+      itemToAdd = {
+        fullPath: path + '/' + nameFolder,
+        name: nameFolder
+      };
+    } else {
+      itemToAdd = {
+        fullPath: path + '/' + nameFolder,
+        name: nameFolder,
+        content: []
+      };
+    }
+    if (path.split(baseProjectPath)[1] === undefined) {
+      tree.push(itemToAdd);
+      console.log(tree);
+      return;
+    }
     const pathSplit = path.split(baseProjectPath)[1].split('/');
     const dirReference = tree.find((element) => element.name === pathSplit[0]);
     const dirToAdd = this.getReferenceDirectory(
       pathSplit.slice(1),
       dirReference
     );
-    if (nameFolder.includes('.')) {
-      dirToAdd.content?.push({
-        fullPath: path + '/' + nameFolder,
-        name: nameFolder
-      });
-    } else {
-      dirToAdd.content?.push({
-        fullPath: path + '/' + nameFolder,
-        name: nameFolder,
-        content: []
-      });
-    }
+
+    dirToAdd.content?.push(itemToAdd);
     dirToAdd.edited = false;
   }
 

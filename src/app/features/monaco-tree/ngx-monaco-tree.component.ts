@@ -1,6 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MonacoTreeElement } from './ngx-monaco-tree.type';
 import { ContextMenuAction } from './monaco-tree-file/monaco-tree-file.type';
+import {
+  ContextMenuElementSeparator,
+  ContextMenuElementText
+} from './monaco-tree-context-menu/monaco-tree-context-menu.type';
+import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'monaco-tree',
@@ -13,6 +19,8 @@ export class NgxMonacoTreeComponent {
   @Input() currentFile = '';
   @Input() width = '300px';
   @Input() height = '500px';
+  @Input() hide = false;
+  @Input() projectUniqueName = '';
 
   @Output() clickFile = new EventEmitter<string>();
   @Output() clickContextMenu = new EventEmitter<ContextMenuAction>();
@@ -23,6 +31,18 @@ export class NgxMonacoTreeComponent {
     path: string;
     newName: string;
   }>();
+
+  readonly baseProjectPath = environment.baseProjectPath;
+
+  // for test create folder at root
+  monacoTreeElement: MonacoTreeElement = {
+    name: '/',
+    fullPath: '/',
+    content: [],
+    edited: false,
+    rename: new BehaviorSubject<boolean>(false)
+  };
+  position: [number, number] | undefined = undefined;
 
   // @Output() contextMenuClick = new EventEmitter<ContextMenuAction>();
 
@@ -38,6 +58,37 @@ export class NgxMonacoTreeComponent {
   // 			this.contextMenuClick.emit(["delete_file", this.curr ?? ''])
   // 	} }
   // ]
+  contextMenuDir: Array<ContextMenuElementSeparator | ContextMenuElementText> =
+    [
+      {
+        type: 'element',
+        name: 'New File',
+        action: () => {
+          this.monacoTreeElement.edited = true;
+          this.position = [-1000, -1000];
+        }
+      },
+      {
+        type: 'element',
+        name: 'New Directory',
+        action: () => {
+          this.monacoTreeElement.edited = true;
+          this.position = [-1000, -1000];
+        }
+      },
+      {
+        type: 'element',
+        name: 'Upload picture',
+        action: () => {
+          this.clickContextMenu.emit({
+            action: 'upload_picture',
+            name: 'root',
+            type: 'dir'
+          });
+          this.position = [-1000, -1000];
+        }
+      }
+    ];
 
   handleClickFile(path: string) {
     this.clickFile.emit(path);
@@ -55,7 +106,6 @@ export class NgxMonacoTreeComponent {
 
   handleCreateImage(event: { path: string; name: string }) {
     console.log('je suis dans le ngrx');
-
     this.createImage.emit(event);
   }
 
@@ -65,5 +115,46 @@ export class NgxMonacoTreeComponent {
 
   handleRenameFolder(event: { path: string; newName: string }) {
     this.renameFolder.emit(event);
+  }
+
+  handleRightClickFile(event: MouseEvent) {
+    event.preventDefault();
+    const pos = this.getAbsolutePosition(event.target);
+    this.position = [pos.x + event.offsetX, pos.y + event.offsetY];
+    console.log(event);
+  }
+
+  handleFocusOut(row: any) {
+    row.edited = false;
+  }
+
+  handleCreateKeyUp(event: any, row: any) {
+    if (event.key === 'Enter') {
+      const isFile = event.target.value.includes('.');
+      // this.edited = false;
+      if (isFile === true) {
+        this.createFile.emit({
+          path: `${this.baseProjectPath}${this.projectUniqueName}`,
+          nameFile: event.target.value
+        });
+      } else {
+        console.log('tu emit');
+        this.createDir.emit({
+          path: `${this.baseProjectPath}${this.projectUniqueName}`,
+          nameDir: event.target.value
+        });
+      }
+    }
+    console.log(event);
+  }
+
+  private getAbsolutePosition(element: any) {
+    const r = { x: element.offsetLeft, y: element.offsetTop };
+    if (element.offsetParent) {
+      const tmp = this.getAbsolutePosition(element.offsetParent);
+      r.x += tmp.x;
+      r.y += tmp.y;
+    }
+    return r;
   }
 }

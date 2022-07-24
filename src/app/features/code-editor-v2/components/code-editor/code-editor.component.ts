@@ -423,17 +423,22 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   handleCreateFile(event: { path: string; nameFile: string }) {
-    const nameComplete = event.path + '/' + event.nameFile;
+    console.log('on arrive dans le create file');
+    console.log('event', event);
+
+    const nameComplete = event.path.endsWith('/')
+      ? event.path + event.nameFile
+      : event.path + '/' + event.nameFile;
     const editsProjectDTO: EditProjectDTO[] = [
       {
-        name: nameComplete.split(this.BASE_PROJECT_PATH)[1],
+        name: nameComplete.split(this.BASE_PROJECT_PATH)[1] ?? event.nameFile,
         type: 'file',
         fullPath: nameComplete,
         folderStatus: FolderStatus.CREATED,
         modifications: []
       }
     ];
-
+    console.log('editsProjectDTO', editsProjectDTO);
     const newValue: Folder = {
       name: nameComplete.split(this.BASE_PROJECT_PATH)[1],
       type: 'file',
@@ -441,6 +446,8 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
       contents: '',
       lastModified: Date.now()
     };
+
+    console.log('event', event);
     this.currentProject.appFiles[nameComplete] = newValue;
     TreeUtils.addFolderInTree(
       this.tree,
@@ -448,6 +455,8 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
       event.path,
       event.nameFile
     );
+
+    console.log(editsProjectDTO);
     this.codeSocketService.sendProjectModification(
       'editProject',
       editsProjectDTO
@@ -482,6 +491,8 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   handleCreateDir(event: { path: string; nameDir: string }) {
+    console.log('on arrive dans le create dir');
+    console.log('event', event);
     const nameComplete = event.path + '/' + event.nameDir;
     const editsProjectDTO: EditProjectDTO[] = [
       {
