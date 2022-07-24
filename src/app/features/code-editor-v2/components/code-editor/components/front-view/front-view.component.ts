@@ -96,7 +96,7 @@ export class FrontViewComponent implements OnInit {
           return;
         }
         let urlFormat = this.urlSee;
-        if (event.data) {
+        if (event.data && typeof event.data === 'string') {
           urlFormat = this.formatUrl(event.data);
         }
         const urlSeeFormat = this.formatUrl(this.urlSee);
@@ -110,19 +110,15 @@ export class FrontViewComponent implements OnInit {
 
   private formatUrl(url: string | undefined): string | undefined {
     let urlReformat = url;
-
-    if (typeof url === 'string') {
-      if (url?.endsWith('/')) {
-        urlReformat = url.substring(0, url.length - 1);
-      }
-      console.log(`url ${url}`);
-      console.log(typeof url);
-      return urlReformat?.replace('http://', '').replace('https://', '');
-    }
     console.log(JSON.stringify(url));
     console.log(`url ${url}`);
     console.log('return udefined');
+
+    if (url?.endsWith('/')) {
+      urlReformat = url.substring(0, url.length - 1);
+    }
+    console.log(`url ${url}`);
     console.log(typeof url);
-    return undefined;
+    return urlReformat?.replace('http://', '').replace('https://', '');
   }
 }
