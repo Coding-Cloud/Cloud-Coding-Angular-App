@@ -87,6 +87,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
     language: 'typescript',
     automaticLayout: true
   };
+  filenameSubject$ = new BehaviorSubject<string>('');
   code$ = new BehaviorSubject('');
   loadingMonacoEditor$ = new BehaviorSubject(false);
   loadingIframe$ = new BehaviorSubject(true);

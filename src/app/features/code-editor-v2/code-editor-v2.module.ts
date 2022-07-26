@@ -12,6 +12,7 @@ import { FrontViewComponent } from './components/code-editor/components/front-vi
 import { ResizableModule } from 'angular-resizable-element';
 import { CodeVersioningComponent } from './components/code-editor/components/code-versioning/code-versioning.component';
 import { CameraCallComponent } from './components/code-editor/components/camera-call/camera-call.component';
+import { FileTabsComponent } from './components/code-editor/components/file-tabs/file-tabs.component';
 
 const monacoConfig: NgxMonacoEditorConfig = {
   /* defaultOptions: { scrollBeyondLastLine: false }, // pass default options to be used*/
@@ -35,7 +36,8 @@ const monacoConfig: NgxMonacoEditorConfig = {
     DeveloperListComponent,
     FrontViewComponent,
     CodeVersioningComponent,
-    CameraCallComponent
+    CameraCallComponent,
+    FileTabsComponent
   ],
   imports: [
     CommonModule,
