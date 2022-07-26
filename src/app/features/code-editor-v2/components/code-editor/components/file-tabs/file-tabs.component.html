@@ -1,7 +1,7 @@
 <div class="d-flex flex-row">
   <div class="py-1 px-2 file-tab d-flex">
     <span>
-      <img [src]="'assets/icons/'+ icon +'.svg'" alt="file-icon" class="tab-file-icon"/>
+      <img *ngIf="filename !== ''" [src]="'assets/icons/'+ icon +'.svg'" alt="file-icon" class="tab-file-icon"/>
       {{filename}}
     </span>
   </div>
