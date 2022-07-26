@@ -6,6 +6,9 @@ import {
   UpdateMessage
 } from '../../../shared/models/message.model';
 
+// init
+export const actionConversationsInit = createAction('[Conversation] Init');
+
 export const actionConversationsRetrieveOneByFriendship = createAction(
   '[Conversations] Retrieve One by friendship',
   props<{ friendshipId: string }>()
