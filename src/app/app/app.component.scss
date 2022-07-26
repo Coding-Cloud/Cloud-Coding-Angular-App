@@ -17,6 +17,10 @@ mat-sidenav-container {
 
     mat-toolbar {
       //background-color: rgba(192, 82, 82, 0.5) !important;
+      a {
+        text-decoration: none;
+        color: whitesmoke;
+      }
     }
 
     .nav-button {
