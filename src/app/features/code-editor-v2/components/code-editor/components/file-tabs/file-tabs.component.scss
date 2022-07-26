@@ -1,9 +1,12 @@
-.file-tab {
-  background-color: #1d1d1d;
+.file-tabs {
   min-height: 32px;
 
-  .tab-file-icon {
-    height: 18px;
-    width: 18px;
+  .file-tab {
+    background-color: #1d1d1d;
+
+    .tab-file-icon {
+      height: 18px;
+      width: 18px;
+    }
   }
 }
