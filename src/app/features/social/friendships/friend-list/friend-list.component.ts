@@ -24,6 +24,7 @@ import {
 import { userViewLink } from '../../users/users-routing.module';
 import { selectUser } from '../../../../core/auth/auth.selectors';
 import {
+  actionConversationsInit,
   actionConversationsRetrieveOneByFriendship,
   actionConversationsSendMessage
 } from '../../../conversation/store/conversation.actions';
@@ -73,6 +74,9 @@ export class FriendListComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(actionFriendshipsRetrieveAll());
+    if (this.showConversation) {
+      this.store.dispatch(actionConversationsInit());
+    }
   }
 
   isInRouteLink(): boolean {

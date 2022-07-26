@@ -5,6 +5,7 @@ import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { Message } from '../../../shared/models/message.model';
 import { Action, createReducer, on } from '@ngrx/store';
 import {
+  actionConversationsInit,
   actionConversationsMessagesReceived,
   actionConversationsRemoveMessageSuccess,
   actionConversationsRetrieveAllMessages,
@@ -54,6 +55,7 @@ const reducer = createReducer(
       conversationsLoading: true
     })
   ),
+  on(actionConversationsInit, (_state) => initialState),
   on(actionConversationsRetrieveOneSuccess, (state, { conversation }) => ({
     ...state,
     conversation,
