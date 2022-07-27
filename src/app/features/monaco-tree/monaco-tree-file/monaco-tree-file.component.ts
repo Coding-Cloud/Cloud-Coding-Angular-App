@@ -17,6 +17,7 @@ import {
 } from '../monaco-tree-context-menu/monaco-tree-context-menu.type';
 import { ContextMenuAction } from './monaco-tree-file.type';
 import { BehaviorSubject } from 'rxjs';
+import { TreeOpenService } from '../../code-editor-v2/services/tree-open.service';
 
 function getAbsolutePosition(element: any) {
   const r = { x: element.offsetLeft, y: element.offsetTop };
@@ -56,18 +57,6 @@ export class MonacoTreeFileComponent implements OnInit {
   open = false;
   position: [number, number] | undefined = undefined;
   type: 'file' | 'dir' | undefined = 'dir';
-
-  constructor(private eRef: ElementRef) {}
-
-  ngOnInit(): void {
-    const nameSplit = this.name.split('/');
-    if (nameSplit[nameSplit.length - 1].includes('.')) {
-      this.type = 'file';
-    } else {
-      this.type = 'dir';
-    }
-  }
-
   // eslint-disable-next-line @typescript-eslint/member-ordering
   contextMenuDir: Array<ContextMenuElementSeparator | ContextMenuElementText> =
     [
@@ -133,7 +122,6 @@ export class MonacoTreeFileComponent implements OnInit {
         }
       }
     ];
-
   // eslint-disable-next-line @typescript-eslint/member-ordering
   contextMenuFile: Array<ContextMenuElementSeparator | ContextMenuElementText> =
     [
@@ -163,6 +151,11 @@ export class MonacoTreeFileComponent implements OnInit {
       }
     ];
 
+  constructor(
+    private eRef: ElementRef,
+    public treeOpenService: TreeOpenService
+  ) {}
+
   get icon() {
     if (this.folder) {
       if (Object.keys(folders).includes(this.name)) {
@@ -190,17 +183,30 @@ export class MonacoTreeFileComponent implements OnInit {
     }
   }
 
-  toggle() {
-    this.open = !this.open;
-    this.clickFile.emit(this.name);
-  }
-
   get style() {
     return 'margin-left: ' + 10 * this.depth + 'px';
   }
 
   get folder() {
     return this.content !== null && this.content !== undefined;
+  }
+
+  ngOnInit(): void {
+    console.log('row ', this.row);
+    const nameSplit = this.name.split('/');
+    if (nameSplit[nameSplit.length - 1].includes('.')) {
+      this.type = 'file';
+    } else {
+      this.type = 'dir';
+    }
+  }
+
+  toggle() {
+    this.open = !this.open;
+    if (!this.open) {
+      this.treeOpenService.removeDirectory(this.name);
+    }
+    this.clickFile.emit(this.name);
   }
 
   handleClickFile(file: string) {
