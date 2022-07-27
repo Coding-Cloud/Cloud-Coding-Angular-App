@@ -400,10 +400,9 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
       this.deleteFolder({ path: event.name });
     }
 
-    const element = this.tree.find((treeFolder) => treeFolder.name === 'src');
     const dir = TreeUtils.getReferenceDirectoryFromActiveDirectory(
       event.name.split('/'),
-      { name: '', content: [element] }
+      { name: '', content: this.tree ?? [] }
     );
     const pathSplit = event.name.split('/');
     const lastName = pathSplit[pathSplit.length - 1];
