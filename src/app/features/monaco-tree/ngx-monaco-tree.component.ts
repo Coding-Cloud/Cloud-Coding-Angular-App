@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { MonacoTreeElement } from './ngx-monaco-tree.type';
 import { ContextMenuAction } from './monaco-tree-file/monaco-tree-file.type';
 import {
@@ -31,6 +38,10 @@ export class NgxMonacoTreeComponent {
     path: string;
     newName: string;
   }>();
+
+  @ViewChild('myInput') public myInput:
+    | ElementRef<HTMLInputElement>
+    | undefined;
 
   readonly baseProjectPath = environment.baseProjectPath;
 
@@ -73,18 +84,6 @@ export class NgxMonacoTreeComponent {
         name: 'New Directory',
         action: () => {
           this.monacoTreeElement.edited = true;
-          this.position = [-1000, -1000];
-        }
-      },
-      {
-        type: 'element',
-        name: 'Upload picture',
-        action: () => {
-          this.clickContextMenu.emit({
-            action: 'upload_picture',
-            name: 'root',
-            type: 'dir'
-          });
           this.position = [-1000, -1000];
         }
       }
@@ -144,6 +143,7 @@ export class NgxMonacoTreeComponent {
           nameDir: event.target.value
         });
       }
+      this.myInput?.nativeElement.blur();
     }
     console.log(event);
   }
