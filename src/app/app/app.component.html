@@ -25,17 +25,17 @@
 
           <a [routerLink]='routerLinks.home.path'
              class='branding spacer center d-inline d-sm-none'>
-            <img [src]='logo' [alt]='logo' />
+            <img [src]='checkManitou()' [alt]='checkManitou()' />
           </a>
           <a [routerLink]='routerLinks.home.path'
              class='branding spacer center d-none d-sm-inline d-md-none'>
-            <img [src]='logo' [alt]='logo' />
-            {{ appName  }}
+            <img [src]='checkManitou()' [alt]='checkManitou()' />
+            {{ isManitou() ? 'Bonjour grand manitou' : appName  }}
           </a>
           <a [routerLink]='routerLinks.home.path'
              class='branding spacer d-none d-md-inline'>
-            <img [src]='logo' [alt]='logo' />
-            {{ appName}}
+            <img [src]='checkManitou()' [alt]='checkManitou()' />
+            {{ isManitou() ? 'Bonjour grand manitou' : appName}}
           </a>
 
           <span class='d-none d-md-inline'>

@@ -44,7 +44,7 @@
                     </mat-list-item>
                     <mat-list-item>
                       <mat-icon matListIcon>child_friendly</mat-icon>
-                      <span>{{(user$ | async)?.birthdate | date: 'longDate'}}</span>
+                      <span>{{isManitou ? '??/??/????' : (user$ | async)?.birthdate | date: 'longDate'}}</span>
                     </mat-list-item>
                   </mat-list>
                 </mat-card-content>
