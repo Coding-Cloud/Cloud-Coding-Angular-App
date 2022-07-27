@@ -50,6 +50,7 @@ import {
 import { CameraCallInitService } from '../../services/camera-call/camera-call-init.service';
 import { CameraEventService } from '../../services/camera-event.service';
 import { navigation } from '../../../../app-routing.module';
+import { TreeOpenService } from '../../services/tree-open.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -162,7 +163,8 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private renderer: Renderer2,
     private cameraCallInitService: CameraCallInitService,
-    private cameraEventService: CameraEventService
+    private cameraEventService: CameraEventService,
+    private treeOpenService: TreeOpenService
   ) {
     this.uniqueName = this.activatedRoute.snapshot.params.id;
 
@@ -295,6 +297,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
       this.BASE_PROJECT_PATH,
       this.currentProject
     );
+    this.treeOpenService.addRootDirectory(this.tree);
     this.cd.markForCheck();
   }
 
