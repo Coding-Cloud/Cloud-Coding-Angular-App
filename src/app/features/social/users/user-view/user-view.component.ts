@@ -93,6 +93,7 @@ export class UserViewComponent implements OnInit {
 
   usersNavigation = usersNavigation;
   projectViewLink = projectViewLink;
+  isManitou = false;
 
   constructor(
     private router: Router,
@@ -133,6 +134,14 @@ export class UserViewComponent implements OnInit {
           actionFriendRequestsRetrieveOne({ userId: user.id })
         );
       }
+      this.isManitou = (
+        user.username +
+        user.email +
+        user.firstname +
+        user.lastname
+      )
+        .toLowerCase()
+        .includes('sananes');
     });
     this.friendship$.subscribe((friendship) => {
       if (friendship) {
