@@ -143,6 +143,8 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
 
   username = '';
 
+  currentPath = '';
+
   project: ProjectShare | undefined;
 
   readonly IMAGE_EXTENSION = IMAGE_EXTENSION;
@@ -305,6 +307,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
   }
 
   handleClickOnFolder(path: string): void {
+    this.currentPath = path;
     if (
       this.currentProject.appFiles[`${this.BASE_PROJECT_PATH}${path}`] !==
         undefined &&
@@ -663,6 +666,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
 
         this.initializeTreeFiles();
       });
+    this.handleClickOnFolder(this.currentPath);
   }
 
   public handleClickCameraArrow() {
