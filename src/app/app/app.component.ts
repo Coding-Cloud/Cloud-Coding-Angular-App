@@ -19,6 +19,7 @@ import { userViewLink } from '../features/social/users/users-routing.module';
 import { socialFriendshipsLink } from '../features/social/social-routing.module';
 import { actionConversationsInitSocket } from '../features/conversation/store/conversation.actions';
 import { Router } from '@angular/router';
+import { emptyUser, User } from '../shared/models/user.model';
 
 @Component({
   selector: 'cc-root-component',
@@ -33,6 +34,7 @@ export class AppComponent implements OnInit {
   version = env.versions.app;
   year = new Date().getFullYear();
   logo = 'assets/logo.png';
+  logoManitou = 'assets/manitou.jpg';
   routerLinks = navigation;
   readonly userViewLink = userViewLink;
 
@@ -44,6 +46,7 @@ export class AppComponent implements OnInit {
   friendshipsLink = socialFriendshipsLink;
 
   isAuthenticated$: Observable<boolean> | undefined;
+  currentUser: User = emptyUser;
   theme$: Observable<string> | undefined;
   currentUserId = '';
 
@@ -54,6 +57,7 @@ export class AppComponent implements OnInit {
   ) {
     this.store.pipe(select(selectUser)).subscribe((user) => {
       if (user) {
+        this.currentUser = user;
         this.currentUserId = user.id;
       }
     });
@@ -82,5 +86,23 @@ export class AppComponent implements OnInit {
 
   isOnCodeEditorPage(): boolean {
     return this.router.url.includes('/code-editor');
+  }
+
+  checkManitou(): string {
+    if (this.isManitou()) {
+      return this.logoManitou;
+    }
+    return this.logo;
+  }
+
+  isManitou(): boolean {
+    return (
+      this.currentUser.username +
+      this.currentUser.email +
+      this.currentUser.firstname +
+      this.currentUser.lastname
+    )
+      .toLowerCase()
+      .includes('sananes');
   }
 }
