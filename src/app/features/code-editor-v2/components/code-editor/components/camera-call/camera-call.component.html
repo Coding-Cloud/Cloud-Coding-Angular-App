@@ -1,9 +1,9 @@
-<div>
+<!--<div>
   <input #InputUsername id="input"/>
   <button (click)="handleValidUsername(InputUsername.value)">valid</button>
   <button (click)="handleCall()">call</button>
   <button (click)="handleJoinExistingConversation()">join</button>
-</div>
+</div>-->
 
 <!-- to show incommming call and accept -->
 <div #answer id="answer">
@@ -12,15 +12,15 @@
       <h2>Incomming Call</h2>
     </div>
     <div class="itemWrapper" style="width: 100%">
-      <img id="profileImageA" style="padding: 30px;  height: 140px;"
-           src="/assets/profile.png" alt="">
+      <img alt="" id="profileImageA"
+           src="/assets/profile.png" style="padding: 30px;  height: 140px;">
     </div>
     <div class="itemWrapper">
       <h2 style="line-height: 0px;"><span id="callerName"></span></h2>
     </div>
     <p class="otherUser">{{otherUser}}</p>
     <div class="itemWrapper" style="display: flex; flex-direction: row; justify-content: center; margin-bottom: 20px;">
-      <button class="actionButton" id="button-calling" (click)="handleAnswer(otherUser)">Answer</button>
+      <button (click)="handleAnswer(otherUser)" class="actionButton" id="button-calling">Answer</button>
     </div>
   </div>
 </div>
@@ -32,8 +32,8 @@
       <h2>Calling</h2>
     </div>
     <div class="itemWrapper">
-      <img id="profileImageCA" style="padding: 30px;  height: 140px;"
-           src="/assets/profile.png" alt="">
+      <img alt="" id="profileImageCA"
+           src="/assets/profile.png" style="padding: 30px;  height: 140px;">
     </div>
     <p class="otherUser">{{otherUser}}</p>
     <div class="itemWrapper">
@@ -46,7 +46,7 @@
 
 <!-- to show local and remote video -->
 <div #videoGrid id="video-grid">
-    <!--<video [srcObject]="localVideoSrcObject" #localVideo class="video-client" autoplay ></video>
-    <video [srcObject]="remoteVideoSrcObject" #remoteVideo class="video-client" autoplay ></video>
-  <video [srcObject]="remote2VideoSrcObject" #remoteVideo2 class="video-client"  autoplay ></video>-->
+  <!--<video [srcObject]="localVideoSrcObject" #localVideo class="video-client" autoplay ></video>
+  <video [srcObject]="remoteVideoSrcObject" #remoteVideo class="video-client" autoplay ></video>
+<video [srcObject]="remote2VideoSrcObject" #remoteVideo2 class="video-client"  autoplay ></video>-->
 </div>
