@@ -1,11 +1,11 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
-  OnDestroy,
   OnInit
 } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { files } from '../../../../../utils/file-icon';
 import { extensions } from '../../../../../utils/extension-icon';
 
@@ -15,12 +15,11 @@ import { extensions } from '../../../../../utils/extension-icon';
   styleUrls: ['./file-tabs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FileTabsComponent implements OnInit, OnDestroy {
-  @Input() openedFile$: Observable<string> | undefined;
-  subscriptions: Subscription[] = [];
+export class FileTabsComponent implements OnInit {
+  @Input() openedFile$: BehaviorSubject<string> | undefined;
   filename = '';
 
-  constructor() {}
+  constructor(private cd: ChangeDetectorRef) {}
 
   get icon() {
     if (Object.keys(files).includes(this.filename)) {
@@ -39,14 +38,9 @@ export class FileTabsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (this.openedFile$) {
-      this.subscriptions.push(
-        this.openedFile$.subscribe((inputName) => (this.filename = inputName))
-      );
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.openedFile$?.subscribe((filename) => {
+      this.filename = filename;
+      this.cd.markForCheck();
+    });
   }
 }

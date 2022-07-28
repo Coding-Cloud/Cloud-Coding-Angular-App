@@ -34,8 +34,12 @@
 .editor__text {
   background: #1d1d1d;
   width: 100%;
-  height: 100%;
+  height: 95%;
   overflow: hidden;
+}
+
+.editor__tab {
+  height: 5%;
 }
 
 .editor__tree {
@@ -75,6 +79,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   .arrow {
     display: flex;
     align-items: center;

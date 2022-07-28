@@ -53,7 +53,7 @@
           class='resize-handle-right-2'
           mwlResizeHandle
         ></div>
-        <cc-file-tabs [openedFile$]="filenameSubject$.asObservable()"></cc-file-tabs>
+        <cc-file-tabs [openedFile$]="filenameSubject$" class="editor__tab"></cc-file-tabs>
         <span *ngIf='IMAGE_EXTENSION.includes(currentFile.type) && !isLoading; else notImageFile'
               id='app-editor-picture-component'>
                 <app-editor-picture [code$]='code$' [type]='currentFile.type'></app-editor-picture>
