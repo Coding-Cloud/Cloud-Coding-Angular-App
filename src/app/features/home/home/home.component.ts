@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
 
   languages: { name: string; techno: string; imgClass: string }[] = [
     {
-      name: 'React 18',
+      name: 'React 17',
       techno: 'TypeScript 4',
       imgClass: 'react-image'
     },

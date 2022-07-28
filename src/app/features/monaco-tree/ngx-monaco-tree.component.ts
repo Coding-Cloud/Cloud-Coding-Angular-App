@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { MonacoTreeElement } from './ngx-monaco-tree.type';
 import { ContextMenuAction } from './monaco-tree-file/monaco-tree-file.type';
 import {
@@ -7,6 +14,7 @@ import {
 } from './monaco-tree-context-menu/monaco-tree-context-menu.type';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { TreeOpenService } from '../code-editor-v2/services/tree-open.service';
 
 @Component({
   selector: 'monaco-tree',
@@ -32,6 +40,10 @@ export class NgxMonacoTreeComponent {
     newName: string;
   }>();
 
+  @ViewChild('myInput') public myInput:
+    | ElementRef<HTMLInputElement>
+    | undefined;
+
   readonly baseProjectPath = environment.baseProjectPath;
 
   // for test create folder at root
@@ -54,6 +66,7 @@ export class NgxMonacoTreeComponent {
   // 			this.contextMenuClick.emit(["new_directory", this.curr ?? ''])
   // 		} },
   // 	{type: "separator" },
+
   // 	{type: "element", name: 'Delete', action: () => {
   // 			this.contextMenuClick.emit(["delete_file", this.curr ?? ''])
   // 	} }
@@ -75,22 +88,15 @@ export class NgxMonacoTreeComponent {
           this.monacoTreeElement.edited = true;
           this.position = [-1000, -1000];
         }
-      },
-      {
-        type: 'element',
-        name: 'Upload picture',
-        action: () => {
-          this.clickContextMenu.emit({
-            action: 'upload_picture',
-            name: 'root',
-            type: 'dir'
-          });
-          this.position = [-1000, -1000];
-        }
       }
     ];
 
+  constructor(public treeOpenService: TreeOpenService) {}
+
   handleClickFile(path: string) {
+    const pathClicked = path.split('/').pop() ?? path;
+    console.log('je clique sur path ', pathClicked);
+    this.treeOpenService.addDirectory(pathClicked);
     this.clickFile.emit(path);
   }
 
@@ -144,6 +150,7 @@ export class NgxMonacoTreeComponent {
           nameDir: event.target.value
         });
       }
+      this.myInput?.nativeElement.blur();
     }
     console.log(event);
   }

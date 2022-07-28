@@ -50,6 +50,7 @@ import {
 import { CameraCallInitService } from '../../services/camera-call/camera-call-init.service';
 import { CameraEventService } from '../../services/camera-event.service';
 import { navigation } from '../../../../app-routing.module';
+import { TreeOpenService } from '../../services/tree-open.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -145,6 +146,8 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
 
   username = '';
 
+  currentPath = '';
+
   project: ProjectShare | undefined;
 
   readonly IMAGE_EXTENSION = IMAGE_EXTENSION;
@@ -162,7 +165,8 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private renderer: Renderer2,
     private cameraCallInitService: CameraCallInitService,
-    private cameraEventService: CameraEventService
+    private cameraEventService: CameraEventService,
+    private treeOpenService: TreeOpenService
   ) {
     this.uniqueName = this.activatedRoute.snapshot.params.id;
 
@@ -295,6 +299,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
       this.BASE_PROJECT_PATH,
       this.currentProject
     );
+    this.treeOpenService.addRootDirectory(this.tree);
     this.cd.markForCheck();
   }
 
@@ -307,6 +312,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
   }
 
   handleClickOnFolder(path: string): void {
+    this.currentPath = path;
     if (
       this.currentProject.appFiles[`${this.BASE_PROJECT_PATH}${path}`] !==
         undefined &&
@@ -405,10 +411,9 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
       this.deleteFolder({ path: event.name });
     }
 
-    const element = this.tree.find((treeFolder) => treeFolder.name === 'src');
     const dir = TreeUtils.getReferenceDirectoryFromActiveDirectory(
       event.name.split('/'),
-      { name: '', content: [element] }
+      { name: '', content: this.tree ?? [] }
     );
     const pathSplit = event.name.split('/');
     const lastName = pathSplit[pathSplit.length - 1];
@@ -668,6 +673,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
 
         this.initializeTreeFiles();
       });
+    this.handleClickOnFolder(this.currentPath);
   }
 
   public handleClickCameraArrow() {
