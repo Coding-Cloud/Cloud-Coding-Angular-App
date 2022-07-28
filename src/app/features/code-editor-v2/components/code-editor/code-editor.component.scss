@@ -34,12 +34,8 @@
 .editor__text {
   background: #1d1d1d;
   width: 100%;
-  height: 95%;
+  height: calc(100% - 32px);
   overflow: hidden;
-}
-
-.editor__tab {
-  height: 5%;
 }
 
 .editor__tree {
