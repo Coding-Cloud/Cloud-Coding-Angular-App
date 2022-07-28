@@ -88,6 +88,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
     language: 'typescript',
     automaticLayout: true
   };
+  filenameSubject$ = new BehaviorSubject<string>('');
   code$ = new BehaviorSubject('');
   loadingMonacoEditor$ = new BehaviorSubject(false);
   loadingIframe$ = new BehaviorSubject(true);
@@ -101,6 +102,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
     path: string;
     type: FileTypes;
   } = { path: '', type: 'other' };
+
   codeRunnerSysOut$ = new BehaviorSubject('');
   isLoading = false;
 
@@ -336,6 +338,9 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
     }
 
     this.currentFile.path = `${this.BASE_PROJECT_PATH}${path}`;
+    this.filenameSubject$.next(
+      this.currentFile.path.split('/').pop() ?? this.currentFile.path
+    );
 
     if (isFile(this.currentFile.path)) {
       const endFile = this.currentFile.path.split('/').pop()?.split('.').pop();
@@ -794,6 +799,9 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
   private changeCurrentFile(path: string): void {
     if (isFile(this.currentFile.path)) {
       this.currentFile.path = `${path}`;
+      this.filenameSubject$.next(
+        this.currentFile.path.split('/').pop() ?? this.currentFile.path
+      );
 
       const endFile = this.currentFile.path.split('/').pop()?.split('.').pop();
       const valueInMap = ExtensionToLanguage.get(endFile as string);
